@@ -108,7 +108,6 @@ function makeCardSvg(result: AuditResult, reportUrl: string) {
 
 function makeShareUrl(answers: number[]) {
   if (typeof window === "undefined") return "/audit";
-  const code = "v" + AUDIT_VERSION + "-" + answers.join("");
   return window.location.origin + "/audit/case/" + encodeURIComponent(encodeCaseCode(answers));
 }
 
@@ -158,7 +157,8 @@ export default function AuditClient() {
 
       const challengeAnswers = decodeCaseCode(searchParams.get("challenge"));
       if (challengeAnswers) {
-        setChallengeMessage("A FELLOW DEGEN HAS SUBMITTED THEIR CASE. YOUR TURN TO FACE THE DEPARTMENT.");
+        const challenger = buildResult(challengeAnswers);
+        setChallengeMessage(challenger.profile.title + " HAS NOMINATED YOU. SUBMIT YOUR OWN CASE TO THE DEPARTMENT.");
       }
     } catch {
       setNotice("THE SHARED CASE FILE COULD NOT BE READ. START A NEW INVESTIGATION.");
