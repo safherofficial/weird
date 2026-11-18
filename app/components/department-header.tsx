@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 type DepartmentHeaderProps = {
-  activeSection?: "home" | "audit";
+  activeSection?: "home" | "audit" | "simulator";
   statusMessage?: string;
   ctaHref?: string;
   ctaLabel?: string;
@@ -61,6 +61,9 @@ export default function DepartmentHeader({
           <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined}>
             THE AUDIT <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/simulator" aria-current={activeSection === "simulator" ? "page" : undefined}>
+            THE SIMULATOR <span aria-hidden="true">↗</span>
+          </Link>
           <Link href={departmentsHref}>DEPARTMENTS</Link>
           <Link href={manifestoHref}>MANIFESTO</Link>
         </nav>
@@ -86,16 +89,19 @@ export default function DepartmentHeader({
         <nav id={menuId} className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>
           <div className="mobile-nav__heading">
             <span>DEPARTMENT DIRECTORY</span>
-            <span>3 DESTINATIONS / 1 PURPOSE</span>
+            <span>4 DESTINATIONS / 1 PURPOSE</span>
           </div>
           <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined} onClick={closeMenu}>
             <span>01</span> THE AUDIT <b aria-hidden="true">↗</b>
           </Link>
+          <Link href="/simulator" aria-current={activeSection === "simulator" ? "page" : undefined} onClick={closeMenu}>
+            <span>02</span> THE SIMULATOR <b aria-hidden="true">↗</b>
+          </Link>
           <Link href={departmentsHref} onClick={closeMenu}>
-            <span>02</span> DEPARTMENTS <b aria-hidden="true">↗</b>
+            <span>03</span> DEPARTMENTS <b aria-hidden="true">↗</b>
           </Link>
           <Link href={manifestoHref} onClick={closeMenu}>
-            <span>03</span> MANIFESTO <b aria-hidden="true">↗</b>
+            <span>04</span> MANIFESTO <b aria-hidden="true">↗</b>
           </Link>
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
