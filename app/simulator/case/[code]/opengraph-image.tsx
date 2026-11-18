@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { buildSimulatorResult, decodeSimulatorCode } from "../../../simulator-engine";
+import { buildSimulatorResult, decodeSimulatorCode } from "../../simulator-engine";
 
 export const runtime = "edge";
 export const alt = "A fictional DYOR Department Bagholder Simulator result card.";
