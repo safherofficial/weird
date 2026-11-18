@@ -1110,3 +1110,168 @@ body {
     max-width: 100%;
   }
 }
+
+
+/* U04 — Social sharing and challenge loop */
+.audit-challenge-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 13px 15px;
+  border: 1px solid #52633f;
+  border-left: 3px solid var(--green);
+  background: linear-gradient(95deg, #1a2816, #111711);
+  color: #dce8d3;
+  font: 9px/1.6 var(--mono);
+  letter-spacing: .045em;
+}
+
+.audit-challenge-banner::before {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  background: var(--green);
+  color: #10150c;
+  content: "!";
+  font: 700 13px var(--mono);
+}
+
+.button--challenge {
+  border: 1px solid #695a42;
+  background: #211b12;
+  color: #f0c27b;
+}
+
+.button--challenge span {
+  font-size: 14px;
+}
+
+.button--challenge:hover {
+  border-color: #e0b36c;
+  background: #302315;
+  box-shadow: 0 7px 24px rgb(224 179 108 / 9%);
+}
+
+.public-case {
+  max-width: 940px;
+  padding-block: 66px 92px;
+}
+
+.public-case__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--line);
+  color: #72806c;
+  font: 8px var(--mono);
+  letter-spacing: .09em;
+}
+
+.public-case > .eyebrow {
+  margin-top: 43px;
+}
+
+.public-case h1 {
+  max-width: 760px;
+  margin: 16px 0 12px;
+  font: 700 clamp(38px, 6vw, 70px)/.98 var(--sans);
+  letter-spacing: -.065em;
+}
+
+.public-case__subtitle {
+  max-width: 700px;
+  color: #a1aa9c;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.public-case__metrics {
+  margin-top: 13px;
+}
+
+.public-case__footer-note {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 17px 18px;
+  border: 1px solid #3a4934;
+  background: #151e12;
+}
+
+.public-case__footer-note span {
+  color: #84917e;
+  font: 8px var(--mono);
+  letter-spacing: .08em;
+}
+
+.public-case__footer-note strong {
+  color: var(--green);
+  font: 9px/1.7 var(--mono);
+}
+
+.public-case__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.public-case__actions .button {
+  min-height: 48px;
+  font-size: 9px;
+}
+
+.public-case__disclaimer {
+  max-width: 760px;
+  margin-top: 20px;
+  color: #687264;
+  font: 8px/1.75 var(--mono);
+}
+
+@media (max-width: 800px) {
+  .public-case {
+    padding-block: 44px 72px;
+  }
+
+  .public-case__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .audit-challenge-banner {
+    align-items: flex-start;
+    font-size: 8px;
+  }
+
+  .public-case {
+    padding-block: 35px 60px;
+  }
+
+  .public-case__meta {
+    flex-direction: column;
+    gap: 7px;
+    font-size: 7px;
+  }
+
+  .public-case > .eyebrow {
+    margin-top: 30px;
+  }
+
+  .public-case__subtitle {
+    font-size: 13px;
+  }
+
+  .public-case__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .public-case__footer-note strong {
+    font-size: 8px;
+  }
+}

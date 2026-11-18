@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://weird-zeta.vercel.app"),
   title: {
     default: "THE DYOR DEPARTMENT — Your research was impeccable. Your entry was not.",
     template: "%s | THE DYOR DEPARTMENT",
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "THE DYOR DEPARTMENT",
     description: "You did your own research. The market did its own thing.",
+    images: ["/opengraph-image"],
   },
 };
 

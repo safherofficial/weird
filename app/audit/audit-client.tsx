@@ -6,6 +6,8 @@ import {
   AUDIT_QUESTION_COUNT,
   AUDIT_VERSION,
   buildResult,
+  decodeCaseCode,
+  encodeCaseCode,
   isValidAnswers,
   type AuditResult,
 } from "./audit-engine";
@@ -106,8 +108,19 @@ function makeCardSvg(result: AuditResult, reportUrl: string) {
 
 function makeShareUrl(answers: number[]) {
   if (typeof window === "undefined") return "/audit";
-  const code = "v" + AUDIT_VERSION + "-" + answers.join("");
-  return window.location.origin + "/audit?case=" + code;
+  return window.location.origin + "/audit/case/" + encodeURIComponent(encodeCaseCode(answers));
+}
+
+function makeChallengeUrl(answers: number[]) {
+  if (typeof window === "undefined") return "/audit";
+  return window.location.origin + "/audit?challenge=" + encodeURIComponent(encodeCaseCode(answers));
+}
+
+function makeXSafeRoast(value: string) {
+  if (value.length <= 82) return value;
+  const clipped = value.slice(0, 79);
+  const boundary = clipped.lastIndexOf(" ");
+  return clipped.slice(0, boundary > 48 ? boundary : clipped.length) + "…";
 }
 
 export default function AuditClient() {
@@ -115,6 +128,7 @@ export default function AuditClient() {
   const [current, setCurrent] = useState(0);
   const [result, setResult] = useState<AuditResult | null>(null);
   const [notice, setNotice] = useState("");
+  const [challengeMessage, setChallengeMessage] = useState("");
   const [savedCases, setSavedCases] = useState<SavedCase[]>([]);
   const [storageReady, setStorageReady] = useState(false);
 
@@ -140,15 +154,18 @@ export default function AuditClient() {
     }
 
     try {
-      const sharedCode = new URLSearchParams(window.location.search).get("case");
-      const match = sharedCode?.match(new RegExp("^v" + AUDIT_VERSION + "-([0-3]{" + AUDIT_QUESTION_COUNT + "})$"));
-      if (match) {
-        const sharedAnswers = [...match[1]].map(Number);
-        if (isValidAnswers(sharedAnswers)) {
-          setAnswers(sharedAnswers);
-          setResult(buildResult(sharedAnswers));
-          setNotice("SHARED CASE FILE LOADED. THE DEPARTMENT HAS A COPY.");
-        }
+      const searchParams = new URLSearchParams(window.location.search);
+      const sharedAnswers = decodeCaseCode(searchParams.get("case"));
+      if (sharedAnswers) {
+        setAnswers(sharedAnswers);
+        setResult(buildResult(sharedAnswers));
+        setNotice("SHARED CASE FILE LOADED. THE DEPARTMENT HAS A COPY.");
+      }
+
+      const challengeAnswers = decodeCaseCode(searchParams.get("challenge"));
+      if (challengeAnswers) {
+        const challenger = buildResult(challengeAnswers);
+        setChallengeMessage(challenger.profile.title + " HAS NOMINATED YOU. SUBMIT YOUR OWN CASE TO THE DEPARTMENT.");
       }
     } catch {
       setNotice("THE SHARED CASE FILE COULD NOT BE READ. START A NEW INVESTIGATION.");
@@ -239,7 +256,8 @@ export default function AuditClient() {
       "DEPARTMENTAL FINDING: " + result.finding,
       result.profile.roast,
       "This is a fictional entertainment result. It is not an assessment of investment skill or financial performance.",
-      reportUrl,
+      "PUBLIC CASE FILE: " + reportUrl,
+      "CHALLENGE A FRIEND: " + makeChallengeUrl(result.answers),
     ].join("\n");
 
     try {
@@ -334,9 +352,15 @@ export default function AuditClient() {
       "I have been audited by THE DYOR DEPARTMENT.",
       "Classification: " + result.profile.title + ".",
       "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
-      result.profile.roast,
+      makeXSafeRoast(result.profile.roast),
     ].join(" ");
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(reportUrl);
+    const challengeText = [
+      "THE DYOR DEPARTMENT has issued my case file.",
+      "I got classified as " + result.profile.title + ".",
+      "Your turn. Find out which degen archetype you are.",
+    ].join(" ");
+    const challengeIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(challengeText) + "&url=" + encodeURIComponent(makeChallengeUrl(result.answers));
 
     return (
       <section className="audit-workspace audit-result" aria-live="polite">
@@ -344,6 +368,7 @@ export default function AuditClient() {
           <span>INVESTIGATION COMPLETE</span>
           <span className="status-pill status-pill--red">● ENTERTAINMENT FILE</span>
         </div>
+        {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
         <div className="result-stamp">OFFICIAL<br />FINDING</div>
         <p className="eyebrow">CASE No. {result.caseNumber} / FINAL DETERMINATION</p>
         <h2>{result.profile.title}</h2>
@@ -396,7 +421,8 @@ export default function AuditClient() {
         <div className="result-actions result-actions--expanded">
           <button className="button button--primary" onClick={downloadCard} type="button">DOWNLOAD CASE CARD <span>↓</span></button>
           <button className="button button--outline" onClick={shareReport} type="button">SHARE CASE <span>↗</span></button>
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">POST TO X <span>↗</span></a>
+          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">POST CASE TO X <span>↗</span></a>
+          <a className="button button--challenge" href={challengeIntent} target="_blank" rel="noopener noreferrer">CHALLENGE A DEGEN <span>↗</span></a>
           <button className="button button--quiet" onClick={copyReport} type="button">COPY REPORT + LINK</button>
           <button className="button button--quiet" onClick={saveCase} type="button">SAVE TO THIS DEVICE ↓</button>
           <button className="button button--quiet" onClick={restart} type="button">REOPEN INVESTIGATION ↺</button>
@@ -414,6 +440,7 @@ export default function AuditClient() {
         <span>INVESTIGATION IN PROGRESS</span>
         <span className="status-pill"><i /> YOUR CASE IS OPEN</span>
       </div>
+      {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
       {storageReady && savedCases.length > 0 && (
         <div className="audit-saved-case">
