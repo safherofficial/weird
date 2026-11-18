@@ -23,9 +23,10 @@ const departments = [
   {
     number: "02",
     title: "THE BAGHOLDER SIMULATOR",
-    description: "A risk-free opportunity to make the same mistakes with imaginary money.",
-    status: "UNDER CONSTRUCTION",
-    href: "#departments",
+    description: "Seven rounds. Four questionable decisions. One entirely fictional asset. How heavy can an imaginary bag get?",
+    status: "NOW ACCEPTING BAGHOLDERS",
+    href: "/simulator",
+    featured: true,
   },
   {
     number: "03",
