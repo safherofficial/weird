@@ -19,10 +19,12 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
 - Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
 - Public case pages with dynamic Open Graph / X preview cards (1200×630), exact result reconstruction from share URLs, direct X sharing and challenge-a-friend links.
-- A local archive of up to five saved cases on the visitor's device, with restore and delete controls.
+- A local archive of up to five saved Audit cases on the visitor's device, with restore and delete controls.
+- The Bagholder Simulator: seven fixed fictional market events, four decisions per round, paper-only portfolio accounting and multiple satirical endings.
+- Public simulator case pages with dynamic social previews, share links and challenge-a-friend actions.
 - Responsive layout and reduced-motion support.
 
-Other Departments shown on the homepage are planned features and are not yet available.
+Utility Inspector and Roadmap Generator shown on the homepage are planned features and are not yet available.
 
 ## Requirements
 
