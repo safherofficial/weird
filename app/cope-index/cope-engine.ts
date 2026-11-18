@@ -187,7 +187,12 @@ function makeValue(seed: number, salt: number, min = 18, max = 94) {
 }
 
 export function buildDailyCopeIndex(issueDate: string): DailyCopeIndex {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(issueDate) || !Number.isFinite(Date.parse(issueDate + "T00:00:00Z"))) {
+  const parsedDate = new Date(issueDate + "T00:00:00Z");
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(issueDate) ||
+    !Number.isFinite(parsedDate.getTime()) ||
+    parsedDate.toISOString().slice(0, 10) !== issueDate
+  ) {
     throw new Error("A valid UTC issue date is required.");
   }
   const seed = hashText("DYOR-DEPARTMENT/" + issueDate);
