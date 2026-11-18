@@ -68,6 +68,14 @@ const departments = [
     href: "/club",
     featured: true,
   },
+  {
+    number: "08",
+    title: "THE GLOBAL COPE INDEX",
+    description: "A daily synthetic reading of conviction pressure, narrative fog, Telegram reliance and the power of soon.",
+    status: "DAILY INDEX / SYNTHETIC",
+    href: "/cope-index",
+    featured: true,
+  },
 ];
 
 export default function Home() {
