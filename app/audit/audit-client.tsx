@@ -10,7 +10,7 @@ import {
   type AuditResult,
 } from "./audit-engine";
 
-const STORAGE_KEY = "dyor-department:audit:v2";
+const STORAGE_KEY = "dyor-department:audit-archive:v2";
 
 type SavedCase = {
   version: number;
@@ -115,18 +115,25 @@ export default function AuditClient() {
   const [current, setCurrent] = useState(0);
   const [result, setResult] = useState<AuditResult | null>(null);
   const [notice, setNotice] = useState("");
-  const [savedCase, setSavedCase] = useState<SavedCase | null>(null);
+  const [savedCases, setSavedCases] = useState<SavedCase[]>([]);
   const [storageReady, setStorageReady] = useState(false);
 
   const progress = (answers.length / AUDIT_QUESTION_COUNT) * 100;
 
   useEffect(() => {
     try {
-      const rawSavedCase = window.localStorage.getItem(STORAGE_KEY);
-      if (rawSavedCase) {
-        const parsed: unknown = JSON.parse(rawSavedCase);
-        if (isSavedCase(parsed)) setSavedCase(parsed);
-        else window.localStorage.removeItem(STORAGE_KEY);
+      const rawSavedCases = window.localStorage.getItem(STORAGE_KEY);
+      if (rawSavedCases) {
+        const parsed: unknown = JSON.parse(rawSavedCases);
+        if (Array.isArray(parsed)) {
+          const validCases = parsed.filter(isSavedCase).slice(0, 5);
+          setSavedCases(validCases);
+          if (validCases.length !== parsed.length) {
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(validCases));
+          }
+        } else {
+          window.localStorage.removeItem(STORAGE_KEY);
+        }
       }
     } catch {
       setNotice("LOCAL ARCHIVES UNAVAILABLE. THIS INVESTIGATION CAN STILL PROCEED.");
@@ -177,10 +184,10 @@ export default function AuditClient() {
     }
   }
 
-  function loadSavedCase() {
-    if (!savedCase || !isValidAnswers(savedCase.answers)) return;
-    setAnswers(savedCase.answers);
-    setResult(buildResult(savedCase.answers));
+  function loadSavedCase(record: SavedCase) {
+    if (!isValidAnswers(record.answers)) return;
+    setAnswers(record.answers);
+    setResult(buildResult(record.answers));
     setCurrent(AUDIT_QUESTION_COUNT);
     setNotice("SAVED CASE RESTORED FROM THIS DEVICE.");
   }
@@ -194,19 +201,24 @@ export default function AuditClient() {
     };
 
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
-      setSavedCase(record);
-      setNotice("CASE FILE SAVED LOCALLY ON THIS DEVICE.");
+      const nextArchive = [
+        record,
+        ...savedCases.filter((entry) => entry.answers.join("") !== record.answers.join("")),
+      ].slice(0, 5);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextArchive));
+      setSavedCases(nextArchive);
+      setNotice("CASE FILE SAVED LOCALLY. THE ARCHIVE HOLDS UP TO FIVE CASES.");
     } catch {
       setNotice("LOCAL STORAGE IS UNAVAILABLE. YOUR REPORT IS STILL OPEN.");
     }
   }
 
-  function clearSavedCase() {
+  function clearSavedCase(record: SavedCase) {
     try {
-      window.localStorage.removeItem(STORAGE_KEY);
-      setSavedCase(null);
-      setNotice("LOCAL CASE FILE DELETED FROM THIS DEVICE.");
+      const nextArchive = savedCases.filter((entry) => entry.answers.join("") !== record.answers.join(""));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextArchive));
+      setSavedCases(nextArchive);
+      setNotice("CASE FILE DELETED FROM THIS DEVICE.");
     } catch {
       setNotice("THE DEPARTMENT COULD NOT ACCESS LOCAL STORAGE.");
     }
@@ -403,15 +415,28 @@ export default function AuditClient() {
         <span className="status-pill"><i /> YOUR CASE IS OPEN</span>
       </div>
 
-      {storageReady && savedCase && (
+      {storageReady && savedCases.length > 0 && (
         <div className="audit-saved-case">
-          <div>
-            <span>LOCAL ARCHIVES / 01 FILE FOUND</span>
-            <small>Saved on this device: {new Date(savedCase.savedAt).toLocaleString()}</small>
+          <div className="audit-saved-case__heading">
+            <span>LOCAL ARCHIVES / {savedCases.length} {savedCases.length === 1 ? "FILE" : "FILES"} FOUND</span>
+            <small>STORED ONLY ON THIS DEVICE</small>
           </div>
-          <div className="audit-saved-case__actions">
-            <button type="button" onClick={loadSavedCase}>OPEN SAVED CASE ↗</button>
-            <button type="button" onClick={clearSavedCase} aria-label="Delete saved case from this device">DELETE</button>
+          <div className="audit-archive-list">
+            {savedCases.map((record) => {
+              const archivedResult = buildResult(record.answers);
+              return (
+                <div className="audit-archive-row" key={record.answers.join("")}>
+                  <div>
+                    <strong>CASE No. {archivedResult.caseNumber}</strong>
+                    <small>{new Date(record.savedAt).toLocaleString()}</small>
+                  </div>
+                  <div className="audit-saved-case__actions">
+                    <button type="button" onClick={() => loadSavedCase(record)}>OPEN ↗</button>
+                    <button type="button" onClick={() => clearSavedCase(record)} aria-label={"Delete case " + archivedResult.caseNumber}>DELETE</button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
