@@ -128,7 +128,11 @@ export default function AuditClient() {
         if (isSavedCase(parsed)) setSavedCase(parsed);
         else window.localStorage.removeItem(STORAGE_KEY);
       }
+    } catch {
+      setNotice("LOCAL ARCHIVES UNAVAILABLE. THIS INVESTIGATION CAN STILL PROCEED.");
+    }
 
+    try {
       const sharedCode = new URLSearchParams(window.location.search).get("case");
       const match = sharedCode?.match(new RegExp("^v" + AUDIT_VERSION + "-([0-3]{" + AUDIT_QUESTION_COUNT + "})$"));
       if (match) {
@@ -140,10 +144,10 @@ export default function AuditClient() {
         }
       }
     } catch {
-      setNotice("LOCAL ARCHIVES UNAVAILABLE. THIS INVESTIGATION CAN STILL PROCEED.");
-    } finally {
-      setStorageReady(true);
+      setNotice("THE SHARED CASE FILE COULD NOT BE READ. START A NEW INVESTIGATION.");
     }
+
+    setStorageReady(true);
   }, []);
 
   function choose(answerIndex: number) {
