@@ -63,20 +63,18 @@ export default async function PublicCasePage({ params }: CasePageProps) {
     "THE DYOR DEPARTMENT has reviewed my case.",
     "Classification: " + result.profile.title + ".",
     "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
-    result.profile.roast,
+    result.profile.roast.length > 82 ? result.profile.roast.slice(0, 78) + "…" : result.profile.roast,
     "Your turn. Submit your own audit.",
   ].join(" ");
   const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(
-    process.env.NEXT_PUBLIC_SITE_URL
-      ? new URL(caseUrl, process.env.NEXT_PUBLIC_SITE_URL).toString()
-      : "https://weird-zeta.vercel.app" + caseUrl
+    "https://weird-zeta.vercel.app" + caseUrl
   );
 
   return (
     <main className="audit-page public-case-page" id="main-content">
       <DepartmentHeader activeSection="audit" statusMessage="PUBLIC CASE FILE / VERIFIED FORMAT" ctaHref="/audit" ctaLabel="SUBMIT YOUR OWN CASE" />
 
-      <section className="public-case shell" id="content-start">
+      <section className="public-case shell" id="content-start" tabIndex={-1}>
         <div className="public-case__meta">
           <span>PUBLIC RECORD / CASE No. {result.caseNumber}</span>
           <span>DYOR AUDIT // VERSION 2</span>
