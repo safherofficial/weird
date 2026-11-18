@@ -52,6 +52,14 @@ const departments = [
     href: "/whitepaper-factory",
     featured: true,
   },
+  {
+    number: "06",
+    title: "THE BAGHOLDER MUSEUM",
+    description: "Twelve preserved artifacts from the age of questionable conviction. Please do not touch the liquidity puddle.",
+    status: "COLLECTION OPEN",
+    href: "/museum",
+    featured: true,
+  },
 ];
 
 export default function Home() {
