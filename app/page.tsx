@@ -39,9 +39,10 @@ const departments = [
   {
     number: "04",
     title: "ROADMAP GENERATOR",
-    description: "Every milestone is achievable. Eventually. Probably. Soon.",
-    status: "UNDER CONSTRUCTION",
-    href: "#departments",
+    description: "Six questions. Seven fictional phases. Generate a roadmap with ambitious milestones and deadlines that are always just around the corner.",
+    status: "NOW ACCEPTING MILESTONES",
+    href: "/roadmap-generator",
+    featured: true,
   },
 ];
 
@@ -141,7 +142,7 @@ export default function Home() {
             <SectionLabel>THE OFFICE OF QUESTIONABLE DECISIONS</SectionLabel>
             <h2>OUR DEPARTMENTS.<br /><span>YOUR PROBLEM.</span></h2>
           </div>
-          <p>Sixteen committees. Zero solutions.<br />Currently, we have opened four tabs.</p>
+          <p>Sixteen committees. Zero solutions.<br />Currently, all four departments are accepting cases.</p>
         </div>
         <div className="department-grid">
           {departments.map((item) => {
