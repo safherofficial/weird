@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DepartmentHeader from "../../../../components/department-header";
-import DepartmentFooter from "../../../../components/department-footer";
-import { buildResult, decodeCaseCode, encodeCaseCode } from "../../../audit-engine";
+import DepartmentHeader from "../../../components/department-header";
+import DepartmentFooter from "../../../components/department-footer";
+import { buildResult, decodeCaseCode, encodeCaseCode } from "../../audit-engine";
 
 type CasePageProps = {
   params: Promise<{ code: string }>;
