@@ -33,6 +33,8 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - The Bagholder Museum: twelve fictional curated artifacts across four collections, searchable and filterable gallery, individual exhibit records and dynamic social cards.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and baseline security response headers.
+- THE 99% CLUB: five-question fictional membership application, three satirical indices, six reachable archetypes, membership card export and shareable public member files. The name is not a real 99% market statistic and membership has no benefits.
+- Global Cope Index: synthetic UTC-date-seeded dashboard with five fictional dimensions and an optional personal five-question calibration, shareable personal files and downloadable cards. No visitor poll, market feed or real-world sentiment data is used.
 - Responsive layout and reduced-motion support.
 
 All eight currently listed Department experiences are available. Further Departments remain planned.
