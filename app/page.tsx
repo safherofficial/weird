@@ -31,9 +31,10 @@ const departments = [
   {
     number: "03",
     title: "UTILITY INSPECTOR",
-    description: "Investigating revolutionary solutions in search of an actual problem.",
-    status: "UNDER CONSTRUCTION",
-    href: "#departments",
+    description: "Seven questions. Three departmental scores. Investigating revolutionary solutions in search of an actual problem.",
+    status: "NOW ACCEPTING CLAIMS",
+    href: "/utility-inspector",
+    featured: true,
   },
   {
     number: "04",

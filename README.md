@@ -8,7 +8,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 
 - No token, wallet connection, real-money mechanics or paid financial product.
 - No financial advice, trading signals, investment recommendations or promises of returns.
-- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance.
+- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses.
 - The visitor is part of the joke, never the target.
 - Interactive experiences should produce shareable, recognizable Department case files.
 
@@ -22,9 +22,11 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - A local archive of up to five saved Audit cases on the visitor's device, with restore and delete controls.
 - The Bagholder Simulator: seven fixed fictional market events, four decisions per round, paper-only portfolio accounting and multiple satirical endings.
 - Public simulator case pages with dynamic social previews, share links and challenge-a-friend actions.
+- The Utility Inspector: seven self-reported multiple-choice questions, three fictional scores, ten satirical archetypes and a shareable inspection dossier.
+- Public utility inspection case pages with dynamic social previews and challenge-a-friend links.
 - Responsive layout and reduced-motion support.
 
-Utility Inspector and Roadmap Generator shown on the homepage are planned features and are not yet available.
+Roadmap Generator shown on the homepage is a planned feature and is not yet available.
 
 ## Requirements
 

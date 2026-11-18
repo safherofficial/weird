@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 type DepartmentHeaderProps = {
-  activeSection?: "home" | "audit" | "simulator";
+  activeSection?: "home" | "audit" | "simulator" | "utility";
   statusMessage?: string;
   ctaHref?: string;
   ctaLabel?: string;
@@ -64,6 +64,9 @@ export default function DepartmentHeader({
           <Link href="/simulator" aria-current={activeSection === "simulator" ? "page" : undefined}>
             THE SIMULATOR <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/utility-inspector" aria-current={activeSection === "utility" ? "page" : undefined}>
+            UTILITY <span aria-hidden="true">↗</span>
+          </Link>
           <Link href={departmentsHref}>DEPARTMENTS</Link>
           <Link href={manifestoHref}>MANIFESTO</Link>
         </nav>
@@ -89,7 +92,7 @@ export default function DepartmentHeader({
         <nav id={menuId} className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>
           <div className="mobile-nav__heading">
             <span>DEPARTMENT DIRECTORY</span>
-            <span>4 DESTINATIONS / 1 PURPOSE</span>
+            <span>5 DESTINATIONS / 1 PURPOSE</span>
           </div>
           <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined} onClick={closeMenu}>
             <span>01</span> THE AUDIT <b aria-hidden="true">↗</b>
@@ -97,11 +100,14 @@ export default function DepartmentHeader({
           <Link href="/simulator" aria-current={activeSection === "simulator" ? "page" : undefined} onClick={closeMenu}>
             <span>02</span> THE SIMULATOR <b aria-hidden="true">↗</b>
           </Link>
+          <Link href="/utility-inspector" aria-current={activeSection === "utility" ? "page" : undefined} onClick={closeMenu}>
+            <span>03</span> UTILITY INSPECTOR <b aria-hidden="true">↗</b>
+          </Link>
           <Link href={departmentsHref} onClick={closeMenu}>
-            <span>03</span> DEPARTMENTS <b aria-hidden="true">↗</b>
+            <span>04</span> DEPARTMENTS <b aria-hidden="true">↗</b>
           </Link>
           <Link href={manifestoHref} onClick={closeMenu}>
-            <span>04</span> MANIFESTO <b aria-hidden="true">↗</b>
+            <span>05</span> MANIFESTO <b aria-hidden="true">↗</b>
           </Link>
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
