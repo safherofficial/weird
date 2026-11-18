@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { buildRoadmapResult, decodeRoadmapCode } from "../../../roadmap-engine";
+import { buildRoadmapResult, decodeRoadmapCode } from "../../roadmap-engine";
 
 export const runtime = "edge";
 export const alt = "A fictional DYOR Department Roadmap Generator case card.";
