@@ -50,7 +50,7 @@ export default function Home() {
 
 
 
-      <section className="hero shell" id="content-start">
+      <section className="hero shell" id="content-start" tabIndex={-1}>
         <div className="hero__meta">
           <SectionLabel>OFFICIAL DEPARTMENT PORTAL</SectionLabel>
           <span className="micro-code">REF. DYOR-001 / EST. UNFORTUNATELY</span>
