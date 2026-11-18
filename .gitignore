@@ -3,8 +3,14 @@ node_modules
 out
 build
 dist
+coverage
+test-results
+playwright-report
 .DS_Store
 *.tsbuildinfo
+npm-debug.log*
+.eslintcache
+.turbo
 .env
 .env.*
 !.env.example
