@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { buildUtilityResult, decodeUtilityCode } from "../../../utility-engine";
+import { buildUtilityResult, decodeUtilityCode } from "../../utility-engine";
 
 export const runtime = "edge";
 export const alt = "A fictional DYOR Department Utility Inspector result card.";
