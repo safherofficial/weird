@@ -1,4 +1,7 @@
 import Link from "next/link";
+import DepartmentHeader from "./components/department-header";
+import DepartmentFooter from "./components/department-footer";
+import SectionLabel from "./components/section-label";
 
 const conditions = [
   { label: "GLOBAL COPE INDEX", value: "ELEVATED", tone: "green" },
@@ -40,32 +43,14 @@ const departments = [
   },
 ];
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <div className="section-label"><span className="section-label__dot" />{children}</div>;
-}
-
 export default function Home() {
   return (
-    <main>
-      <div className="topline">
-        <span>INDEPENDENT DEPARTMENT OF FINANCIAL REGRET</span>
-        <span className="topline__right"><i /> ALL SYSTEMS NOMINALLY USELESS</span>
-      </div>
+    <main id="main-content">
+      <DepartmentHeader activeSection="home" statusMessage="ALL SYSTEMS NOMINALLY USELESS" />
 
-      <header className="site-header shell">
-        <Link className="brand" href="/" aria-label="The DYOR Department home">
-          <span className="brand__mark">D.</span>
-          <span className="brand__name">THE DYOR<br />DEPARTMENT<span className="brand__reg">®</span></span>
-        </Link>
-        <nav className="main-nav" aria-label="Main navigation">
-          <Link href="/audit">THE AUDIT <span>↗</span></Link>
-          <a href="#departments">DEPARTMENTS</a>
-          <a href="#manifesto">MANIFESTO</a>
-        </nav>
-        <Link className="header-cta" href="/audit">SUBMIT YOUR CASE <span>↗</span></Link>
-      </header>
 
-      <section className="hero shell">
+
+      <section className="hero shell" id="content-start">
         <div className="hero__meta">
           <SectionLabel>OFFICIAL DEPARTMENT PORTAL</SectionLabel>
           <span className="micro-code">REF. DYOR-001 / EST. UNFORTUNATELY</span>
@@ -157,15 +142,39 @@ export default function Home() {
           <p>Sixteen committees. Zero solutions.<br />Currently, we have opened four tabs.</p>
         </div>
         <div className="department-grid">
-          {departments.map((item) => (
-            <Link className={"department-card" + (item.featured ? " department-card--featured" : "")} href={item.href} key={item.number}>
-              <div className="department-card__top"><span>DEPT. {item.number}</span><span>{item.featured ? "● AVAILABLE" : "○ PENDING"}</span></div>
-              <div className="department-card__icon" aria-hidden="true">{item.number === "01" ? "⌁" : item.number === "02" ? "↘" : item.number === "03" ? "⌕" : "↗"}</div>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <div className="department-card__bottom"><span>{item.status}</span><b>↗</b></div>
-            </Link>
-          ))}
+          {departments.map((item) => {
+            const card = (
+              <>
+                <div className="department-card__top">
+                  <span>DEPT. {item.number}</span>
+                  <span>{item.featured ? "● AVAILABLE" : "○ PENDING"}</span>
+                </div>
+                <div className="department-card__icon" aria-hidden="true">
+                  {item.number === "01" ? "⌁" : item.number === "02" ? "↘" : item.number === "03" ? "⌕" : "↗"}
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <div className="department-card__bottom">
+                  <span>{item.status}</span>
+                  <b aria-hidden="true">{item.featured ? "↗" : "—"}</b>
+                </div>
+              </>
+            );
+
+            return item.featured ? (
+              <Link className="department-card department-card--featured" href={item.href} key={item.number}>
+                {card}
+              </Link>
+            ) : (
+              <article
+                className="department-card department-card--pending"
+                key={item.number}
+                aria-label={item.title + ", coming soon"}
+              >
+                {card}
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -187,14 +196,7 @@ export default function Home() {
         <Link className="button button--primary" href="/audit">GET YOUR OFFICIAL DYOR REPORT <span>↗</span></Link>
       </section>
 
-      <footer className="site-footer shell">
-        <Link className="brand brand--footer" href="/">
-          <span className="brand__mark">D.</span>
-          <span className="brand__name">THE DYOR<br />DEPARTMENT<span className="brand__reg">®</span></span>
-        </Link>
-        <p>AN INSTITUTION BUILT BY PEOPLE WHO DID THEIR RESEARCH<br />AND STILL GOT REKT.</p>
-        <div className="site-footer__right"><span>NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.</span><span>© THE DEPARTMENT — FOR ENTERTAINMENT ONLY</span></div>
-      </footer>
+      <DepartmentFooter message={["AN INSTITUTION BUILT BY PEOPLE WHO DID THEIR RESEARCH", "AND STILL GOT REKT."]} />
     </main>
   );
 }
