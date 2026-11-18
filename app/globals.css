@@ -7476,3 +7476,15 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* U12 — keep the expanded Department directory usable on compact desktop widths */
+@media (max-width: 960px) {
+  .main-nav {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+}
