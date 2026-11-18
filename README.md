@@ -7,6 +7,8 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 ## Product boundaries
 
 - No token, wallet connection, real-money mechanics or paid financial product.
+- The app does not intentionally set analytics or advertising cookies or include tracking pixels. The optional DYOR Audit archive is stored in local browser storage only.
+- Shareable result URLs encode selected answers; Roadmap Generator and Whitepaper Factory URLs also include the sanitized project label. Anyone with a link can view that result.
 - No financial advice, trading signals, investment recommendations or promises of returns.
 - Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure. Bagholder Museum exhibits are invented satirical artifacts and do not refer to actual people, companies, tokens or communities.
 - The visitor is part of the joke, never the target.
@@ -29,6 +31,8 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - The Whitepaper Factory: seven self-reported choices, nine generated document sections, three fictional scores, ten satirical archetypes and a fictional token allocation model.
 - Public whitepaper case pages with dynamic social previews, challenge links and HTML / Markdown export. HTML documents include print styling for browser-based Save as PDF.
 - The Bagholder Museum: twelve fictional curated artifacts across four collections, searchable and filterable gallery, individual exhibit records and dynamic social cards.
+- Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
+- Shared legal links in the site footer and baseline security response headers.
 - Responsive layout and reduced-motion support.
 
 All six currently listed Department experiences are available. Further Departments remain planned.
