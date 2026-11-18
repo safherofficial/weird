@@ -59,10 +59,10 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
   const challengeUrl = "/utility-inspector?challenge=" + encodeURIComponent(canonicalCode);
   const xText = [
     "THE DYOR DEPARTMENT inspected my utility claims.",
-    "Classification: " + result.profile.title + ".",
-    "Utility evidence: " + result.evidence + "/100. Narrative fog: " + result.fog + "/100. Token justification: " + result.tokenFit + "/100.",
-    result.profile.roast.length > 78 ? result.profile.roast.slice(0, 74) + "…" : result.profile.roast,
-    "Your turn. Show the Department your utility.",
+    "Verdict: " + result.profile.title + ".",
+    "Utility: " + result.evidence + "/100. Fog: " + result.fog + "/100. Token fit: " + result.tokenFit + "/100.",
+    result.profile.roast.length > 60 ? result.profile.roast.slice(0, 56) + "…" : result.profile.roast,
+    "Inspect yours.",
   ].join(" ");
   const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(
     "https://weird-zeta.vercel.app" + caseUrl
