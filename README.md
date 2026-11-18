@@ -8,7 +8,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 
 - No token, wallet connection, real-money mechanics or paid financial product.
 - No financial advice, trading signals, investment recommendations or promises of returns.
-- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses.
+- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast.
 - The visitor is part of the joke, never the target.
 - Interactive experiences should produce shareable, recognizable Department case files.
 
@@ -24,9 +24,11 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - Public simulator case pages with dynamic social previews, share links and challenge-a-friend actions.
 - The Utility Inspector: seven self-reported multiple-choice questions, three fictional scores, ten satirical archetypes and a shareable inspection dossier.
 - Public utility inspection case pages with dynamic social previews and challenge-a-friend links.
+- The Roadmap Generator: six self-reported multiple-choice questions, seven fictional milestones, three satirical scores and ten roadmap archetypes.
+- Public roadmap case pages with dynamic social previews, copy/share tools and challenge-a-friend links.
 - Responsive layout and reduced-motion support.
 
-Roadmap Generator shown on the homepage is a planned feature and is not yet available.
+All four currently listed Department experiences are available. Further Departments remain planned.
 
 ## Requirements
 
