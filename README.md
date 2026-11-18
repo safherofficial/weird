@@ -8,15 +8,17 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 
 - No token, wallet connection, real-money mechanics or paid financial product.
 - No financial advice, trading signals, investment recommendations or promises of returns.
-- Scores, classifications, dashboard labels and simulator events are fictional entertainment.
+- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance.
 - The visitor is part of the joke, never the target.
 - Interactive experiences should produce shareable, recognizable Department case files.
 
 ## Current release
 
 - Institutional-style landing page.
-- Interactive DYOR Audit with six questions and deterministic satirical classifications.
-- Personalized report with copy, native share and downloadable PNG certificate.
+- DYOR Audit 2.0 with ten questions, 17 satirical archetypes and deterministic multi-signal scoring.
+- Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
+- Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
+- Shareable case URLs that reproduce the exact result, direct X sharing, copyable reports and a local archive of up to five saved cases on the visitor's device, with restore and delete controls.
 - Responsive layout and reduced-motion support.
 
 Other Departments shown on the homepage are planned features and are not yet available.

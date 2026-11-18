@@ -4,8 +4,8 @@ import DepartmentFooter from "../components/department-footer";
 import AuditClient from "./audit-client";
 
 export const metadata: Metadata = {
-  title: "The DYOR Audit",
-  description: "Submit your research process for an entirely unnecessary investigation.",
+  title: "The DYOR Audit 2.0",
+  description: "Ten-question satirical DYOR Audit with fictional scores, 17 degen archetypes and shareable Department case files.",
 };
 
 export default function AuditPage() {
@@ -15,11 +15,11 @@ export default function AuditPage() {
 
       <div className="audit-shell shell" id="content-start" tabIndex={-1}>
         <div className="audit-intro">
-          <div className="audit-intro__meta"><span>FORM DYOR-001</span><span>CONFIDENTIAL(ISH)</span></div>
+          <div className="audit-intro__meta"><span>FORM DYOR-002</span><span>CONFIDENTIAL(ISH)</span></div>
           <p className="eyebrow">OFFICE OF QUESTIONABLE DUE DILIGENCE</p>
-          <h1>THE DYOR<br /><span>AUDIT.</span></h1>
-          <p className="audit-intro__lead">Six questions. One deeply unnecessary investigation. Find out what kind of financial decision-maker you have become.</p>
-          <div className="audit-warning"><span>!</span><p>THIS IS A SATIRICAL PERSONALITY QUIZ. It does not assess actual investment skill, risk tolerance or financial decisions. No real assets or wallets involved.</p></div>
+          <h1>THE DYOR<br /><span>AUDIT 2.0.</span></h1>
+          <p className="audit-intro__lead">Ten questions. Three fictional dimensions. One deeply unnecessary investigation. Receive your personal Department case file and share it with the group chat.</p>
+          <div className="audit-warning"><span>!</span><p>THIS IS A SATIRICAL PERSONALITY QUIZ. Scores and classifications are fictional entertainment, not an assessment of investment skill, risk tolerance or financial decisions. No wallets or assets involved.</p></div>
         </div>
         <AuditClient />
       </div>
