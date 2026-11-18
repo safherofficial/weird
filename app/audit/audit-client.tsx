@@ -161,7 +161,7 @@ function makeCardSvg(result: ReturnType<typeof buildResult>) {
   return '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">' +
     '<rect width="1200" height="675" fill="#090b09"/><rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 112H1172" stroke="#384137"/><path d="M28 560H1172" stroke="#384137"/>' +
-    '<text x="64" y="78" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT®</text>' +
+    '<text x="64" y="78" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
     '<text x="1136" y="78" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="16">OFFICIAL CASE FILE</text>' +
     '<text x="64" y="158" fill="#8d968a" font-family="monospace" font-size="17">CASE No. ' + result.caseNumber + ' / PERSONAL AUDIT REPORT</text>' +
     '<text x="64" y="238" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="54" font-weight="900">' + safe(result.profile.title) + '</text>' +
@@ -206,7 +206,7 @@ export default function AuditClient() {
   async function copyReport() {
     if (!result) return;
     const text = [
-      "THE DYOR DEPARTMENT® — OFFICIAL CASE FILE",
+      "THE DYOR DEPARTMENT — OFFICIAL CASE FILE",
       "CASE No. " + result.caseNumber,
       result.profile.title,
       result.profile.subtitle,
