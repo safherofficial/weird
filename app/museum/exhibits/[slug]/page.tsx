@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DepartmentHeader from "../../../../components/department-header";
-import DepartmentFooter from "../../../../components/department-footer";
+import DepartmentHeader from "../../../components/department-header";
+import DepartmentFooter from "../../../components/department-footer";
 import { exhibits, getExhibit } from "../../museum-data";
 
 type ExhibitPageProps = {
