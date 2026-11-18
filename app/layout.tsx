@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   },
   description:
     "An independent institution dedicated to questionable conviction, over-researched entries and the fine art of holding the bag. No token. No utility. Just collective suffering.",
-  metadataBase: new URL("https://the-dyor-department.vercel.app"),
+  icons: {
+    icon: "/icon.svg",
+  },
   openGraph: {
     title: "THE DYOR DEPARTMENT",
     description: "You did your own research. The market did its own thing.",
