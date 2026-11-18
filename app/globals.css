@@ -913,37 +913,73 @@ body {
   box-shadow: 0 7px 24px rgb(182 255 101 / 9%);
 }
 
+.audit-result h2 {
+  max-width: min(540px, calc(100% - 125px));
+}
+
 .audit-saved-case {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 15px;
-  align-items: center;
+  gap: 10px;
   margin-top: 19px;
   padding: 13px 14px;
   border: 1px solid #52633f;
   background: linear-gradient(100deg, #182317, #101510);
 }
 
-.audit-saved-case > div:first-child {
-  display: grid;
-  gap: 6px;
+.audit-saved-case__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
-.audit-saved-case > div:first-child > span {
+.audit-saved-case__heading > span {
   color: var(--green);
   font: 8px var(--mono);
   letter-spacing: .07em;
 }
 
-.audit-saved-case small {
+.audit-saved-case__heading > small {
+  color: #687465;
+  font: 7px var(--mono);
+  text-align: right;
+}
+
+.audit-archive-list {
+  display: grid;
+  gap: 7px;
+}
+
+.audit-archive-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.audit-archive-row > div:first-child {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.audit-archive-row strong {
+  color: #dce5d5;
+  font: 9px var(--mono);
+}
+
+.audit-archive-row small {
   color: #7f8a78;
-  font: 8px var(--mono);
+  font: 7px var(--mono);
 }
 
 .audit-saved-case__actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .audit-saved-case__actions button {
@@ -988,12 +1024,10 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .audit-saved-case {
-    grid-template-columns: 1fr;
-  }
-
-  .audit-saved-case__actions {
-    justify-content: flex-start;
+  .audit-saved-case__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
   }
 }
 
@@ -1039,13 +1073,23 @@ body {
     padding: 12px;
   }
 
+  .audit-archive-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .audit-saved-case__actions {
     display: grid;
     grid-template-columns: 1fr auto;
+    width: 100%;
   }
 
   .audit-saved-case__actions button:first-child {
     min-height: 39px;
+  }
+
+  .audit-result h2 {
+    max-width: calc(100% - 105px);
   }
 }
 
@@ -1060,5 +1104,9 @@ body {
 
   .result-finding strong {
     font-size: 11px;
+  }
+
+  .audit-result h2 {
+    max-width: 100%;
   }
 }
