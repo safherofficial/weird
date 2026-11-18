@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import AuditClient from "./audit-client";
@@ -14,7 +13,7 @@ export default function AuditPage() {
     <main className="audit-page" id="main-content">
       <DepartmentHeader activeSection="audit" statusMessage="CASE INTAKE OPEN" ctaHref="/" ctaLabel="BACK TO HQ" />
 
-      <div className="audit-shell shell" id="content-start">
+      <div className="audit-shell shell" id="content-start" tabIndex={-1}>
         <div className="audit-intro">
           <div className="audit-intro__meta"><span>FORM DYOR-001</span><span>CONFIDENTIAL(ISH)</span></div>
           <p className="eyebrow">OFFICE OF QUESTIONABLE DUE DILIGENCE</p>
