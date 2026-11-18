@@ -240,10 +240,10 @@ const governanceModels = [
   "ADVISORY COUNCIL / IDENTITIES IN APPENDIX",
 ];
 const adoptionModels = [
-  "USER TASKS / MEASURABLE OUTCOMES / ITERATION",
-  "VALIDATOR & OPERATOR EXPANSION",
-  "PARTNERSHIPS / ECOSYSTEM INTEGRATION / MASS ADOPTION",
-  "INTERPLANETARY SCALE / MARKET CATEGORY TBD",
+  "AI DEVELOPERS / COMPUTE OPERATORS / MEASURABLE TASKS",
+  "NODE OPERATORS / PHYSICAL SERVICE USERS",
+  "ASSET ISSUERS / CUSTODY & SETTLEMENT USERS",
+  "PLAYERS / GAME DEVELOPERS / DIGITAL ITEM USERS",
 ];
 const riskPostures = [
   "THREAT MODEL / AUDITS / INCIDENT RESPONSE",
@@ -332,7 +332,7 @@ function findingFor(progress: WhitepaperProgress) {
   return "WHITEPAPER CLAIMS ACCEPTED / INDEPENDENT VALIDATION NOT INCLUDED.";
 }
 
-function buildAllocations(tokenAnswer: number[]): TokenAllocation[] {
+function buildAllocations(tokenAnswer: number): TokenAllocation[] {
   const models: TokenAllocation[][] = [
     [
       { label: "NETWORK OPERATIONS", percentage: 25, explanation: "Fictional allocation for operating the imagined network." },
@@ -380,7 +380,8 @@ function buildSections(
   adoptionModel: string,
   riskPosture: string,
   progress: WhitepaperProgress,
-  profile: WhitepaperArchetype
+  profile: WhitepaperArchetype,
+  secondaryProfile: WhitepaperArchetype
 ): WhitepaperSection[] {
   return [
     {
@@ -471,7 +472,7 @@ function buildSections(
         projectLabel + " has now received a complete fictional whitepaper-shaped document. The Department records the primary finding as: " + profile.title + ".",
         "The whitepaper is hereby marked COMPLETE FOR ENTERTAINMENT PURPOSES ONLY. Actual implementation, users, security, governance and delivery remain outside this generated document.",
       ],
-      bullets: ["Primary archetype: " + profile.title, "Secondary archetype: CLASSIFICATION PENDING IN THE APPENDIX", "Final disposition: DOCUMENT FILED / PRODUCT NOT VERIFIED"],
+      bullets: ["Primary archetype: " + profile.title, "Secondary archetype: " + secondaryProfile.title, "Final disposition: DOCUMENT FILED / PRODUCT NOT VERIFIED"],
     },
   ];
 }
@@ -497,7 +498,6 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
   );
   const primaryTag = ranking[0]?.[0] ?? "abstract-maximalist";
   const secondaryTag = ranking[1]?.[0] ?? ranking[0]?.[0] ?? "abstract-maximalist";
-  const selected = answers.map((answer, index) => questions[index].options[answer]);
   const seed = answers.reduce((sum, answer, index) => ((sum * 41) + (answer + 1) * (index + 23)) % 900000, 808080);
   const caseNumber = String(seed + 100000).slice(-6);
   const sector = sectors[answers[0]];
@@ -505,7 +505,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
   const consensus = consensusModels[answers[3]];
   const tokenModel = tokenModels[answers[4]];
   const governanceModel = governanceModels[answers[5]];
-  const adoptionModel = adoptionModels[answers[1]];
+  const adoptionModel = adoptionModels[answers[0]];
   const riskPosture = riskPostures[answers[6]];
   const profile = classifications[primaryTag];
   const secondaryProfile = classifications[secondaryTag];
@@ -517,7 +517,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
         ? "PRODUCT NOT LOCATED. CHECK THE APPENDIX."
         : "DOCUMENT GENERATED / VALIDATION NOT INCLUDED.";
   const allocations = buildAllocations(answers[4]);
-  const sections = buildSections(projectLabel, sector, architecture, consensus, tokenModel, governanceModel, adoptionModel, riskPosture, progress, profile);
+  const sections = buildSections(projectLabel, sector, architecture, consensus, tokenModel, governanceModel, adoptionModel, riskPosture, progress, profile, secondaryProfile);
 
   return {
     ...progress,
