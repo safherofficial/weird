@@ -8,7 +8,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 
 - No token, wallet connection, real-money mechanics or paid financial product.
 - No financial advice, trading signals, investment recommendations or promises of returns.
-- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure.
+- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure. Bagholder Museum exhibits are invented satirical artifacts and do not refer to actual people, companies, tokens or communities.
 - The visitor is part of the joke, never the target.
 - Interactive experiences should produce shareable, recognizable Department case files.
 
@@ -28,9 +28,10 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - Public roadmap case pages with dynamic social previews, copy/share tools and challenge-a-friend links.
 - The Whitepaper Factory: seven self-reported choices, nine generated document sections, three fictional scores, ten satirical archetypes and a fictional token allocation model.
 - Public whitepaper case pages with dynamic social previews, challenge links and HTML / Markdown export. HTML documents include print styling for browser-based Save as PDF.
+- The Bagholder Museum: twelve fictional curated artifacts across four collections, searchable and filterable gallery, individual exhibit records and dynamic social cards.
 - Responsive layout and reduced-motion support.
 
-All five currently listed Department experiences are available. Further Departments remain planned.
+All six currently listed Department experiences are available. Further Departments remain planned.
 
 ## Requirements
 
