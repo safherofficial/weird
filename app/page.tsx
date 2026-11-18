@@ -44,6 +44,14 @@ const departments = [
     href: "/roadmap-generator",
     featured: true,
   },
+  {
+    number: "05",
+    title: "WHITEPAPER FACTORY",
+    description: "Seven questions. Nine sections. Generate a technically impressive document for a project that may or may not exist.",
+    status: "NOW ACCEPTING ABSTRACTS",
+    href: "/whitepaper-factory",
+    featured: true,
+  },
 ];
 
 export default function Home() {
