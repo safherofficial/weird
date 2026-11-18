@@ -97,6 +97,9 @@ export default function DepartmentHeader({
           <Link href={manifestoHref} onClick={closeMenu}>
             <span>03</span> MANIFESTO <b aria-hidden="true">↗</b>
           </Link>
+          <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
+            {ctaLabel} <span aria-hidden="true">↗</span>
+          </Link>
           <div className="mobile-nav__foot">NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.</div>
         </nav>
       </header>
