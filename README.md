@@ -15,8 +15,10 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 ## Current release
 
 - Institutional-style landing page.
-- Interactive DYOR Audit with six questions and deterministic satirical classifications.
-- Personalized report with copy, native share and downloadable PNG certificate.
+- DYOR Audit 2.0 with ten questions, 17 satirical archetypes and deterministic multi-signal scoring.
+- Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
+- Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
+- Shareable case URLs that reproduce the exact result, direct X sharing, copyable reports and an optional locally saved case on the visitor's device.
 - Responsive layout and reduced-motion support.
 
 Other Departments shown on the homepage are planned features and are not yet available.
