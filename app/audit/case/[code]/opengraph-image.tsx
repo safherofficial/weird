@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { buildResult, decodeCaseCode } from "../../../audit-engine";
+import { buildResult, decodeCaseCode } from "../../audit-engine";
 
 export const runtime = "edge";
 export const alt = "A fictional DYOR Department personal audit case file.";
