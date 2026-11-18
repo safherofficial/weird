@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getExhibit } from "../../../museum-data";
+import { getExhibit } from "../../museum-data";
 
 export const runtime = "edge";
 export const alt = "A fictional artifact from THE BAGHOLDER MUSEUM.";
