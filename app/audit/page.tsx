@@ -6,6 +6,17 @@ import AuditClient from "./audit-client";
 export const metadata: Metadata = {
   title: "The DYOR Audit 2.0",
   description: "Ten-question satirical DYOR Audit with fictional scores, 17 degen archetypes and shareable Department case files.",
+  openGraph: {
+    title: "THE DYOR AUDIT 2.0",
+    description: "Ten questions. Seventeen fictional archetypes. Three unnecessary scores. Get your Department case file.",
+    images: ["/audit/opengraph-image"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "THE DYOR AUDIT 2.0",
+    description: "Ten questions. Seventeen fictional archetypes. Three unnecessary scores.",
+    images: ["/audit/opengraph-image"],
+  },
 };
 
 export default function AuditPage() {
