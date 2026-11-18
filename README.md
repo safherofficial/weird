@@ -10,7 +10,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - The app does not intentionally set analytics or advertising cookies or include tracking pixels. The optional DYOR Audit archive is stored in local browser storage only.
 - Shareable result URLs encode selected answers; Roadmap Generator and Whitepaper Factory URLs also include the sanitized project label. Anyone with a link can view that result.
 - No financial advice, trading signals, investment recommendations or promises of returns.
-- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure. Bagholder Museum exhibits are invented satirical artifacts and do not refer to actual people, companies, tokens or communities.
+- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure. Bagholder Museum exhibits are invented satirical artifacts and do not refer to actual people, companies, tokens or communities. THE 99% CLUB is a fictional membership joke, not a statistic about real investors or market participants.
 - The visitor is part of the joke, never the target.
 - Interactive experiences should produce shareable, recognizable Department case files.
 
@@ -35,7 +35,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - Shared legal links in the site footer and baseline security response headers.
 - Responsive layout and reduced-motion support.
 
-All six currently listed Department experiences are available. Further Departments remain planned.
+All seven currently listed Department experiences are available. Further Departments remain planned.
 
 ## Requirements
 
