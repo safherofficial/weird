@@ -4,8 +4,8 @@ import DepartmentFooter from "../components/department-footer";
 import AuditClient from "./audit-client";
 
 export const metadata: Metadata = {
-  title: "The DYOR Audit",
-  description: "Submit your research process for an entirely unnecessary investigation.",
+  title: "The DYOR Audit 2.0",
+  description: "Ten-question satirical DYOR Audit with fictional scores, 17 degen archetypes and shareable Department case files.",
 };
 
 export default function AuditPage() {
