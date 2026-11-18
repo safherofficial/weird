@@ -4,12 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   buildUtilityResult,
-  classifications,
   decodeUtilityCode,
   encodeUtilityCode,
   inspectProgress,
   questions,
-  type UtilityArchetypeId,
   type UtilityResult,
 } from "./utility-engine";
 
@@ -102,7 +100,7 @@ export default function UtilityInspectorClient() {
     }
   }, []);
 
-  const progress = inspectProgress(answers);
+  const progress = inspectProgress(answers.slice(0, current));
   const question = questions[current];
 
   function startInspection() {
@@ -371,7 +369,7 @@ export default function UtilityInspectorClient() {
     );
   }
 
-  const completed = answers.length;
+  const completed = current;
   const currentOption = answers[current];
 
   return (
