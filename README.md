@@ -18,7 +18,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - DYOR Audit 2.0 with ten questions, 17 satirical archetypes and deterministic multi-signal scoring.
 - Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
 - Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
-- Shareable case URLs that reproduce the exact result, direct X sharing, copyable reports and a local archive of up to five saved cases on the visitor's device, with restore and delete controls.
+- Public case pages with dynamic Open Graph / X preview cards, exact result reconstruction from share URLs, direct X sharing and challenge-a-friend links.\n- A local archive of up to five saved cases on the visitor's device, with restore and delete controls.
 - Responsive layout and reduced-motion support.
 
 Other Departments shown on the homepage are planned features and are not yet available.
