@@ -60,6 +60,14 @@ const departments = [
     href: "/museum",
     featured: true,
   },
+  {
+    number: "07",
+    title: "THE 99% CLUB",
+    description: "Five questions. Three fictional indices. A membership card with absolutely no practical value.",
+    status: "APPLICATIONS OPEN",
+    href: "/club",
+    featured: true,
+  },
 ];
 
 export default function Home() {
