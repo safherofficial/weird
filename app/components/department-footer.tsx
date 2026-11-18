@@ -13,6 +13,10 @@ export default function DepartmentFooter({ message }: DepartmentFooterProps) {
       </Link>
       <p>{message.map((line) => <span key={line}>{line}</span>)}</p>
       <div className="site-footer__right">
+        <nav className="site-footer__links" aria-label="Legal and privacy">
+          <Link href="/privacy">PRIVACY</Link>
+          <Link href="/terms">TERMS</Link>
+        </nav>
         <span>NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.</span>
         <span>© THE DEPARTMENT — FOR ENTERTAINMENT ONLY</span>
       </div>
