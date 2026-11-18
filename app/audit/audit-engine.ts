@@ -25,6 +25,24 @@ export function isValidAnswers(value: unknown): value is number[] {
   );
 }
 
+export function encodeCaseCode(answers: number[]): string {
+  if (!isValidAnswers(answers)) {
+    throw new Error("A complete, valid set of audit answers is required.");
+  }
+
+  return "v" + AUDIT_VERSION + "-" + answers.join("");
+}
+
+export function decodeCaseCode(value: unknown): number[] | null {
+  if (typeof value !== "string") return null;
+
+  const match = value.match(new RegExp("^v" + AUDIT_VERSION + "-([0-3]{" + AUDIT_QUESTION_COUNT + "})$"));
+  if (!match) return null;
+
+  const answers = [...match[1]].map(Number);
+  return isValidAnswers(answers) ? answers : null;
+}
+
 function getFinding(research: number, cope: number, crowd: number) {
   if (cope >= 82) return "SEVERE CONVICTION DISTORTION";
   if (crowd >= 70) return "COMMUNITY-SOURCED CONVICTION";
