@@ -116,6 +116,13 @@ function makeChallengeUrl(answers: number[]) {
   return window.location.origin + "/audit?challenge=" + encodeURIComponent(encodeCaseCode(answers));
 }
 
+function makeXSafeRoast(value: string) {
+  if (value.length <= 82) return value;
+  const clipped = value.slice(0, 79);
+  const boundary = clipped.lastIndexOf(" ");
+  return clipped.slice(0, boundary > 48 ? boundary : clipped.length) + "…";
+}
+
 export default function AuditClient() {
   const [answers, setAnswers] = useState<number[]>([]);
   const [current, setCurrent] = useState(0);
@@ -345,7 +352,7 @@ export default function AuditClient() {
       "I have been audited by THE DYOR DEPARTMENT.",
       "Classification: " + result.profile.title + ".",
       "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
-      result.profile.roast,
+      makeXSafeRoast(result.profile.roast),
     ].join(" ");
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(reportUrl);
     const challengeText = [
