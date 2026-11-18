@@ -31,6 +31,8 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - The Whitepaper Factory: seven self-reported choices, nine generated document sections, three fictional scores, ten satirical archetypes and a fictional token allocation model.
 - Public whitepaper case pages with dynamic social previews, challenge links and HTML / Markdown export. HTML documents include print styling for browser-based Save as PDF.
 - The Bagholder Museum: twelve fictional curated artifacts across four collections, searchable and filterable gallery, individual exhibit records and dynamic social cards.
+- THE 99% CLUB: six satirical member archetypes, a fictional application flow, shareable public member files and downloadable membership cards.
+- THE GLOBAL COPE INDEX: a synthetic daily dashboard with five date-seeded dimensions and an optional five-question personal calibration. No real visitor, market or community data is collected.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and baseline security response headers.
 - THE 99% CLUB: five-question fictional membership application, three satirical indices, six reachable archetypes, membership card export and shareable public member files. The name is not a real 99% market statistic and membership has no benefits.
