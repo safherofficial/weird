@@ -57,7 +57,7 @@ export const questions: ClubQuestion[] = [
       { label: "We have been through things. I am not leaving now.", conviction: 5, cope: 4, chatDependency: 1, tag: "conviction-custodian" },
       { label: "I have introduced the bag to several other bags.", conviction: 5, cope: 5, chatDependency: 2, tag: "average-down-citizen" },
       { label: "I am waiting for the next important Telegram update.", conviction: 3, cope: 4, chatDependency: 5, tag: "telegram-veteran" },
-      { label: "We mutually agreed to see other charts.", conviction: 1, cope: 1, chatDependency: 0, tag: "paper-hands-survivor" },
+      { label: "I saw the liquidity leave. I am still completing the witness statement.", conviction: 1, cope: 2, chatDependency: 1, tag: "exit-liquidity-witness" },
     ],
   },
   {
