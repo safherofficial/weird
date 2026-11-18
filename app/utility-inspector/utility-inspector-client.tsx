@@ -34,7 +34,7 @@ function escapeXml(value: string) {
   });
 }
 
-function safeXCopy(value: string, limit = 84) {
+function safeXCopy(value: string, limit = 60) {
   if (value.length <= limit) return value;
   const clipped = value.slice(0, limit - 3);
   const boundary = clipped.lastIndexOf(" ");
@@ -242,9 +242,9 @@ export default function UtilityInspectorClient() {
     const xText = [
       "THE DYOR DEPARTMENT inspected my utility claims.",
       "Verdict: " + result.profile.title + ".",
-      "Utility evidence: " + result.evidence + "/100. Narrative fog: " + result.fog + "/100. Token justification: " + result.tokenFit + "/100.",
+      "Utility: " + result.evidence + "/100. Fog: " + result.fog + "/100. Token fit: " + result.tokenFit + "/100.",
       safeXCopy(result.profile.roast),
-      "Your turn. Submit your utility claims.",
+      "Inspect yours.",
     ].join(" ");
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(caseUrl);
     const challengeText = "THE DYOR DEPARTMENT classified my project utility claims as " + result.profile.title + ". Can your project survive inspection?";
