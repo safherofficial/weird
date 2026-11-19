@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildPersonalCopeResult, decodeCopeCode, encodeCopeCode } from "../../cope-engine";
 
 type CopeCasePageProps = {
@@ -64,8 +65,6 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
     result.profile.roast.length > 70 ? result.profile.roast.slice(0, 66) + "…" : result.profile.roast,
     "Your turn.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" +
-    encodeURIComponent("https://weird-zeta.vercel.app" + caseUrl);
 
   return (
     <main className="audit-page cope-case-page" id="main-content">
@@ -100,7 +99,7 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
 
         <div className="cope-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE READING ON X <span>↗</span></a>
+          <DepartmentPublicShare title="Global Cope Index personal reading" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/cope-index">CALIBRATE YOUR OWN COPE ↗</Link>
         </div>
 
