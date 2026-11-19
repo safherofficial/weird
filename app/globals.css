@@ -10885,8 +10885,8 @@ main.audit-page.roadmap-page {
   background-size: 28px 28px, 28px 28px, auto;
 }
 .roadmap-page .roadmap-panel__header { border-bottom-color: var(--department-accent-line); background: rgba(142, 181, 255, .035); }
-.roadmap-page .roadmap-status,
-.roadmap-page .roadmap-progress > div { color: var(--department-accent); background-color: var(--department-accent); }
+.roadmap-page .roadmap-status { color: var(--department-accent); }
+.roadmap-page .roadmap-progress > div { background-color: var(--department-accent); }
 .roadmap-page .roadmap-answer:hover,
 .roadmap-page .roadmap-answer:focus-visible,
 .roadmap-page .roadmap-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
@@ -10917,8 +10917,8 @@ main.audit-page.whitepaper-page {
   background-size: 19px 100%, auto, auto;
 }
 .whitepaper-page .whitepaper-panel__header { border-bottom-color: var(--department-accent-line); }
-.whitepaper-page .whitepaper-status,
-.whitepaper-page .whitepaper-progress > div { color: var(--department-accent); background-color: var(--department-accent); }
+.whitepaper-page .whitepaper-status { color: var(--department-accent); }
+.whitepaper-page .whitepaper-progress > div { background-color: var(--department-accent); }
 .whitepaper-page .whitepaper-answer:hover,
 .whitepaper-page .whitepaper-answer:focus-visible,
 .whitepaper-page .whitepaper-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
