@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
+import { recordDepartmentVisit } from "../passport/passport-store";
 
 type DepartmentHeaderProps = {
-  activeSection?: "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily";
+  activeSection?: "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily" | "passport";
   statusMessage?: string;
   ctaHref?: string;
   ctaLabel?: string;
@@ -35,6 +36,10 @@ export default function DepartmentHeader({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [menuOpen]);
+
+  useEffect(() => {
+    recordDepartmentVisit(activeSection);
+  }, [activeSection]);
 
   function closeMenu() {
     setMenuOpen(false);
@@ -88,6 +93,9 @@ export default function DepartmentHeader({
           <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined}>
             DAILY OFFICE <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/passport" aria-current={activeSection === "passport" ? "page" : undefined}>
+            PASSPORT <span aria-hidden="true">↗</span>
+          </Link>
           <Link href={departmentsHref}>DEPARTMENTS</Link>
           <Link href={manifestoHref}>MANIFESTO</Link>
         </nav>
@@ -113,7 +121,7 @@ export default function DepartmentHeader({
         <nav id={menuId} className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>
           <div className="mobile-nav__heading">
             <span>DEPARTMENT DIRECTORY</span>
-            <span>12 DESTINATIONS / 1 PURPOSE</span>
+            <span>13 DESTINATIONS / 1 PURPOSE</span>
           </div>
           <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined} onClick={closeMenu}>
             <span>01</span> THE AUDIT <b aria-hidden="true">↗</b>
@@ -145,11 +153,14 @@ export default function DepartmentHeader({
           <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined} onClick={closeMenu}>
             <span>10</span> DAILY OFFICE <b aria-hidden="true">↗</b>
           </Link>
+          <Link href="/passport" aria-current={activeSection === "passport" ? "page" : undefined} onClick={closeMenu}>
+            <span>11</span> DEPARTMENT PASSPORT <b aria-hidden="true">↗</b>
+          </Link>
           <Link href={departmentsHref} onClick={closeMenu}>
-            <span>11</span> DEPARTMENTS <b aria-hidden="true">↗</b>
+            <span>12</span> DEPARTMENTS <b aria-hidden="true">↗</b>
           </Link>
           <Link href={manifestoHref} onClick={closeMenu}>
-            <span>12</span> MANIFESTO <b aria-hidden="true">↗</b>
+            <span>13</span> MANIFESTO <b aria-hidden="true">↗</b>
           </Link>
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
