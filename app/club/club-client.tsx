@@ -344,12 +344,13 @@ export default function ClubClient() {
 
       <div className="club-question">
         <div className="club-question__number">MEMBERSHIP INTERVIEW // {String(current + 1).padStart(2, "0")}</div>
-        <h2>{currentQuestion.prompt}</h2>
+        <h2 id="club-current-question" aria-live="polite" aria-atomic="true">{currentQuestion.prompt}</h2>
         <p>{currentQuestion.note}</p>
-        <div className="club-answer-list">
+        <div className="club-answer-list" role="group" aria-labelledby="club-current-question">
           {currentQuestion.options.map((option, index) => (
             <button
               className={"club-answer" + (currentAnswer === index ? " is-selected" : "")}
+              aria-pressed={currentAnswer === index}
               key={option.label}
               type="button"
               onClick={() => chooseAnswer(index)}
