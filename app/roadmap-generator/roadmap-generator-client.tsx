@@ -412,12 +412,13 @@ export default function RoadmapGeneratorClient() {
 
       <div className="roadmap-question">
         <div className="roadmap-question__number">MILESTONE REVIEW // {String(current + 1).padStart(2, "0")}</div>
-        <h2>{question.prompt}</h2>
+        <h2 id="roadmap-current-question" aria-live="polite" aria-atomic="true">{question.prompt}</h2>
         <p>{question.note}</p>
-        <div className="roadmap-answer-list">
+        <div className="roadmap-answer-list" role="group" aria-labelledby="roadmap-current-question">
           {question.options.map((option, index) => (
             <button
               className={"roadmap-answer" + (currentAnswer === index ? " is-selected" : "")}
+              aria-pressed={currentAnswer === index}
               key={option.label}
               type="button"
               onClick={() => chooseAnswer(index)}
