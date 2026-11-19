@@ -76,7 +76,7 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
 export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) {
   const [notice, setNotice] = useState("");
 
-  const pageUrl = typeof window === "undefined" ? "/daily-office" : window.location.origin + "/daily-office";
+  const pageUrl = "https://weird-zeta.vercel.app/daily-office";
   const xText = [
     "THE DYOR DEPARTMENT / DAILY OFFICE",
     dispatch.headline,
