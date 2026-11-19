@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildDailyOfficeDispatch } from "./daily-engine";
 
 export const runtime = "edge";
+export const dynamic = "force-dynamic";
 export const alt = "THE DYOR DEPARTMENT Daily Departmental Absurdity — a fictional daily editorial dispatch.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -18,8 +19,8 @@ export default function DailyOfficeOpenGraphImage() {
           <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>DAILY OFFICE / {issueDate}</span>
         </div>
         <div style={{ display: "flex", marginTop: 34, color: "#899486", fontSize: 14, letterSpacing: 2 }}>{dispatch.reference} / OFFICIAL DAILY DISPATCH</div>
-        <div style={{ display: "flex", marginTop: 20, fontSize: 49, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{dispatch.headline}</div>
-        <div style={{ display: "flex", marginTop: 17, padding: "18px 20px", border: "1px solid #384137", backgroundColor: "#121713", color: "#b6ff65", fontSize: 17 }}>{dispatch.bulletin}</div>
+        <div style={{ display: "flex", marginTop: 20, fontSize: 42, lineHeight: 1.05, fontWeight: 900, letterSpacing: -1, maxWidth: "100%", flexWrap: "wrap" }}>{dispatch.headline}</div>
+        <div style={{ display: "flex", marginTop: 17, padding: "18px 20px", border: "1px solid #384137", backgroundColor: "#121713", color: "#b6ff65", fontSize: 16, lineHeight: 1.4, flexWrap: "wrap" }}>{dispatch.bulletin}</div>
         <div style={{ display: "flex", marginTop: "auto", paddingTop: 17, borderTop: "1px solid #30382f", color: "#ff8580", fontSize: 13, fontWeight: 700, letterSpacing: 1 }}>
           FICTIONAL DAILY SATIRE / NOT REAL NEWS OR MARKET DATA
         </div>
