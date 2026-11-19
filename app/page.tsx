@@ -76,6 +76,14 @@ const departments = [
     href: "/cope-index",
     featured: true,
   },
+  {
+    number: "09",
+    title: "THE DEPARTMENT ARCHIVES",
+    description: "Twelve fictional records, incident reports and official memos from the administrative aftermath of doing your own research.",
+    status: "ARCHIVE OPEN",
+    href: "/archives",
+    featured: true,
+  },
 ];
 
 export default function Home() {
