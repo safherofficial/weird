@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildClubResult, decodeClubCode, encodeClubCode } from "../../club-engine";
 
 type MemberPageProps = {
@@ -117,6 +118,8 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE MEMBERSHIP ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/club">APPLY FOR YOUR OWN MEMBERSHIP ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="club" />
 
         <p className="club-result__disclaimer">
           THE 99% CLUB is a fictional satire membership. The name is not a statistic about real investors,
