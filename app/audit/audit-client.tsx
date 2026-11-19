@@ -485,9 +485,9 @@ export default function AuditClient() {
 
       <div className="question-block" aria-labelledby="current-question-title">
         <div className="question-block__number">INTERROGATION // {String(current + 1).padStart(2, "0")}</div>
-        <h2 id="current-question-title">{question.prompt}</h2>
+        <h2 id="current-question-title" aria-live="polite" aria-atomic="true">{question.prompt}</h2>
         <p>{question.note}</p>
-        <div className="answer-list">
+        <div className="answer-list" role="group" aria-labelledby="current-question-title">
           {question.options.map((option, index) => (
             <button className="answer-option" key={option.label} onClick={() => choose(index)} type="button">
               <span className="answer-option__key">{String.fromCharCode(65 + index)}</span>
