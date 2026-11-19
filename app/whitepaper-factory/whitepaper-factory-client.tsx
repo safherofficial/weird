@@ -201,6 +201,7 @@ export default function WhitepaperFactoryClient() {
             <span>DEPARTMENTAL FINDING</span>
             <strong>{result.finding}</strong>
             <small>PRIMARY CLASSIFICATION / {result.profile.title}</small>
+            <small>DEPARTMENTAL DISPOSITION / {result.profile.disposition}</small>
           </div>
 
           {result.sections.map((section) => (

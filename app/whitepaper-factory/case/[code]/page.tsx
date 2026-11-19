@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import { buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode } from "../../whitepaper-engine";
+import WhitepaperPublicActions from "../../whitepaper-public-actions";
 
 type WhitepaperCasePageProps = {
   params: Promise<{ code: string }>;
@@ -95,6 +96,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
           <span>DEPARTMENTAL FINDING</span>
           <strong>{result.finding}</strong>
           <small>PRIMARY CLASSIFICATION / {result.profile.title}</small>
+          <small>DEPARTMENTAL DISPOSITION / {result.profile.disposition}</small>
         </div>
 
         {result.sections.map((section) => (
@@ -130,6 +132,12 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
           <p>“{result.profile.roast}”</p>
           <small>SECONDARY FILE / {result.secondaryProfile.title}</small>
         </div>
+
+        <WhitepaperPublicActions
+          result={result}
+          casePath={caseUrl}
+          challengePath={challengeUrl}
+        />
 
         <div className="whitepaper-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>

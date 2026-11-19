@@ -2,9 +2,9 @@ name: Quality checks
 
 on:
   push:
-    branches: ["main", "feat/**", "chore/**"]
+    branches: ["main", "feat/**", "fix/**", "chore/**"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "feat/**"]
 
 permissions:
   contents: read
