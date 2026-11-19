@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 type DepartmentHeaderProps = {
-  activeSection?: "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives";
+  activeSection?: "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily";
   statusMessage?: string;
   ctaHref?: string;
   ctaLabel?: string;
@@ -85,6 +85,9 @@ export default function DepartmentHeader({
           <Link href="/archives" aria-current={activeSection === "archives" ? "page" : undefined}>
             ARCHIVES <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined}>
+            DAILY OFFICE <span aria-hidden="true">↗</span>
+          </Link>
           <Link href={departmentsHref}>DEPARTMENTS</Link>
           <Link href={manifestoHref}>MANIFESTO</Link>
         </nav>
@@ -110,7 +113,7 @@ export default function DepartmentHeader({
         <nav id={menuId} className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>
           <div className="mobile-nav__heading">
             <span>DEPARTMENT DIRECTORY</span>
-            <span>11 DESTINATIONS / 1 PURPOSE</span>
+            <span>12 DESTINATIONS / 1 PURPOSE</span>
           </div>
           <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined} onClick={closeMenu}>
             <span>01</span> THE AUDIT <b aria-hidden="true">↗</b>
@@ -139,11 +142,14 @@ export default function DepartmentHeader({
           <Link href="/archives" aria-current={activeSection === "archives" ? "page" : undefined} onClick={closeMenu}>
             <span>09</span> DEPARTMENT ARCHIVES <b aria-hidden="true">↗</b>
           </Link>
+          <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined} onClick={closeMenu}>
+            <span>10</span> DAILY OFFICE <b aria-hidden="true">↗</b>
+          </Link>
           <Link href={departmentsHref} onClick={closeMenu}>
-            <span>10</span> DEPARTMENTS <b aria-hidden="true">↗</b>
+            <span>11</span> DEPARTMENTS <b aria-hidden="true">↗</b>
           </Link>
           <Link href={manifestoHref} onClick={closeMenu}>
-            <span>11</span> MANIFESTO <b aria-hidden="true">↗</b>
+            <span>12</span> MANIFESTO <b aria-hidden="true">↗</b>
           </Link>
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>

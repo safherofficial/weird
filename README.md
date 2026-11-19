@@ -34,11 +34,12 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - THE 99% CLUB: five-question fictional membership application, three satirical indices, six reachable archetypes, membership card export and shareable public member files. The name is not a real 99% market statistic and membership has no benefits.
 - THE GLOBAL COPE INDEX: synthetic UTC-date-seeded dashboard with five fictional dimensions and an optional personal five-question calibration, shareable personal files and downloadable cards. No visitor poll, market feed or real-world sentiment data is used.
 - Department Archives: twelve curated fictional records across five categories, searchable/filterable library, static detail pages and social previews. No user uploads or real event claims.
+- Daily Departmental Absurdity: UTC-date-seeded fictional daily bulletin, incident report, internal memo and quotation, with X/native sharing and downloadable dispatch card. No real news, market events or external feeds are used.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and baseline security response headers.
 - Responsive layout and reduced-motion support.
 
-All nine currently listed Department experiences are available. Further Departments remain planned.
+All ten currently listed Department experiences are available. Further Departments remain planned.
 
 ## Requirements
 
