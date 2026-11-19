@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
+import RecordPassportActivity from "../../../components/record-passport-activity";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { archiveRecords, getArchiveRecord } from "../../archive-data";
@@ -61,6 +62,7 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
 
   return (
     <main className="audit-page archive-record-page" id="main-content">
+      <RecordPassportActivity activity="archive-record" />
       <DepartmentHeader activeSection="archives" statusMessage="PUBLIC ARCHIVE RECORD / FICTIONAL" ctaHref="/archives" ctaLabel="BACK TO ARCHIVES" />
 
       <article className="archive-record shell" id="content-start" tabIndex={-1}>

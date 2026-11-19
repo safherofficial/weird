@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildWhitepaperResult,
   decodeWhitepaperCode,
@@ -88,6 +89,7 @@ export default function WhitepaperFactoryClient() {
     setNotice("");
     if (current === questions.length - 1) {
       setResult(buildWhitepaperResult(next, projectSlug));
+      recordPassportActivity("whitepaper");
     } else {
       setCurrent(current + 1);
     }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildRoadmapResult,
   decodeRoadmapCode,
@@ -121,6 +122,7 @@ export default function RoadmapGeneratorClient() {
 
     if (current === questions.length - 1) {
       setResult(buildRoadmapResult(next, projectSlug));
+      recordPassportActivity("roadmap");
     } else {
       setCurrent(current + 1);
     }

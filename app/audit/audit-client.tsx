@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
 import { questions } from "./audit-data";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   AUDIT_QUESTION_COUNT,
   AUDIT_VERSION,
@@ -182,6 +183,7 @@ export default function AuditClient() {
 
     if (current === AUDIT_QUESTION_COUNT - 1) {
       setResult(buildResult(next));
+      recordPassportActivity("audit");
     } else {
       setCurrent(current + 1);
     }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildUtilityResult,
   decodeUtilityCode,
@@ -116,6 +117,7 @@ export default function UtilityInspectorClient() {
 
     if (current === questions.length - 1) {
       setResult(buildUtilityResult(next));
+      recordPassportActivity("utility");
     } else {
       setCurrent(current + 1);
     }

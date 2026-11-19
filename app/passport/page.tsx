@@ -6,17 +6,17 @@ import PassportClient from "./passport-client";
 export const metadata: Metadata = {
   alternates: { canonical: "/passport" },
   title: "Department Passport",
-  description: "An optional local visit passport for THE DYOR DEPARTMENT. Collect Department stamps and unlock fictional achievements without an account or server profile.",
+  description: "An optional local Passport for THE DYOR DEPARTMENT. Collect visit stamps and earn achievement badges by completing experiences and challenges.",
   robots: { index: true, follow: true },
   openGraph: {
     title: "THE DEPARTMENT PASSPORT",
-    description: "Ten Departments. Local visit stamps. Absolutely no practical value.",
+    description: "Ten visit stamps. Eleven achievement badges. Local progress. Absolutely no practical value.",
     images: ["/passport/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DEPARTMENT PASSPORT",
-    description: "Ten Departments. Local visit stamps. Absolutely no practical value.",
+    description: "Ten visit stamps. Eleven achievement badges. Local progress. Absolutely no practical value.",
     images: ["/passport/opengraph-image"],
   },
 };
@@ -30,17 +30,17 @@ export default function DepartmentPassportPage() {
         <header className="passport-intro">
           <div className="audit-intro__meta">
             <span>REGISTER DPP-001</span>
-            <span>10 DEPARTMENT STAMPS / 6 ACHIEVEMENTS</span>
+            <span>10 VISIT STAMPS / 11 ACHIEVEMENT BADGES</span>
           </div>
-          <p className="eyebrow">OFFICE OF DEPARTMENTAL VISITS</p>
+          <p className="eyebrow">OFFICE OF DEPARTMENTAL VISITS & ACHIEVEMENTS</p>
           <h1>THE DEPARTMENT<br /><span>PASSPORT.</span></h1>
           <p className="audit-intro__lead">
-            A small record of the Departments you have visited. No leaderboards, no rankings, no rewards. Just evidence that you clicked around.
+            Department Stamps record where you have been. Achievement Badges reward completed experiences and specific challenges. Two separate records, one optional local Passport.
           </p>
           <div className="passport-intro__notice">
             <span>OPTIONAL / OFF BY DEFAULT</span>
             <strong>NO ACCOUNT. NO SERVER PROFILE. NO PUBLIC TRACKING.</strong>
-            <small>VISIT STAMPS ARE STORED LOCALLY ONLY AFTER YOU ENABLE THE PASSPORT.</small>
+            <small>VISIT STAMPS AND ACHIEVEMENT PROGRESS STAY IN THIS BROWSER ONLY.</small>
           </div>
         </header>
 

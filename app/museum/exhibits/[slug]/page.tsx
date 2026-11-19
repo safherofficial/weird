@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
+import RecordPassportActivity from "../../../components/record-passport-activity";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { exhibits, getExhibit } from "../../museum-data";
@@ -60,6 +61,7 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
 
   return (
     <main className="audit-page museum-exhibit-page" id="main-content">
+      <RecordPassportActivity activity="museum-exhibit" />
       <DepartmentHeader activeSection="museum" statusMessage="PUBLIC EXHIBIT / FICTIONAL COLLECTION" ctaHref="/museum" ctaLabel="BACK TO MUSEUM" />
 
       <article className="museum-exhibit shell" id="content-start" tabIndex={-1}>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   actions,
   ASSET_LABEL,
@@ -118,6 +119,7 @@ export default function SimulatorClient() {
 
     if (nextDecisions.length === SIMULATOR_ROUNDS) {
       setResult(buildSimulatorResult(nextDecisions));
+      recordPassportActivity("simulator");
     }
   }
 

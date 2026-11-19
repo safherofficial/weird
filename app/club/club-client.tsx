@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildClubResult,
   decodeClubCode,
@@ -96,6 +97,7 @@ export default function ClubClient() {
     setNotice("");
     if (current === questions.length - 1) {
       setResult(buildClubResult(next));
+      recordPassportActivity("club");
     } else {
       setCurrent(current + 1);
     }

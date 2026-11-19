@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./passport/achievements.css";
 import { SITE_URL } from "./site-config";
+import AchievementToastHost from "./components/achievement-toast";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -43,7 +45,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <AchievementToastHost />
+      </body>
     </html>
   );
 }

@@ -5,7 +5,7 @@ import DepartmentFooter from "../components/department-footer";
 
 export const metadata: Metadata = {
   title: "Privacy Notice",
-  description: "How THE DYOR DEPARTMENT handles local audit archives, public result URLs, external fonts and basic hosting requests.",
+  description: "How THE DYOR DEPARTMENT handles local archives and Passport progress, public result URLs, external fonts and basic hosting requests.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -32,14 +32,21 @@ const sections = [
     ],
   },
   {
-    title: "04 / PUBLIC RESULT LINKS",
+    title: "04 / DEPARTMENT PASSPORT",
+    paragraphs: [
+      "The optional Department Passport uses browser localStorage only after the visitor explicitly enables it. It records visited Department sections, UTC dates on which the Daily Department is opened, and which interactive experiences or collection records have been completed for local Stamps and Achievement Badges.",
+      "Passport information is not uploaded to an application database, does not create an account or public profile, is not synchronized across devices and is not used for a leaderboard. Visitors can delete the complete Passport from its page or clear this site's browser data. Existing Passport records are migrated in the browser to the current format while preserving their visit stamps and Daily Department streak; earlier visits are not converted into completion badges.",
+    ],
+  },
+  {
+    title: "05 / PUBLIC RESULT LINKS",
     paragraphs: [
       "Audit, Simulator, Utility Inspector, Roadmap Generator and Whitepaper Factory can create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. Roadmap Generator and Whitepaper Factory URLs also contain the sanitized project label.",
       "Anyone who receives a public case link can view the corresponding result. Links may remain in browser history, messages, social posts and hosting request records. The site does not maintain a private account that can revoke a copied link. Do not include personal or confidential details in a project label.",
     ],
   },
   {
-    title: "05 / HOSTING AND THIRD-PARTY REQUESTS",
+    title: "06 / HOSTING AND THIRD-PARTY REQUESTS",
     paragraphs: [
       "The site is hosted on Vercel. As with other hosted websites, the hosting provider may process technical request information such as IP address, requested path, browser information and operational or security logs to deliver and protect the service. Log handling and retention are governed by the provider's own terms and privacy documentation; this application does not control those systems.",
       "The current stylesheet imports fonts from Google Fonts. A visitor's browser may contact Google Fonts to retrieve the font stylesheet and font files. This is a third-party network request made to render the site's typography.",
@@ -47,21 +54,21 @@ const sections = [
     ],
   },
   {
-    title: "06 / COOKIES, ANALYTICS AND TRACKING",
+    title: "07 / COOKIES, ANALYTICS AND TRACKING",
     paragraphs: [
       "The application code does not intentionally set cookies for advertising, analytics or behavioural profiling. It does not include an application analytics dashboard, advertising pixels or cross-site tracking scripts.",
-      "The optional Audit archive uses browser localStorage, which is different from a cookie. The hosting platform and any third-party services contacted by the browser may apply their own technical storage or processing under their own policies.",
+      "The optional Audit archive and Department Passport use browser localStorage, which is different from a cookie. Passport data is created only after explicit opt-in and remains on the visitor's device. The hosting platform and any third-party services contacted by the browser may apply their own technical storage or processing under their own policies.",
     ],
   },
   {
-    title: "07 / RETENTION AND CONTROL",
+    title: "08 / RETENTION AND CONTROL",
     paragraphs: [
-      "The optional Audit archive remains in the visitor's browser until an individual case is deleted or the browser's site data is cleared. Public case information is encoded in the URL rather than stored in an application account. Copies of a URL shared elsewhere cannot be recalled by this site.",
+      "The optional Audit archive remains in the visitor's browser until an individual case is deleted or the browser's site data is cleared. The Department Passport remains there until it is disabled and deleted from its page or the browser's site data is cleared. Public case information is encoded in the URL rather than stored in an application account. Copies of a URL shared elsewhere cannot be recalled by this site.",
       "Operational hosting logs, font requests and external share services are controlled by their respective providers. Their retention periods cannot be configured or verified by this application.",
     ],
   },
   {
-    title: "08 / OPERATOR CONTACT",
+    title: "09 / OPERATOR CONTACT",
     paragraphs: [
       "The legal identity and a dedicated contact channel for the site operator have not been supplied in this release. They must be added by the operator before this notice is treated as a complete statutory privacy notice or used as legal assurance.",
       "This page is dated 19 November 2026 and should be reviewed whenever application behaviour, providers or data flows change.",
@@ -80,7 +87,7 @@ export default function PrivacyPage() {
         <p className="legal-document__lead">We built a department for questionable research. We do not need your identity to do it.</p>
         <div className="legal-document__notice">
           <strong>AT A GLANCE</strong>
-          <p>No visitor accounts. No wallet connection. No app analytics or advertising pixels. One optional local Audit archive. Shareable case URLs are public to anyone who has the link.</p>
+          <p>No visitor accounts. No wallet connection. No app analytics or advertising pixels. One optional local Audit archive and one optional local Passport. The Passport records visits and achievement progress only after opt-in. Shareable case URLs are public to anyone who has the link.</p>
         </div>
         {sections.map((section) => (
           <section className="legal-section" key={section.title}>

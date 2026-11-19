@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildPersonalCopeResult,
   decodeCopeCode,
@@ -102,6 +103,7 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
     setNotice("");
     if (current === questions.length - 1) {
       setResult(buildPersonalCopeResult(next));
+      recordPassportActivity("cope");
     } else {
       setCurrent(current + 1);
     }
