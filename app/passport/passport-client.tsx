@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import {
   DEPARTMENT_STAMPS,
-  getDailyOfficeVisitStreak,
   getPassportAchievements,
   readPassport,
   enablePassport,
@@ -198,7 +197,7 @@ export default function PassportClient() {
   const visited = new Set(passport.visitedDepartments);
   const achievements = getPassportAchievements(passport);
   const progress = Math.round((visited.size / DEPARTMENT_STAMPS.length) * 100);
-  const streak = getDailyOfficeVisitStreak(passport);
+  const streak = passport.bestDailyStreak;
 
   return (
     <section className="passport-panel">
