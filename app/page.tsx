@@ -201,7 +201,7 @@ export default function Home() {
         <div className="hq-hero__register" aria-label="Department overview">
           <div><strong>10</strong><span>DEPARTMENTS</span></div>
           <div><strong>11</strong><span>PUBLIC DESTINATIONS</span></div>
-          <div><strong>01</strong><span>SHARED CONDITION</span></div>
+          <div><strong>0</strong><span>FINANCIAL ADVICE</span></div>
           <p>YOU ARE NOT THE FIRST. YOU WILL NOT BE THE LAST.</p>
         </div>
       </section>
