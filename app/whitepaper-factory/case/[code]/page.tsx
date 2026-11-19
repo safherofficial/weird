@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode } from "../../whitepaper-engine";
 import WhitepaperPublicActions from "../../whitepaper-public-actions";
 
@@ -66,9 +67,6 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
     result.profile.roast.length > 62 ? result.profile.roast.slice(0, 58) + "…" : result.profile.roast,
     "Your turn. Submit your technical vision.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(
-    "https://weird-zeta.vercel.app" + caseUrl
-  );
 
   return (
     <main className="audit-page whitepaper-case-page" id="main-content">
@@ -142,7 +140,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
 
         <div className="whitepaper-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE WHITEPAPER ON X <span>↗</span></a>
+          <DepartmentPublicShare title="Fictional Whitepaper case file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/whitepaper-factory">MAKE YOUR OWN WHITEPAPER ↗</Link>
         </div>
 
