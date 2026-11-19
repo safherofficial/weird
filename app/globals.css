@@ -11456,3 +11456,174 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 
 
 /* U16.10 — final contrast correction using the established semantic text token. */
+
+
+/* U17.2 — contextual routes from completed case files. */
+.department-next-steps {
+  margin-top: 30px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, #111711, #0d110d 78%);
+}
+
+.department-next-steps__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.department-next-steps__eyebrow,
+.department-next-steps__count,
+.department-next-steps__number,
+.department-next-steps__cta,
+.department-next-steps__passport p span,
+.department-next-steps__passport > a {
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .07em;
+}
+
+.department-next-steps__eyebrow,
+.department-next-steps__number,
+.department-next-steps__cta,
+.department-next-steps__passport p span {
+  color: var(--green);
+}
+
+.department-next-steps__heading h2 {
+  margin: 8px 0 0;
+  color: var(--text);
+  font: 600 clamp(19px, 2.4vw, 26px)/1.1 var(--sans);
+  letter-spacing: -.045em;
+}
+
+.department-next-steps__count {
+  color: var(--text-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.department-next-steps__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.department-next-steps__card {
+  display: flex;
+  min-width: 0;
+  min-height: 158px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  border: 1px solid #303a2f;
+  background: #0b100b;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.department-next-steps__card:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  background: #111811;
+}
+
+.department-next-steps__card > strong {
+  margin-top: 10px;
+  color: var(--text);
+  font: 600 13px/1.35 var(--mono);
+  letter-spacing: .015em;
+}
+
+.department-next-steps__description {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.department-next-steps__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.department-next-steps__cta span {
+  font-size: 13px;
+}
+
+.department-next-steps__passport {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line);
+  background: #0e130e;
+}
+
+.department-next-steps__passport p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.department-next-steps__passport p span {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.department-next-steps__passport > a {
+  flex-shrink: 0;
+  color: var(--green);
+  text-align: right;
+}
+
+.department-next-steps__card:focus-visible,
+.department-next-steps__passport > a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+@media (max-width: 620px) {
+  .department-next-steps {
+    padding: 16px;
+  }
+
+  .department-next-steps__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .department-next-steps__count {
+    text-align: left;
+  }
+
+  .department-next-steps__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .department-next-steps__card {
+    min-height: 138px;
+  }
+
+  .department-next-steps__passport {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .department-next-steps__passport > a {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .department-next-steps__card {
+    transition: none;
+  }
+}

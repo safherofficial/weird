@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode } from "../../whitepaper-engine";
 import WhitepaperPublicActions from "../../whitepaper-public-actions";
 
@@ -144,6 +145,8 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE WHITEPAPER ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/whitepaper-factory">MAKE YOUR OWN WHITEPAPER ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="whitepaper" />
 
         <p className="whitepaper-disclaimer">
           This public document reconstructs anonymous answer choices encoded in the URL. The project label is visible

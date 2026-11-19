@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DepartmentNextSteps from "../components/department-next-steps";
 import {
   buildRoadmapResult,
   decodeRoadmapCode,
@@ -329,6 +330,7 @@ export default function RoadmapGeneratorClient() {
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
         <p className="roadmap-public-link"><Link href={caseUrl}>OPEN PUBLIC ROADMAP FILE ↗</Link></p>
+        <DepartmentNextSteps currentDepartment="roadmap" />
       </section>
     );
   }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DepartmentNextSteps from "../components/department-next-steps";
 import {
   buildUtilityResult,
   decodeUtilityCode,
@@ -328,6 +329,7 @@ export default function UtilityInspectorClient() {
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
         <p className="utility-public-link"><Link href={caseUrl}>OPEN PUBLIC CASE FILE ↗</Link></p>
+        <DepartmentNextSteps currentDepartment="utility" />
       </section>
     );
   }

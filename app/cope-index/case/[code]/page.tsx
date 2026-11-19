@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildPersonalCopeResult, decodeCopeCode, encodeCopeCode } from "../../cope-engine";
 
 type CopeCasePageProps = {
@@ -102,6 +103,8 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE READING ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/cope-index">CALIBRATE YOUR OWN COPE ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="cope" />
 
         <p className="cope-personal-result__disclaimer">
           This reading is fictional and is reconstructed from anonymous answer choices encoded in the URL.

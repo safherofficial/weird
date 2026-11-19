@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildUtilityResult, decodeUtilityCode, encodeUtilityCode } from "../../utility-engine";
 
 type UtilityCasePageProps = {
@@ -127,6 +128,8 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS CASE ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/utility-inspector">SUBMIT YOUR OWN CLAIMS ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="utility" />
 
         <p className="utility-disclaimer">
           This public case reconstructs anonymous answer choices encoded in its URL. It is a fictional entertainment
