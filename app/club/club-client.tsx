@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DepartmentNextSteps from "../components/department-next-steps";
 import {
   buildClubResult,
   decodeClubCode,
@@ -277,6 +278,7 @@ export default function ClubClient() {
         </div>
 
         <p className="club-public-link"><Link href={caseUrl}>OPEN PUBLIC MEMBER FILE ↗</Link></p>
+        <DepartmentNextSteps currentDepartment="club" />
         {notice && <p className="audit-notice" role="status">{notice}</p>}
       </section>
     );
