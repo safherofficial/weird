@@ -10719,3 +10719,410 @@ body {
     transition: none;
   }
 }
+
+
+/* U16.5 — department identities: distinct environments, shared institution */
+main.audit-page {
+  --department-accent: #ef8278;
+  --department-accent-rgb: 239, 130, 120;
+  --department-accent-soft: rgba(239, 130, 120, .09);
+  --department-accent-line: rgba(239, 130, 120, .32);
+  background-image: radial-gradient(ellipse at 12% 13%, rgba(var(--department-accent-rgb), .075), transparent 36%);
+}
+
+main.audit-page .eyebrow { color: var(--department-accent); }
+main.audit-page .audit-intro__meta {
+  border-bottom-color: var(--department-accent-line);
+  color: color-mix(in srgb, var(--department-accent) 48%, #687465);
+}
+main.audit-page .audit-intro h1 span,
+main.audit-page .simulator-intro h1 span,
+main.audit-page .utility-intro h1 span,
+main.audit-page .roadmap-intro h1 span,
+main.audit-page .whitepaper-intro h1 span,
+main.audit-page .museum-intro h1 span,
+main.audit-page .club-intro h1 span,
+main.audit-page .cope-index-intro h1 span,
+main.audit-page .archives-intro h1 span,
+main.audit-page .daily-office-intro h1 span,
+main.audit-page .passport-intro h1 span { color: var(--department-accent); }
+
+main.audit-page .audit-warning {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(105deg, var(--department-accent-soft), #171510 72%);
+}
+main.audit-page .audit-warning > span { background: var(--department-accent); color: #10110f; }
+main.audit-page .audit-warning p { color: #d1c6b5; }
+main.audit-page .audit-workspace {
+  border-color: var(--department-accent-line);
+  border-left: 2px solid var(--department-accent);
+  background:
+    linear-gradient(rgba(var(--department-accent-rgb), .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--department-accent-rgb), .035) 1px, transparent 1px),
+    linear-gradient(155deg, #141a13, #0d100d 72%);
+  background-size: 34px 34px, 34px 34px, auto;
+}
+main.audit-page .audit-progress > div { background: var(--department-accent); }
+main.audit-page .question-block__number,
+main.audit-page .answer-option__key { color: var(--department-accent); }
+main.audit-page .answer-option:hover,
+main.audit-page .answer-option:focus-visible {
+  border-color: var(--department-accent);
+  background: var(--department-accent-soft);
+}
+
+/* 01 / CASEWORK — forensic file and evidence register. */
+main.audit-page:not(.simulator-page):not(.utility-page):not(.roadmap-page):not(.whitepaper-page):not(.museum-page):not(.club-page):not(.cope-index-page):not(.archives-page):not(.daily-office-page):not(.passport-page) {
+  --department-accent: #f08075;
+  --department-accent-rgb: 240, 128, 117;
+  --department-accent-soft: rgba(240, 128, 117, .09);
+  --department-accent-line: rgba(240, 128, 117, .34);
+}
+main.audit-page:not(.simulator-page):not(.utility-page):not(.roadmap-page):not(.whitepaper-page):not(.museum-page):not(.club-page):not(.cope-index-page):not(.archives-page):not(.daily-office-page):not(.passport-page) .audit-intro__meta { border-bottom-style: dashed; }
+main.audit-page:not(.simulator-page):not(.utility-page):not(.roadmap-page):not(.whitepaper-page):not(.museum-page):not(.club-page):not(.cope-index-page):not(.archives-page):not(.daily-office-page):not(.passport-page) .audit-intro h1 {
+  text-shadow: 0 0 34px rgba(240, 128, 117, .08);
+}
+main.audit-page:not(.simulator-page):not(.utility-page):not(.roadmap-page):not(.whitepaper-page):not(.museum-page):not(.club-page):not(.cope-index-page):not(.archives-page):not(.daily-office-page):not(.passport-page) .audit-workspace {
+  box-shadow: inset 0 0 0 1px rgba(240, 128, 117, .04), 0 20px 80px #0006;
+}
+main.audit-page:not(.simulator-page):not(.utility-page):not(.roadmap-page):not(.whitepaper-page):not(.museum-page):not(.club-page):not(.cope-index-page):not(.archives-page):not(.daily-office-page):not(.passport-page) .audit-workspace__header {
+  border-bottom-style: dashed;
+  border-bottom-color: var(--department-accent-line);
+}
+
+/* 02 / BAGHOLDER SIMULATOR — paper-market trading terminal. */
+main.audit-page.simulator-page {
+  --department-accent: #e6b45f;
+  --department-accent-rgb: 230, 180, 95;
+  --department-accent-soft: rgba(230, 180, 95, .085);
+  --department-accent-line: rgba(230, 180, 95, .34);
+  background-image: radial-gradient(ellipse at 88% 18%, rgba(230, 180, 95, .09), transparent 34%), linear-gradient(180deg, rgba(230, 180, 95, .018), transparent 42%);
+}
+.simulator-page .simulator-panel {
+  overflow: hidden;
+  border-color: var(--department-accent-line);
+  background:
+    repeating-linear-gradient(0deg, rgba(230, 180, 95, .025) 0, rgba(230, 180, 95, .025) 1px, transparent 1px, transparent 5px),
+    linear-gradient(155deg, #171811, #0c100c 72%);
+  box-shadow: inset 0 0 45px rgba(230, 180, 95, .025), 0 20px 80px #0006;
+}
+.simulator-page .simulator-panel__header { border-bottom-color: var(--department-accent-line); background: rgba(230, 180, 95, .035); }
+.simulator-page .simulator-status,
+.simulator-page .simulator-intro h1 span,
+.simulator-page .simulator-briefing__body h2 span,
+.simulator-page .simulator-choice__key { color: var(--department-accent); }
+.simulator-page .simulator-status i { background: var(--department-accent); box-shadow: 0 0 10px rgba(230, 180, 95, .58); }
+.simulator-page .simulator-chart { border-color: var(--department-accent-line); background: #0a0e0a; }
+.simulator-page .simulator-chart__grid {
+  background-image: linear-gradient(rgba(230, 180, 95, .11) 1px, transparent 1px), linear-gradient(90deg, rgba(230, 180, 95, .11) 1px, transparent 1px);
+}
+.simulator-page .simulator-progress > div { background: var(--department-accent); }
+.simulator-page .simulator-choice__button:hover:not(:disabled),
+.simulator-page .simulator-choice__button:focus-visible { border-color: var(--department-accent); background: var(--department-accent-soft); }
+.simulator-page .simulator-choice__key { border-color: var(--department-accent-line); }
+
+/* 03 / UTILITY INSPECTOR — technical inspection bench and calibration marks. */
+main.audit-page.utility-page {
+  --department-accent: #6fd0bd;
+  --department-accent-rgb: 111, 208, 189;
+  --department-accent-soft: rgba(111, 208, 189, .085);
+  --department-accent-line: rgba(111, 208, 189, .33);
+  background-image: radial-gradient(ellipse at 8% 28%, rgba(111, 208, 189, .09), transparent 34%), radial-gradient(ellipse at 90% 10%, rgba(111, 208, 189, .035), transparent 30%);
+}
+.utility-page .utility-intro__stamp {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(90deg, rgba(111, 208, 189, .055), transparent 72%), #101712;
+}
+.utility-page .utility-intro__stamp strong,
+.utility-page .utility-intro__stamp span,
+.utility-page .utility-intro h1 span,
+.utility-page .utility-briefing__body h2 span,
+.utility-page .utility-question__number { color: var(--department-accent); }
+.utility-page .utility-panel {
+  border-color: var(--department-accent-line);
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(111, 208, 189, .035) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(111, 208, 189, .035) 50%, transparent 50.2%),
+    linear-gradient(155deg, #131b18, #0c110f 72%);
+  background-size: 38px 38px, 38px 38px, auto;
+}
+.utility-page .utility-panel__header { border-bottom-color: var(--department-accent-line); }
+.utility-page .utility-status,
+.utility-page .utility-live-scores strong,
+.utility-page .utility-answer > span { color: var(--department-accent); }
+.utility-page .utility-status i { background: var(--department-accent); box-shadow: 0 0 10px rgba(111, 208, 189, .55); }
+.utility-page .utility-progress > div { background: var(--department-accent); }
+.utility-page .utility-answer:hover,
+.utility-page .utility-answer:focus-visible,
+.utility-page .utility-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
+
+/* 04 / ROADMAP OFFICE — blueprint grid and milestone drafting table. */
+main.audit-page.roadmap-page {
+  --department-accent: #8eb5ff;
+  --department-accent-rgb: 142, 181, 255;
+  --department-accent-soft: rgba(142, 181, 255, .085);
+  --department-accent-line: rgba(142, 181, 255, .32);
+  background-image: radial-gradient(ellipse at 90% 13%, rgba(142, 181, 255, .085), transparent 34%), linear-gradient(180deg, rgba(142, 181, 255, .018), transparent 48%);
+}
+.roadmap-page .roadmap-intro__stamp {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(rgba(142, 181, 255, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(142, 181, 255, .04) 1px, transparent 1px), #10151c;
+  background-size: 16px 16px;
+}
+.roadmap-page .roadmap-intro__stamp strong,
+.roadmap-page .roadmap-intro__stamp span,
+.roadmap-page .roadmap-intro h1 span,
+.roadmap-page .roadmap-briefing__body h2 span,
+.roadmap-page .roadmap-question__number,
+.roadmap-page .roadmap-milestone__index,
+.roadmap-page .roadmap-milestone__eta strong { color: var(--department-accent); }
+.roadmap-page .roadmap-panel {
+  border-color: var(--department-accent-line);
+  background: linear-gradient(rgba(142, 181, 255, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(142, 181, 255, .045) 1px, transparent 1px), linear-gradient(155deg, #121923, #0c1017 72%);
+  background-size: 28px 28px, 28px 28px, auto;
+}
+.roadmap-page .roadmap-panel__header { border-bottom-color: var(--department-accent-line); background: rgba(142, 181, 255, .035); }
+.roadmap-page .roadmap-status { color: var(--department-accent); }
+.roadmap-page .roadmap-progress > div { background-color: var(--department-accent); }
+.roadmap-page .roadmap-answer:hover,
+.roadmap-page .roadmap-answer:focus-visible,
+.roadmap-page .roadmap-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
+
+/* 05 / WHITEPAPER FACTORY — document lab, folios and technical paper stock. */
+main.audit-page.whitepaper-page {
+  --department-accent: #c3a1f5;
+  --department-accent-rgb: 195, 161, 245;
+  --department-accent-soft: rgba(195, 161, 245, .085);
+  --department-accent-line: rgba(195, 161, 245, .31);
+  background-image: radial-gradient(ellipse at 10% 12%, rgba(195, 161, 245, .075), transparent 35%), linear-gradient(180deg, rgba(195, 161, 245, .018), transparent 45%);
+}
+.whitepaper-page .whitepaper-intro__stamp {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(110deg, rgba(195, 161, 245, .08), #111012 74%);
+}
+.whitepaper-page .whitepaper-intro__stamp strong,
+.whitepaper-page .whitepaper-intro__stamp span,
+.whitepaper-page .whitepaper-intro h1 span,
+.whitepaper-page .whitepaper-briefing__body h2 span,
+.whitepaper-page .whitepaper-question__number,
+.whitepaper-page .whitepaper-cover h2 span,
+.whitepaper-page .whitepaper-section__number { color: var(--department-accent); }
+.whitepaper-page .whitepaper-panel {
+  border-color: var(--department-accent-line);
+  background: linear-gradient(90deg, rgba(195, 161, 245, .055) 0, rgba(195, 161, 245, .055) 1px, transparent 1px), repeating-linear-gradient(0deg, transparent 0, transparent 31px, rgba(195, 161, 245, .025) 32px), linear-gradient(155deg, #17131b, #0e0c10 72%);
+  background-size: 19px 100%, auto, auto;
+}
+.whitepaper-page .whitepaper-panel__header { border-bottom-color: var(--department-accent-line); }
+.whitepaper-page .whitepaper-status { color: var(--department-accent); }
+.whitepaper-page .whitepaper-progress > div { background-color: var(--department-accent); }
+.whitepaper-page .whitepaper-answer:hover,
+.whitepaper-page .whitepaper-answer:focus-visible,
+.whitepaper-page .whitepaper-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
+.whitepaper-page .whitepaper-document {
+  border-color: var(--department-accent-line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .28), 7px 7px 0 rgba(195, 161, 245, .035);
+}
+
+/* 06 / BAGHOLDER MUSEUM — curated gallery, specimen lighting and accession plaques. */
+main.audit-page.museum-page {
+  --department-accent: #e1b66c;
+  --department-accent-rgb: 225, 182, 108;
+  --department-accent-soft: rgba(225, 182, 108, .085);
+  --department-accent-line: rgba(225, 182, 108, .34);
+  background-image: radial-gradient(ellipse at 50% 9%, rgba(225, 182, 108, .095), transparent 38%), linear-gradient(180deg, rgba(225, 182, 108, .018), transparent 50%);
+}
+.museum-page .museum-intro__notice {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(100deg, rgba(225, 182, 108, .07), #11120e 70%);
+}
+.museum-page .museum-intro__notice strong,
+.museum-page .museum-intro__stats strong,
+.museum-page .museum-intro h1 span { color: var(--department-accent); }
+.museum-page .museum-gallery {
+  border-top-color: var(--department-accent-line);
+  background: radial-gradient(ellipse at 50% 0, rgba(225, 182, 108, .035), transparent 50%);
+}
+.museum-page .museum-card {
+  border-color: rgba(225, 182, 108, .22);
+  background: linear-gradient(150deg, #191710, #100f0c 74%);
+}
+.museum-page .museum-card:hover { border-color: var(--department-accent); box-shadow: 0 14px 38px rgba(225, 182, 108, .075); }
+.museum-page .museum-card__meta,
+.museum-page .museum-card__plaque,
+.museum-page .museum-exhibit__plaque { border-color: var(--department-accent-line); }
+.museum-page .museum-card__body h2,
+.museum-page .museum-exhibit__details h1,
+.museum-page .museum-exhibit__artifact > strong { color: #f1e6d0; }
+.museum-page .museum-card__body > a,
+.museum-page .museum-exhibit__details > .eyebrow { color: var(--department-accent); }
+.museum-page .museum-filters button.is-active,
+.museum-page .museum-search input:focus { border-color: var(--department-accent); color: var(--department-accent); }
+
+/* 07 / 99% CLUB — private membership office and embossed membership card. */
+main.audit-page.club-page {
+  --department-accent: #d99bcf;
+  --department-accent-rgb: 217, 155, 207;
+  --department-accent-soft: rgba(217, 155, 207, .085);
+  --department-accent-line: rgba(217, 155, 207, .34);
+  background-image: radial-gradient(ellipse at 88% 18%, rgba(217, 155, 207, .09), transparent 35%), linear-gradient(180deg, rgba(217, 155, 207, .018), transparent 48%);
+}
+.club-page .club-intro__stamp {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(120deg, rgba(217, 155, 207, .075), #151016 75%);
+}
+.club-page .club-intro__stamp strong,
+.club-page .club-intro__stamp span,
+.club-page .club-intro h1 span,
+.club-page .club-briefing__body h2 span,
+.club-page .club-question__number,
+.club-page .club-membership-card__stamp,
+.club-page .club-membership-card__top { color: var(--department-accent); }
+.club-page .club-panel {
+  border-color: var(--department-accent-line);
+  background: radial-gradient(ellipse at 50% 0, rgba(217, 155, 207, .075), transparent 42%), linear-gradient(155deg, #18131a, #0e0c10 72%);
+}
+.club-page .club-panel__header { border-bottom-color: var(--department-accent-line); }
+.club-page .club-membership-card {
+  border-color: var(--department-accent-line);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, .3), inset 0 0 35px rgba(217, 155, 207, .045);
+}
+.club-page .club-progress > div { background: var(--department-accent); }
+.club-page .club-answer:hover,
+.club-page .club-answer:focus-visible,
+.club-page .club-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
+
+/* 08 / GLOBAL COPE INDEX — monitoring room, synthetic signal and telemetry. */
+main.audit-page.cope-index-page {
+  --department-accent: #f08f6e;
+  --department-accent-rgb: 240, 143, 110;
+  --department-accent-soft: rgba(240, 143, 110, .085);
+  --department-accent-line: rgba(240, 143, 110, .34);
+  background-image: radial-gradient(ellipse at 85% 18%, rgba(240, 143, 110, .1), transparent 38%), linear-gradient(180deg, rgba(240, 143, 110, .02), transparent 48%);
+}
+.cope-index-page .cope-index-intro__warning {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(100deg, rgba(240, 143, 110, .07), #11120e 70%);
+}
+.cope-index-page .cope-index-intro__warning strong,
+.cope-index-page .cope-index-intro h1 span,
+.cope-index-page .cope-daily-board__hero strong,
+.cope-index-page .cope-daily-board__bulletin > div { color: var(--department-accent); }
+.cope-index-page .cope-daily-board {
+  overflow: hidden;
+  border-color: var(--department-accent-line);
+  background: repeating-linear-gradient(0deg, rgba(240, 143, 110, .022) 0, rgba(240, 143, 110, .022) 1px, transparent 1px, transparent 5px), linear-gradient(150deg, #191411, #0d0e0c 72%);
+}
+.cope-index-page .cope-daily-board__header { border-bottom-color: var(--department-accent-line); background: rgba(240, 143, 110, .035); }
+.cope-index-page .cope-daily-board__hero { background: linear-gradient(90deg, rgba(240, 143, 110, .075), transparent 72%), #10120f; }
+.cope-index-page .cope-dimension__bar i,
+.cope-index-page .cope-progress > div { background: var(--department-accent); }
+.cope-index-page .cope-answer:hover,
+.cope-index-page .cope-answer:focus-visible,
+.cope-index-page .cope-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
+
+/* 09 / DEPARTMENT ARCHIVES — central records stack, indexed and classified. */
+main.audit-page.archives-page {
+  --department-accent: #86cbd1;
+  --department-accent-rgb: 134, 203, 209;
+  --department-accent-soft: rgba(134, 203, 209, .085);
+  --department-accent-line: rgba(134, 203, 209, .33);
+  background-image: radial-gradient(ellipse at 14% 14%, rgba(134, 203, 209, .085), transparent 37%), linear-gradient(180deg, rgba(134, 203, 209, .018), transparent 44%);
+}
+.archives-page .archives-intro__notice {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(100deg, rgba(134, 203, 209, .06), #101514 72%);
+}
+.archives-page .archives-intro__notice strong,
+.archives-page .archives-intro h1 span,
+.archives-page .archives-card__department,
+.archives-page .archives-card__finding span,
+.archives-page .archives-card__body > a { color: var(--department-accent); }
+.archives-page .archives-library {
+  border-top-color: var(--department-accent-line);
+  background: linear-gradient(90deg, rgba(134, 203, 209, .022), transparent 60%);
+}
+.archives-page .archives-card { border-color: rgba(134, 203, 209, .2); background: linear-gradient(145deg, #121a1a, #0d1111 76%); }
+.archives-page .archives-card:hover { border-color: var(--department-accent); box-shadow: 0 14px 34px rgba(134, 203, 209, .06); }
+.archives-page .archives-categories button.is-active,
+.archives-page .archives-search input:focus { border-color: var(--department-accent); color: var(--department-accent); }
+
+/* 10 / DAILY DEPARTMENT — newsroom desk and issued bulletin. */
+main.audit-page.daily-office-page {
+  --department-accent: #e6bd70;
+  --department-accent-rgb: 230, 189, 112;
+  --department-accent-soft: rgba(230, 189, 112, .085);
+  --department-accent-line: rgba(230, 189, 112, .34);
+  background-image: radial-gradient(ellipse at 85% 14%, rgba(230, 189, 112, .09), transparent 38%), linear-gradient(180deg, rgba(230, 189, 112, .018), transparent 48%);
+}
+.daily-office-page .daily-office-intro__notice {
+  border-color: var(--department-accent-line);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(105deg, rgba(230, 189, 112, .075), #14120d 72%);
+}
+.daily-office-page .daily-office-intro__notice strong,
+.daily-office-page .daily-office-intro__notice span,
+.daily-office-page .daily-office-intro h1 span,
+.daily-office-page .daily-office-panel__header span:last-child,
+.daily-office-page .daily-office-headline .eyebrow,
+.daily-office-page .daily-office-bulletin > div,
+.daily-office-page .daily-office-section__stamp { color: var(--department-accent); }
+.daily-office-page .daily-office-panel {
+  border-color: var(--department-accent-line);
+  background: repeating-linear-gradient(0deg, rgba(230, 189, 112, .018) 0, rgba(230, 189, 112, .018) 1px, transparent 1px, transparent 6px), linear-gradient(155deg, #191710, #0e0d0a 72%);
+}
+.daily-office-page .daily-office-panel__header { border-bottom-color: var(--department-accent-line); background: rgba(230, 189, 112, .04); }
+.daily-office-page .daily-office-bulletin { border-color: var(--department-accent-line); border-left: 3px solid var(--department-accent); background: rgba(230, 189, 112, .045); }
+.daily-office-page .daily-office-section__stamp { border-color: var(--department-accent-line); }
+
+/* 11 / DEPARTMENT PASSPORT — optional local registry and visit ledger. */
+main.audit-page.passport-page {
+  --department-accent: #a8d99b;
+  --department-accent-rgb: 168, 217, 155;
+  --department-accent-soft: rgba(168, 217, 155, .075);
+  --department-accent-line: rgba(168, 217, 155, .31);
+  background-image: radial-gradient(circle at 50% 22%, rgba(168, 217, 155, .085), transparent 34%), radial-gradient(circle at 50% 22%, transparent 0 110px, rgba(168, 217, 155, .035) 111px 112px, transparent 113px 150px, rgba(168, 217, 155, .025) 151px 152px, transparent 153px);
+}
+.passport-page .passport-intro .eyebrow,
+.passport-page .passport-intro h1 span,
+.passport-page .passport-intro__notice span,
+.passport-page .passport-opt-in__notice strong,
+.passport-page .passport-panel__active,
+.passport-page .passport-achievements__heading strong { color: var(--department-accent); }
+.passport-page .passport-intro .audit-intro__meta { border-bottom-color: var(--department-accent-line); }
+.passport-page .passport-intro__notice,
+.passport-page .passport-opt-in__notice { border-color: var(--department-accent-line); background: var(--department-accent-soft); }
+.passport-page .passport-panel {
+  border-color: var(--department-accent-line);
+  border-top: 2px solid var(--department-accent);
+  background: linear-gradient(90deg, rgba(168, 217, 155, .025) 1px, transparent 1px), linear-gradient(0deg, rgba(168, 217, 155, .025) 1px, transparent 1px), #0c100d;
+  background-size: 24px 24px;
+}
+.passport-page .passport-progress__bar span { background: var(--department-accent); }
+.passport-page .passport-stamp.is-earned,
+.passport-page .passport-achievement.is-earned { border-color: var(--department-accent-line); background: var(--department-accent-soft); }
+.passport-page .passport-stamp.is-earned .passport-stamp__top b,
+.passport-page .passport-achievement.is-earned > span { color: var(--department-accent); }
+
+/* Shared interaction cues keep every room inside one design system. */
+main.audit-page :is(.audit-progress, .simulator-progress, .utility-progress, .roadmap-progress, .whitepaper-progress, .club-progress, .cope-progress) {
+  background-color: rgba(var(--department-accent-rgb), .12);
+}
+main.audit-page :is(.audit-workspace, .simulator-panel, .utility-panel, .roadmap-panel, .whitepaper-panel, .club-panel, .cope-daily-board, .archives-library, .daily-office-panel, .passport-panel) :is(button, a):focus-visible {
+  outline-color: var(--department-accent);
+}
+@media (max-width: 800px) {
+  main.audit-page { background-image: radial-gradient(ellipse at 50% 8%, rgba(var(--department-accent-rgb), .065), transparent 34%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .museum-page .museum-card,
+  .archives-page .archives-card,
+  .simulator-page .simulator-choice__button { transition: none; }
+}
