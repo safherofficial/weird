@@ -61,6 +61,7 @@ export type WhitepaperResult = WhitepaperProgress & {
   projectSlug: string;
   projectLabel: string;
   sector: string;
+  problemStatement: string;
   architecture: string;
   consensus: string;
   tokenModel: string;
@@ -265,7 +266,7 @@ export function slugifyProjectName(value: string): string {
     .replace(/^-+|-+$/g, "")
     .slice(0, 24)
     .replace(/-+$/g, "");
-  return slug.length >= 2 ? slug : "PROJECT-PENDING";
+  return slug.length >= 1 ? slug : "PROJECT-PENDING";
 }
 
 export function isValidWhitepaperAnswers(value: unknown): value is number[] {
@@ -373,6 +374,7 @@ function buildAllocations(tokenAnswer: number): TokenAllocation[] {
 function buildSections(
   projectLabel: string,
   sector: string,
+  problemStatement: string,
   architecture: string,
   consensus: string,
   tokenModel: string,
@@ -389,7 +391,7 @@ function buildSections(
       title: "EXECUTIVE ABSTRACT",
       eyebrow: "THE PROMISE / SUBJECT TO REVISION",
       paragraphs: [
-        projectLabel + " is presented as a proposed initiative in " + sector.toLowerCase() + ". Its stated ambition is to coordinate infrastructure, incentives and participants through a system described as " + architecture.toLowerCase() + ".",
+        projectLabel + " is presented as a proposed initiative in " + sector.toLowerCase() + ". Its stated ambition is to address the following claimed problem: \"" + problemStatement + "\". The proposed system is described as " + architecture.toLowerCase() + ".",
         "This document is a fictional whitepaper parody generated from a visitor's answers. It contains illustrative terminology and invented token allocations. It is not a technical specification, offer, solicitation, project disclosure or statement about an existing business.",
       ],
       bullets: ["Primary classification: " + profile.title, "Product clarity index: " + progress.productClarity + "/100", "Current operational status: NOT INDEPENDENTLY VERIFIED"],
@@ -399,7 +401,7 @@ function buildSections(
       title: "PROBLEM STATEMENT",
       eyebrow: "A PROBLEM HAS BEEN CLAIMED",
       paragraphs: [
-        "The proposed thesis concerns " + sector.toLowerCase() + " and the challenge of delivering a useful product to a defined audience. The selected brief describes a problem involving " + (progress.productClarity >= 60 ? "specific workflows and identifiable user needs." : "a broad market narrative whose intended user remains subject to clarification."),
+        "The selected problem statement is: \"" + problemStatement + "\" The Department has not independently verified that this problem exists at the claimed scale or that the proposed project can solve it. " + (progress.productClarity >= 60 ? "The answers suggest a specific workflow and identifiable user need, although supporting evidence is still absent." : "The intended user and the practical scope remain subject to clarification."),
         "No market sizing, customer research, user interviews or competitor analysis has been conducted by this generator. Any claim of demand would require evidence outside this document.",
       ],
       bullets: ["User definition: TO BE DOCUMENTED", "Demand validation: NOT PROVIDED", "Competitive analysis: OUTSIDE THE SCOPE OF THIS PARODY"],
@@ -501,6 +503,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
   const seed = answers.reduce((sum, answer, index) => ((sum * 41) + (answer + 1) * (index + 23)) % 900000, 808080);
   const caseNumber = String(seed + 100000).slice(-6);
   const sector = sectors[answers[0]];
+  const problemStatement = questions[1].options[answers[1]].label;
   const architecture = architectures[answers[2]];
   const consensus = consensusModels[answers[3]];
   const tokenModel = tokenModels[answers[4]];
@@ -517,7 +520,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
         ? "PRODUCT NOT LOCATED. CHECK THE APPENDIX."
         : "DOCUMENT GENERATED / VALIDATION NOT INCLUDED.";
   const allocations = buildAllocations(answers[4]);
-  const sections = buildSections(projectLabel, sector, architecture, consensus, tokenModel, governanceModel, adoptionModel, riskPosture, progress, profile, secondaryProfile);
+  const sections = buildSections(projectLabel, sector, problemStatement, architecture, consensus, tokenModel, governanceModel, adoptionModel, riskPosture, progress, profile, secondaryProfile);
 
   return {
     ...progress,
@@ -525,6 +528,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
     projectSlug,
     projectLabel,
     sector,
+    problemStatement,
     architecture,
     consensus,
     tokenModel,
@@ -555,6 +559,8 @@ export function formatWhitepaperMarkdown(result: WhitepaperResult): string {
     "- Classification: " + result.profile.title,
     "- Secondary classification: " + result.secondaryProfile.title,
     "- Departmental finding: " + result.finding,
+    "- Departmental disposition: " + result.profile.disposition,
+    "- Claimed core problem: " + result.problemStatement,
     "- Technical density: " + result.technicalDensity + "/100",
     "- Buzzword density: " + result.buzzwordDensity + "/100",
     "- Product clarity: " + result.productClarity + "/100",
@@ -596,7 +602,8 @@ export function formatWhitepaperHtml(result: WhitepaperResult): string {
   ).join("");
   const tableRows = result.allocations.map((item) => "<tr><td>" + escape(item.label) + "</td><td>" + item.percentage + "%</td><td>" + escape(item.explanation) + "</td></tr>").join("");
   const summaryHtml = "<section><p class=\"eyebrow\">DEPARTMENTAL FINDING</p><h2>" + escape(result.finding) + "</h2>" +
-    "<p><strong>Primary classification:</strong> " + escape(result.profile.title) + "<br><strong>Secondary classification:</strong> " + escape(result.secondaryProfile.title) + "</p>" +
+    "<p><strong>Primary classification:</strong> " + escape(result.profile.title) + "<br><strong>Secondary classification:</strong> " + escape(result.secondaryProfile.title) + "<br><strong>Departmental disposition:</strong> " + escape(result.profile.disposition) + "</p>" +
+    "<p><strong>Claimed core problem:</strong> " + escape(result.problemStatement) + "</p>" +
     "<p><strong>Technical density:</strong> " + result.technicalDensity + "/100 · <strong>Buzzword density:</strong> " + result.buzzwordDensity + "/100 · <strong>Product clarity:</strong> " + result.productClarity + "/100</p>" +
     "<p>Notional supply: 1,000,000,000 fictional units. All scores and token allocations are invented.</p></section>";
   return "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>" + escape(result.projectLabel + " — Whitepaper") + "</title><style>" +
