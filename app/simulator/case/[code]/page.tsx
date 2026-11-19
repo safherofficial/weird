@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode } from "../../simulator-engine";
 
 type SimulatorCasePageProps = {
@@ -136,6 +137,8 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS CASE ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/simulator">RUN YOUR OWN SIMULATION ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="simulator" />
 
         <p className="simulator-disclaimer">
           This public case reconstructs anonymous choices encoded in its URL. All assets, prices, events,
