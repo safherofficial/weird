@@ -37,6 +37,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - Daily Departmental Absurdity: UTC-date-seeded fictional daily bulletin, incident report, internal memo and quotation, with universal sharing, copy-link and full-dispatch copy actions, plus a downloadable dispatch card. No real news, market events or external feeds are used.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and baseline security response headers.
+- Technical SEO discovery through `/robots.txt` and `/sitemap.xml`, including canonical landing pages and curated Museum / Archive detail records. Generated personal case URLs remain excluded from the sitemap and marked `noindex`.
 - Responsive layout and reduced-motion support.
 
 All ten currently listed Department experiences are available. Further Departments remain planned.

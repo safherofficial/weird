@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import UtilityInspectorClient from "./utility-inspector-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/utility-inspector" },
   title: "Utility Inspector",
   description: "Seven questions. Three departmental scores. Find out whether your project pitch contains a product, a token with a job or a suspicious amount of narrative fog.",
   openGraph: {

@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import AuditClient from "./audit-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/audit" },
   title: "The DYOR Audit 2.0",
   description: "Ten-question satirical DYOR Audit with 17 fictional degen archetypes, dynamic social case cards and challenge-a-friend links.",
   openGraph: {

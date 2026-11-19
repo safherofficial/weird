@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import WhitepaperFactoryClient from "./whitepaper-factory-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/whitepaper-factory" },
   title: "Whitepaper Factory",
   description: "Seven questions. Nine sections. Generate a fictional crypto whitepaper filled with technical-sounding language, tokenomics and appropriately neglected footnotes.",
   openGraph: {

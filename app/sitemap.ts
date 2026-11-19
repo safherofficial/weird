@@ -1,0 +1,37 @@
+import type { MetadataRoute } from "next";
+import { archiveRecords } from "./archives/archive-data";
+import { exhibits } from "./museum/museum-data";
+import { SITE_URL } from "./site-config";
+
+const publicRoutes = [
+  "/",
+  "/audit",
+  "/simulator",
+  "/utility-inspector",
+  "/roadmap-generator",
+  "/whitepaper-factory",
+  "/club",
+  "/cope-index",
+  "/daily-office",
+  "/museum",
+  "/archives",
+  "/passport",
+  "/privacy",
+  "/terms",
+] as const;
+
+/**
+ * Publish stable, indexable destinations only. Individual generated case URLs
+ * are deliberately excluded because their route metadata marks them noindex.
+ */
+export default function sitemap(): MetadataRoute.Sitemap {
+  const routes = [
+    ...publicRoutes,
+    ...exhibits.map((exhibit) => "/museum/exhibits/" + exhibit.slug),
+    ...archiveRecords.map((record) => "/archives/records/" + record.slug),
+  ];
+
+  return routes.map((route) => ({
+    url: new URL(route, SITE_URL).toString(),
+  }));
+}

@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import PassportClient from "./passport-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/passport" },
   title: "Department Passport",
   description: "An optional local visit passport for THE DYOR DEPARTMENT. Collect Department stamps and unlock fictional achievements without an account or server profile.",
   robots: { index: true, follow: true },

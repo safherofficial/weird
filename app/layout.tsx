@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { SITE_URL } from "./site-config";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://weird-zeta.vercel.app"),
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
   title: {
     default: "THE DYOR DEPARTMENT — Your research was impeccable. Your entry was not.",
     template: "%s | THE DYOR DEPARTMENT",

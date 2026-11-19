@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import SimulatorClient from "./simulator-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/simulator" },
   title: "The Bagholder Simulator",
   description: "Seven rounds, four questionable decisions and one completely fictional asset. Find out how you would handle the imaginary bag.",
   openGraph: {

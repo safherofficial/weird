@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import RoadmapGeneratorClient from "./roadmap-generator-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/roadmap-generator" },
   title: "Roadmap Generator",
   description: "Six questions. Seven fictional phases. Generate a crypto roadmap featuring ambitious milestones, questionable deadlines and a generous amount of soon.",
   openGraph: {

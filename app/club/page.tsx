@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import ClubClient from "./club-client";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/club" },
   title: "The 99% Club",
   description: "Five questions. Three fictional indices. Apply to the most exclusive club with absolutely no benefits.",
   openGraph: {

@@ -5,6 +5,7 @@ import ArchivesClient from "./archives-client";
 import { archiveRecords } from "./archive-data";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/archives" },
   title: "Department Archives",
   description: "A searchable archive of fictional Department memos, incident reports, technical appendices, membership files and public notices.",
   openGraph: {

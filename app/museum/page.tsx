@@ -5,6 +5,7 @@ import MuseumClient from "./museum-client";
 import { exhibits } from "./museum-data";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/museum" },
   title: "The Bagholder Museum",
   description: "A curated archive of fictional crypto relics, lost roadmaps, suspicious certificates and preserved specimens of spectacular conviction.",
   openGraph: {

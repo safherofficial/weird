@@ -7,6 +7,7 @@ import { buildDailyOfficeDispatch } from "./daily-engine";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/daily-office" },
   title: "Daily Departmental Absurdity",
   description: "One daily fictional dispatch from THE DYOR DEPARTMENT: an official bulletin, an incident report, an internal memo and a quote that should never have been approved.",
   openGraph: {

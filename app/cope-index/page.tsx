@@ -7,6 +7,7 @@ import { buildDailyCopeIndex } from "./cope-engine";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/cope-index" },
   title: "Global Cope Index",
   description: "A fictional daily dashboard for conviction pressure, narrative fog, Telegram reliance, liquidity anxiety and the eternal promise of soon.",
   openGraph: {
