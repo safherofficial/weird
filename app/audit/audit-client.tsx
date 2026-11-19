@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import DepartmentNextSteps from "../components/department-next-steps";
 import { questions } from "./audit-data";
 import {
   AUDIT_QUESTION_COUNT,
@@ -428,6 +429,7 @@ export default function AuditClient() {
           <button className="button button--quiet" onClick={restart} type="button">REOPEN INVESTIGATION ↺</button>
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
+        <DepartmentNextSteps currentDepartment="audit" />
       </section>
     );
   }
