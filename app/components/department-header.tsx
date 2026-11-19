@@ -11,6 +11,65 @@ type DepartmentHeaderProps = {
   ctaLabel?: string;
 };
 
+type DepartmentSection = NonNullable<DepartmentHeaderProps["activeSection"]>;
+
+type DepartmentNavItem = {
+  number: string;
+  label: string;
+  href: string;
+  section: DepartmentSection;
+};
+
+const navigationGroups: {
+  number: string;
+  label: string;
+  descriptor: string;
+  items: DepartmentNavItem[];
+}[] = [
+  {
+    number: "01",
+    label: "CASEWORK",
+    descriptor: "INVESTIGATION / 01—03",
+    items: [
+      { number: "01", label: "THE DYOR AUDIT", href: "/audit", section: "audit" },
+      { number: "02", label: "BAGHOLDER SIMULATOR", href: "/simulator", section: "simulator" },
+      { number: "03", label: "UTILITY INSPECTOR", href: "/utility-inspector", section: "utility" },
+    ],
+  },
+  {
+    number: "02",
+    label: "PROJECT OFFICE",
+    descriptor: "DOCUMENTS / 04—05",
+    items: [
+      { number: "04", label: "ROADMAP GENERATOR", href: "/roadmap-generator", section: "roadmap" },
+      { number: "05", label: "WHITEPAPER FACTORY", href: "/whitepaper-factory", section: "whitepaper" },
+    ],
+  },
+  {
+    number: "03",
+    label: "PUBLIC RECORDS",
+    descriptor: "COLLECTION / 06—10",
+    items: [
+      { number: "06", label: "THE BAGHOLDER MUSEUM", href: "/museum", section: "museum" },
+      { number: "07", label: "THE 99% CLUB", href: "/club", section: "club" },
+      { number: "08", label: "GLOBAL COPE INDEX", href: "/cope-index", section: "cope" },
+      { number: "09", label: "DEPARTMENT ARCHIVES", href: "/archives", section: "archives" },
+      { number: "10", label: "DAILY DEPARTMENT", href: "/daily-office", section: "daily" },
+    ],
+  },
+];
+
+const passportItem: DepartmentNavItem = {
+  number: "11",
+  label: "DEPARTMENT PASSPORT",
+  href: "/passport",
+  section: "passport",
+};
+
+function isCurrent(item: DepartmentNavItem, activeSection: DepartmentSection) {
+  return item.section === activeSection;
+}
+
 export default function DepartmentHeader({
   activeSection = "home",
   statusMessage = "ALL SYSTEMS NOMINALLY USELESS",
@@ -45,6 +104,23 @@ export default function DepartmentHeader({
     setMenuOpen(false);
   }
 
+  function renderDepartmentLink(item: DepartmentNavItem, mobile = false) {
+    const current = isCurrent(item, activeSection);
+    return (
+      <Link
+        className={mobile ? "mobile-nav__item" : "main-nav__item"}
+        href={item.href}
+        aria-current={current ? "page" : undefined}
+        onClick={closeMenu}
+        key={item.number}
+      >
+        <span className={mobile ? "mobile-nav__number" : "main-nav__number"}>{item.number}</span>
+        <span className={mobile ? "mobile-nav__item-label" : "main-nav__item-label"}>{item.label}</span>
+        <span className={mobile ? "mobile-nav__arrow" : "main-nav__arrow"} aria-hidden="true">↗</span>
+      </Link>
+    );
+  }
+
   return (
     <>
       <a className="skip-link" href="#content-start">SKIP TO CONTENT</a>
@@ -63,45 +139,40 @@ export default function DepartmentHeader({
         </Link>
 
         <nav className="main-nav" aria-label="Main navigation">
-          <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined}>
-            THE AUDIT <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/simulator" aria-current={activeSection === "simulator" ? "page" : undefined}>
-            THE SIMULATOR <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/utility-inspector" aria-current={activeSection === "utility" ? "page" : undefined}>
-            UTILITY <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/roadmap-generator" aria-current={activeSection === "roadmap" ? "page" : undefined}>
-            ROADMAP <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/whitepaper-factory" aria-current={activeSection === "whitepaper" ? "page" : undefined}>
-            WHITEPAPER <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/museum" aria-current={activeSection === "museum" ? "page" : undefined}>
-            THE MUSEUM <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/club" aria-current={activeSection === "club" ? "page" : undefined}>
-            THE 99% CLUB <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/cope-index" aria-current={activeSection === "cope" ? "page" : undefined}>
-            COPE INDEX <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/archives" aria-current={activeSection === "archives" ? "page" : undefined}>
-            ARCHIVES <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined}>
-            DAILY OFFICE <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href="/passport" aria-current={activeSection === "passport" ? "page" : undefined}>
+          {navigationGroups.map((group) => {
+            const groupIsActive = group.items.some((item) => isCurrent(item, activeSection));
+            return (
+              <details className="main-nav__group" data-active={groupIsActive || undefined} name="department-navigation" key={group.number}>
+                <summary className="main-nav__trigger">
+                  <span className="main-nav__trigger-index">{group.number}</span>
+                  {group.label}
+                  <span className="main-nav__trigger-arrow" aria-hidden="true">⌄</span>
+                </summary>
+                <div className="main-nav__panel">
+                  <div className="main-nav__panel-heading">
+                    <span>{group.descriptor}</span>
+                    <span>ROUTING DIRECTORY</span>
+                  </div>
+                  {group.items.map((item) => renderDepartmentLink(item))}
+                </div>
+              </details>
+            );
+          })}
+          <Link
+            className="main-nav__passport"
+            href={passportItem.href}
+            aria-current={isCurrent(passportItem, activeSection) ? "page" : undefined}
+            onClick={closeMenu}
+          >
             PASSPORT <span aria-hidden="true">↗</span>
           </Link>
-          <Link href={departmentsHref}>DEPARTMENTS</Link>
-          <Link href={manifestoHref}>MANIFESTO</Link>
+          <span className="main-nav__divider" aria-hidden="true" />
+          <Link className="main-nav__utility-link" href={departmentsHref} onClick={closeMenu}>DIRECTORY</Link>
+          <Link className="main-nav__utility-link" href={manifestoHref} onClick={closeMenu}>MANIFESTO</Link>
         </nav>
 
         <div className="site-header__actions">
-          <Link className="header-cta" href={ctaHref}>
+          <Link className="header-cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </Link>
           <button
@@ -118,54 +189,44 @@ export default function DepartmentHeader({
           </button>
         </div>
 
-        <nav id={menuId} className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>
+        <nav id={menuId} className="mobile-nav" aria-label="Department directory" hidden={!menuOpen}>
           <div className="mobile-nav__heading">
-            <span>DEPARTMENT DIRECTORY</span>
-            <span>13 DESTINATIONS / 1 PURPOSE</span>
+            <div>
+              <span className="mobile-nav__eyebrow">INTERNAL ROUTING / DD-01</span>
+              <strong>DEPARTMENT DIRECTORY</strong>
+            </div>
+            <span className="mobile-nav__count">11 DESTINATIONS<br />2 PORTAL SECTIONS</span>
           </div>
-          <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined} onClick={closeMenu}>
-            <span>01</span> THE AUDIT <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/simulator" aria-current={activeSection === "simulator" ? "page" : undefined} onClick={closeMenu}>
-            <span>02</span> THE SIMULATOR <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/utility-inspector" aria-current={activeSection === "utility" ? "page" : undefined} onClick={closeMenu}>
-            <span>03</span> UTILITY INSPECTOR <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/roadmap-generator" aria-current={activeSection === "roadmap" ? "page" : undefined} onClick={closeMenu}>
-            <span>04</span> ROADMAP GENERATOR <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/whitepaper-factory" aria-current={activeSection === "whitepaper" ? "page" : undefined} onClick={closeMenu}>
-            <span>05</span> WHITEPAPER FACTORY <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/museum" aria-current={activeSection === "museum" ? "page" : undefined} onClick={closeMenu}>
-            <span>06</span> THE BAGHOLDER MUSEUM <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/club" aria-current={activeSection === "club" ? "page" : undefined} onClick={closeMenu}>
-            <span>07</span> THE 99% CLUB <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/cope-index" aria-current={activeSection === "cope" ? "page" : undefined} onClick={closeMenu}>
-            <span>08</span> GLOBAL COPE INDEX <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/archives" aria-current={activeSection === "archives" ? "page" : undefined} onClick={closeMenu}>
-            <span>09</span> DEPARTMENT ARCHIVES <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined} onClick={closeMenu}>
-            <span>10</span> DAILY OFFICE <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href="/passport" aria-current={activeSection === "passport" ? "page" : undefined} onClick={closeMenu}>
-            <span>11</span> DEPARTMENT PASSPORT <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href={departmentsHref} onClick={closeMenu}>
-            <span>12</span> DEPARTMENTS <b aria-hidden="true">↗</b>
-          </Link>
-          <Link href={manifestoHref} onClick={closeMenu}>
-            <span>13</span> MANIFESTO <b aria-hidden="true">↗</b>
-          </Link>
+
+          <div className="mobile-nav__scroll">
+            {navigationGroups.map((group) => (
+              <section className="mobile-nav__section" aria-label={group.label} key={group.number}>
+                <div className="mobile-nav__section-heading">
+                  <span>{group.number} / {group.label}</span>
+                  <span>{String(group.items.length).padStart(2, "0")} UNITS</span>
+                </div>
+                {group.items.map((item) => renderDepartmentLink(item, true))}
+              </section>
+            ))}
+
+            <section className="mobile-nav__section mobile-nav__section--identity" aria-label="Identity">
+              <div className="mobile-nav__section-heading">
+                <span>04 / IDENTITY</span>
+                <span>01 UNIT</span>
+              </div>
+              {renderDepartmentLink(passportItem, true)}
+            </section>
+
+            <div className="mobile-nav__utility">
+              <Link href={departmentsHref} onClick={closeMenu}>DEPARTMENTS <span aria-hidden="true">↗</span></Link>
+              <Link href={manifestoHref} onClick={closeMenu}>MANIFESTO <span aria-hidden="true">↗</span></Link>
+            </div>
+            <div className="mobile-nav__foot">NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.</div>
+          </div>
+
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </Link>
-          <div className="mobile-nav__foot">NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.</div>
         </nav>
       </header>
     </>
