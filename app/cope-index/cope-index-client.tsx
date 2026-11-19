@@ -280,14 +280,15 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
             </div>
             <div className="cope-question">
               <div className="cope-question__number">INTERROGATION // {String(current + 1).padStart(2, "0")}</div>
-              <h3>{question.prompt}</h3>
+              <h3 id="cope-current-question" aria-live="polite" aria-atomic="true">{question.prompt}</h3>
               <p>{question.note}</p>
-              <div className="cope-answer-list">
+              <div className="cope-answer-list" role="group" aria-labelledby="cope-current-question">
                 {question.options.map((option, index) => (
                   <button
                     key={option.label}
                     type="button"
                     className={"cope-answer" + (currentAnswer === index ? " is-selected" : "")}
+                    aria-pressed={currentAnswer === index}
                     onClick={() => chooseAnswer(index)}
                   >
                     <span>{String.fromCharCode(65 + index)}</span>

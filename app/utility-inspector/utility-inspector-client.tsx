@@ -397,12 +397,13 @@ export default function UtilityInspectorClient() {
 
       <div className="utility-question">
         <div className="utility-question__number">INSPECTION // {String(current + 1).padStart(2, "0")}</div>
-        <h2>{question.prompt}</h2>
+        <h2 id="utility-current-question" aria-live="polite" aria-atomic="true">{question.prompt}</h2>
         <p>{question.note}</p>
-        <div className="utility-answer-list">
+        <div className="utility-answer-list" role="group" aria-labelledby="utility-current-question">
           {question.options.map((option, index) => (
             <button
               className={"utility-answer" + (currentOption === index ? " is-selected" : "")}
+              aria-pressed={currentOption === index}
               key={option.label}
               type="button"
               onClick={() => chooseAnswer(index)}

@@ -346,12 +346,13 @@ export default function WhitepaperFactoryClient() {
 
       <div className="whitepaper-question">
         <div className="whitepaper-question__number">DOCUMENT REVIEW // {String(current + 1).padStart(2, "0")}</div>
-        <h2>{question.prompt}</h2>
+        <h2 id="whitepaper-current-question" aria-live="polite" aria-atomic="true">{question.prompt}</h2>
         <p>{question.note}</p>
-        <div className="whitepaper-answer-list">
+        <div className="whitepaper-answer-list" role="group" aria-labelledby="whitepaper-current-question">
           {question.options.map((option, index) => (
             <button
               className={"whitepaper-answer" + (currentAnswer === index ? " is-selected" : "")}
+              aria-pressed={currentAnswer === index}
               key={option.label}
               type="button"
               onClick={() => chooseAnswer(index)}
