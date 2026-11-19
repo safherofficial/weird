@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode } from "../../roadmap-engine";
 
 type RoadmapCasePageProps = {
@@ -65,9 +66,6 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
     result.profile.roast.length > 65 ? result.profile.roast.slice(0, 61) + "…" : result.profile.roast,
     "Your turn. Put your milestones on paper.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(
-    "https://weird-zeta.vercel.app" + caseUrl
-  );
 
   return (
     <main className="audit-page roadmap-case-page" id="main-content">
@@ -132,7 +130,7 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
 
         <div className="roadmap-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS ROADMAP ON X <span>↗</span></a>
+          <DepartmentPublicShare title="Roadmap Generator case file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/roadmap-generator">GENERATE YOUR OWN ROADMAP ↗</Link>
         </div>
 
