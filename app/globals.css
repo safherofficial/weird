@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
-
 /* U16.2 — shared institutional design tokens */
 :root {
   /* Core palette: retain the established Department identity. */
@@ -11368,5 +11366,91 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     .cope-question-panel__footer
   ) {
     gap: 8px;
+  }
+}
+
+
+/* U16.8 — accessible state, contrast preferences and system color support. */
+@media (prefers-contrast: more) {
+  :root {
+    --text-secondary: #c8d2c4;
+    --text-tertiary: #c0cbb9;
+    --muted: #c8d2c4;
+  }
+
+  main.audit-page :is(
+    .audit-intro__meta,
+    .audit-progress__meta,
+    .question-block__number,
+    .simulator-progress__meta,
+    .utility-progress__meta,
+    .utility-question__number,
+    .roadmap-progress__meta,
+    .roadmap-question__number,
+    .whitepaper-progress__meta,
+    .whitepaper-question__number,
+    .club-progress__meta,
+    .club-question__number,
+    .cope-progress__meta,
+    .cope-question__number,
+    .museum-gallery__summary,
+    .archives-library__summary,
+    .passport-progress__bottom
+  ) {
+    color: var(--text-secondary);
+  }
+
+  :where(a, button, input, textarea, select):focus-visible {
+    outline-width: 3px;
+    outline-offset: 4px;
+  }
+
+  main.audit-page :is(
+    .utility-answer,
+    .roadmap-answer,
+    .whitepaper-answer,
+    .club-answer,
+    .cope-answer,
+    .museum-filters button,
+    .archives-categories button
+  ) {
+    border-color: #91a18a;
+  }
+}
+
+@media (forced-colors: active) {
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 4px;
+  }
+
+  main.audit-page :is(button, .button, input) {
+    border-color: ButtonText;
+  }
+
+  main.audit-page :is(
+    .utility-answer[aria-pressed="true"],
+    .roadmap-answer[aria-pressed="true"],
+    .whitepaper-answer[aria-pressed="true"],
+    .club-answer[aria-pressed="true"],
+    .cope-answer[aria-pressed="true"],
+    .museum-filters button[aria-pressed="true"],
+    .archives-categories button[aria-pressed="true"]
+  ) {
+    border: 2px solid Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  main.audit-page :is(
+    .utility-answer[aria-pressed="true"],
+    .roadmap-answer[aria-pressed="true"],
+    .whitepaper-answer[aria-pressed="true"],
+    .club-answer[aria-pressed="true"],
+    .cope-answer[aria-pressed="true"]
+  ) > span {
+    border-color: HighlightText;
+    background: HighlightText;
+    color: Highlight;
   }
 }
