@@ -108,7 +108,9 @@ export default function DepartmentHeader({
     const current = isCurrent(item, activeSection);
     return (
       <Link
-        className={mobile ? "mobile-nav__item" : "main-nav__item"}
+        className={mobile
+          ? `mobile-nav__item${item.section === "passport" ? " mobile-nav__item--passport" : ""}`
+          : "main-nav__item"}
         href={item.href}
         aria-current={current ? "page" : undefined}
         onClick={closeMenu}

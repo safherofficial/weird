@@ -184,3 +184,159 @@
   .achievement-toast { animation: none; }
   .achievement-emblem.is-earned::after { animation: none; }
 }
+
+/* U18.2 — make the badge earning loop explicit before users enter the collection. */
+.passport-guide {
+  max-width: 1040px;
+  margin: 0 auto 32px;
+  padding: clamp(20px, 3.2vw, 34px);
+  border: 1px solid #34412f;
+  background: linear-gradient(145deg, rgba(182,255,101,.055), rgba(12,16,13,.94) 48%);
+}
+.passport-guide__heading { max-width: 720px; }
+.passport-guide__heading .eyebrow { margin: 0 0 12px; }
+.passport-guide__heading h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: .98;
+  letter-spacing: -.065em;
+}
+.passport-guide__heading h2 span { color: var(--accent); }
+.passport-guide__heading > p:last-child {
+  max-width: 620px;
+  margin: 15px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.passport-guide__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 25px;
+}
+.passport-guide__step {
+  min-height: 170px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  background: rgba(7,10,8,.72);
+}
+.passport-guide__step > span,
+.passport-guide__difference article > span {
+  color: var(--accent);
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .12em;
+}
+.passport-guide__step h3,
+.passport-guide__difference h3 {
+  margin: 13px 0 8px;
+  color: var(--text);
+  font-size: 13px;
+  letter-spacing: .035em;
+}
+.passport-guide__step p,
+.passport-guide__difference p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+.passport-guide__step p strong { color: var(--accent); font-weight: 600; }
+.passport-guide__difference {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.passport-guide__difference article {
+  padding: 17px;
+  border: 1px solid rgba(182,255,101,.22);
+  background: rgba(182,255,101,.035);
+}
+.passport-guide__difference h3 { margin-top: 7px; }
+.passport-guide__fineprint {
+  margin: 15px 0 0;
+  color: #899486;
+  font: 8px/1.65 var(--font-mono);
+  letter-spacing: .04em;
+}
+.passport-achievements__instructions {
+  margin: -3px 0 15px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+.passport-achievement__requirement {
+  display: grid !important;
+  gap: 5px;
+  padding: 9px 10px;
+  border-left: 2px solid color-mix(in srgb, var(--badge-rarity) 65%, transparent);
+  background: rgba(182,255,101,.035);
+}
+.passport-achievement__requirement strong {
+  color: var(--badge-rarity, var(--accent));
+  font: 7px/1.4 var(--font-mono);
+  letter-spacing: .11em;
+}
+@media (max-width: 760px) {
+  .passport-guide__steps { grid-template-columns: 1fr; }
+  .passport-guide__step { min-height: 0; }
+}
+@media (max-width: 560px) {
+  .passport-guide__difference { grid-template-columns: 1fr; }
+  .passport-guide { padding: 18px; }
+}
+
+/* U18.2 — Passport is the visible collection hub: subtle electric invitation pulse. */
+.main-nav__passport {
+  position: relative;
+  isolation: isolate;
+  padding-inline: 12px;
+  border-color: rgba(182,255,101,.68);
+  background: rgba(182,255,101,.045);
+  color: #c9ff91;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(182,255,101,.32);
+  box-shadow: 0 0 0 1px rgba(182,255,101,.08), 0 0 13px rgba(182,255,101,.12), inset 0 0 12px rgba(182,255,101,.055);
+  animation: passport-nav-neon-pulse 2.8s ease-in-out infinite;
+}
+.main-nav__passport::after {
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  border: 1px solid rgba(182,255,101,.24);
+  content: "";
+  pointer-events: none;
+  animation: passport-nav-halo 2.8s ease-in-out infinite;
+}
+.main-nav__passport:hover,
+.main-nav__passport[aria-current="page"] {
+  border-color: var(--green);
+  background: rgba(182,255,101,.12);
+  color: #e1ffbf;
+  box-shadow: 0 0 18px rgba(182,255,101,.25), inset 0 0 16px rgba(182,255,101,.10);
+}
+.mobile-nav__item--passport {
+  position: relative;
+  border: 1px solid rgba(182,255,101,.44);
+  background: rgba(182,255,101,.06);
+  color: #cfff9f;
+  box-shadow: 0 0 13px rgba(182,255,101,.09), inset 0 0 12px rgba(182,255,101,.045);
+  animation: passport-nav-neon-pulse 2.8s ease-in-out infinite;
+}
+.mobile-nav__item--passport .mobile-nav__number,
+.mobile-nav__item--passport .mobile-nav__arrow { color: var(--green); }
+@keyframes passport-nav-neon-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(182,255,101,.08), 0 0 10px rgba(182,255,101,.10), inset 0 0 9px rgba(182,255,101,.035); }
+  50% { box-shadow: 0 0 0 1px rgba(182,255,101,.26), 0 0 22px rgba(182,255,101,.27), inset 0 0 16px rgba(182,255,101,.10); }
+}
+@keyframes passport-nav-halo {
+  0%, 100% { opacity: .22; transform: scale(.985); }
+  50% { opacity: .88; transform: scale(1.025); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .main-nav__passport,
+  .main-nav__passport::after,
+  .mobile-nav__item--passport { animation: none; }
+}

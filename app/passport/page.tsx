@@ -35,14 +35,52 @@ export default function DepartmentPassportPage() {
           <p className="eyebrow">OFFICE OF DEPARTMENTAL VISITS & ACHIEVEMENTS</p>
           <h1>THE DEPARTMENT<br /><span>PASSPORT.</span></h1>
           <p className="audit-intro__lead">
-            Department Stamps record where you have been. Achievement Badges reward completed experiences and specific challenges. Two separate records, one optional local Passport.
+            Your Passport has two separate collections: Visit Stamps for the departments you visit, and Achievement Badges for experiences you actually complete. Enable it before you start: after that, qualifying progress is recorded automatically on this device.
           </p>
           <div className="passport-intro__notice">
-            <span>OPTIONAL / OFF BY DEFAULT</span>
-            <strong>NO ACCOUNT. NO SERVER PROFILE. NO PUBLIC TRACKING.</strong>
-            <small>VISIT STAMPS AND ACHIEVEMENT PROGRESS STAY IN THIS BROWSER ONLY.</small>
+            <span>START HERE / OPTIONAL LOCAL REGISTER</span>
+            <strong>ENABLE YOUR PASSPORT BEFORE COMPLETING ACTIVITIES.</strong>
+            <small>IT IS OFF BY DEFAULT. EARLIER ACTIVITIES ARE NOT BACKFILLED. NO ACCOUNT OR SERVER PROFILE IS CREATED.</small>
           </div>
         </header>
+
+        <section className="passport-guide" aria-labelledby="passport-guide-title">
+          <div className="passport-guide__heading">
+            <p className="eyebrow">THE COLLECTION / OPERATING INSTRUCTIONS</p>
+            <h2 id="passport-guide-title">HOW TO EARN<br /><span>YOUR BADGES.</span></h2>
+            <p>Three steps. No hidden points, purchases or random drops. Every badge has a specific requirement shown again on its card below.</p>
+          </div>
+          <div className="passport-guide__steps">
+            <article className="passport-guide__step">
+              <span>01 / FIRST THING</span>
+              <h3>ENABLE THE PASSPORT</h3>
+              <p>Press <strong>ENABLE MY LOCAL PASSPORT</strong> below before starting. Until you do, visits and completed experiences are not saved.</p>
+            </article>
+            <article className="passport-guide__step">
+              <span>02 / COMPLETE THE TASK</span>
+              <h3>FINISH, DON’T JUST OPEN</h3>
+              <p>Answer every question and reach the final result, or generate the completed Roadmap and Whitepaper. The seven core experiences count only when finished.</p>
+            </article>
+            <article className="passport-guide__step">
+              <span>03 / AUTOMATIC REWARD</span>
+              <h3>UNLOCK &amp; COLLECT</h3>
+              <p>When a requirement is met, the badge unlocks automatically. A notification appears and the Passport updates your progress. No claim button is needed.</p>
+            </article>
+          </div>
+          <div className="passport-guide__difference">
+            <article>
+              <span>COLLECTION 01</span>
+              <h3>VISIT STAMPS</h3>
+              <p>Visit any of the 10 departments after enabling the Passport. Each department gives one stamp. A visit alone does not earn an Achievement Badge.</p>
+            </article>
+            <article>
+              <span>COLLECTION 02</span>
+              <h3>ACHIEVEMENT BADGES</h3>
+              <p>Complete the experience or special challenge written on the badge. For example: finish the DYOR Audit, complete both a Museum exhibit and an Archive record, or build a seven-day Daily Department streak.</p>
+            </article>
+          </div>
+          <p className="passport-guide__fineprint">SPECIAL RULES: SEVEN-DAY DESK DUTY requires a visit on seven consecutive UTC calendar dates. THE COMPLETE CIRCUIT requires all seven core experiences. Your record stays in this browser only and is not synchronized across devices.</p>
+        </section>
 
         <PassportClient />
       </div>

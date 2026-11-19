@@ -309,6 +309,7 @@ export default function PassportClient() {
           <div><span>COLLECTION 02 / COMPLETION & CHALLENGES</span><h2 id="passport-achievements-title">ACHIEVEMENT <span>BADGES.</span></h2></div>
           <strong>{achievements.length} / {PASSPORT_ACHIEVEMENTS.length} UNLOCKED</strong>
         </div>
+        <p className="passport-achievements__instructions">Each card explains its exact unlock condition. Complete that task while your Passport is enabled; progress is tracked automatically and the badge unlocks as soon as its requirement is met.</p>
         <div className="passport-rarity-legend" aria-label="Badge rarity levels">
           <span className="rarity-common">COMMON</span><span className="rarity-uncommon">UNCOMMON</span><span className="rarity-rare">RARE</span><span className="rarity-legendary">LEGENDARY</span>
         </div>
@@ -323,7 +324,7 @@ export default function PassportClient() {
                 </div>
                 <h3>{achievement.title}</h3>
                 <p>{achievement.description}</p>
-                <small>{achievement.requirement}</small>
+                <small className="passport-achievement__requirement"><strong>HOW TO UNLOCK</strong>{achievement.requirement}</small>
                 <div className="passport-achievement__progress" role="progressbar" aria-label={`${achievement.title} progress`} aria-valuemin={0} aria-valuemax={achievement.target} aria-valuenow={achievement.progress}>
                   <span style={{ width: badgeProgress + "%" }} />
                 </div>
