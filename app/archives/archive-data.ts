@@ -274,12 +274,19 @@ export function filterArchiveRecords(query: string, category: string): ArchiveRe
   const normalized = query.trim().toLowerCase();
   return archiveRecords.filter((record) => {
     const categoryMatch = category === "ALL FILES" || record.category === category;
+    const searchableSections = record.sections.flatMap((section) => [
+      section.heading,
+      ...section.paragraphs,
+    ]);
     const haystack = [
       record.title,
       record.category,
       record.department,
+      record.clearance,
       record.summary,
       record.finding,
+      record.stamp,
+      ...searchableSections,
       ...record.keywords,
     ].join(" ").toLowerCase();
     return categoryMatch && (!normalized || haystack.includes(normalized));
