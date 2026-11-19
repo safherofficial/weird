@@ -33,7 +33,7 @@ export default function AchievementToastHost() {
     <div className="achievement-toast-stack" aria-live="polite" aria-relevant="additions">
       {items.map((item) => (
         <aside className="achievement-toast" key={item.toastId} role="status">
-          <AchievementEmblem icon={item.icon} rarity={item.rarity} earned />
+          <AchievementEmblem id={item.id} rarity={item.rarity} earned />
           <div className="achievement-toast__copy">
             <span>ACHIEVEMENT UNLOCKED / {item.rarity}</span>
             <strong>{item.title}</strong>

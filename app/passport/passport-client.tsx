@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AchievementEmblem from "./achievement-emblem";
+import { ACHIEVEMENT_BADGE_ASSETS } from "./badge-assets";
 import {
   DEPARTMENT_STAMPS,
   PASSPORT_ACHIEVEMENTS,
@@ -25,11 +26,11 @@ function escapeXml(value: string) {
 function rarityColor(rarity: PassportAchievementStatus["rarity"]) {
   if (rarity === "LEGENDARY") return "#e7c17c";
   if (rarity === "RARE") return "#8fc6e8";
-  if (rarity === "UNCOMMON") return "#b6d79b";
-  return "#aeb7a6";
+  if (rarity === "UNCOMMON") return "#c4a46c";
+  return "#b6ff65";
 }
 
-function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus[]) {
+function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus[], assetBaseUrl: string) {
   const visited = new Set(data.visitedDepartments);
   const unlockedCount = statuses.filter((item) => item.earned).length;
   const stampLines = DEPARTMENT_STAMPS.map((stamp, index) => {
@@ -53,12 +54,12 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     const y = 635 + row * 105;
     const color = item.earned ? rarityColor(item.rarity) : "#66705f";
     const label = item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.progress + " OF " + item.target;
+    const imageHref = escapeXml(assetBaseUrl + ACHIEVEMENT_BADGE_ASSETS[item.id]);
     return (
       '<rect x="' + x + '" y="' + y + '" width="408" height="84" fill="' + (item.earned ? "#172016" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '"/>' +
-      '<circle cx="' + (x + 34) + '" cy="' + (y + 42) + '" r="19" fill="none" stroke="' + color + '" stroke-width="2"/>' +
-      '<text x="' + (x + 34) + '" y="' + (y + 47) + '" fill="' + color + '" font-family="monospace" font-size="13" text-anchor="middle">' + (item.earned ? "✓" : "·") + '</text>' +
-      '<text x="' + (x + 65) + '" y="' + (y + 35) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="11">' + escapeXml(item.title) + '</text>' +
-      '<text x="' + (x + 65) + '" y="' + (y + 56) + '" fill="' + color + '" font-family="monospace" font-size="8">' + label + '</text>'
+      '<image href="' + imageHref + '" x="' + (x + 3) + '" y="' + (y + 4) + '" width="76" height="76" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".36") + '"/>' +
+      '<text x="' + (x + 86) + '" y="' + (y + 35) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="11">' + escapeXml(item.title) + '</text>' +
+      '<text x="' + (x + 86) + '" y="' + (y + 56) + '" fill="' + color + '" font-family="monospace" font-size="8">' + label + '</text>'
     );
   }).join("");
 
@@ -71,13 +72,13 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     '<text x="72" y="166" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="43" font-weight="900">THE DEPARTMENT PASSPORT</text>' +
     '<text x="72" y="193" fill="#8d968a" font-family="monospace" font-size="12">' + visited.size + ' / 10 DEPARTMENTS VISITED  •  ' + unlockedCount + ' / ' + statuses.length + ' ACHIEVEMENT BADGES UNLOCKED</text>' +
     '<text x="72" y="246" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">01 / DEPARTMENT STAMPS — VISITS</text>' + stampLines +
-    '<text x="72" y="620" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">02 / ACHIEVEMENT BADGES — COMPLETED EXPERIENCES & CHALLENGES</text>' + badgeLines +
+    '<text x="72" y="620" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">02 / ACHIEVEMENT BADGES — COMPLETED EXPERIENCES &amp; CHALLENGES</text>' + badgeLines +
     '<text x="1328" y="1080" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">LOCAL RECORD / FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE</text>' +
     '</svg>'
   );
 }
 
-function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[]) {
+function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], assetBaseUrl: string) {
   const unlocked = statuses.filter((item) => item.earned).length;
   const cards = statuses.map((item, index) => {
     const column = index % 3;
@@ -85,18 +86,17 @@ function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[]) {
     const x = 70 + column * 430;
     const y = 220 + row * 175;
     const color = item.earned ? rarityColor(item.rarity) : "#66705f";
-    const initial = item.title.split(/\s+/).slice(0, 2).map((part) => part[0]).join("");
-    const progressWidth = Math.round((item.progress / item.target) * 300);
+    const progressWidth = Math.round((item.progress / item.target) * 280);
+    const imageHref = escapeXml(assetBaseUrl + ACHIEVEMENT_BADGE_ASSETS[item.id]);
     return (
       '<rect x="' + x + '" y="' + y + '" width="398" height="150" fill="' + (item.earned ? "#141d12" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '" stroke-width="' + (item.earned ? 2 : 1) + '"/>' +
-      '<circle cx="' + (x + 65) + '" cy="' + (y + 67) + '" r="38" fill="#0a0d0a" stroke="' + color + '" stroke-width="2"/>' +
-      '<circle cx="' + (x + 65) + '" cy="' + (y + 67) + '" r="30" fill="none" stroke="' + color + '" stroke-opacity=".35" stroke-dasharray="3 4"/>' +
-      '<text x="' + (x + 65) + '" y="' + (y + 73) + '" fill="' + color + '" font-family="monospace" font-size="19" text-anchor="middle" font-weight="bold">' + escapeXml(initial) + '</text>' +
-      '<text x="' + (x + 120) + '" y="' + (y + 45) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="12">' + escapeXml(item.title) + '</text>' +
-      '<text x="' + (x + 120) + '" y="' + (y + 68) + '" fill="' + color + '" font-family="monospace" font-size="9">' + (item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.rarity) + '</text>' +
-      '<text x="' + (x + 120) + '" y="' + (y + 89) + '" fill="#899486" font-family="monospace" font-size="8">' + item.progress + ' / ' + item.target + ' REQUIREMENT UNITS</text>' +
-      '<rect x="' + (x + 120) + '" y="' + (y + 104) + '" width="240" height="5" fill="#30382f"/><rect x="' + (x + 120) + '" y="' + (y + 104) + '" width="' + Math.round(progressWidth * .8) + '" height="5" fill="' + color + '"/>' +
-      '<text x="' + (x + 120) + '" y="' + (y + 130) + '" fill="#899486" font-family="monospace" font-size="8">' + (item.earned ? "DEPARTMENTAL RECORD VERIFIED" : "REQUIREMENT NOT YET MET") + '</text>'
+      '<circle cx="' + (x + 72) + '" cy="' + (y + 75) + '" r="62" fill="#0a0d0a" stroke="' + color + '" stroke-opacity=".32" stroke-width="1"/>' +
+      '<image href="' + imageHref + '" x="' + (x + 7) + '" y="' + (y + 10) + '" width="130" height="130" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".34") + '"/>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 38) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="12">' + escapeXml(item.title) + '</text>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 61) + '" fill="' + color + '" font-family="monospace" font-size="9">' + (item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.rarity) + '</text>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 82) + '" fill="#899486" font-family="monospace" font-size="8">' + item.progress + ' / ' + item.target + ' REQUIREMENT UNITS</text>' +
+      '<rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="218" height="5" fill="#30382f"/><rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="' + Math.round(progressWidth * .78) + '" height="5" fill="' + color + '"/>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 124) + '" fill="#899486" font-family="monospace" font-size="8">' + (item.earned ? "DEPARTMENTAL RECORD VERIFIED" : "REQUIREMENT NOT YET MET") + '</text>'
     );
   }).join("");
   return (
@@ -248,7 +248,7 @@ export default function PassportClient() {
 
   function downloadPassport() {
     downloadSvgAsPng(
-      makePassportSvg(currentPassport, statuses),
+      makePassportSvg(currentPassport, statuses, window.location.origin),
       1400,
       1130,
       "dyor-department-passport.png",
@@ -258,7 +258,7 @@ export default function PassportClient() {
 
   function downloadBadgeCollection() {
     downloadSvgAsPng(
-      makeAchievementCollectionSvg(statuses),
+      makeAchievementCollectionSvg(statuses, window.location.origin),
       1400,
       990,
       "dyor-department-badge-collection.png",
@@ -318,7 +318,7 @@ export default function PassportClient() {
             return (
               <article className={`passport-achievement${achievement.earned ? " is-earned" : ""} passport-achievement--${achievement.rarity.toLowerCase()}`} key={achievement.id}>
                 <div className="passport-achievement__top">
-                  <AchievementEmblem icon={achievement.icon} rarity={achievement.rarity} earned={achievement.earned} />
+                  <AchievementEmblem id={achievement.id} rarity={achievement.rarity} earned={achievement.earned} />
                   <div className="passport-achievement__identity"><span>{achievement.rarity}</span><strong>{achievement.earned ? "✓ UNLOCKED" : achievement.progress ? "IN PROGRESS" : "LOCKED"}</strong></div>
                 </div>
                 <h3>{achievement.title}</h3>

@@ -60,11 +60,11 @@
   content: "";
   pointer-events: none;
 }
-.passport-achievement--common { --badge-rarity: #aeb7a6; }
-.passport-achievement--uncommon { --badge-rarity: #b6d79b; }
+.passport-achievement--common { --badge-rarity: #b6ff65; }
+.passport-achievement--uncommon { --badge-rarity: #c4a46c; }
 .passport-achievement--rare { --badge-rarity: #8fc6e8; }
 .passport-achievement--legendary { --badge-rarity: #e7c17c; }
-.passport-achievement__top { display: flex; align-items: center; gap: 13px; min-height: 64px; }
+.passport-achievement__top { display: flex; align-items: center; gap: 13px; min-height: 94px; }
 .passport-achievement__identity { display: grid; gap: 5px; }
 .passport-achievement__identity span,
 .passport-achievement__identity strong {
@@ -82,29 +82,57 @@
 .passport-achievement__foot { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font: 7px/1.5 var(--font-mono); letter-spacing: .06em; }
 .passport-achievement__foot b { color: var(--badge-rarity, var(--muted)); font-weight: 500; }
 .achievement-emblem {
-  display: inline-grid;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
   flex: 0 0 auto;
-  width: 62px;
-  height: 62px;
-  place-items: center;
+  width: 92px;
+  height: 92px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
   border-radius: 50%;
-  color: var(--badge-rarity, var(--department-accent));
-  background: radial-gradient(circle, rgba(255,255,255,.045), rgba(0,0,0,.16) 72%);
+  background: radial-gradient(circle, rgba(182,255,101,.10), rgba(0,0,0,0) 72%);
 }
-.achievement-emblem svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.achievement-emblem__outer { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 2 3; opacity: .8; }
-.achievement-emblem__inner { fill: rgba(0,0,0,.12); stroke: currentColor; stroke-width: 1; opacity: .48; }
-.achievement-emblem__symbol { opacity: 1; }
-.achievement-emblem__seal { fill: currentColor; }
-.achievement-emblem.is-locked { opacity: .55; filter: grayscale(.75); }
-.achievement-emblem--common { --badge-rarity: #aeb7a6; }
-.achievement-emblem--uncommon { --badge-rarity: #b6d79b; }
+.achievement-emblem__art {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: filter .24s ease, opacity .24s ease, transform .24s ease;
+}
+.achievement-emblem.is-earned .achievement-emblem__art {
+  filter: drop-shadow(0 0 7px rgba(182,255,101,.16));
+}
+.achievement-emblem.is-earned::after {
+  position: absolute;
+  z-index: 0;
+  inset: 12%;
+  border: 1px solid color-mix(in srgb, var(--badge-rarity) 30%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 17px color-mix(in srgb, var(--badge-rarity) 12%, transparent);
+  content: "";
+  pointer-events: none;
+  animation: achievement-emblem-pulse 3.6s ease-in-out infinite;
+}
+.achievement-emblem.is-locked .achievement-emblem__art {
+  opacity: .48;
+  filter: grayscale(.58) brightness(.72);
+}
+.achievement-emblem--common { --badge-rarity: #b6ff65; }
+.achievement-emblem--uncommon { --badge-rarity: #c4a46c; }
 .achievement-emblem--rare { --badge-rarity: #8fc6e8; }
 .achievement-emblem--legendary { --badge-rarity: #e7c17c; }
+@keyframes achievement-emblem-pulse {
+  0%, 100% { opacity: .28; transform: scale(.96); }
+  50% { opacity: .72; transform: scale(1.04); }
+}
 .passport-rarity-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: -2px 0 16px; }
 .passport-rarity-legend span { font: 8px/1.5 var(--font-mono); letter-spacing: .1em; }
-.passport-rarity-legend .rarity-common { color: #aeb7a6; }
-.passport-rarity-legend .rarity-uncommon { color: #b6d79b; }
+.passport-rarity-legend .rarity-common { color: #b6ff65; }
+.passport-rarity-legend .rarity-uncommon { color: #c4a46c; }
 .passport-rarity-legend .rarity-rare { color: #8fc6e8; }
 .passport-rarity-legend .rarity-legendary { color: #e7c17c; }
 .achievement-toast-stack {
@@ -130,7 +158,7 @@
   pointer-events: auto;
   backdrop-filter: blur(14px);
 }
-.achievement-toast .achievement-emblem { width: 54px; height: 54px; }
+.achievement-toast .achievement-emblem { width: 68px; height: 68px; }
 .achievement-toast__copy { display: grid; min-width: 0; gap: 4px; }
 .achievement-toast__copy > span { color: var(--department-accent, #a8d99b); font: 8px/1.4 var(--font-mono); letter-spacing: .09em; }
 .achievement-toast__copy strong { color: var(--text, #f0f0e9); font-size: 12px; letter-spacing: .04em; }
@@ -143,14 +171,16 @@
 @media (max-width: 760px) {
   .passport-achievements__grid { grid-template-columns: 1fr; }
   .passport-collection__heading { align-items: flex-start; flex-direction: column; gap: 8px; }
-  .passport-achievement { min-height: 230px; }
+  .passport-achievement { min-height: 250px; }
 }
 @media (max-width: 640px) {
   .passport-rarity-legend { gap: 7px 12px; }
   .achievement-toast-stack { right: 12px; bottom: 12px; width: calc(100vw - 24px); }
   .achievement-toast { padding: 12px; }
+  .achievement-toast .achievement-emblem { width: 60px; height: 60px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .passport-achievement, .passport-achievement__progress span { transition: none; }
   .achievement-toast { animation: none; }
+  .achievement-emblem.is-earned::after { animation: none; }
 }
