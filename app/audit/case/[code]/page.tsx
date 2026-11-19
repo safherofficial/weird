@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildResult, decodeCaseCode, encodeCaseCode } from "../../audit-engine";
 
 type CasePageProps = {
@@ -129,6 +130,8 @@ export default async function PublicCasePage({ params }: CasePageProps) {
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS CASE ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/audit">START A NEW AUDIT ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="audit" />
 
         <p className="public-case__disclaimer">
           This is a public, fictional entertainment result reconstructed from anonymous answer choices in the URL.
