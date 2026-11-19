@@ -8088,3 +8088,364 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* U14 — Daily Departmental Absurdity */
+.daily-office-shell {
+  display: grid;
+  grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
+  gap: 52px;
+  align-items: start;
+  padding-block: 62px 100px;
+}
+
+.daily-office-intro {
+  position: sticky;
+  top: 30px;
+}
+
+.daily-office-intro > .eyebrow {
+  margin-top: 43px;
+}
+
+.daily-office-intro h1 {
+  margin: 20px 0;
+  font: 700 clamp(52px, 6vw, 76px)/.88 var(--sans);
+  letter-spacing: -.075em;
+}
+
+.daily-office-intro h1 span {
+  color: var(--green);
+}
+
+.daily-office-intro .audit-intro__lead {
+  max-width: 430px;
+}
+
+.daily-office-intro__notice {
+  display: grid;
+  gap: 8px;
+  margin-top: 35px;
+  padding: 18px;
+  border: 1px solid #52633f;
+  background: linear-gradient(120deg, #172116, #101510);
+}
+
+.daily-office-intro__notice span {
+  color: #8d997f;
+  font: 7px var(--mono);
+  letter-spacing: .09em;
+}
+
+.daily-office-intro__notice strong {
+  color: var(--green);
+  font: 700 11px/1.5 var(--mono);
+  letter-spacing: .035em;
+}
+
+.daily-office-intro__notice small {
+  color: #829079;
+  font: 7px/1.5 var(--mono);
+}
+
+.daily-office-panel {
+  position: relative;
+  min-width: 0;
+  padding: 0 20px 20px;
+  border: 1px solid #394537;
+  background: linear-gradient(155deg, #141a13, #0d100d 72%);
+  box-shadow: 0 20px 80px #0006;
+}
+
+.daily-office-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-inline: -20px;
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--line);
+  color: #8e9a87;
+  font: 7px var(--mono);
+  letter-spacing: .07em;
+}
+
+.daily-office-panel__header span:last-child {
+  color: var(--green);
+  text-align: right;
+}
+
+.daily-office-headline {
+  padding: 29px 0 23px;
+  border-bottom: 1px solid var(--line);
+}
+
+.daily-office-headline .eyebrow {
+  color: var(--green);
+}
+
+.daily-office-headline h2 {
+  margin: 14px 0 12px;
+  color: var(--text);
+  font: 700 clamp(28px, 3.7vw, 45px)/1.02 var(--sans);
+  letter-spacing: -.055em;
+  overflow-wrap: anywhere;
+}
+
+.daily-office-headline > p:last-child {
+  margin: 0;
+  color: #778371;
+  font: 7px var(--mono);
+  letter-spacing: .07em;
+}
+
+.daily-office-bulletin {
+  display: grid;
+  gap: 11px;
+  margin-top: 19px;
+  padding: 17px 18px;
+  border: 1px solid #45553b;
+  background: #121a10;
+}
+
+.daily-office-bulletin > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--green);
+  font: 7px var(--mono);
+  letter-spacing: .08em;
+}
+
+.daily-office-bulletin > div b {
+  color: #7f8c77;
+  font: inherit;
+}
+
+.daily-office-bulletin p {
+  margin: 0;
+  color: #dce4d7;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.daily-office-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 11px;
+}
+
+.daily-office-section {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #101510;
+}
+
+.daily-office-section__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #8b977f;
+  font: 7px var(--mono);
+  letter-spacing: .07em;
+}
+
+.daily-office-section__top small {
+  color: #65705f;
+  font: inherit;
+}
+
+.daily-office-section h3 {
+  margin: 15px 0 9px;
+  color: #e1e8dc;
+  font: 600 15px/1.2 var(--sans);
+  letter-spacing: -.02em;
+}
+
+.daily-office-section p {
+  margin: 0;
+  color: #97a092;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.daily-office-section__stamp {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 6px 7px;
+  border: 1px solid #604e35;
+  color: #d7b276;
+  font: 6px/1.45 var(--mono);
+  letter-spacing: .04em;
+}
+
+.daily-office-quote {
+  display: grid;
+  gap: 10px;
+  margin: 11px 0 0;
+  padding: 18px;
+  border-left: 2px solid #d7b276;
+  background: #191710;
+}
+
+.daily-office-quote span {
+  color: #bda16d;
+  font: 7px var(--mono);
+  letter-spacing: .09em;
+}
+
+.daily-office-quote p {
+  margin: 0;
+  color: #e0d3bd;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.daily-office-disposition {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.daily-office-disposition > div {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--line);
+  background: #0c110c;
+}
+
+.daily-office-disposition span {
+  color: #7e8978;
+  font: 6px var(--mono);
+  letter-spacing: .08em;
+}
+
+.daily-office-disposition strong {
+  color: var(--green);
+  font: 8px/1.55 var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.daily-office-disposition > div:last-child strong {
+  color: #d7b276;
+}
+
+.daily-office-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.daily-office-actions .button {
+  min-width: 0;
+  min-height: 45px;
+  padding-inline: 9px;
+  font-size: 7px;
+  text-align: center;
+  white-space: normal;
+}
+
+.daily-office-method {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+
+.daily-office-method span {
+  color: #809078;
+  font: 7px var(--mono);
+  letter-spacing: .08em;
+}
+
+.daily-office-method p {
+  margin: 0;
+  color: #687264;
+  font: 7px/1.7 var(--mono);
+}
+
+.daily-office-footer {
+  margin: 15px 0 0;
+  color: var(--green);
+  font: 7px var(--mono);
+  letter-spacing: .07em;
+  text-align: right;
+}
+
+@media (max-width: 1050px) {
+  .daily-office-shell {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 800px) {
+  .daily-office-shell {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-block: 43px 70px;
+  }
+
+  .daily-office-intro {
+    position: static;
+  }
+
+  .daily-office-intro > .eyebrow {
+    margin-top: 29px;
+  }
+
+  .daily-office-intro h1 {
+    font-size: clamp(48px, 9vw, 68px);
+  }
+}
+
+@media (max-width: 520px) {
+  .daily-office-panel {
+    padding-inline: 13px;
+    padding-bottom: 14px;
+  }
+
+  .daily-office-panel__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    margin-inline: -13px;
+    padding: 14px;
+    font-size: 6px;
+  }
+
+  .daily-office-panel__header span:last-child {
+    text-align: left;
+  }
+
+  .daily-office-sections,
+  .daily-office-disposition {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-office-section {
+    padding: 14px;
+  }
+
+  .daily-office-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-office-headline h2 {
+    font-size: 32px;
+  }
+
+  .daily-office-bulletin p {
+    font-size: 11px;
+  }
+
+  .daily-office-quote p {
+    font-size: 13px;
+  }
+}
