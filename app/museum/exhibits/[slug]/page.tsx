@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { exhibits, getExhibit } from "../../museum-data";
 
 type ExhibitPageProps = {
@@ -56,8 +57,6 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
     exhibit.plaque,
     "A fictional artifact from the archive of questionable conviction.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" +
-    encodeURIComponent("https://weird-zeta.vercel.app" + path);
 
   return (
     <main className="audit-page museum-exhibit-page" id="main-content">
@@ -95,7 +94,12 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
             <div><span>EMOTIONAL WEIGHT</span><strong>{exhibit.emotionalWeight}</strong></div>
           </div>
           <div className="museum-exhibit__actions">
-            <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS EXHIBIT ON X <span>↗</span></a>
+            <DepartmentPublicShare
+              title="THE BAGHOLDER MUSEUM / Exhibit"
+              shareText={xText}
+              casePath={path}
+              resourceLabel="MUSEUM EXHIBIT"
+            />
             <Link className="button button--quiet" href="/museum">RETURN TO THE COLLECTION ↗</Link>
           </div>
           <p className="museum-exhibit__disclaimer">

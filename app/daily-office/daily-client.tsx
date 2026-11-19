@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import DepartmentPublicShare from "../components/department-public-share";
 import type { DailyOfficeDispatch } from "./daily-engine";
 
 type DailyOfficeClientProps = {
@@ -76,7 +77,7 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
 export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) {
   const [notice, setNotice] = useState("");
 
-  const pageUrl = "https://weird-zeta.vercel.app/daily-office";
+  const pagePath = "/daily-office";
   const xText = [
     "THE DYOR DEPARTMENT / DAILY OFFICE",
     dispatch.headline,
@@ -86,6 +87,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
   ].join(" ");
 
   async function copyDispatch() {
+    const pageUrl = new URL(pagePath, window.location.origin).toString();
     const text = [
       "THE DYOR DEPARTMENT — DAILY DEPARTMENTAL ABSURDITY",
       dispatch.reference,
@@ -105,22 +107,6 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
       setNotice("TODAY'S DISPATCH AND SOURCE LINK COPIED.");
     } catch {
       setNotice("CLIPBOARD UNAVAILABLE. THE DISPATCH CAN STILL BE SHARED ON X.");
-    }
-  }
-
-  async function shareDispatch() {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "THE DYOR DEPARTMENT / Daily Office",
-          text: xText,
-          url: pageUrl,
-        });
-      } catch {
-        setNotice("SHARE CANCELLED. TODAY'S FILE REMAINS OPEN.");
-      }
-    } else {
-      await copyDispatch();
     }
   }
 
@@ -174,8 +160,6 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
     }
   }
 
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(pageUrl);
-
   return (
     <section className="daily-office-panel" aria-label="Daily Departmental Absurdity dispatch">
       <div className="daily-office-panel__header">
@@ -220,8 +204,17 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
 
       <div className="daily-office-actions">
         <button className="button button--primary" type="button" onClick={downloadCard}>DOWNLOAD DAILY CARD <span>↓</span></button>
-        <button className="button button--outline" type="button" onClick={shareDispatch}>SHARE DISPATCH <span>↗</span></button>
-        <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">POST TO X <span>↗</span></a>
+        <div
+          className="daily-office-share"
+          style={{ display: "flex", flexWrap: "wrap", gridColumn: "1 / -1", gap: 8, minWidth: 0 }}
+        >
+          <DepartmentPublicShare
+            title="THE DYOR DEPARTMENT / Daily Office"
+            shareText={xText}
+            casePath={pagePath}
+            resourceLabel="DAILY DISPATCH"
+          />
+        </div>
         <button className="button button--quiet" type="button" onClick={copyDispatch}>COPY FULL DISPATCH</button>
       </div>
 

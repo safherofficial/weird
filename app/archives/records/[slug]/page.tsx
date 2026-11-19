@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { archiveRecords, getArchiveRecord } from "../../archive-data";
 
 type ArchiveRecordPageProps = {
@@ -57,8 +58,6 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
     record.finding,
     "A fictional Department record. Filed for entertainment purposes.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" +
-    encodeURIComponent("https://weird-zeta.vercel.app" + route);
 
   return (
     <main className="audit-page archive-record-page" id="main-content">
@@ -106,7 +105,12 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
         </div>
 
         <div className="archive-record__actions">
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS RECORD ON X <span>↗</span></a>
+          <DepartmentPublicShare
+            title="THE DYOR DEPARTMENT ARCHIVES / Record"
+            shareText={xText}
+            casePath={route}
+            resourceLabel="ARCHIVE RECORD"
+          />
           <Link className="button button--quiet" href="/archives">RETURN TO THE ARCHIVE ↗</Link>
         </div>
 

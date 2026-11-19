@@ -6,6 +6,7 @@ type DepartmentPublicShareProps = {
   title: string;
   shareText: string;
   casePath: string;
+  resourceLabel?: string;
 };
 
 async function copyText(value: string) {
@@ -41,8 +42,10 @@ export default function DepartmentPublicShare({
   title,
   shareText,
   casePath,
+  resourceLabel = "CASE",
 }: DepartmentPublicShareProps) {
   const [notice, setNotice] = useState("");
+  const label = resourceLabel.trim() || "CASE";
 
   function getPublicUrl() {
     return new URL(casePath, window.location.origin).toString();
@@ -51,10 +54,10 @@ export default function DepartmentPublicShare({
   async function copyShareText() {
     try {
       const url = getPublicUrl();
-      await copyText(shareText + "\n\nPUBLIC CASE FILE: " + url);
-      setNotice("CASE SUMMARY AND PUBLIC LINK COPIED.");
+      await copyText(shareText + "\n\nPUBLIC " + label + ": " + url);
+      setNotice(label + " SUMMARY AND PUBLIC LINK COPIED.");
     } catch {
-      setNotice("COPY UNAVAILABLE IN THIS BROWSER. YOU CAN STILL SHARE THE CASE ON X.");
+      setNotice("COPY UNAVAILABLE IN THIS BROWSER. YOU CAN STILL SHARE ON X.");
     }
   }
 
@@ -68,10 +71,10 @@ export default function DepartmentPublicShare({
 
     try {
       await navigator.share({ title, text: shareText, url });
-      setNotice("SHARE ACTION COMPLETED.");
+      setNotice(label + " SHARE ACTION COMPLETED.");
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
-        setNotice("SHARE CANCELLED. YOUR PUBLIC CASE REMAINS AVAILABLE.");
+        setNotice("SHARE CANCELLED. YOUR PUBLIC " + label + " REMAINS AVAILABLE.");
         return;
       }
 
@@ -89,10 +92,10 @@ export default function DepartmentPublicShare({
   return (
     <>
       <button className="button button--outline" type="button" onClick={shareCase}>
-        SHARE CASE <span aria-hidden="true">↗</span>
+        SHARE {label} <span aria-hidden="true">↗</span>
       </button>
       <button className="button button--quiet" type="button" onClick={copyShareText}>
-        COPY CASE + LINK
+        COPY {label} + LINK
       </button>
       <button className="button button--x" type="button" onClick={postToX}>
         POST TO X <span aria-hidden="true">↗</span>
