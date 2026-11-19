@@ -182,7 +182,7 @@ export default function Home() {
             <SectionLabel>THE OFFICE OF QUESTIONABLE DECISIONS</SectionLabel>
             <h2>OUR DEPARTMENTS.<br /><span>YOUR PROBLEM.</span></h2>
           </div>
-          <p>Sixteen committees. Zero solutions.<br />Currently, all eight departments are accepting cases.</p>
+          <p>Sixteen committees. Zero solutions.<br />Currently, all nine departments are accepting cases.</p>
         </div>
         <div className="department-grid">
           {departments.map((item) => {
