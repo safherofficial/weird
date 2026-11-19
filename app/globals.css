@@ -11126,3 +11126,155 @@ main.audit-page :is(.audit-workspace, .simulator-panel, .utility-panel, .roadmap
   .archives-page .archives-card,
   .simulator-page .simulator-choice__button { transition: none; }
 }
+
+
+/* U16.6 — deliberate interaction feedback across the Department. */
+main.audit-page :is(button, .button) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+main.audit-page :is(button:not(:disabled), .button):active {
+  transform: translateY(1px) scale(.99);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .055);
+}
+
+main.audit-page :is(
+  .utility-answer,
+  .roadmap-answer,
+  .whitepaper-answer,
+  .club-answer,
+  .cope-answer
+) {
+  transition:
+    border-color var(--motion-standard) var(--motion-ease),
+    background var(--motion-standard) var(--motion-ease),
+    transform var(--motion-standard) var(--motion-ease),
+    box-shadow var(--motion-standard) var(--motion-ease);
+}
+
+main.audit-page :is(
+  .utility-answer.is-selected,
+  .roadmap-answer.is-selected,
+  .whitepaper-answer.is-selected,
+  .club-answer.is-selected,
+  .cope-answer.is-selected
+) {
+  box-shadow:
+    inset 3px 0 0 var(--department-accent),
+    0 8px 22px rgba(var(--department-accent-rgb), .075);
+}
+
+main.audit-page :is(
+  .utility-answer.is-selected,
+  .roadmap-answer.is-selected,
+  .whitepaper-answer.is-selected,
+  .club-answer.is-selected,
+  .cope-answer.is-selected
+) > span {
+  border-color: var(--department-accent);
+  background: var(--department-accent);
+  color: #10110f;
+}
+
+main.audit-page :is(
+  .audit-progress,
+  .simulator-progress,
+  .utility-progress,
+  .roadmap-progress,
+  .whitepaper-progress,
+  .club-progress,
+  .cope-progress
+) > div {
+  transition:
+    width var(--motion-slow) var(--motion-ease),
+    background-color var(--motion-standard) var(--motion-ease);
+  box-shadow: 0 0 12px rgba(var(--department-accent-rgb), .22);
+}
+
+.passport-page .passport-progress__bar span {
+  transition: width var(--motion-slow) var(--motion-ease);
+  box-shadow: 0 0 13px rgba(var(--department-accent-rgb), .3);
+}
+
+.passport-page :is(.passport-stamp.is-earned, .passport-achievement.is-earned) {
+  transition:
+    border-color var(--motion-standard) var(--motion-ease),
+    background var(--motion-standard) var(--motion-ease),
+    box-shadow var(--motion-standard) var(--motion-ease);
+  box-shadow: inset 0 0 22px rgba(var(--department-accent-rgb), .035);
+}
+
+main.audit-page :is(.museum-filters button, .archives-categories button) {
+  transition:
+    border-color var(--motion-fast) var(--motion-ease),
+    background var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+main.audit-page :is(.museum-filters button[aria-pressed="true"], .archives-categories button[aria-pressed="true"]) {
+  box-shadow: inset 0 -2px 0 var(--department-accent);
+}
+
+main.audit-page :is(.museum-search input, .archives-search input) {
+  transition:
+    border-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
+}
+
+main.audit-page :is(.museum-search input, .archives-search input):focus-visible {
+  outline-color: var(--department-accent);
+  box-shadow: 0 0 0 3px rgba(var(--department-accent-rgb), .12);
+}
+
+main.audit-page :is(.museum-filters button, .archives-categories button):focus-visible {
+  outline-color: var(--department-accent);
+}
+
+@keyframes department-result-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes department-stamp-arrive {
+  from {
+    opacity: 0;
+    transform: rotate(16deg) scale(1.12);
+  }
+  to {
+    opacity: .85;
+    transform: rotate(9deg) scale(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  main.audit-page :is(.museum-filters button, .archives-categories button):hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  main.audit-page :is(
+    .audit-result,
+    .simulator-result,
+    .utility-result,
+    .roadmap-result,
+    .whitepaper-result,
+    .club-result,
+    .cope-personal-result
+  ) {
+    animation: department-result-arrive 420ms var(--motion-ease) both;
+  }
+
+  .audit-result .result-stamp {
+    animation: department-stamp-arrive 460ms 100ms var(--motion-ease) both;
+  }
+}
