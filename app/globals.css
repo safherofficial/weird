@@ -8499,3 +8499,349 @@ body {
     display: none !important;
   }
 }
+
+
+/* U15 — Department Passport: optional, local-only visit register */
+.passport-page {
+  overflow: hidden;
+}
+
+.passport-shell {
+  padding-top: clamp(54px, 8vw, 104px);
+  padding-bottom: clamp(64px, 9vw, 112px);
+}
+
+.passport-intro {
+  max-width: 880px;
+  margin: 0 auto 42px;
+}
+
+.passport-intro .audit-intro__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font: 9px/1.5 var(--font-mono);
+  letter-spacing: .12em;
+}
+
+.passport-intro .eyebrow {
+  margin: 28px 0 14px;
+}
+
+.passport-intro h1 {
+  margin: 0;
+  font-size: clamp(48px, 9vw, 104px);
+  line-height: .88;
+  letter-spacing: -.075em;
+}
+
+.passport-intro h1 span,
+.passport-opt-in__body h2 span {
+  color: var(--accent);
+}
+
+.passport-intro .audit-intro__lead {
+  max-width: 650px;
+  margin: 24px 0;
+  color: var(--muted);
+  font-size: clamp(15px, 2vw, 19px);
+  line-height: 1.7;
+}
+
+.passport-intro__notice,
+.passport-opt-in__notice {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid rgba(182, 255, 101, .28);
+  background: rgba(182, 255, 101, .045);
+}
+
+.passport-intro__notice span,
+.passport-opt-in__notice strong {
+  color: var(--accent);
+  font: 9px/1.5 var(--font-mono);
+  letter-spacing: .12em;
+}
+
+.passport-intro__notice strong {
+  color: var(--text);
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+
+.passport-intro__notice small {
+  color: var(--muted);
+  font: 9px/1.6 var(--font-mono);
+}
+
+.passport-panel {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid var(--line);
+  background: #0c100d;
+}
+
+.passport-panel__header,
+.passport-progress__top,
+.passport-progress__bottom,
+.passport-achievements__heading,
+.passport-stamp__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.passport-panel__header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font: 9px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.passport-panel__active,
+.passport-stamp.is-earned .passport-stamp__top b,
+.passport-achievement.is-earned > span {
+  color: var(--accent);
+}
+
+.passport-opt-in__body {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(26px, 5vw, 54px) 0;
+}
+
+.passport-opt-in__body h2 {
+  margin: 12px 0 18px;
+  font-size: clamp(38px, 7vw, 68px);
+  line-height: .94;
+  letter-spacing: -.065em;
+}
+
+.passport-opt-in__body > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.passport-opt-in__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 26px 0;
+}
+
+.passport-opt-in__facts > div {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  min-height: 88px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: #101510;
+}
+
+.passport-opt-in__facts span,
+.passport-opt-in__facts strong {
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.passport-opt-in__facts span {
+  color: var(--muted);
+}
+
+.passport-opt-in__facts strong {
+  color: var(--text);
+  font-size: 9px;
+}
+
+.passport-opt-in__notice {
+  margin: 24px 0;
+}
+
+.passport-opt-in__notice p,
+.passport-privacy-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.passport-progress {
+  margin: 24px 0 30px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: #101510;
+}
+
+.passport-progress__top {
+  color: var(--muted);
+  font: 9px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.passport-progress__top strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.passport-progress__bar {
+  height: 7px;
+  margin: 14px 0 10px;
+  overflow: hidden;
+  background: #252d24;
+}
+
+.passport-progress__bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width .25s ease;
+}
+
+.passport-progress__bottom {
+  color: var(--muted);
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .06em;
+}
+
+.passport-stamps,
+.passport-achievements__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.passport-stamp,
+.passport-achievement {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #101510;
+}
+
+.passport-stamp.is-earned,
+.passport-achievement.is-earned {
+  border-color: rgba(182, 255, 101, .35);
+  background: rgba(182, 255, 101, .045);
+}
+
+.passport-stamp__top {
+  color: var(--muted);
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.passport-stamp__top b {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.passport-stamp h3 {
+  margin: 18px 0 8px;
+  font-size: 15px;
+  letter-spacing: -.02em;
+}
+
+.passport-stamp p {
+  margin: 0;
+  color: var(--muted);
+  font: 8px/1.7 var(--font-mono);
+  letter-spacing: .04em;
+}
+
+.passport-achievements {
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.passport-achievements__heading {
+  margin-bottom: 14px;
+  color: var(--muted);
+  font: 9px/1.5 var(--font-mono);
+  letter-spacing: .1em;
+}
+
+.passport-achievements__heading strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.passport-achievement {
+  display: grid;
+  gap: 8px;
+}
+
+.passport-achievement > span {
+  color: var(--muted);
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.passport-achievement strong {
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+.passport-achievement small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.passport-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 26px 0 18px;
+}
+
+.passport-actions .button {
+  min-height: 46px;
+}
+
+.passport-privacy-note {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.passport-panel .audit-notice {
+  margin: 16px 0 0;
+}
+
+@media (max-width: 640px) {
+  .passport-intro .audit-intro__meta,
+  .passport-panel__header,
+  .passport-progress__bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .passport-opt-in__facts,
+  .passport-stamps,
+  .passport-achievements__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .passport-actions {
+    display: grid;
+  }
+
+  .passport-actions .button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passport-progress__bar span {
+    transition: none;
+  }
+}
