@@ -5042,3 +5042,53 @@ body {
     text-decoration: none !important;
   }
 }
+
+
+/* U08 follow-up — exports on public whitepaper case files */
+.whitepaper-public-export {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #0e130e;
+}
+
+.whitepaper-public-export__actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.whitepaper-public-export__actions .button {
+  min-width: 0;
+  min-height: 44px;
+  padding-inline: 9px;
+  font-size: 7px;
+  text-align: center;
+  white-space: normal;
+}
+
+.whitepaper-public-export .audit-notice {
+  margin-top: 12px;
+}
+
+@media (max-width: 800px) {
+  .whitepaper-public-export__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .whitepaper-public-export {
+    padding: 12px;
+  }
+
+  .whitepaper-public-export__actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .whitepaper-public-export {
+    display: none !important;
+  }
+}
