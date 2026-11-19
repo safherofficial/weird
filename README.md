@@ -10,7 +10,7 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - The app does not intentionally set analytics or advertising cookies or include tracking pixels. The optional DYOR Audit archive is stored in local browser storage only.
 - Shareable result URLs encode selected answers; Roadmap Generator and Whitepaper Factory URLs also include the sanitized project label. Anyone with a link can view that result.
 - No financial advice, trading signals, investment recommendations or promises of returns.
-- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure. Bagholder Museum exhibits are invented satirical artifacts and do not refer to actual people, companies, tokens or communities. THE 99% CLUB is a fictional membership joke, not a statistic about real investors or market participants. The Global Cope Index is a synthetic date-seeded dashboard, not real market, investor or community sentiment data.
+- Scores, classifications, dashboard labels and simulator events are fictional entertainment. Audit results do not assess actual investment skill, financial risk or market performance. Utility Inspector results are based only on visitor-selected answers and do not inspect real projects, tokens, contracts or businesses. Roadmap Generator output is a fictional parody and is not a real project plan, delivery commitment or forecast. Whitepaper Factory output, including token allocations and technical labels, is invented entertainment and is not a real technical specification, token offer or project disclosure. Bagholder Museum exhibits are invented satirical artifacts and do not refer to actual people, companies, tokens or communities. THE 99% CLUB is a fictional membership joke, not a statistic about real investors or market participants. The Global Cope Index is a synthetic date-seeded dashboard, not real market, investor or community sentiment data. Department Archives contains original fictional records and does not document actual people, projects, companies or events.
 - The visitor is part of the joke, never the target.
 - Interactive experiences should produce shareable, recognizable Department case files.
 
@@ -31,15 +31,14 @@ A satirical, deliberately useless institution dedicated to questionable convicti
 - The Whitepaper Factory: seven self-reported choices, nine generated document sections, three fictional scores, ten satirical archetypes and a fictional token allocation model.
 - Public whitepaper case pages with dynamic social previews, challenge links and HTML / Markdown export. HTML documents include print styling for browser-based Save as PDF.
 - The Bagholder Museum: twelve fictional curated artifacts across four collections, searchable and filterable gallery, individual exhibit records and dynamic social cards.
-- THE 99% CLUB: six satirical member archetypes, a fictional application flow, shareable public member files and downloadable membership cards.
-- THE GLOBAL COPE INDEX: a synthetic daily dashboard with five date-seeded dimensions and an optional five-question personal calibration. No real visitor, market or community data is collected.
+- THE 99% CLUB: five-question fictional membership application, three satirical indices, six reachable archetypes, membership card export and shareable public member files. The name is not a real 99% market statistic and membership has no benefits.
+- THE GLOBAL COPE INDEX: synthetic UTC-date-seeded dashboard with five fictional dimensions and an optional personal five-question calibration, shareable personal files and downloadable cards. No visitor poll, market feed or real-world sentiment data is used.
+- Department Archives: twelve curated fictional records across five categories, searchable/filterable library, static detail pages and social previews. No user uploads or real event claims.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and baseline security response headers.
-- THE 99% CLUB: five-question fictional membership application, three satirical indices, six reachable archetypes, membership card export and shareable public member files. The name is not a real 99% market statistic and membership has no benefits.
-- Global Cope Index: synthetic UTC-date-seeded dashboard with five fictional dimensions and an optional personal five-question calibration, shareable personal files and downloadable cards. No visitor poll, market feed or real-world sentiment data is used.
 - Responsive layout and reduced-motion support.
 
-All eight currently listed Department experiences are available. Further Departments remain planned.
+All nine currently listed Department experiences are available. Further Departments remain planned.
 
 ## Requirements
 

@@ -76,6 +76,14 @@ const departments = [
     href: "/cope-index",
     featured: true,
   },
+  {
+    number: "09",
+    title: "THE DEPARTMENT ARCHIVES",
+    description: "Twelve fictional records, incident reports and official memos from the administrative aftermath of doing your own research.",
+    status: "ARCHIVE OPEN",
+    href: "/archives",
+    featured: true,
+  },
 ];
 
 export default function Home() {
@@ -174,7 +182,7 @@ export default function Home() {
             <SectionLabel>THE OFFICE OF QUESTIONABLE DECISIONS</SectionLabel>
             <h2>OUR DEPARTMENTS.<br /><span>YOUR PROBLEM.</span></h2>
           </div>
-          <p>Sixteen committees. Zero solutions.<br />Currently, all eight departments are accepting cases.</p>
+          <p>Sixteen committees. Zero solutions.<br />Currently, all nine departments are accepting cases.</p>
         </div>
         <div className="department-grid">
           {departments.map((item) => {
