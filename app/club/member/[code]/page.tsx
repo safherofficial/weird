@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildClubResult, decodeClubCode, encodeClubCode } from "../../club-engine";
 
 type MemberPageProps = {
@@ -65,9 +66,6 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
     result.profile.motto,
     "Your application is pending.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(
-    "https://weird-zeta.vercel.app" + caseUrl
-  );
 
   return (
     <main className="audit-page club-member-page" id="main-content">
@@ -115,7 +113,7 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
 
         <div className="club-public-member__actions">
           <Link className="button button--primary" href={challengeUrl}>NOMINATE ANOTHER DEGEN <span>↗</span></Link>
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE MEMBERSHIP ON X <span>↗</span></a>
+          <DepartmentPublicShare title="99% Club membership file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/club">APPLY FOR YOUR OWN MEMBERSHIP ↗</Link>
         </div>
 

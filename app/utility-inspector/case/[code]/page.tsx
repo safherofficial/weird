@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildUtilityResult, decodeUtilityCode, encodeUtilityCode } from "../../utility-engine";
 
 type UtilityCasePageProps = {
@@ -65,9 +66,6 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
     result.profile.roast.length > 60 ? result.profile.roast.slice(0, 56) + "…" : result.profile.roast,
     "Inspect yours.",
   ].join(" ");
-  const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(
-    "https://weird-zeta.vercel.app" + caseUrl
-  );
 
   return (
     <main className="audit-page utility-case-page" id="main-content">
@@ -125,7 +123,7 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
 
         <div className="utility-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS CASE ON X <span>↗</span></a>
+          <DepartmentPublicShare title="Utility Inspector case file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/utility-inspector">SUBMIT YOUR OWN CLAIMS ↗</Link>
         </div>
 

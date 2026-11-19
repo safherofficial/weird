@@ -11627,3 +11627,14 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     transition: none;
   }
 }
+
+/* U17.3 — Public case sharing feedback */
+.department-public-share__notice {
+  flex: 1 1 100%;
+  margin: 2px 0 0;
+  color: var(--green);
+  font-family: var(--font-mono, "DM Mono", monospace);
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+}

@@ -77,30 +77,6 @@ export default function WhitepaperPublicActions({
     }
   }
 
-  async function shareDocument() {
-    const url = getPublicUrl(casePath);
-    const text = [
-      "THE DYOR DEPARTMENT issued a fictional whitepaper for " + result.projectLabel + ".",
-      result.profile.title + ".",
-      "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
-    ].join(" ");
-
-    if (!navigator.share) {
-      await copyDocument();
-      return;
-    }
-
-    try {
-      await navigator.share({
-        title: result.projectLabel + " — Fictional Whitepaper",
-        text,
-        url,
-      });
-    } catch {
-      setNotice("SHARE CANCELLED. THE WHITEPAPER REMAINS PUBLICLY FILED.");
-    }
-  }
-
   return (
     <div className="whitepaper-public-export">
       <div className="whitepaper-public-export__actions">
@@ -108,7 +84,6 @@ export default function WhitepaperPublicActions({
         <button className="button button--outline" type="button" onClick={() => window.print()}>PRINT / SAVE AS PDF <span>↗</span></button>
         <button className="button button--quiet" type="button" onClick={downloadMarkdown}>DOWNLOAD MARKDOWN</button>
         <button className="button button--quiet" type="button" onClick={copyDocument}>COPY DOCUMENT + LINKS</button>
-        <button className="button button--x" type="button" onClick={shareDocument}>SHARE DOCUMENT <span>↗</span></button>
       </div>
       {notice && <p className="audit-notice" role="status">{notice}</p>}
     </div>
