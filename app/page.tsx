@@ -39,9 +39,58 @@ const departments = [
   {
     number: "04",
     title: "ROADMAP GENERATOR",
-    description: "Every milestone is achievable. Eventually. Probably. Soon.",
-    status: "UNDER CONSTRUCTION",
-    href: "#departments",
+    description: "Six questions. Seven fictional phases. Generate a roadmap with ambitious milestones and deadlines that are always just around the corner.",
+    status: "NOW ACCEPTING MILESTONES",
+    href: "/roadmap-generator",
+    featured: true,
+  },
+  {
+    number: "05",
+    title: "WHITEPAPER FACTORY",
+    description: "Seven questions. Nine sections. Generate a technically impressive document for a project that may or may not exist.",
+    status: "NOW ACCEPTING ABSTRACTS",
+    href: "/whitepaper-factory",
+    featured: true,
+  },
+  {
+    number: "06",
+    title: "THE BAGHOLDER MUSEUM",
+    description: "Twelve preserved artifacts from the age of questionable conviction. Please do not touch the liquidity puddle.",
+    status: "COLLECTION OPEN",
+    href: "/museum",
+    featured: true,
+  },
+  {
+    number: "07",
+    title: "THE 99% CLUB",
+    description: "Five questions. Three fictional indices. A membership card with absolutely no practical value.",
+    status: "APPLICATIONS OPEN",
+    href: "/club",
+    featured: true,
+  },
+  {
+    number: "08",
+    title: "THE GLOBAL COPE INDEX",
+    description: "A daily synthetic reading of conviction pressure, narrative fog, Telegram reliance and the power of soon.",
+    status: "DAILY INDEX / SYNTHETIC",
+    href: "/cope-index",
+    featured: true,
+  },
+  {
+    number: "09",
+    title: "THE DEPARTMENT ARCHIVES",
+    description: "Twelve fictional records, incident reports and official memos from the administrative aftermath of doing your own research.",
+    status: "ARCHIVE OPEN",
+    href: "/archives",
+    featured: true,
+  },
+  {
+    number: "10",
+    title: "THE DAILY DEPARTMENT",
+    description: "One fresh fictional dispatch every UTC day. Official bulletins, internal memos and incidents that should never have happened.",
+    status: "TODAY'S DISPATCH FILED",
+    href: "/daily-office",
+    featured: true,
   },
 ];
 
@@ -141,7 +190,7 @@ export default function Home() {
             <SectionLabel>THE OFFICE OF QUESTIONABLE DECISIONS</SectionLabel>
             <h2>OUR DEPARTMENTS.<br /><span>YOUR PROBLEM.</span></h2>
           </div>
-          <p>Sixteen committees. Zero solutions.<br />Currently, we have opened four tabs.</p>
+          <p>Sixteen committees. Zero solutions.<br />Currently, all ten departments are accepting cases.</p>
         </div>
         <div className="department-grid">
           {departments.map((item) => {

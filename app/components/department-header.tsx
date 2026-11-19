@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 type DepartmentHeaderProps = {
-  activeSection?: "home" | "audit" | "simulator" | "utility";
+  activeSection?: "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily";
   statusMessage?: string;
   ctaHref?: string;
   ctaLabel?: string;
@@ -67,6 +67,27 @@ export default function DepartmentHeader({
           <Link href="/utility-inspector" aria-current={activeSection === "utility" ? "page" : undefined}>
             UTILITY <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/roadmap-generator" aria-current={activeSection === "roadmap" ? "page" : undefined}>
+            ROADMAP <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/whitepaper-factory" aria-current={activeSection === "whitepaper" ? "page" : undefined}>
+            WHITEPAPER <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/museum" aria-current={activeSection === "museum" ? "page" : undefined}>
+            THE MUSEUM <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/club" aria-current={activeSection === "club" ? "page" : undefined}>
+            THE 99% CLUB <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/cope-index" aria-current={activeSection === "cope" ? "page" : undefined}>
+            COPE INDEX <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/archives" aria-current={activeSection === "archives" ? "page" : undefined}>
+            ARCHIVES <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined}>
+            DAILY OFFICE <span aria-hidden="true">↗</span>
+          </Link>
           <Link href={departmentsHref}>DEPARTMENTS</Link>
           <Link href={manifestoHref}>MANIFESTO</Link>
         </nav>
@@ -92,7 +113,7 @@ export default function DepartmentHeader({
         <nav id={menuId} className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>
           <div className="mobile-nav__heading">
             <span>DEPARTMENT DIRECTORY</span>
-            <span>5 DESTINATIONS / 1 PURPOSE</span>
+            <span>12 DESTINATIONS / 1 PURPOSE</span>
           </div>
           <Link href="/audit" aria-current={activeSection === "audit" ? "page" : undefined} onClick={closeMenu}>
             <span>01</span> THE AUDIT <b aria-hidden="true">↗</b>
@@ -103,11 +124,32 @@ export default function DepartmentHeader({
           <Link href="/utility-inspector" aria-current={activeSection === "utility" ? "page" : undefined} onClick={closeMenu}>
             <span>03</span> UTILITY INSPECTOR <b aria-hidden="true">↗</b>
           </Link>
+          <Link href="/roadmap-generator" aria-current={activeSection === "roadmap" ? "page" : undefined} onClick={closeMenu}>
+            <span>04</span> ROADMAP GENERATOR <b aria-hidden="true">↗</b>
+          </Link>
+          <Link href="/whitepaper-factory" aria-current={activeSection === "whitepaper" ? "page" : undefined} onClick={closeMenu}>
+            <span>05</span> WHITEPAPER FACTORY <b aria-hidden="true">↗</b>
+          </Link>
+          <Link href="/museum" aria-current={activeSection === "museum" ? "page" : undefined} onClick={closeMenu}>
+            <span>06</span> THE BAGHOLDER MUSEUM <b aria-hidden="true">↗</b>
+          </Link>
+          <Link href="/club" aria-current={activeSection === "club" ? "page" : undefined} onClick={closeMenu}>
+            <span>07</span> THE 99% CLUB <b aria-hidden="true">↗</b>
+          </Link>
+          <Link href="/cope-index" aria-current={activeSection === "cope" ? "page" : undefined} onClick={closeMenu}>
+            <span>08</span> GLOBAL COPE INDEX <b aria-hidden="true">↗</b>
+          </Link>
+          <Link href="/archives" aria-current={activeSection === "archives" ? "page" : undefined} onClick={closeMenu}>
+            <span>09</span> DEPARTMENT ARCHIVES <b aria-hidden="true">↗</b>
+          </Link>
+          <Link href="/daily-office" aria-current={activeSection === "daily" ? "page" : undefined} onClick={closeMenu}>
+            <span>10</span> DAILY OFFICE <b aria-hidden="true">↗</b>
+          </Link>
           <Link href={departmentsHref} onClick={closeMenu}>
-            <span>04</span> DEPARTMENTS <b aria-hidden="true">↗</b>
+            <span>11</span> DEPARTMENTS <b aria-hidden="true">↗</b>
           </Link>
           <Link href={manifestoHref} onClick={closeMenu}>
-            <span>05</span> MANIFESTO <b aria-hidden="true">↗</b>
+            <span>12</span> MANIFESTO <b aria-hidden="true">↗</b>
           </Link>
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
