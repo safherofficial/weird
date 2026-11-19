@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DepartmentNextSteps from "../components/department-next-steps";
 import {
   buildWhitepaperResult,
   decodeWhitepaperCode,
@@ -264,6 +265,7 @@ export default function WhitepaperFactoryClient() {
         </div>
 
         <p className="whitepaper-public-link"><Link href={caseUrl}>OPEN PUBLIC WHITEPAPER FILE ↗</Link></p>
+        <DepartmentNextSteps currentDepartment="whitepaper" />
         {notice && <p className="audit-notice" role="status">{notice}</p>}
       </section>
     );
