@@ -20,10 +20,36 @@ function escapeXml(value: string) {
   });
 }
 
+function wrapSvgText(value: string, maxLength: number) {
+  const words = value.split(/\s+/);
+  const lines: string[] = [];
+  let line = "";
+  for (const word of words) {
+    const next = line ? line + " " + word : word;
+    if (next.length > maxLength && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
 function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
-  const headline = escapeXml(dispatch.headline);
-  const bulletin = escapeXml(dispatch.bulletin);
-  const quote = escapeXml(dispatch.quote);
+  const headlineLines = wrapSvgText(dispatch.headline, 48).slice(0, 2);
+  const bulletinLines = wrapSvgText(dispatch.bulletin, 96).slice(0, 2);
+  const quoteLines = wrapSvgText(dispatch.quote, 78).slice(0, 2);
+  const titleSvg = headlineLines.map((line, index) =>
+    '<text x="64" y="' + (206 + index * 39) + '" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="36" font-weight="900">' + escapeXml(line) + '</text>'
+  ).join("");
+  const bulletinSvg = bulletinLines.map((line, index) =>
+    '<text x="88" y="' + (322 + index * 24) + '" fill="#d8dfd3" font-family="Arial,sans-serif" font-size="16">' + escapeXml(line) + '</text>'
+  ).join("");
+  const quoteSvg = quoteLines.map((line, index) =>
+    '<text x="64" y="' + (510 + index * 24) + '" fill="#d8b477" font-family="Arial,sans-serif" font-size="18">“' + escapeXml(line) + '”</text>'
+  ).join("");
   const incident = escapeXml(dispatch.sections[0].heading);
   const memo = escapeXml(dispatch.sections[1].heading);
   return (
@@ -34,13 +60,13 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
     '<text x="64" y="76" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
     '<text x="1136" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="14">DAILY OFFICE / ' + dispatch.issueDate + '</text>' +
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">' + dispatch.reference + ' / OFFICIAL DAILY DISPATCH</text>' +
-    '<text x="64" y="222" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="42" font-weight="900">' + headline + '</text>' +
-    '<rect x="64" y="263" width="1072" height="104" fill="#121713" stroke="#384137"/>' +
+    titleSvg +
+    '<rect x="64" y="267" width="1072" height="107" fill="#121713" stroke="#384137"/>' +
     '<text x="88" y="301" fill="#b6ff65" font-family="monospace" font-size="14">OFFICIAL BULLETIN</text>' +
-    '<text x="88" y="337" fill="#d8dfd3" font-family="Arial,sans-serif" font-size="18">' + bulletin + '</text>' +
+    bulletinSvg +
     '<text x="64" y="414" fill="#8d968a" font-family="monospace" font-size="13">INCIDENT / ' + incident + '</text>' +
     '<text x="64" y="443" fill="#8d968a" font-family="monospace" font-size="13">MEMO / ' + memo + '</text>' +
-    '<text x="64" y="512" fill="#d8b477" font-family="Arial,sans-serif" font-size="20">“' + quote + '”</text>' +
+    quoteSvg +
     '<text x="64" y="610" fill="#b6ff65" font-family="monospace" font-size="14" font-weight="bold">FICTIONAL DAILY SATIRE / NOT REAL NEWS OR MARKET DATA</text>' +
     '<text x="1136" y="610" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
     '</svg>'
