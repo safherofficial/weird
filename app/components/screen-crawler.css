@@ -1,16 +1,21 @@
-/* U18.4 — original twelve-pose armored crawler sprite, mirrored against the pointer. */
+/* U18.5 — autonomous armored crawler, mirrored to the pointer and layered behind the site. */
+.department-scene {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+}
 .screen-crawler {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 72;
+  z-index: 1;
   width: 112px;
   height: 82px;
   opacity: 0;
   pointer-events: none;
   user-select: none;
   will-change: transform;
-  transition: opacity 240ms ease;
+  transition: opacity 320ms ease;
 }
 .screen-crawler--ready { opacity: 1; }
 .screen-crawler::before {
@@ -23,6 +28,18 @@
   content: "";
   animation: crawler-aura-pulse 2.6s ease-in-out infinite;
 }
+.screen-crawler__orientation {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  transition: transform 620ms cubic-bezier(.2,.76,.2,1);
+  will-change: transform;
+}
+.screen-crawler[data-facing="right"] .screen-crawler__orientation { transform: rotate(0deg) scaleX(1); }
+.screen-crawler[data-facing="left"] .screen-crawler__orientation { transform: rotate(0deg) scaleX(-1); }
+.screen-crawler[data-facing="front"] .screen-crawler__orientation { transform: rotate(-90deg) scale(.94); }
+.screen-crawler[data-facing="back"] .screen-crawler__orientation { transform: rotate(90deg) scale(.94); }
 .screen-crawler__sprite {
   display: block;
   width: 100%;
@@ -33,8 +50,15 @@
   background-size: 400% 300%;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,.62)) drop-shadow(0 0 7px rgba(182,255,101,.22));
   transform-origin: 50% 58%;
-  animation: crawler-sprite-cycle 1.44s steps(1, end) infinite, crawler-body-bob 2.2s ease-in-out infinite;
+  animation: crawler-sprite-cycle 1.08s steps(1, end) infinite, crawler-body-bob 1.7s ease-in-out infinite;
   will-change: background-position, transform;
+}
+.screen-crawler[data-motion="idle"] .screen-crawler__sprite {
+  animation-duration: 2.15s, 2.7s;
+}
+.screen-crawler[data-facing="back"] .screen-crawler__sprite {
+  background-position: 100% 100%;
+  animation-name: crawler-body-bob;
 }
 @keyframes crawler-sprite-cycle {
   0% { background-position: 0% 0%; }
@@ -53,11 +77,11 @@
 }
 @keyframes crawler-body-bob {
   0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-2px) scale(1.012); }
+  50% { transform: translateY(-2.6px) scale(1.018); }
 }
 @keyframes crawler-aura-pulse {
-  0%, 100% { opacity: .34; transform: scale(.92); }
-  50% { opacity: .9; transform: scale(1.08); }
+  0%, 100% { opacity: .3; transform: scale(.9); }
+  50% { opacity: .88; transform: scale(1.1); }
 }
 @media (hover: none), (pointer: coarse) {
   .screen-crawler { display: none !important; }
