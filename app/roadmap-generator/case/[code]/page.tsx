@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
+import DepartmentNextSteps from "../../../components/department-next-steps";
 import { buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode } from "../../roadmap-engine";
 
 type RoadmapCasePageProps = {
@@ -134,6 +135,8 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">SHARE THIS ROADMAP ON X <span>↗</span></a>
           <Link className="button button--quiet" href="/roadmap-generator">GENERATE YOUR OWN ROADMAP ↗</Link>
         </div>
+
+        <DepartmentNextSteps currentDepartment="roadmap" />
 
         <p className="roadmap-disclaimer">
           This public roadmap is a fictional parody generated from selected answers. Its project label is included
