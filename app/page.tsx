@@ -84,6 +84,14 @@ const departments = [
     href: "/archives",
     featured: true,
   },
+  {
+    number: "10",
+    title: "THE DAILY DEPARTMENT",
+    description: "One fresh fictional dispatch every UTC day. Official bulletins, internal memos and incidents that should never have happened.",
+    status: "TODAY'S DISPATCH FILED",
+    href: "/daily-office",
+    featured: true,
+  },
 ];
 
 export default function Home() {
@@ -182,7 +190,7 @@ export default function Home() {
             <SectionLabel>THE OFFICE OF QUESTIONABLE DECISIONS</SectionLabel>
             <h2>OUR DEPARTMENTS.<br /><span>YOUR PROBLEM.</span></h2>
           </div>
-          <p>Sixteen committees. Zero solutions.<br />Currently, all nine departments are accepting cases.</p>
+          <p>Sixteen committees. Zero solutions.<br />Currently, all ten departments are accepting cases.</p>
         </div>
         <div className="department-grid">
           {departments.map((item) => {
