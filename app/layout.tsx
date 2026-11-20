@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./passport/achievements.css";
+import "./components/laser-cursor.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
 import CircuitClickReveal from "./components/circuit-click-reveal";
+import LaserCursor from "./components/laser-cursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -49,6 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         {children}
         <CircuitClickReveal />
+        <LaserCursor />
         <AchievementToastHost />
       </body>
     </html>

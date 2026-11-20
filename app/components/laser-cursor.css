@@ -1,0 +1,121 @@
+/* Laser cursor — desktop precision pointer, no touch-device override. */
+@media (hover: hover) and (pointer: fine) {
+  html.laser-cursor-enabled,
+  html.laser-cursor-enabled * {
+    cursor: none !important;
+  }
+
+  html.laser-cursor-enabled :is(
+    textarea,
+    [contenteditable="true"],
+    [role="textbox"],
+    input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]):not([type="hidden"])
+  ) {
+    cursor: text !important;
+  }
+
+  .laser-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    display: block;
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgb(182 255 101 / 34%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(182 255 101 / 11%) 0%, rgb(182 255 101 / 4%) 48%, transparent 73%);
+    box-shadow: 0 0 9px rgb(182 255 101 / 24%), inset 0 0 7px rgb(182 255 101 / 9%);
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    transition:
+      opacity 130ms ease,
+      width 150ms ease,
+      height 150ms ease,
+      border-color 150ms ease,
+      background 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .laser-cursor::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #e8ffd2;
+    box-shadow:
+      0 0 4px 1px #e8ffd2,
+      0 0 9px 3px rgb(182 255 101 / 95%),
+      0 0 17px 5px rgb(182 255 101 / 45%);
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+
+  .laser-cursor::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #fff;
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+
+  .laser-cursor[data-visible="true"] {
+    opacity: 1;
+  }
+
+  .laser-cursor[data-state="idle"]:not([data-reduced-motion="true"]) {
+    animation: laser-cursor-pulse 2.1s ease-in-out infinite;
+  }
+
+  .laser-cursor[data-state="hover"] {
+    width: 32px;
+    height: 32px;
+    border-color: rgb(209 255 164 / 78%);
+    background: radial-gradient(circle, rgb(182 255 101 / 18%) 0%, rgb(182 255 101 / 7%) 53%, transparent 76%);
+    box-shadow: 0 0 15px rgb(182 255 101 / 43%), inset 0 0 9px rgb(182 255 101 / 15%);
+  }
+
+  .laser-cursor[data-state="hover"]::before {
+    width: 6px;
+    height: 6px;
+    box-shadow:
+      0 0 5px 2px #e8ffd2,
+      0 0 12px 5px rgb(182 255 101 / 100%),
+      0 0 22px 7px rgb(182 255 101 / 58%);
+  }
+
+  .laser-cursor[data-pressed="true"] {
+    width: 19px;
+    height: 19px;
+    border-color: rgb(232 255 210 / 92%);
+    box-shadow: 0 0 19px rgb(182 255 101 / 68%);
+  }
+
+  .laser-cursor[data-reduced-motion="true"] {
+    animation: none !important;
+    transition: none;
+  }
+}
+
+@keyframes laser-cursor-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgb(182 255 101 / 21%), inset 0 0 6px rgb(182 255 101 / 8%);
+  }
+  50% {
+    box-shadow: 0 0 13px rgb(182 255 101 / 38%), inset 0 0 8px rgb(182 255 101 / 12%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laser-cursor {
+    animation: none !important;
+    transition: none !important;
+  }
+}
