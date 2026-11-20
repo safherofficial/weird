@@ -44,7 +44,7 @@ function makeMembershipSvg(result: ClubResult) {
     '<path d="M30 126H1170M30 550H1170" stroke="#34412f"/>' +
     '<path d="M935 30L1170 265M1015 30L1170 185M1095 30L1170 105" stroke="#b6ff65" stroke-opacity=".12" stroke-width="2"/>' +
     '<text x="68" y="86" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1132" y="86" text-anchor="end" fill="#85917c" font-family="monospace" font-size="14">THE 99% CLUB / MEMBERSHIP OFFICE</text>' +
+    '<text x="1132" y="86" text-anchor="end" fill="#85917c" font-family="monospace" font-size="14">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</text>' +
     '<text x="68" y="178" fill="#879481" font-family="monospace" font-size="16" letter-spacing="3">MEMBERSHIP CERTIFICATE / FICTIONAL ISSUE</text>' +
     '<text x="68" y="269" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="57" font-weight="900">' + title + '</text>' +
     '<text x="68" y="321" fill="#b6ff65" font-family="monospace" font-size="23">' + motto + '</text>' +
@@ -124,7 +124,7 @@ export default function ClubClient() {
     const caseUrl = makeCaseUrl(result.answers);
     const challengeUrl = makeChallengeUrl(result.answers);
     const text = [
-      "THE DYOR DEPARTMENT — THE 99% CLUB",
+      "THE DYOR DEPARTMENT — SOLANA TRENCHES SURVIVOR REGISTRY",
       "MEMBER No. " + result.memberNumber,
       "CLASSIFICATION: " + result.profile.title,
       "MEMBERSHIP CLASS: " + result.membershipClass,
@@ -194,14 +194,14 @@ export default function ClubClient() {
     if (!result) return;
     const caseUrl = makeCaseUrl(result.answers);
     const text = [
-      "THE DYOR DEPARTMENT has admitted me to THE 99% CLUB.",
+      "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
       "Classification: " + result.profile.title + ".",
       "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
       result.profile.motto,
     ].join(" ");
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My 99% Club membership file", text, url: caseUrl });
+        await navigator.share({ title: "My Solana Trenches survivor file", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR MEMBERSHIP FILE REMAINS OPEN.");
       }
@@ -213,7 +213,7 @@ export default function ClubClient() {
   if (result) {
     const caseUrl = makeCaseUrl(result.answers);
     const xText = [
-      "THE DYOR DEPARTMENT has admitted me to THE 99% CLUB.",
+      "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
       "Member No. " + result.memberNumber + ".",
       result.profile.title + ".",
       "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
@@ -297,10 +297,10 @@ export default function ClubClient() {
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
         <div className="club-briefing__body">
-          <p className="eyebrow">OFFICE OF COLLECTIVE FINANCIAL REGRET</p>
+          <p className="eyebrow">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</p>
           <h2>YOU ARE NOT<br /><span>ALONE IN THIS.</span></h2>
           <p className="club-briefing__lead">
-            Five questions. Three fictional indices. One membership card with absolutely no practical value.
+            Five trenches questions. Three fictional indices. One survivor card with absolutely no practical value.
           </p>
 
           <div className="club-briefing__facts">

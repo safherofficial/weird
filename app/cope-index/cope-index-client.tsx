@@ -47,7 +47,7 @@ function makePersonalCard(result: PersonalCopeResult) {
     '<rect x="28" y="28" width="1144" height="619" fill="#101610" stroke="#52633f" stroke-width="2"/>' +
     '<path d="M28 112H1172M28 558H1172" stroke="#34412f"/>' +
     '<text x="64" y="76" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="76" text-anchor="end" fill="#899486" font-family="monospace" font-size="14">GLOBAL COPE INDEX / PERSONAL READING</text>' +
+    '<text x="1136" y="76" text-anchor="end" fill="#899486" font-family="monospace" font-size="14">COPIUM ADMINISTRATION / PERSONAL TRENCHES READING</text>' +
     '<text x="64" y="158" fill="#879481" font-family="monospace" font-size="15" letter-spacing="2">PERSONAL CASE No. ' + number + '</text>' +
     '<text x="64" y="242" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="49" font-weight="900">' + title + '</text>' +
     '<text x="64" y="290" fill="#b6ff65" font-family="monospace" font-size="18">' + motto + '</text>' +
@@ -130,14 +130,14 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
     const caseUrl = makeCaseUrl(result.answers);
     const challengeUrl = makeChallengeUrl(result.answers);
     const text = [
-      "THE DYOR DEPARTMENT — GLOBAL COPE INDEX / PERSONAL READING",
+      "THE DYOR DEPARTMENT — COPIUM ADMINISTRATION / PERSONAL TRENCHES READING",
       "CASE No. " + result.caseNumber,
       "CLASSIFICATION: " + result.profile.title,
       "COPE INDEX: " + result.copeScore + "/100",
       "PATIENCE INDEX: " + result.patienceScore + "/100",
       "CHAT DEPENDENCY: " + result.chatDependency + "/100",
       result.profile.roast,
-      "This personal score is fictional and based only on selected answers. The daily Global Cope Index is a synthetic date-seeded joke, not a measure of real traders, markets or sentiment.",
+      "This personal score is fictional and based only on selected answers. The daily Global Cope Index is a synthetic date-seeded joke, not a measure of real CT users, wallets, markets or sentiment.",
       "PUBLIC CASE FILE: " + caseUrl,
       "NOMINATE ANOTHER DEGEN: " + challengeUrl,
     ].join("\n");
@@ -199,14 +199,14 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
     if (!result) return;
     const caseUrl = makeCaseUrl(result.answers);
     const text = [
-      "THE DYOR DEPARTMENT completed my Global Cope Index reading.",
+      "THE DYOR DEPARTMENT completed my fictional Solana Trenches cope reading.",
       result.profile.title + ".",
       "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
       result.profile.roast,
     ].join(" ");
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My Global Cope Index reading", text, url: caseUrl });
+        await navigator.share({ title: "My Solana Trenches cope reading", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR PERSONAL FILE REMAINS OPEN.");
       }
@@ -217,14 +217,14 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
 
   return (
     <div className="cope-index-content">
-      <section className="cope-daily-board" aria-label="Synthetic daily Global Cope Index">
+      <section className="cope-daily-board" aria-label="Synthetic daily Solana Trenches Cope Index">
         <div className="cope-daily-board__header">
-          <span>DAILY DEPARTMENTAL READING / UTC {dailyIndex.issueDate}</span>
+          <span>DAILY TRENCHES READING / UTC {dailyIndex.issueDate}</span>
           <span>SIMULATED / NOT REAL-WORLD DATA</span>
         </div>
         <div className="cope-daily-board__hero">
           <div>
-            <p className="eyebrow">GLOBAL COPE INDEX / SYNTHETIC OFFICE VALUE</p>
+            <p className="eyebrow">COPIUM ADMINISTRATION / SYNTHETIC TRENCHES INDEX</p>
             <strong>{dailyIndex.overall}<small>/100</small></strong>
             <span>{dailyIndex.status}</span>
           </div>

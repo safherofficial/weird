@@ -119,7 +119,7 @@ export default function WhitepaperFactoryClient() {
       "\nCHALLENGE ANOTHER DEGEN: " + makeChallengeUrl(result.answers, result.projectSlug);
     try {
       await navigator.clipboard.writeText(content);
-      setNotice("WHITEPAPER TEXT AND SHARE LINKS COPIED.");
+      setNotice("TOKEN DOSSIER TEXT AND SHARE LINKS COPIED.");
     } catch {
       setNotice("CLIPBOARD UNAVAILABLE. DOWNLOAD THE MARKDOWN OR HTML DOCUMENT.");
     }
@@ -128,17 +128,17 @@ export default function WhitepaperFactoryClient() {
   function downloadMarkdown() {
     if (!result) return;
     downloadTextFile(
-      "dyor-whitepaper-" + result.projectSlug.toLowerCase() + ".md",
+      "dyor-token-dossier-" + result.projectSlug.toLowerCase() + ".md",
       formatWhitepaperMarkdown(result),
       "text/markdown;charset=utf-8"
     );
-    setNotice("MARKDOWN WHITEPAPER DOWNLOADED.");
+    setNotice("MARKDOWN TOKEN DOSSIER DOWNLOADED.");
   }
 
   function downloadHtml() {
     if (!result) return;
     downloadTextFile(
-      "dyor-whitepaper-" + result.projectSlug.toLowerCase() + ".html",
+      "dyor-token-dossier-" + result.projectSlug.toLowerCase() + ".html",
       formatWhitepaperHtml(result),
       "text/html;charset=utf-8"
     );
@@ -149,14 +149,14 @@ export default function WhitepaperFactoryClient() {
     if (!result) return;
     const caseUrl = makeCaseUrl(result.answers, result.projectSlug);
     const text = [
-      "THE DYOR DEPARTMENT generated a whitepaper for " + result.projectLabel + ".",
+      "THE DYOR DEPARTMENT generated a fictional Solana token dossier for " + result.projectLabel + ".",
       "Classification: " + result.profile.title + ".",
       "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
       safeXCopy(result.profile.roast),
     ].join(" ");
     if (navigator.share) {
       try {
-        await navigator.share({ title: result.projectLabel + " — Fictional Whitepaper", text, url: caseUrl });
+        await navigator.share({ title: result.projectLabel + " — Fictional Token Dossier", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. THE WHITEPAPER REMAINS FILED.");
       }
@@ -168,29 +168,29 @@ export default function WhitepaperFactoryClient() {
   if (result) {
     const caseUrl = makeCaseUrl(result.answers, result.projectSlug);
     const xText = [
-      "THE DYOR DEPARTMENT issued a whitepaper for " + result.projectLabel + ".",
+      "THE DYOR DEPARTMENT issued a fictional token dossier for " + result.projectLabel + ".",
       result.profile.title + ".",
       "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
       safeXCopy(result.profile.roast),
       "Your turn. Submit your technical vision.",
     ].join(" ");
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(caseUrl);
-    const challengeText = "THE DYOR DEPARTMENT generated a whitepaper for " + result.projectLabel + ". Can your technical vision survive the same review?";
+    const challengeText = "THE DYOR DEPARTMENT generated a fictional Solana token dossier for " + result.projectLabel + ". Can your token narrative survive the same review?";
     const challengeIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(challengeText) + "&url=" +
       encodeURIComponent(makeChallengeUrl(result.answers, result.projectSlug));
 
     return (
       <section className="whitepaper-panel whitepaper-result" aria-live="polite">
         <div className="whitepaper-panel__header">
-          <span>WHITEPAPER GENERATED / 09 SECTIONS FILED</span>
+          <span>TOKEN DOSSIER GENERATED / 09 SECTIONS FILED</span>
           <span className="whitepaper-status whitepaper-status--closed">● DOCUMENT COMPLETE</span>
         </div>
 
         <div className="whitepaper-document" id="whitepaper-document">
           <div className="whitepaper-cover">
-            <p className="eyebrow">THE DYOR DEPARTMENT / WHITEPAPER FACTORY</p>
-            <p className="whitepaper-cover__case">CASE No. {result.caseNumber} / TECHNICAL DOCUMENTATION UNIT</p>
-            <h2>{result.projectLabel}<br /><span>WHITEPAPER.</span></h2>
+            <p className="eyebrow">THE DYOR DEPARTMENT / EXIT LIQUIDITY DEPARTMENT</p>
+            <p className="whitepaper-cover__case">CASE No. {result.caseNumber} / FICTIONAL TOKEN DOSSIER</p>
+            <h2>{result.projectLabel}<br /><span>TOKEN DOSSIER.</span></h2>
             <p className="whitepaper-cover__subtitle">{result.profile.subtitle}</p>
             <div className="whitepaper-cover__stamp">FICTIONAL ENTERTAINMENT DOCUMENT</div>
             <div className="whitepaper-cover__scores">
@@ -238,7 +238,7 @@ export default function WhitepaperFactoryClient() {
 
           <div className="whitepaper-final-notice">
             <span>FINAL NOTICE / DOCUMENT CONTROL</span>
-            <strong>WHITEPAPER COMPLETE FOR ENTERTAINMENT PURPOSES ONLY.</strong>
+            <strong>TOKEN DOSSIER COMPLETE FOR ENTERTAINMENT PURPOSES ONLY.</strong>
             <p>No real project, token, company, contract, team, market, security or legal position has been inspected or verified.</p>
           </div>
         </div>
@@ -259,14 +259,14 @@ export default function WhitepaperFactoryClient() {
           <button className="button button--primary" type="button" onClick={downloadHtml}>DOWNLOAD HTML / PDF SOURCE <span>↓</span></button>
           <button className="button button--outline" type="button" onClick={() => window.print()}>PRINT / SAVE AS PDF <span>↗</span></button>
           <button className="button button--quiet" type="button" onClick={downloadMarkdown}>DOWNLOAD MARKDOWN</button>
-          <button className="button button--quiet" type="button" onClick={copyWhitepaper}>COPY WHITEPAPER + LINKS</button>
+          <button className="button button--quiet" type="button" onClick={copyWhitepaper}>COPY TOKEN DOSSIER + LINKS</button>
           <button className="button button--x" type="button" onClick={shareWhitepaper}>SHARE DOCUMENT <span>↗</span></button>
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">POST CASE TO X <span>↗</span></a>
           <a className="button button--challenge" href={challengeIntent} target="_blank" rel="noopener noreferrer">CHALLENGE A DEGEN <span>↗</span></a>
           <button className="button button--quiet" type="button" onClick={restart}>GENERATE ANOTHER ↺</button>
         </div>
 
-        <p className="whitepaper-public-link"><Link href={caseUrl}>OPEN PUBLIC WHITEPAPER FILE ↗</Link></p>
+        <p className="whitepaper-public-link"><Link href={caseUrl}>OPEN PUBLIC TOKEN DOSSIER FILE ↗</Link></p>
         <DepartmentNextSteps currentDepartment="whitepaper" />
         {notice && <p className="audit-notice" role="status">{notice}</p>}
       </section>
@@ -284,10 +284,10 @@ export default function WhitepaperFactoryClient() {
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
         <div className="whitepaper-briefing__body">
-          <p className="eyebrow">OFFICE OF TECHNICAL-SOUNDING DOCUMENTATION</p>
+          <p className="eyebrow">EXIT LIQUIDITY DEPARTMENT / TOKEN DOSSIER OFFICE</p>
           <h2>MAKE IT SOUND<br /><span>REVOLUTIONARY.</span></h2>
           <p className="whitepaper-briefing__lead">
-            Seven questions. Nine sections. A complete whitepaper-shaped document for a project that may or may not exist.
+            Seven questions. Nine sections. A fictional Solana token dossier covering launch lore, deployer roles, tokenomics, CT distribution and post-graduation risk.
           </p>
 
           <label className="whitepaper-project-field">
@@ -316,7 +316,7 @@ export default function WhitepaperFactoryClient() {
           </div>
 
           <div className="whitepaper-briefing__actions">
-            <button className="button button--primary" type="button" onClick={startFactory}>OPEN WHITEPAPER FACTORY <span>↗</span></button>
+            <button className="button button--primary" type="button" onClick={startFactory}>GENERATE TOKEN DOSSIER <span>↗</span></button>
             <span>NO AUDIT. NO OFFER. NO FINANCIAL ADVICE.</span>
           </div>
         </div>
