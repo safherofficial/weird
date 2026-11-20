@@ -105,30 +105,30 @@ export const questions: ClubQuestion[] = [
 export const profiles: Record<ClubArchetypeId, ClubProfile> = {
   "conviction-custodian": {
     title: "THE CONVICTION CUSTODIAN",
-    subtitle: "You are not holding a position. You are safeguarding a thesis of national importance.",
+    subtitle: "You are not holding a position. You are safeguarding a post-graduation thesis of national importance."
     motto: "THE CTO IS ALIVE. THE DEPLOYER IS NOT REPLYING.",
-    roast: "The Department has requested the return of your original entry price. You have submitted a philosophical essay.",
+    roast: "The Department asked for the deployer handover. You submitted a thread explaining why the original vision remains intact."
     membership: "PERMANENT CUSTODIAN / BAG PRESERVATION DIVISION",
   },
   "average-down-citizen": {
     title: "THE AVERAGE-DOWN CITIZEN",
-    subtitle: "Your relationship with the bag has entered a complicated stage of portfolio family planning.",
+    subtitle: "Your relationship with the bag has entered a complicated stage of post-graduation family planning."
     motto: "ONE MORE DIP AND THE ENTRY PRICE BECOMES LORE.",
     roast: "You did not catch the falling knife. You opened a family office for it.",
     membership: "HONORARY MEMBER / ADDITIONAL BAG ACQUISITION UNIT",
   },
   "telegram-veteran": {
-    title: "THE TELEGRAM VETERAN",
+    title: "THE CT / TELEGRAM VETERAN",
     subtitle: "You have memorized every CTO account's posting schedule and still have no confirmed deliverable.",
     motto: "KOL SAID STILL EARLY. I BELIEVE IN STILL EARLY.",
     roast: "Your CTO notifications are more developed than the actual handover plan.",
     membership: "DISTINGUISHED MEMBER / COMMUNITY INTELLIGENCE OFFICE",
   },
   "exit-liquidity-witness": {
-    title: "THE EXIT-LIQUIDITY WITNESS",
-    subtitle: "You were present when the liquidity left. You have agreed to testify under a pseudonym.",
+    title: "THE POST-GRADUATION EXIT-LIQUIDITY WITNESS",
+    subtitle: "You were present when the fictional post-graduation pool thinned. Your witness statement includes screenshots and one unanswered DM."
     motto: "I SAW THE SPREAD. I SAW THE SPREAD.",
-    roast: "Your account is a first-hand record of the market doing market things.",
+    roast: "Your account is a first-hand record of CT calling a sell-off healthy rotation while the pool tells another story."
     membership: "WITNESS STATUS / MARKET EVENTS ARCHIVE",
   },
   "chart-hermit": {

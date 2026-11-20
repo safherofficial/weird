@@ -3,7 +3,7 @@ export const SIMULATOR_ROUNDS = 7;
 export const STARTING_CREDITS = 1000;
 export const STARTING_PRICE = 10;
 export const ASSET_NAME = "HYPE-404";
-export const ASSET_LABEL = "FICTIONAL COMMUNITY TOKEN / NOT A REAL ASSET";
+export const ASSET_LABEL = "FICTIONAL PUMP.FUN LAUNCH / NOT A REAL ASSET";
 
 export type SimulatorActionId = "hold" | "trim" | "average" | "telegram";
 
@@ -84,9 +84,9 @@ export const actions: SimulatorAction[] = [
   },
   {
     id: "telegram",
-    label: "ASK TELEGRAM",
-    shortLabel: "ASK CHAT",
-    description: "Outsource your conviction to people whose profile pictures are cartoon frogs.",
+    label: "ASK CT / TELEGRAM",
+    shortLabel: "ASK CT",
+    description: "Hand your conviction to CT replies and Telegram admins whose main evidence is a rocket emoji and a pinned message.",
   },
 ];
 
@@ -151,50 +151,50 @@ export const marketEvents: MarketEvent[] = [
 
 const profiles: Record<string, SimulatorProfile> = {
   telegram: {
-    title: "THE TELEGRAM SENTINEL",
-    subtitle: "You did not trade the market. You monitored the community's reaction to it.",
-    roast: "You know which admin is online at 03:17. You still do not know where the liquidity went.",
+    title: "THE CT / TELEGRAM SENTINEL",
+    subtitle: "You did not follow the fictional launch. You followed every CT reply and Telegram admin reaction to it.",
+    roast: "You know which KOL deleted the call and which mod is online at 03:17. The post-graduation pool remains a mystery.",
     ending: "REFERRED TO THE OFFICE OF COMMUNITY-BASED DENIAL.",
   },
   accumulator: {
-    title: "THE INFINITE ACCUMULATOR",
-    subtitle: "Every lower price was an invitation to deepen the relationship.",
-    roast: "You did not catch the falling knife. You subscribed to its newsletter.",
+    title: "THE POST-GRADUATION ACCUMULATOR",
+    subtitle: "Every post-graduation red candle became a reason to add another chapter to the bag's lore.",
+    roast: "You did not catch the falling knife. You joined its CTO Telegram and asked when the next catalyst lands.",
     ending: "AWARDED THE GOLDEN AVERAGE-DOWN CERTIFICATE.",
   },
   defector: {
-    title: "THE EXIT LIQUIDITY DEFECTOR",
-    subtitle: "You left the party while the music was still playing. Unforgivable behaviour.",
+    title: "THE EARLY POOL DEFECTOR",
+    subtitle: "You left the fictional post-graduation pool before the group chat could rename the sell-off healthy rotation.",
     roast: "You sold into the chaos and kept your imaginary credits. The group chat has noticed.",
     ending: "RELEASED FROM THE BAG. SOCIAL CONSEQUENCES MAY APPLY.",
   },
   consultant: {
-    title: "THE EARLY EXIT CONSULTANT",
-    subtitle: "You found the sell button. The timing, however, remains under investigation.",
+    title: "THE POST-GRADUATION EXIT CONSULTANT",
+    subtitle: "You found the sell button after the curve completed. CT has requested your entry and exit screenshots for review.",
     roast: "You escaped the position, then watched the next candle with the energy of a divorcee.",
     ending: "REFERRED TO THE DEPARTMENT OF POST-EXIT REGRET.",
   },
   diamond: {
-    title: "THE DIAMOND-HANDED PHILOSOPHER",
-    subtitle: "You held through every plot twist. The bag is now a family heirloom.",
-    roast: "The chart went through seven stages of grief. You are still waiting for stage eight: recovery.",
+    title: "THE CTO-ERA DIAMOND HAND",
+    subtitle: "You held through the graduation, deployer silence and community takeover. The bag now has its own pinned message.",
+    roast: "The chart graduated, migrated and changed its narrative. You are still waiting for the original KOL to come back.",
     ending: "PROMOTED TO PERMANENT CUSTODIAN OF THE BAG.",
   },
   liquidity: {
     title: "CERTIFIED EXIT LIQUIDITY",
-    subtitle: "The market needed an exit. You arrived with impeccable punctuality.",
-    roast: "The early holders appreciate your contribution. They have already muted the conversation.",
+    subtitle: "The early fictional wallets needed an exit. Your late entry arrived just in time to provide one.",
+    roast: "The first wallets appreciate your contribution to the post-graduation pool. Their CT accounts have gone quiet.",
     ending: "FILED UNDER: A VALUABLE LESSON WITH NO REFUND.",
   },
   tourist: {
     title: "THE VOLATILITY TOURIST",
-    subtitle: "You visited every emotional climate and returned with the same suitcase.",
+    subtitle: "You chased the launch, watched the curve graduate and left with a suitcase full of screenshots.",
     roast: "You bought the story, toured the drawdown and left a five-star review for the community.",
     ending: "CLEARED TO LEAVE THE MARKETPLACE. PLEASE KEEP YOUR RECEIPT.",
   },
   survivor: {
     title: "THE PAPER-HANDS SURVIVOR",
-    subtitle: "An unexpectedly sensible sequence of imaginary decisions.",
+    subtitle: "You checked the fictional launch, ignored the copied KOL call and kept your paper credits. Rare CT behaviour.",
     roast: "You treated a meme token like a revolving door. The Department is not sure how to process this.",
     ending: "RELEASED WITH A CAUTIONARY FOOTNOTE.",
   },
@@ -322,7 +322,7 @@ export function buildSimulatorResult(decisions: number[]): SimulatorResult {
     counts.hold + " holds",
     counts.trim + " trims",
     counts.average + " average-downs",
-    counts.telegram + " Telegram consultations",
+    counts.telegram + " CT / Telegram consultations",
   ].join(" / ");
 
   const seed = decisions.reduce((sum, decision, index) => ((sum * 29) + (decision + 1) * (index + 13)) % 900000, 404404);

@@ -160,13 +160,13 @@ export const profiles: Record<CopeArchetypeId, CopeProfile> = {
 };
 
 const bulletinTemplates = [
-  "THE DEPARTMENT REPORTS ELEVATED LEVELS OF 'STILL EARLY'.",
-  "OFFICIALS HAVE DETECTED A NEW WAVE OF STRATEGIC PATIENCE.",
-  "THE WORD 'SOON' HAS BEEN TEMPORARILY PROMOTED TO A UNIT OF TIME.",
-  "LIQUIDITY ANXIETY HAS REQUESTED ITS OWN OFFICE.",
-  "THE GROUP CHAT HAS ISSUED A STATEMENT ON THE STATEMENT.",
-  "CONVICTION REMAINS STABLE. THE CHART HAS DECLINED TO COMMENT.",
-  "A FRESH BATCH OF HOPIUM HAS BEEN DELIVERED TO THE BASEMENT.",
+  "THE TIMELINE REPORTS ELEVATED LEVELS OF 'STILL EARLY' AFTER THE THIRD ENTRY.",
+  "CT HAS DETECTED A NEW WAVE OF STRATEGIC PATIENCE AFTER THE DEPLOYER WENT QUIET.",
+  "THE CTO UPDATE HAS BEEN PROMOTED TO A CATALYST. NO DELIVERY DATE WAS ATTACHED.",
+  "POST-GRADUATION SLIPPAGE HAS REQUESTED ITS OWN OFFICE.",
+  "THE CT REPLIES HAVE ISSUED A STATEMENT ON THE TELEGRAM PINNED MESSAGE.",
+  "THE CTO THESIS REMAINS STABLE. THE FIVE-MINUTE CHART HAS DECLINED TO COMMENT.",
+  "A FRESH BATCH OF HOPIUM HAS BEEN DELIVERED TO THE POST-GRADUATION GROUP CHAT.",
   "THE BONDING CURVE HAS COMPLETED. THE EXIT PLAN HAS NOT.",
   "CT HAS FOUND A NEW 100X BEFORE FINISHING THE PREVIOUS POST-MORTEM.",
   "A CTO ACCOUNT HAS BEEN CREATED. ACCESS TO THE DEPLOYER WALLET REMAINS A SEPARATE QUESTION.",
@@ -203,37 +203,37 @@ export function buildDailyCopeIndex(issueDate: string): DailyCopeIndex {
   const dimensions: CopeDimension[] = [
     {
       id: "conviction-pressure",
-      label: "CONVICTION PRESSURE",
+      label: "POST-LAUNCH CONVICTION PRESSURE",
       shortLabel: "CONVICTION",
-      description: "Synthetic measurement of how firmly the fictional office is holding its thesis.",
+      description: "Synthetic measurement of how firmly the fictional timeline defends its launch thesis after the curve graduates and the chart turns red.",
       value: makeValue(seed, 11),
     },
     {
       id: "narrative-fog",
-      label: "NARRATIVE FOG",
+      label: "CT NARRATIVE FOG",
       shortLabel: "NARRATIVE",
-      description: "Synthetic reading of how much 'ecosystem synergy' has entered the room.",
+      description: "Synthetic reading of how much copied KOL language, vague catalyst talk and 'still early' phrasing has replaced a verifiable source.",
       value: makeValue(seed, 23),
     },
     {
       id: "telegram-reliance",
-      label: "TELEGRAM RELIANCE",
-      shortLabel: "TELEGRAM",
-      description: "Synthetic dependence on announcements, green dots and messages ending in 'soon'.",
+      label: "CT / TELEGRAM RELIANCE",
+      shortLabel: "CT / CHAT",
+      description: "Synthetic reliance on CT replies, KOL quote-tweets and Telegram admins for reassurance after a fictional launch event.",
       value: makeValue(seed, 37),
     },
     {
       id: "liquidity-anxiety",
-      label: "LIQUIDITY ANXIETY",
+      label: "POST-GRADUATION LIQUIDITY ANXIETY",
       shortLabel: "LIQUIDITY",
-      description: "Synthetic response to the imaginary depth of the Department's puddle.",
+      description: "Synthetic response to the fictional post-graduation pool, thin depth and the sudden discovery that a graduation badge is not an exit plan.",
       value: makeValue(seed, 49),
     },
     {
       id: "soon-intensity",
-      label: "SOON™ INTENSITY",
+      label: "CTO / SOON™ INTENSITY",
       shortLabel: "SOON™",
-      description: "Synthetic pressure exerted by deadlines that have not selected a date.",
+      description: "Synthetic pressure created by a vanished deployer, a fresh CTO banner and a promised update with no owner or date.",
       value: makeValue(seed, 61),
     },
   ];
@@ -294,7 +294,7 @@ export function buildPersonalCopeResult(answers: number[]): PersonalCopeResult {
   const finding = copeScore >= 75
     ? "COPE LEVELS EXCEED THE DEPARTMENTAL REFERENCE RANGE."
     : chatDependency >= 70
-      ? "GROUP CHAT RELIANCE HAS BEEN CLASSIFIED AS OPERATIONAL."
+      ? "CT / GROUP CHAT RELIANCE HAS BEEN CLASSIFIED AS OPERATIONAL."
       : patienceScore >= 75
         ? "UNEXPECTED CALM DETECTED. INVESTIGATION CONTINUES."
         : "PERSONAL READING FILED / THE THESIS REMAINS OPEN.";
