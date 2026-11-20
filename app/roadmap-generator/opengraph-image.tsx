@@ -11,7 +11,7 @@ export default function RoadmapGeneratorOpenGraphImage() {
       <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", padding: "54px 58px", backgroundColor: "#090b09", color: "#f0f0e9", border: "2px solid #34412f", fontFamily: "Arial, sans-serif" }}>
         <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 22, borderBottom: "1px solid #30382f" }}>
           <span style={{ color: "#b6ff65", fontSize: 23, fontWeight: 800, letterSpacing: 1 }}>THE DYOR DEPARTMENT</span>
-          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>OFFICE OF FUTURE DELIVERABLES</span>
+          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>CTO EMERGENCY OFFICE / COMMUNITY TAKEOVER DESK</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 51 }}>
           <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>FORM RPG-001 / MILESTONE REQUEST</span>

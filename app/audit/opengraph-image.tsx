@@ -27,9 +27,9 @@ export default function AuditOpenGraphImage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", marginTop: 47 }}>
-          <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>OFFICE OF QUESTIONABLE DUE DILIGENCE</span>
+          <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>FOMO CONTROL UNIT / KOL-TRIGGERED ENTRY DESK</span>
           <span style={{ display: "flex", marginTop: 15, fontSize: 82, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE DYOR AUDIT 2.0</span>
-          <span style={{ display: "flex", marginTop: 18, color: "#c5cec0", fontSize: 25 }}>10 questions. 17 fictional archetypes. 3 highly unnecessary scores.</span>
+          <span style={{ display: "flex", marginTop: 18, color: "#c5cec0", fontSize: 25 }}>10 questions. 17 degen archetypes. 3 fictional scores. One missing exit plan.</span>
         </div>
 
         <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
