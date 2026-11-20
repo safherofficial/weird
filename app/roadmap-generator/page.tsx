@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   title: "CTO Emergency Office | Community Takeover Roadmap",
   description: "The fictional CTO Emergency Office generates seven recovery phases for an abandoned Solana memecoin: deployer silence, community takeover, access questions and endless soon.",
   openGraph: {
-    title: "THE ROADMAP GENERATOR",
+    title: "CTO EMERGENCY OFFICE | COMMUNITY TAKEOVER ROADMAP",
     description: "The deployer went quiet. The community took over. Seven fictional recovery phases are now due: soon.",
     images: ["/roadmap-generator/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE ROADMAP GENERATOR",
+    title: "CTO EMERGENCY OFFICE | COMMUNITY TAKEOVER ROADMAP",
     description: "Generate a fictional CTO takeover plan, complete with access questions, community milestones and an impossible ETA.",
     images: ["/roadmap-generator/opengraph-image"],
   },
@@ -29,7 +29,7 @@ export default function RoadmapGeneratorPage() {
         <aside className="roadmap-intro">
           <div className="audit-intro__meta"><span>FORM RPG-001</span><span>DEPLOYER STATUS: LAST SEEN / SOON</span></div>
           <p className="eyebrow">CTO EMERGENCY OFFICE / COMMUNITY TAKEOVER DESK</p>
-          <h1>THE ROADMAP<br /><span>GENERATOR.</span></h1>
+          <h1>THE CTO TAKEOVER<br /><span>ROADMAP.</span></h1>
           <p className="audit-intro__lead">
             The deployer has stopped posting. A new CTO account has appeared. Generate seven fictional recovery phases for the CA, the community, the keys and the next promised update.
           </p>

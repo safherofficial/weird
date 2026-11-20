@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "THE TOKEN DOSSIER FACTORY — Seven questions. Nine fictional sections. One invented supply table.";
+export const alt = "EXIT LIQUIDITY DEPARTMENT — A fictional Solana token dossier covering tokenomics, launch narrative and post-graduation risk."
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

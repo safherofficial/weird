@@ -5,7 +5,7 @@
 
 A deliberately useless satirical institution for people who recognize themselves in Crypto Twitter, Solana memecoin trenches, pump.fun launches and the endless hunt for the next 100x.
 
-The visitor is not an outsider who needs crypto explained. The visitor is one of us: the person who refreshed the chart, followed the KOL, tracked the mystery wallet, entered after the green candle and then found a reason not to sell.
+The visitor is not an outsider who needs crypto explained. The visitor is one of us: the person who refreshed the chart, followed the KOL, chased the mystery-wallet lore, entered after the green candle and then found a reason not to sell.
 
 **Core line:** You came for the 100x. You stayed because you can't sell at a loss.
 
@@ -15,13 +15,13 @@ Each division is an editorial identity wrapped around an existing experience. Th
 
 | Division | Existing experience | Editorial territory |
 | --- | --- | --- |
-| 01. Pump.fun Intelligence | Pump.fun Paper Market Simulator | Fictional launches, bonding curves, graduation, migration and paper-market decisions. |
+| 01. Pump.fun Intelligence | Paper Market Simulator | Fictional launches, bonding curves, graduation, migration and paper-market decisions. |
 | 02. Solana Trenches | 99% Club | Survivor identity, microcap fatigue, missed calls and re-entry habits. |
 | 03. FOMO Control Unit | DYOR Audit | KOL triggers, green-candle chasing, crowd dependency and research-to-entry behaviour. |
 | 04. KOL Surveillance | The Trenches Desk / Daily CT Briefing | Date-seeded fictional CT briefings; no real accounts are monitored. |
 | 05. Whale & Wallet Investigation | Department Archives | Fictional wallet dossiers, suspicious labels, screenshot trails and evidence folklore. |
-| 06. CTO Emergency Office | CTO Takeover Roadmap | Community takeovers, abandoned-dev scenarios, recovery phases and soon-based deadlines. |
-| 07. Exit Liquidity Department | Fictional Token Dossier Factory | Fictional token documents, allocations, supply narratives and the people expected to provide liquidity. |
+| 06. CTO Emergency Office | Community Takeover Roadmap | Community takeovers, abandoned-dev scenarios, recovery phases and soon-based deadlines. |
+| 07. Exit Liquidity Department | Fictional Token Dossier / Tokenomics Factory | Fictional token documents, allocations, supply narratives and the people expected to provide liquidity. |
 | 08. 100X Research Bureau | Token-Purpose Inspector | Token purpose, product claims, narrative inflation and the next-gem fantasy. |
 | 09. Bagholder Rehabilitation | Museum of Trenches Relics | Preserved relics, missed exits, abandoned roadmaps and long-term conviction artifacts. |
 | 10. Copium Administration | Global Cope Index | Synthetic readings of CT echo, launch FOMO, Telegram reassurance and post-graduation denial. |

@@ -201,7 +201,7 @@ export default function Home() {
           <SectionLabel>THE DEPARTMENTAL CHARTER</SectionLabel>
           <p className="hq-manifesto__statement">WE ARE NOT HERE TO JUDGE YOU.<br /><span>WE ARE HERE BECAUSE WE ARE YOU.</span></p>
           <div className="hq-manifesto__bottom">
-            <p>We aped the first green candle, called the second one confirmation, and mistook a Telegram raid for due diligence. We tracked wallets we could not identify, followed KOLs who followed each other, and stayed through graduation because someone said "send it".</p>
+            <p>We aped the first green candle, called the second one confirmation, and mistook a Telegram raid for due diligence. We chased wallet screenshots we could not verify, followed KOLs who followed each other, and stayed through graduation because someone said "send it".</p>
             <p>Then the dev went quiet, the chart turned red, and the group chat became a support group. This Department is not here to judge. We are in the screenshot too.</p>
           </div>
         </div>

@@ -59,7 +59,7 @@ export default function DepartmentPassportPage() {
             <article className="passport-guide__step">
               <span>02 / COMPLETE THE TASK</span>
               <h3>FINISH, DON’T JUST OPEN</h3>
-              <p>Answer every question and reach the final result, or generate the completed CTO Takeover Roadmap and Token Dossier. The seven core experiences count only when finished.</p>
+              <p>Answer every question and reach the final result, or complete the CTO Emergency Office roadmap and the Exit Liquidity Department token dossier. The seven core experiences count only when finished.</p>
             </article>
             <article className="passport-guide__step">
               <span>03 / AUTOMATIC REWARD</span>

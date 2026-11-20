@@ -70,7 +70,7 @@ function makeCaseCard(result: RoadmapResult) {
     '<rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1172M28 555H1172" stroke="#384137"/>' +
     '<text x="64" y="77" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">CTO TAKEOVER ROADMAP / CASE FILE</text>' +
+    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">CTO EMERGENCY OFFICE / TAKEOVER PLAN FILE</text>' +
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">CASE No. ' + result.caseNumber + ' / PROJECT: ' + project + '</text>' +
     '<text x="64" y="223" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="43" font-weight="900">' + title + '</text>' +
     '<text x="64" y="267" fill="#b6ff65" font-family="monospace" font-size="17">A SEVEN-PHASE CTO RECOVERY PLAN / ETA: SOON™</text>' +
@@ -185,7 +185,7 @@ export default function RoadmapGeneratorClient() {
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My CTO Takeover Roadmap", text, url: caseUrl });
+        await navigator.share({ title: "My CTO Emergency Office Roadmap", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR ROADMAP REMAINS ON FILE.");
       }
@@ -230,7 +230,7 @@ export default function RoadmapGeneratorClient() {
           anchor.click();
           anchor.remove();
           window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-          setNotice("YOUR CTO TAKEOVER ROADMAP CARD HAS BEEN ISSUED.");
+          setNotice("YOUR CTO EMERGENCY OFFICE CASE CARD HAS BEEN ISSUED.");
         }, "image/png");
       };
 
@@ -331,7 +331,7 @@ export default function RoadmapGeneratorClient() {
           <button className="button button--quiet" type="button" onClick={restart}>GENERATE ANOTHER ↺</button>
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
-        <p className="roadmap-public-link"><Link href={caseUrl}>OPEN PUBLIC CTO FILE ↗</Link></p>
+        <p className="roadmap-public-link"><Link href={caseUrl}>OPEN PUBLIC TAKEOVER FILE ↗</Link></p>
         <DepartmentNextSteps currentDepartment="roadmap" />
       </section>
     );
@@ -392,7 +392,7 @@ export default function RoadmapGeneratorClient() {
   const currentAnswer = answers[current];
 
   return (
-    <section className="roadmap-panel roadmap-game" aria-label="Roadmap Generator questionnaire">
+    <section className="roadmap-panel roadmap-game" aria-label="CTO Emergency Office takeover roadmap questionnaire">
       <div className="roadmap-panel__header">
         <span>CTO RECOVERY INTAKE / {String(current + 1).padStart(2, "0")} OF 06</span>
         <span className="roadmap-status"><i /> MILESTONES PENDING</span>

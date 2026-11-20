@@ -27,14 +27,14 @@ const sections = [
   {
     title: "03 / GENERATED DOCUMENTS",
     paragraphs: [
-      "CTO Takeover Roadmap and Token Dossier Factory create fictional parody documents based on answer choices. Their architectures, security language, token allocations, project labels, milestones, dates and claims are not verified or independently researched.",
-      "Do not present generated documents as actual project fictional token dossiers, security audits, token disclosures, business plans, roadmaps, partnership announcements or delivery commitments. A generated document is not evidence that a product, team, contract or partnership exists.",
+      "The CTO Emergency Office roadmap and Exit Liquidity Department token dossier create fictional parody documents based on answer choices. Their architectures, security language, token allocations, project labels, milestones, dates and claims are not verified or independently researched.",
+      "Do not present generated documents as official project materials, verified token disclosures, security audits, business plans, roadmaps, partnership announcements or delivery commitments. A generated document is not evidence that a product, team, contract or partnership exists.",
     ],
   },
   {
     title: "04 / PUBLIC CASES AND PROJECT LABELS",
     paragraphs: [
-      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Paper Market Simulator, 100X Research Bureau, CTO Takeover Roadmap and Token Dossier Factory results. Anyone with a case URL may view its contents. CTO Takeover Roadmap and Token Dossier Factory include the visitor's project designation in the shareable URL.",
+      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap and Exit Liquidity Department token dossier. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's project designation in the shareable URL.",
       "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. Visitors are responsible for deciding whether to publish or share a case link.",
     ],
   },

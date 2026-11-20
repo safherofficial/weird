@@ -21,7 +21,7 @@ const sections = [
     title: "02 / ACCOUNTS AND SUBMISSIONS",
     paragraphs: [
       "The site does not ask visitors to register an account, provide an email address, connect a wallet, upload documents or submit a real project for review. Its interactive experiences run from choices selected in the visitor's browser.",
-      "Do not enter personal, confidential or commercially sensitive information as a project designation. CTO Takeover Roadmap and Token Dossier Factory place the sanitized project label in a shareable URL.",
+      "Do not enter personal, confidential or commercially sensitive information as a project designation. The CTO Emergency Office roadmap and Exit Liquidity Department token dossier place the sanitized project label in a shareable URL.",
     ],
   },
   {
@@ -41,7 +41,7 @@ const sections = [
   {
     title: "05 / PUBLIC RESULT LINKS",
     paragraphs: [
-      "FOMO Control Unit Audit, Pump.fun Paper Market Simulator, 100X Research Bureau, CTO Takeover Roadmap and Token Dossier Factory can create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Takeover Roadmap and Token Dossier Factory URLs also contain the sanitized project label.",
+      "The FOMO Control Unit Audit, Pump.fun Intelligence paper-market simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap and Exit Liquidity Department token dossier can create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Emergency Office and Exit Liquidity Department URLs also contain the sanitized project label.",
       "Anyone who receives a public case link can view the corresponding result. Links may remain in browser history, messages, social posts and hosting request records. The site does not maintain a private account that can revoke a copied link. Do not include personal or confidential details in a project label.",
     ],
   },

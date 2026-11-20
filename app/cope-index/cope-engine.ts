@@ -241,7 +241,7 @@ export function buildDailyCopeIndex(issueDate: string): DailyCopeIndex {
     dimensions.reduce((sum, dimension) => sum + dimension.value, 0) / dimensions.length
   );
   const status = overall >= 75 ? "SEVERE / PAPERWORK ADVISED" :
-    overall >= 55 ? "ELEVATED / MONITOR THE CHAT" :
+    overall >= 55 ? "ELEVATED / CHAT ECHO PERSISTENT" :
     overall >= 35 ? "MODERATE / THESIS STILL OPEN" :
     "CALM / SUSPICIOUSLY WELL-ADJUSTED";
   const bulletin = bulletinTemplates[seed % bulletinTemplates.length];

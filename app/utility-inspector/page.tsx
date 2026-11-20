@@ -5,7 +5,7 @@ import UtilityInspectorClient from "./utility-inspector-client";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/utility-inspector" },
-  title: "100X Research Bureau | Utility Inspector",
+  title: "100X Research Bureau | Token Purpose Inspection",
   description: "The 100X Research Bureau inspects fictional Solana token narratives: actual use, post-launch purpose, community demand and evidence beyond the KOL thread.",
   openGraph: {
     title: "THE 100X TOKEN-PURPOSE INSPECTOR",

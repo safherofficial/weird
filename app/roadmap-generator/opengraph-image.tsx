@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "THE ROADMAP GENERATOR — Six questions. Seven fictional phases. ETA: Soon.";
+export const alt = "CTO EMERGENCY OFFICE — Community takeover roadmap. Six questions, seven fictional recovery phases and one flexible ETA."
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -15,8 +15,8 @@ export default function RoadmapGeneratorOpenGraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 51 }}>
           <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>FORM RPG-001 / MILESTONE REQUEST</span>
-          <span style={{ display: "flex", marginTop: 15, fontSize: 77, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE ROADMAP</span>
-          <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 77, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>GENERATOR.</span>
+          <span style={{ display: "flex", marginTop: 15, fontSize: 77, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE CTO TAKEOVER</span>
+          <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 77, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>ROADMAP.</span>
           <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>6 questions. 7 phases. 1 very flexible deadline.</span>
         </div>
         <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
