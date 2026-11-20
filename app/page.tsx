@@ -4,11 +4,11 @@ import DepartmentFooter from "./components/department-footer";
 import SectionLabel from "./components/section-label";
 
 const conditions = [
-  { label: "GLOBAL COPE INDEX", value: "ELEVATED", tone: "green" },
-  { label: "EXIT LIQUIDITY LEVEL", value: "CRITICAL", tone: "red" },
-  { label: "DEV COMMUNICATION", value: "LAST SEEN: SOON", tone: "muted" },
-  { label: "ROADMAP STATUS", value: "STILL COOKING", tone: "green" },
-  { label: "FINANCIAL DIGNITY", value: "NOT DETECTED", tone: "red" },
+  { label: "BONDING CURVE", value: "GRADUATED / TOO LATE", tone: "green" },
+  { label: "KOL CONSENSUS", value: "SELF-REFERENTIAL", tone: "muted" },
+  { label: "DEV STATUS", value: "COOKING / KITCHEN UNKNOWN", tone: "green" },
+  { label: "EXIT LIQUIDITY", value: "YOU", tone: "red" },
+  { label: "COPE RESERVES", value: "INFINITE", tone: "red" },
 ];
 
 const departments = [
@@ -16,7 +16,7 @@ const departments = [
     number: "01",
     title: "THE DYOR AUDIT",
     category: "CASE INVESTIGATION",
-    description: "Submit your research process for a completely unnecessary investigation.",
+    description: "Reconstruct the research spiral: the KOL call, the green candle, the Telegram raid and the entry you called conviction.",
     status: "ACCEPTING CASES",
     href: "/audit",
     symbol: "⌁",
@@ -25,7 +25,7 @@ const departments = [
     number: "02",
     title: "THE BAGHOLDER SIMULATOR",
     category: "BEHAVIOURAL SIMULATION",
-    description: "Seven rounds. Four questionable decisions. One entirely fictional asset. How heavy can an imaginary bag get?",
+    description: "Survive a fictional pump.fun launch: bonding curve, graduation, migration, sudden red candles and the exit you never planned.",
     status: "SIMULATION OPEN",
     href: "/simulator",
     symbol: "↘",
@@ -34,7 +34,7 @@ const departments = [
     number: "03",
     title: "UTILITY INSPECTOR",
     category: "CLAIM ASSESSMENT",
-    description: "Seven questions. Three departmental scores. Investigating revolutionary solutions in search of an actual problem.",
+    description: "Interrogate a fictional memecoin's utility claims, token narrative and community promises. The answer may still be 'number go up'.",
     status: "CLAIMS ACCEPTED",
     href: "/utility-inspector",
     symbol: "⌕",
@@ -43,7 +43,7 @@ const departments = [
     number: "04",
     title: "ROADMAP GENERATOR",
     category: "PROJECT DOCUMENTS",
-    description: "Six questions. Seven fictional phases. Generate a roadmap with ambitious milestones and deadlines that are always just around the corner.",
+    description: "Generate a CTO-ready roadmap full of exchange teases, ecosystem expansion and milestones scheduled for the legendary date known as soon.",
     status: "MILESTONES OPEN",
     href: "/roadmap-generator",
     symbol: "⇢",
@@ -52,7 +52,7 @@ const departments = [
     number: "05",
     title: "WHITEPAPER FACTORY",
     category: "PROJECT DOCUMENTS",
-    description: "Seven questions. Nine sections. Generate a technically impressive document for a project that may or may not exist.",
+    description: "Turn 'community is the product' into nine pages of technical-looking confidence, tokenomics and carefully undefined deliverables.",
     status: "ABSTRACTS OPEN",
     href: "/whitepaper-factory",
     symbol: "▤",
@@ -61,7 +61,7 @@ const departments = [
     number: "06",
     title: "THE BAGHOLDER MUSEUM",
     category: "CULTURAL COLLECTION",
-    description: "Twelve preserved artifacts from the age of questionable conviction. Please do not touch the liquidity puddle.",
+    description: "Preserved relics from the trenches: suspicious screenshots, abandoned roadmaps, empty liquidity promises and the sacred green arrow.",
     status: "COLLECTION OPEN",
     href: "/museum",
     symbol: "▧",
@@ -70,7 +70,7 @@ const departments = [
     number: "07",
     title: "THE 99% CLUB",
     category: "MEMBERSHIP OFFICE",
-    description: "Five questions. Three fictional indices. A membership card with absolutely no practical value.",
+    description: "Apply for completely useless survivor status. Prior rugs, missed 100x calls and unexplained re-entries may count as experience.",
     status: "APPLICATIONS OPEN",
     href: "/club",
     symbol: "◉",
@@ -79,7 +79,7 @@ const departments = [
     number: "08",
     title: "THE GLOBAL COPE INDEX",
     category: "SYNTHETIC MONITORING",
-    description: "A daily synthetic reading of conviction pressure, narrative fog, Telegram reliance and the power of soon.",
+    description: "A fictional daily reading of FOMO pressure, KOL echo, cope reserves, exit readiness and general trenches fatigue.",
     status: "DAILY SYNTHETIC INDEX",
     href: "/cope-index",
     symbol: "⌁",
@@ -88,7 +88,7 @@ const departments = [
     number: "09",
     title: "THE DEPARTMENT ARCHIVES",
     category: "PUBLIC RECORDS",
-    description: "Twelve fictional records, incident reports and official memos from the administrative aftermath of doing your own research.",
+    description: "A searchable record of fictional rugs, CTO emergencies, missed launches, paid-call folklore and other trenches paperwork.",
     status: "ARCHIVE OPEN",
     href: "/archives",
     symbol: "▥",
@@ -97,7 +97,7 @@ const departments = [
     number: "10",
     title: "THE DAILY DEPARTMENT",
     category: "DAILY DISPATCH",
-    description: "One fresh fictional dispatch every UTC day. Official bulletins, internal memos and incidents that should never have happened.",
+    description: "One fictional dispatch every UTC day: pump.fun incidents, KOL consensus, wallet theories, CTO crises and bagholder post-mortems.",
     status: "TODAY'S DISPATCH FILED",
     href: "/daily-office",
     symbol: "▣",
@@ -109,21 +109,21 @@ const departmentGroups = [
     number: "01",
     code: "INVESTIGATION / 01—03",
     title: "CASEWORK",
-    description: "Forensic reviews, questionable decisions and claims requiring further documentation.",
+    description: "From ape-in to exit denial: investigations into FOMO entries, KOL calls and the research that somehow missed the sell button.",
     items: departments.slice(0, 3),
   },
   {
     number: "02",
     code: "DOCUMENTS / 04—05",
     title: "PROJECT OFFICE",
-    description: "The paperwork behind every ambitious promise. Formatting is immaculate. The milestones are fictional.",
+    description: "The paperwork behind every 'soon', major CEX tease and community takeover. Formatting is immaculate. Delivery remains fictional.",
     items: departments.slice(3, 5),
   },
   {
     number: "03",
     code: "COLLECTION / 06—10",
     title: "PUBLIC RECORDS",
-    description: "Artifacts, indices, archived incidents and the daily record of collective conviction.",
+    description: "A public record of trench survival, suspicious alpha, fictional rugs, wallet folklore and institutional-grade copium.",
     items: departments.slice(5),
   },
 ];
@@ -133,27 +133,33 @@ export default function Home() {
     <main id="main-content" className="hq-page">
       <DepartmentHeader activeSection="home" statusMessage="ALL SYSTEMS NOMINALLY USELESS" />
 
-      <section className="hq-hero shell" id="content-start" tabIndex={-1}>
+      <section className="hq-hero hq-hero--identity shell" id="content-start" tabIndex={-1}>
         <div className="hq-hero__topline">
-          <SectionLabel>OFFICIAL DEPARTMENT HEADQUARTERS</SectionLabel>
+          <SectionLabel>OFFICIAL HEADQUARTERS OF FINANCIAL DELUSION</SectionLabel>
           <span className="hq-reference">PUBLIC ACCESS / REF. DYOR-001</span>
         </div>
 
         <div className="hq-hero__grid">
           <div className="hq-hero__copy">
-            <p className="hq-eyebrow"><span>INDEPENDENT INSTITUTION</span> / CRYPTO-ADJACENT AFFAIRS</p>
-            <h1>YOUR RESEARCH<br />WAS <span>IMPECCABLE.</span><br />YOUR ENTRY<br />WAS NOT.</h1>
+            <p className="hq-eyebrow"><span>OFFICIAL AFTERCARE OFFICE</span> / PUMP.FUN · SOLANA TRENCHES · CRYPTO TWITTER</p>
+            <h1>YOU CAME FOR<br />THE <span>100X.</span><br />YOU STAYED<br />BECAUSE YOU<br />CAN'T SELL<br />AT A LOSS.</h1>
             <p className="hq-hero__lead">
-              You checked the team. Studied the tokenomics. Joined the Telegram.
-              Read the whitepaper. And somehow, you are still holding the bag.
+              You aped the launch, watched the bonding curve graduate, followed three KOL calls,
+              tracked a mystery wallet and refreshed the chart through the night. Somehow, the exit plan is still loading.
             </p>
+            <div className="hq-hero__culture-strip" aria-label="The Department's jurisdiction">
+              <span>PUMP.FUN AFTERCARE</span>
+              <span>SOLANA TRENCHES</span>
+              <span>CRYPTO TWITTER</span>
+              <span>100X RECOVERY UNIT</span>
+            </div>
             <div className="hq-hero__actions">
-              <Link className="button button--primary" href="/audit">OPEN A DYOR CASE <span>↗</span></Link>
+              <Link className="button button--primary" href="/audit">OPEN A DEGEN CASE <span>↗</span></Link>
               <a className="button button--quiet" href="#departments">ENTER THE DEPARTMENT <span>↓</span></a>
             </div>
             <div className="hq-hero__disclaimer">
               <span className="hq-hero__disclaimer-mark">!</span>
-              <span>NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.<br />JUST A DEPARTMENTAL RESPONSE TO QUESTIONABLE CONVICTION.</span>
+              <span>NO TOKEN. NO ALPHA. NO EXIT STRATEGY.<br />JUST OFFICIAL PAPERWORK FOR FICTIONAL DEGEN BEHAVIOUR.</span>
             </div>
           </div>
 
@@ -165,34 +171,34 @@ export default function Home() {
             <div className="hq-casefile__identity">
               <div>
                 <span>CASE REFERENCE</span>
-                <strong>000001—YOU</strong>
+                <strong>PF-000001—YOU</strong>
               </div>
-              <span className="hq-casefile__classification">PUBLIC / SATIRICAL</span>
+              <span className="hq-casefile__classification">PUMP.FUN / FICTIONAL</span>
             </div>
             <div className="hq-casefile__chart">
               <div className="hq-casefile__chart-grid" aria-hidden="true" />
               <svg viewBox="0 0 440 200" role="img" aria-label="Illustrative chart with a sharp downward trend">
                 <defs>
                   <linearGradient id="hqChartArea" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#b6ff65" stopOpacity=".22" />
-                    <stop offset="100%" stopColor="#b6ff65" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#ff6b62" stopOpacity=".22" />
+                    <stop offset="100%" stopColor="#ff6b62" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path d="M0 34 L28 28 L56 42 L83 25 L110 40 L137 48 L166 43 L194 67 L220 61 L247 87 L274 81 L303 109 L331 100 L357 132 L385 125 L411 161 L440 174 L440 200 L0 200 Z" fill="url(#hqChartArea)" />
-                <path d="M0 34 L28 28 L56 42 L83 25 L110 40 L137 48 L166 43 L194 67 L220 61 L247 87 L274 81 L303 109 L331 100 L357 132 L385 125 L411 161 L440 174" fill="none" stroke="#b6ff65" strokeWidth="2.4" vectorEffect="non-scaling-stroke" />
+                <path d="M0 34 L28 28 L56 42 L83 25 L110 40 L137 48 L166 43 L194 67 L220 61 L247 87 L274 81 L303 109 L331 100 L357 132 L385 125 L411 161 L440 174" fill="none" stroke="#ff6b62" strokeWidth="2.4" vectorEffect="non-scaling-stroke" />
                 <path d="M0 178 H440" stroke="#53604d" strokeDasharray="3 7" />
               </svg>
               <span className="hq-casefile__loss">−97.4%<small>HYPOTHETICAL</small></span>
-              <span className="hq-casefile__chart-label">ILLUSTRATIVE PERFORMANCE / NOT MARKET DATA</span>
+              <span className="hq-casefile__chart-label">FICTIONAL BAG PERFORMANCE / NOT MARKET DATA</span>
             </div>
             <div className="hq-casefile__findings">
-              <div><span>RESEARCH EFFORT</span><strong className="is-positive">EXCESSIVE</strong></div>
-              <div><span>ENTRY TIMING</span><strong className="is-negative">UNFORTUNATE</strong></div>
+              <div><span>RESEARCH EFFORT</span><strong className="is-positive">OVERCOOKED</strong></div>
+              <div><span>ENTRY TIMING</span><strong className="is-negative">POST-GRADUATION</strong></div>
+              <div><span>KOL DEPENDENCY</span><strong>CRITICAL</strong></div>
               <div><span>EXIT STRATEGY</span><strong>NOT DETECTED</strong></div>
-              <div><span>CONVICTION</span><strong>UNREASONABLE</strong></div>
             </div>
             <div className="hq-casefile__footer">
-              <span>THE MARKET HAS BEEN NOTIFIED.</span>
+              <span>BONDING CURVE GRADUATED. SO DID YOUR LIQUIDITY.</span>
               <span><i aria-hidden="true" /> OPEN CASE</span>
             </div>
           </aside>
@@ -219,10 +225,10 @@ export default function Home() {
       <section className="hq-status shell" aria-labelledby="hq-status-title">
         <div className="hq-section-heading hq-section-heading--compact">
           <div>
-            <SectionLabel>DEPARTMENTAL SITUATION ROOM</SectionLabel>
-            <h2 id="hq-status-title">CURRENT <span>CONDITIONS.</span></h2>
+            <SectionLabel>TRENCHES SITUATION ROOM</SectionLabel>
+            <h2 id="hq-status-title">TRENCHES <span>CONDITIONS.</span></h2>
           </div>
-          <p>FICTIONAL STATUS BOARD<br />NOT LIVE MARKET DATA</p>
+          <p>FICTIONAL DEGEN READINGS<br />NOT LIVE MARKET DATA</p>
         </div>
         <div className="hq-status__grid">
           {conditions.map((item, index) => (
@@ -234,16 +240,16 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <p className="hq-status__disclaimer">These satirical status labels are fictional and are not live market data, forecasts or investment indicators.</p>
+        <p className="hq-status__disclaimer">Every reading is fictional satire. No live token data, wallets, KOL accounts, forecasts or trading signals are involved.</p>
       </section>
 
       <section className="hq-directory shell" id="departments" aria-labelledby="hq-directory-title">
         <div className="hq-section-heading">
           <div>
-            <SectionLabel>INTERNAL ROUTING / PUBLIC ACCESS</SectionLabel>
-            <h2 id="hq-directory-title">THE DEPARTMENT.<br /><span>IN SESSION.</span></h2>
+            <SectionLabel>INTERNAL ROUTING / TRENCHES AFTERCARE</SectionLabel>
+            <h2 id="hq-directory-title">YOUR NEXT<br /><span>BAD DECISION.</span></h2>
           </div>
-          <p>Ten departments. Three offices.<br />No practical solutions guaranteed.</p>
+          <p>Ten existing experiences. One shared condition.<br />No alpha. No financial recovery plan.</p>
         </div>
 
         <div className="hq-directory__groups">
@@ -285,10 +291,10 @@ export default function Home() {
         <div className="hq-dispatch__panel">
           <div className="hq-dispatch__stamp" aria-hidden="true">DAILY<br />RECORD</div>
           <div className="hq-dispatch__content">
-            <SectionLabel>THE DAILY DEPARTMENT / UTC DISPATCH</SectionLabel>
-            <h2 id="hq-dispatch-title">THE MARKET<br /><span>NEVER FILES A REPORT.</span></h2>
-            <p>We do. One date-seeded fictional dispatch every UTC day: KOL Intelligence, on-chain interpretations, risk reclassification, conviction metrics and a post-mortem that refuses to admit defeat.</p>
-            <Link className="button button--outline" href="/daily-office">READ TODAY'S DISPATCH <span>↗</span></Link>
+            <SectionLabel>THE DAILY DEPARTMENT / UTC TRENCHES DISPATCH</SectionLabel>
+            <h2 id="hq-dispatch-title">THE TRENCHES<br /><span>NEVER FILE A REPORT.</span></h2>
+            <p>We do. One fictional dispatch every UTC day: pump.fun incidents, KOL echo chambers, wallet theories, CTO emergencies, FOMO behaviour and post-mortems with absolutely no admission of fault.</p>
+            <Link className="button button--outline" href="/daily-office">READ TODAY'S TRENCHES REPORT <span>↗</span></Link>
           </div>
           <div className="hq-dispatch__meta">
             <span>DOCUMENT CLASS</span><strong>PUBLIC RECORD</strong>
@@ -311,20 +317,20 @@ export default function Home() {
           <SectionLabel>THE DEPARTMENTAL CHARTER</SectionLabel>
           <p className="hq-manifesto__statement">WE ARE NOT HERE TO JUDGE YOU.<br /><span>WE ARE HERE BECAUSE WE ARE YOU.</span></p>
           <div className="hq-manifesto__bottom">
-            <p>We read the whitepapers. We checked the wallets. We followed the smart money. We zoomed out. We zoomed in. We found conviction in a Telegram message with seventeen rocket emojis.</p>
-            <p>And sometimes, despite all that research, the market did what the market does.</p>
+            <p>We aped the first green candle, called the second one confirmation, and mistook a Telegram raid for due diligence. We tracked wallets we could not identify, followed KOLs who followed each other, and stayed through graduation because someone said "send it".</p>
+            <p>Then the dev went quiet, the chart turned red, and the group chat became a support group. This Department is not here to judge. We are in the screenshot too.</p>
           </div>
         </div>
       </section>
 
       <section className="hq-closing shell">
-        <span className="hq-closing__kicker">YOUR FILE IS STILL OPEN.</span>
-        <h2>AT LEAST<br /><span>WE'RE EARLY.</span></h2>
-        <p>On what? We have not established that yet.</p>
-        <Link className="button button--primary" href="/audit">GET YOUR OFFICIAL DYOR REPORT <span>↗</span></Link>
+        <span className="hq-closing__kicker">ONE MORE ENTRY. ONE MORE EXCUSE.</span>
+        <h2>STILL<br /><span>EARLY.</span></h2>
+        <p>The next ticker is not a plan. The next green candle is not a strategy.</p>
+        <Link className="button button--primary" href="/audit">GET YOUR OFFICIAL DEGEN DOSSIER <span>↗</span></Link>
       </section>
 
-      <DepartmentFooter message={["AN INSTITUTION BUILT BY PEOPLE WHO DID THEIR RESEARCH", "AND STILL GOT REKT."]} />
+      <DepartmentFooter message={["THE OFFICIAL HEADQUARTERS OF FINANCIAL DELUSION", "BUILT BY DEGENS. FILED BY BAGHOLDERS."]} />
     </main>
   );
 }

@@ -1,10 +1,14 @@
 # THE DYOR DEPARTMENT
 
-**You did your own research. The market did its own thing.**
+**You came for the 100x. You stayed because you can't sell at a loss.**
 
-A satirical, deliberately useless institution dedicated to questionable conviction, over-researched entries, disappearing liquidity and the universal experience of holding the bag.
+The official headquarters of financial delusion: a deliberately useless aftercare office for Crypto Twitter, Solana trenches, pump.fun launches, FOMO, KOL calls, CTO emergencies and bagholder behaviour.
+
+The visitor is not an outsider being mocked. The Department is in the screenshot too. See [the Brand Voice & Editorial Contract](docs/BRAND_VOICE.md) for the editorial rules.
 
 ## Product boundaries
+
+- Editorial identity and language rules: [docs/BRAND_VOICE.md](docs/BRAND_VOICE.md).
 
 - No token, wallet connection, real-money mechanics or paid financial product.
 - The app does not intentionally set analytics or advertising cookies or include tracking pixels. The optional DYOR Audit archive and Department Passport are stored in local browser storage only. Passport tracking starts only after explicit opt-in; visit stamps and completion achievements are never sent to an application server.

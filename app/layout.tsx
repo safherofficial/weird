@@ -11,23 +11,23 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
   title: {
-    default: "THE DYOR DEPARTMENT — Your research was impeccable. Your entry was not.",
+    default: "THE DYOR DEPARTMENT — You came for the 100x. You stayed because you can't sell at a loss.",
     template: "%s | THE DYOR DEPARTMENT",
   },
   description:
-    "An independent institution dedicated to questionable conviction, over-researched entries and the fine art of holding the bag. No token. No utility. Just collective suffering.",
+    "The fictional aftercare office for Crypto Twitter, Solana trenches and pump.fun degeneracy. FOMO, KOL calls, bonding curves and bagholder behaviour. No token, no alpha, no financial advice.",
   icons: {
     icon: "/icon.svg",
   },
   openGraph: {
     title: "THE DYOR DEPARTMENT",
-    description: "You did your own research. The market did its own thing.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Official aftercare for the Solana trenches.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DYOR DEPARTMENT",
-    description: "You did your own research. The market did its own thing.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Official aftercare for the Solana trenches.",
     images: ["/opengraph-image"],
   },
 };
