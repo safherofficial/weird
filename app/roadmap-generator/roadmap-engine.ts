@@ -295,56 +295,124 @@ function buildMilestones(answers: number[], projectLabel: string): RoadmapMilest
   const community = answers[4];
   const ambition = answers[5];
 
+  // Each timeline track reflects the answer selected in question 02.
   const schedules = [
-    ["AFTER THE NEXT CT SPACE", "WHEN THE COMMUNITY HAS THE KEYS", "AFTER THE NEXT CURVE MILESTONE", "TBD / PLEASE STOP ASKING"],
-    ["AFTER THE NEXT CTO UPDATE", "SOON™", "VERY SOON™", "BEFORE THE NEXT 100X CALL"],
-    ["AFTER GRADUATION", "WHEN THE NEW MODS ARE ALIGNED", "WHEN THE DEPLOYER REPLIES", "IN THE NEXT PINNED THREAD"],
-    ["WHEN WALLET ACCESS IS EXPLAINED", "AFTER THE COMMUNITY VOTE", "ONCE THE KOL CAMPAIGN IS ALIGNED", "WHEN THE TIMELINE STOPS REFRESHING"],
+    [
+      "AFTER THE NAMED OWNER ACCEPTS THE DELIVERABLE",
+      "AFTER THE DOCUMENTED ACCEPTANCE CHECK",
+      "WHEN THE VERIFIED CURVE MILESTONE IS REACHED",
+      "AFTER THE HANDOVER RECORD IS PUBLISHED",
+    ],
+    [
+      "ON THE PUBLISHED CTO MILESTONE DATE",
+      "ON THE DATED RELEASE CHECKPOINT",
+      "AFTER THE SCHEDULED COMMUNITY REVIEW",
+      "ON THE VERSIONED DELIVERY DATE",
+    ],
+    [
+      "AFTER THE NEXT CT SPACE",
+      "AFTER THE NEXT CURVE MILESTONE",
+      "WHEN THE DEPLOYER REPLIES",
+      "IN THE NEXT PINNED THREAD",
+    ],
+    [
+      "BEFORE THE NEXT 100X CALL",
+      "BEFORE THE NEXT GREEN-CANDLE SCREENSHOT",
+      "AFTER THE NEXT NARRATIVE PIVOT",
+      "WHEN THE CALENDAR ACCEPTS VIBES",
+    ],
   ][timeline];
 
-  const productStatus = maturity === 0
-    ? "LIVE / PROOF OF WORK REQUIRED"
-    : maturity === 1
-      ? "COMMUNITY BUILD / HANDOVER STILL LOADING"
-      : maturity === 2
-        ? "RELAUNCH ANNOUNCEMENT READY / ACCESS UNCLEAR"
-        : "CA AND PINNED THREAD LOCATED / OPERATORS NOT VERIFIED";
-  const partnershipStatus = partnerships === 0
-    ? "NAMED CONTRIBUTORS / RESPONSIBILITIES PUBLISHED"
-    : partnerships === 1
-      ? "COMMUNITY HANDOVER / PERMISSIONS PENDING"
-      : partnerships === 2
-        ? "KOL / MODERATOR DISCUSSIONS™"
-        : "STRATEGIC CT ALIGNMENT DETECTED BY VIBES";
-  const tokenStatus = token === 0
-    ? "MEME / TOKEN PURPOSE EXPLAINED"
-    : token === 1
-      ? "COMMUNITY INCENTIVES / SCOPE IN TESTING"
-      : token === 2
-        ? "UTILITY EXPECTED AFTER THE NEXT CTO PHASE"
-        : "TICKER CONFIRMED / PURPOSE PENDING";
-  const communityStatus = community === 0
-    ? "NAMED OPERATORS / ACCESS CHECK REQUIRED"
-    : community === 1
-      ? "ACTIVE CONTRIBUTORS / ONGOING"
-      : community === 2
-        ? "CT REPLIES / VERY POSITIVE"
-        : "GLOBAL ARMY / MEMBER COUNT NOT VERIFIED";
+  const productStatus = [
+    "LIVE PRODUCT CLAIMED / RELEASE HISTORY NOT INDEPENDENTLY VERIFIED",
+    "PUBLIC BETA / SCOPE AND OWNERS REPORTED",
+    "TOKEN LIVE / PRODUCT STILL A PINNED POST",
+    "CA AND TELEGRAM LOCATED / PRODUCT DELIVERABLE NOT DESCRIBED",
+  ][maturity];
 
-  const finalGoal = ambition === 0
-    ? "PUBLISH A VERIFIED CTO HANDOVER"
-    : ambition === 1
-      ? "SURVIVE THE POST-GRADUATION POOL"
-      : ambition === 2
-        ? "BECOME THE NEXT 100X TIMELINE STORY"
-        : "DECLARE A NEW SOLANA MEME ECOSYSTEM";
-  const finalDescription = ambition === 0
-    ? "Name the operators, document access, publish responsibilities and show what has actually changed. The Department has requested proof."
-    : ambition === 1
-      ? "Move beyond the graduation screenshot. Explain the post-curve pool, holder distribution and the fictional community's next operating steps."
-      : ambition === 2
-        ? "Build a durable community without confusing KOL impressions, green candles or a trending badge with actual participation."
-        : "Extend the narrative into every new ticker, CTO account and meme format announced before the next candle.";
+  const productTitle = [
+    "LIVE PRODUCT / RELEASE HISTORY REVIEW",
+    "PUBLIC BETA / SCOPE REVIEW",
+    "TOKEN LIVE / PRODUCT STILL A PINNED POST",
+    "CA LOCATED / PRODUCT DELIVERABLE NOT FOUND",
+  ][maturity];
+
+  const productDescription = [
+    "The intake reports a live product, real users and shipped features. Record the release evidence, name the operators and show what remains active after launch attention fades.",
+    "The public beta is reported as active. Document its scope, limitations, named owners and acceptance criteria before calling the handover complete.",
+    "The token is live, but the product is still described as a pinned post. Separate token availability from actual product delivery and name the next verifiable release.",
+    "The CA and Telegram are present, but no working product or service has been described. File an actual deliverable before announcing another phase.",
+  ][maturity];
+
+  const partnershipTitle = [
+    "NAMED COUNTERPARTIES ENTER THE RECORD",
+    "THE PILOT HAS A SCOPE AND A DATE",
+    "THE TIMELINE DISCOVERS THE SAME CA",
+    "THE RIGHT WALLETS ARE WATCHING / SOURCE NOT LOCATED",
+  ][partnerships];
+
+  const partnershipStatus = [
+    "NAMED COUNTERPARTIES / SCOPE AND SOURCES REPORTED",
+    "DISCLOSED PILOT / SCOPE AND DATES REPORTED",
+    "KOL / MODERATOR DISCUSSIONS™",
+    "UNNAMED WALLET WATCHERS / SOURCE NOT LOCATED",
+  ][partnerships];
+
+  const partnershipDescription = [
+    "Publish the named counterparties, agreed scope, deliverables and source links. Distinguish paid promotion from independent commentary.",
+    "Record the pilot's scope, dates, named owners and acceptance criteria. Disclose paid promotion or other incentives clearly.",
+    "Several KOL-style accounts are repeating the same call. Trace the original source and disclose any coordinated or paid campaign.",
+    "The claim that 'the right wallets are watching' has no names or checkable context. Identify the counterparties or withdraw the claim.",
+  ][partnerships];
+
+  const tokenStatus = [
+    "DEFINED TOKEN FUNCTION / WORKFLOW IDENTIFIED",
+    "INCENTIVE OR GOVERNANCE ROLE / LIMITS TO DOCUMENT",
+    "FUTURE UTILITY / CTO PHASE DEPENDENCY",
+    "TICKER CONFIRMED / PURPOSE PENDING",
+  ][token];
+
+  const tokenDescription = [
+    "Document the token's defined function, the product workflow it supports and why that workflow requires an on-chain token.",
+    "Publish the incentive or governance role, its limits and its trade-offs. The Department requests the small print.",
+    "The utility is deferred until after the CTO takeover and the next narrative pivot. Put a named owner and a verifiable milestone on that dependency.",
+    "The ticker exists, but no token-specific function has been identified. Mark the purpose as unresolved rather than inventing one.",
+  ][token];
+
+  const communityStatus = [
+    "REPEAT USERS / RETURNING CONTRIBUTORS REPORTED",
+    "ACTIVE HOLDERS / BUILDERS / CONTRIBUTORS REPORTED",
+    "FOLLOWERS / IMPRESSIONS / SPACES ATTENDANCE",
+    "POST-RED-CANDLE REPLIES / RETENTION NOT VERIFIED",
+  ][community];
+
+  const communityDescription = [
+    "Report returning contributors, repeat product use and useful feedback. The Department requests defined measures rather than a launch-day screenshot.",
+    "Separate active holders, builders and contributors. Record participation that goes beyond copy-pasted 'send it' replies.",
+    "Follower counts, impressions and Spaces attendance are not retention metrics. Add evidence of repeat participation or product use.",
+    "Record how many people remain after the chart turns red, then distinguish continued posting from continued use.",
+  ][community];
+
+  const finalGoal = [
+    "SHIP AND MAINTAIN A DURABLE PRODUCT OR COMMUNITY",
+    "EXPAND A REAL, INTEGRATED ECOSYSTEM",
+    "LAUNCH ANOTHER TICKER / THE NEXT 100X STORY",
+    "BUILD THE MEME-MULTIVERSE",
+  ][ambition];
+
+  const finalDescription = [
+    "Publish the next release, name accountable owners and show how the product or community remains useful beyond the launch cycle.",
+    "Document real integrations, responsible operators and actual users. The Department requests a working deliverable rather than a partner-logo wall.",
+    "Prepare the next ticker, launchpad and global-holder announcement. The current file remains open until the previous post-mortem is complete.",
+    "Extend the narrative across AI, gaming, DePIN and RWA before the current product or token purpose has been established.",
+  ][ambition];
+
+  const finalStatus = [
+    "DELIVERY TARGET / NOT A PROMISE",
+    "INTEGRATION TARGET / EVIDENCE REQUIRED",
+    "VISIONARY / COMMUNITY SIZE NOT VERIFIED",
+    "VISIONARY / CALENDAR NOT REQUIRED",
+  ][ambition];
 
   return [
     {
@@ -363,37 +431,29 @@ function buildMilestones(answers: number[], projectLabel: string): RoadmapMilest
     },
     {
       phase: "PHASE 03 / LAUNCH & CURVE",
-      title: maturity === 0 ? "CURVE MILESTONE / POST-LAUNCH PLAN" : "GRADUATION SCREEN / NEXT STEPS UNKNOWN",
-      description: maturity === 0
-        ? "Document the fictional launch sequence, who operated it and what the curve milestone does—and does not—establish."
-        : "The launch screenshot is ready. The post-graduation explanation is still being prepared for an announcement about the explanation.",
+      title: productTitle,
+      description: productDescription,
       eta: schedules[1],
       status: productStatus,
     },
     {
       phase: "PHASE 04 / CT & KOL COORDINATION",
-      title: "THE TIMELINE DISCOVERS THE SAME CA",
-      description: partnerships === 0
-        ? "Name the contributors, distinguish paid promotion from independent commentary and publish the scope of every actual collaboration."
-        : "Several KOL-style accounts are repeating the same call. The Department is still looking for the original source and the campaign disclosure.",
+      title: partnershipTitle,
+      description: partnershipDescription,
       eta: schedules[2],
       status: partnershipStatus,
     },
     {
       phase: "PHASE 05 / TOKEN PURPOSE",
       title: "A TICKER NEEDS MORE THAN A CHART",
-      description: token === 0
-        ? "Explain whether the token is a meme, a community identifier or a functional instrument. Do not imply utility that has not been defined."
-        : "The token purpose will be addressed after the next narrative pivot, the next CTO phase and a future phase explaining the previous future phase.",
+      description: tokenDescription,
       eta: schedules[3],
       status: tokenStatus,
     },
     {
       phase: "PHASE 06 / COMMUNITY OPERATIONS",
       title: "FROM CT REPLIES TO RESPONSIBLE OPERATORS",
-      description: community === 0
-        ? "Turn community feedback into a public record with named owners. The community has been asked to read it before posting another CA."
-        : "Grow contributors beyond copy-pasted 'send it' replies, recruit responsible moderators and document who handles the next update.",
+      description: communityDescription,
       eta: schedules[(timeline + 1) % schedules.length],
       status: communityStatus,
     },
@@ -401,8 +461,8 @@ function buildMilestones(answers: number[], projectLabel: string): RoadmapMilest
       phase: "PHASE 07 / THE DESTINATION",
       title: finalGoal,
       description: finalDescription,
-      eta: "SOON™ / SUBJECT TO ALL PREVIOUS HANDOVERS",
-      status: ambition === 0 ? "DELIVERY TARGET / NOT A PROMISE" : "VISIONARY / CALENDAR NOT REQUIRED",
+      eta: schedules[3],
+      status: finalStatus,
     },
   ];
 }
