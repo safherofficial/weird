@@ -83,16 +83,16 @@ const CORE_ACTIVITIES: PassportActivityId[] = [
 ];
 
 export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
-  { id: "audit", number: "01", title: "THE DYOR AUDIT", label: "RESEARCH FILED" },
-  { id: "simulator", number: "02", title: "PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR", label: "PAPER LAUNCH COMPLETED" },
-  { id: "utility", number: "03", title: "100X RESEARCH BUREAU / TOKEN-PURPOSE INSPECTION", label: "TOKEN PURPOSE REVIEWED" },
-  { id: "roadmap", number: "04", title: "CTO EMERGENCY OFFICE / TAKEOVER ROADMAP", label: "TAKEOVER PHASES ISSUED" },
-  { id: "whitepaper", number: "05", title: "EXIT LIQUIDITY DEPARTMENT / TOKEN DOSSIER", label: "TOKEN DOSSIER GENERATED" },
-  { id: "museum", number: "06", title: "BAGHOLDER REHABILITATION / TRENCHES RELIC MUSEUM", label: "TRENCHES RELICS VISITED" },
-  { id: "club", number: "07", title: "SOLANA TRENCHES / 99% SURVIVOR REGISTRY", label: "SURVIVOR STATUS REVIEWED" },
-  { id: "cope", number: "08", title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX", label: "SYNTHETIC TRENCHES INDEX VIEWED" },
-  { id: "archives", number: "09", title: "WHALE & WALLET INVESTIGATION / CASE ARCHIVE", label: "FICTIONAL CASES REVIEWED" },
-  { id: "daily", number: "10", title: "THE TRENCHES DESK / DAILY CT BRIEFING", label: "DAILY CT BRIEFING READ" },
+  { id: "simulator", number: "01", title: "PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR", label: "PAPER LAUNCH COMPLETED" },
+  { id: "club", number: "02", title: "SOLANA TRENCHES / 99% SURVIVOR REGISTRY", label: "SURVIVOR STATUS REVIEWED" },
+  { id: "audit", number: "03", title: "FOMO CONTROL UNIT / DYOR AUDIT", label: "RESEARCH FILED" },
+  { id: "daily", number: "04", title: "KOL SURVEILLANCE / THE TRENCHES DESK", label: "DAILY CT BRIEFING READ" },
+  { id: "archives", number: "05", title: "WHALE & WALLET INVESTIGATION / CASE ARCHIVE", label: "FICTIONAL CASES REVIEWED" },
+  { id: "roadmap", number: "06", title: "CTO EMERGENCY OFFICE / TAKEOVER ROADMAP", label: "TAKEOVER PHASES ISSUED" },
+  { id: "whitepaper", number: "07", title: "EXIT LIQUIDITY DEPARTMENT / TOKEN DOSSIER", label: "TOKEN DOSSIER GENERATED" },
+  { id: "utility", number: "08", title: "100X RESEARCH BUREAU / TOKEN-PURPOSE INSPECTION", label: "TOKEN PURPOSE REVIEWED" },
+  { id: "museum", number: "09", title: "BAGHOLDER REHABILITATION / TRENCHES RELIC MUSEUM", label: "TRENCHES RELICS VISITED" },
+  { id: "cope", number: "10", title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX", label: "SYNTHETIC TRENCHES INDEX VIEWED" },
 ];
 
 export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
