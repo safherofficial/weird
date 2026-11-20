@@ -394,7 +394,7 @@ function buildMilestones(answers: number[], projectLabel: string): RoadmapMilest
       description: community === 0
         ? "Turn community feedback into a public record with named owners. The community has been asked to read it before posting another CA."
         : "Grow contributors beyond copy-pasted 'send it' replies, recruit responsible moderators and document who handles the next update.",
-      eta: schedules[(timeline + 1) % schedules.length][2] || schedules[0],
+      eta: schedules[(timeline + 1) % schedules.length],
       status: communityStatus,
     },
     {
