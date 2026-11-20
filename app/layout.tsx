@@ -49,7 +49,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <WeirdCharacter />
-        <div className="department-scene">{children}</div>
+        {children}
         <AchievementToastHost />
       </body>
     </html>
