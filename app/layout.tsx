@@ -3,6 +3,7 @@ import "./globals.css";
 import "./passport/achievements.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
+import CircuitClickReveal from "./components/circuit-click-reveal";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         {children}
+        <CircuitClickReveal />
         <AchievementToastHost />
       </body>
     </html>
