@@ -90,7 +90,7 @@ export default function DepartmentHeader({
     <>
       <a className="skip-link" href="#content-start">SKIP TO CONTENT</a>
       <div className="topline">
-        <span>OFFICIAL OFFICE OF DEGEN FINANCIAL REGRET</span>
+        <span>THE OFFICIAL AFTERCARE DESK FOR THE SOLANA TRENCHES</span>
         <span className="topline__right">
           <i aria-hidden="true" />
           <span>{statusMessage}</span>
@@ -197,7 +197,7 @@ export default function DepartmentHeader({
               <Link href={departmentsHref} onClick={closeMenu}>DEPARTMENTS <span aria-hidden="true">↗</span></Link>
               <Link href={manifestoHref} onClick={closeMenu}>MANIFESTO <span aria-hidden="true">↗</span></Link>
             </div>
-            <div className="mobile-nav__foot">NO TOKEN. NO ALPHA. NO EXIT STRATEGY.</div>
+            <div className="mobile-nav__foot">NO TOKEN. NO ALPHA. NO LIVE MARKET DATA.</div>
           </div>
 
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>

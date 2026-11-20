@@ -19,85 +19,85 @@ const departmentRoutes: Record<DepartmentJourneyId, readonly DepartmentDestinati
   audit: [
     {
       href: "/simulator",
-      title: "THE BAGHOLDER SIMULATOR",
-      description: "Put your conviction through seven scripted market events and see what happens to your imaginary portfolio.",
+      title: "PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR",
+      description: "Follow a fictional pump.fun launch from CA drop through bonding-curve graduation, CTO noise and the post-graduation pool.",
     },
     {
       href: "/cope-index",
-      title: "THE GLOBAL COPE INDEX",
-      description: "Get a personal reading, then consult today's separate synthetic Department index.",
+      title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX",
+      description: "Check your fictional CT echo, launch FOMO, Telegram dependency and post-graduation optimism.",
     },
   ],
   simulator: [
     {
       href: "/audit",
-      title: "THE DYOR AUDIT 2.0",
-      description: "Open a second case on your research habits, conviction and relationship with the group chat.",
+      title: "FOMO CONTROL UNIT / DYOR AUDIT",
+      description: "Audit the path from a KOL quote-tweet and green candle to a late entry and a missing exit plan.",
     },
     {
       href: "/club",
-      title: "THE 99% CLUB",
-      description: "Submit a fictional membership application. Benefits remain firmly unavailable.",
+      title: "SOLANA TRENCHES / 99% CLUB",
+      description: "Apply for fictional survivor status after missed calls, late entries, deployer silence and bagholder rehabilitation.",
     },
   ],
   utility: [
     {
       href: "/roadmap-generator",
-      title: "THE ROADMAP GENERATOR",
-      description: "Turn a project pitch into seven fictional milestones and a delivery window called soon.",
+      title: "CTO EMERGENCY OFFICE / TAKEOVER ROADMAP",
+      description: "Build seven fictional recovery phases after the deployer goes quiet and a new CTO account takes over the timeline.",
     },
     {
       href: "/whitepaper-factory",
-      title: "THE WHITEPAPER FACTORY",
-      description: "Give the concept a technical-sounding document, complete with invented tokenomics.",
+      title: "EXIT LIQUIDITY DEPARTMENT / TOKEN DOSSIER",
+      description: "Turn a fictional token narrative into a supply chart, deployer-role section and tokenomics document with exit-liquidity footnotes.",
     },
   ],
   roadmap: [
     {
       href: "/whitepaper-factory",
-      title: "THE WHITEPAPER FACTORY",
-      description: "Every ambitious roadmap deserves a document with an abstract and nine questionable sections.",
+      title: "EXIT LIQUIDITY DEPARTMENT / TOKEN DOSSIER",
+      description: "The CTO plan has seven phases. The token still needs nine sections of technical-sounding paperwork.",
     },
     {
       href: "/utility-inspector",
-      title: "THE UTILITY INSPECTOR",
-      description: "Return to the claims desk and ask what the project is supposed to do.",
+      title: "100X RESEARCH BUREAU / UTILITY INSPECTOR",
+      description: "Inspect what the token does after the launch thread, the KOL call and the first green candle.",
     },
   ],
   whitepaper: [
     {
       href: "/utility-inspector",
-      title: "THE UTILITY INSPECTOR",
-      description: "Put the product claims back under review. A whitepaper is not proof of utility.",
+      title: "100X RESEARCH BUREAU / UTILITY INSPECTOR",
+      description: "Put the token narrative back under review. A ticker, a KOL call and a whitepaper do not establish a use case.",
     },
     {
       href: "/museum",
-      title: "THE BAGHOLDER MUSEUM",
-      description: "Explore fictional artifacts preserved from the long history of questionable conviction.",
+      title: "BAGHOLDER REHABILITATION / MUSEUM OF TRENCHES RELICS",
+      description: "Explore fictional Pump.fun launch relics, copied KOL screenshots, bonding-curve trophies and CTO handover banners.",
     },
   ],
   club: [
     {
       href: "/cope-index",
-      title: "THE GLOBAL COPE INDEX",
-      description: "Request a personal reading alongside the Department's entirely synthetic daily index.",
+      title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX",
+      description: "Check your personal fictional cope profile alongside the synthetic daily trenches index.",
     },
     {
       href: "/archives",
-      title: "DEPARTMENT ARCHIVES",
-      description: "Browse fictional incidents, records and administrative evidence from across the Department.",
+      title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
+      description: "Browse fictional bundle-wallet dossiers, mystery-whale theories, copied CA calls and pump.fun incident reports.",
     },
   ],
   cope: [
     {
       href: "/daily-office",
-      title: "THE DAILY DEPARTMENT",
-      description: "Read today's fictional bulletin, incident report and internal memo.",
+      title: "THE TRENCHES DESK / DAILY CT BRIEFING",
+      description: "Read today's fictional CT briefing, pump.fun incident report, wallet theory and bagholder post-mortem.",
     },
     {
       href: "/club",
-      title: "THE 99% CLUB",
-      description: "File a membership application with the office of collective financial regret.",
+      title: "SOLANA TRENCHES / 99% CLUB",
+      description: "Apply to the fictional Solana trenches survivor registry. No privileges, no token, no financial benefits.",
     },
   ],
 };

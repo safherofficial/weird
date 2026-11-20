@@ -1,7 +1,7 @@
 # THE DYOR DEPARTMENT — Brand Voice & Editorial Contract
 
 ## Core identity
-**The official headquarters of financial delusion.**
+**The official aftercare desk for Crypto Twitter, Solana memecoin trenches and pump.fun launches.**
 
 A deliberately useless satirical institution for people who recognize themselves in Crypto Twitter, Solana memecoin trenches, pump.fun launches and the endless hunt for the next 100x.
 
@@ -18,15 +18,15 @@ Each division is an editorial identity wrapped around an existing experience. Th
 | 01. Pump.fun Intelligence | Bagholder Simulator | Fictional launches, bonding curves, graduation, migration and paper-market decisions. |
 | 02. Solana Trenches | 99% Club | Survivor identity, microcap fatigue, missed calls and re-entry habits. |
 | 03. FOMO Control Unit | DYOR Audit | KOL triggers, green-candle chasing, crowd dependency and research-to-entry behaviour. |
-| 04. KOL Surveillance | Daily Department | Date-seeded fictional CT briefings; no real accounts are monitored. |
+| 04. KOL Surveillance | The Trenches Desk / Daily CT Briefing | Date-seeded fictional CT briefings; no real accounts are monitored. |
 | 05. Whale & Wallet Investigation | Department Archives | Fictional wallet dossiers, suspicious labels, screenshot trails and evidence folklore. |
 | 06. CTO Emergency Office | Roadmap Generator | Community takeovers, abandoned-dev scenarios, recovery phases and soon-based deadlines. |
 | 07. Exit Liquidity Department | Whitepaper Factory | Fictional token documents, allocations, supply narratives and the people expected to provide liquidity. |
 | 08. 100X Research Bureau | Utility Inspector | Token purpose, product claims, narrative inflation and the next-gem fantasy. |
 | 09. Bagholder Rehabilitation | Bagholder Museum | Preserved relics, missed exits, abandoned roadmaps and long-term conviction artifacts. |
-| 10. Copium Administration | Global Cope Index | Synthetic readings of cope, narrative fog, Telegram dependency and refusal to close the chart. |
+| 10. Copium Administration | Global Cope Index | Synthetic readings of CT echo, launch FOMO, Telegram reassurance and post-graduation denial. |
 
-The ten names do not create ten new products. They organize the existing ten experiences while their original routes and interactive logic remain intact.
+The ten names do not create ten new products. They organize the existing ten experiences while their original routes and interactive logic remain intact. Each page, result, social card and cross-link should reinforce this Solana / CT trenches world rather than reverting to generic Web3 startup language.
 
 ## What the Department is — and is not
 - It is a self-aware insider parody of degen behaviour, FOMO, overconfidence, cope and bagholding.

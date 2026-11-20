@@ -23,12 +23,12 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 - Ten numbered operational divisions now organize the existing experiences: Pump.fun Intelligence, Solana Trenches, FOMO Control Unit, KOL Surveillance, Whale & Wallet Investigation, CTO Emergency Office, Exit Liquidity Department, 100X Research Bureau, Bagholder Rehabilitation and Copium Administration. These are editorial identities over existing routes, not ten newly built products.
 
 - Institutional-style landing page with a ten-division directory and shared division identity in navigation and page mastheads.
-- DYOR Audit 2.0 with ten questions, 17 satirical archetypes and deterministic multi-signal scoring.
+- DYOR Audit 2.0 with ten questions on CA discovery, deployer history, bundle theories, KOL influence, late entries and exit plans; 17 satirical archetypes and deterministic scoring.
 - Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
 - Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
 - Public case pages with dynamic Open Graph / X preview cards (1200×630), exact result reconstruction from share URLs, native sharing, copy-link actions, direct X sharing and challenge-a-friend links.
 - A local archive of up to five saved Audit cases on the visitor's device, with restore and delete controls.
-- The Bagholder Simulator: seven fixed fictional market events, four decisions per round, paper-only portfolio accounting and multiple satirical endings.
+- Pump.fun Paper Market Simulator: seven fixed fictional launch events covering CA discovery, bundle chatter, copied KOL calls, bonding-curve graduation, CTO takeover and the post-graduation pool; four decisions per round and paper-only accounting.
 - Public simulator case pages with dynamic social previews, share links and challenge-a-friend actions.
 - The Utility Inspector: seven self-reported multiple-choice questions, three fictional scores, ten satirical archetypes and a shareable inspection dossier.
 - Public utility inspection case pages with dynamic social previews and challenge-a-friend links.
@@ -36,11 +36,11 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 - Public roadmap case pages with dynamic social previews, copy/share tools and challenge-a-friend links.
 - The Whitepaper Factory: seven self-reported choices, nine generated document sections, three fictional scores, ten satirical archetypes and a fictional token allocation model.
 - Public whitepaper case pages with dynamic social previews, challenge links and HTML / Markdown export. HTML documents include print styling for browser-based Save as PDF.
-- The Bagholder Museum: twelve fictional curated artifacts across four collections, searchable and filterable gallery, individual exhibit records, dynamic social cards and universal exhibit sharing.
+- The Bagholder Museum: fifteen fictional curated artifacts across four collections, including a bonding-curve progress bar, bundle-wallet family portrait and CTO handover banner; searchable gallery and individual exhibit records.
 - THE 99% CLUB: five-question fictional membership application, three satirical indices, six reachable archetypes, membership card export and shareable public member files. The name is not a real 99% market statistic and membership has no benefits.
 - THE GLOBAL COPE INDEX: synthetic UTC-date-seeded dashboard with five fictional dimensions and an optional personal five-question calibration, shareable personal files and downloadable cards. No visitor poll, market feed or real-world sentiment data is used.
-- Department Archives: twelve curated fictional records across five categories, searchable/filterable library, static detail pages, social previews and universal archive-record sharing. No user uploads or real event claims.
-- Daily Departmental Absurdity: expanded UTC-date-seeded editorial engine combining a public bulletin, incident report, KOL Intelligence, On-Chain Division, Risk Department, internal memo and Bagholder post-mortem. Includes a synthetic six-signal Conviction Index, universal sharing, full-dispatch copy and downloadable dispatch cards. The engine recombines original editorial templates; it does not use AI factual research, live market data or external feeds.
+- Department Archives: fifteen curated fictional records across five categories, including post-graduation, CTO handover and copied-KOL case files; searchable library and static detail pages. No user uploads or real event claims.
+- The Trenches Desk: UTC-date-seeded fictional CT briefing combining a public bulletin, pump.fun incident report, KOL Intelligence, wallet theories, risk notes, internal memos and a Bagholder post-mortem. Includes a synthetic six-signal Conviction Index, universal sharing, full-dispatch copy and downloadable dispatch cards. The engine recombines original editorial templates; it does not use AI factual research, live market data or external feeds.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and baseline security response headers.
 - Optional Department Passport with ten visit stamps and eleven distinct achievement badges. Stamps record Department visits; badges are awarded for completing interactive experiences and defined challenges. Badge rarity, local unlock notifications, completion progress and downloadable Passport / badge collection cards are included. Existing v1 Passport visit stamps and Daily Department streaks are migrated in place; visits are not retroactively counted as completed experiences.
