@@ -179,9 +179,46 @@ export const exhibits: MuseumExhibit[] = [
     plaque: "THE ONLY THING IT POWERS IS THE NARRATIVE.",
     keywords: ["utility", "token", "switch", "phase", "number"],
   },
-];
-
-export function getExhibit(slug: string): MuseumExhibit | undefined {
+  {
+    slug: "the-bonding-curve-progress-bar",
+    accession: "BHM-013",
+    title: "THE BONDING CURVE PROGRESS BAR",
+    category: "DIGITAL RELICS",
+    era: "THE REFRESH-UNTIL-GRADUATION PERIOD",
+    condition: "99% COMPLETE / CONTEXT NOT INCLUDED",
+    emotionalWeight: "PREMATURE CELEBRATION",
+    description: "A preserved progress bar from a fictional launch. It was refreshed so frequently that the visitor began to believe the final percentage point was a personal responsibility.",
+    curatorNote: "Graduation is a protocol milestone, not a certificate of durable demand, healthy distribution or a guaranteed exit. The Department has placed this label directly over the confetti button.",
+    plaque: "THE BAR FILLED. THE QUESTIONS DID NOT.",
+    keywords: ["pump.fun", "bonding curve", "graduation", "progress", "launch"],
+  },
+  {
+    slug: "the-bundle-family-portrait",
+    accession: "BHM-014",
+    title: "THE BUNDLE FAMILY PORTRAIT",
+    category: "FIELD SPECIMENS",
+    era: "THE ORGANIC DEMAND DISCUSSION",
+    condition: "WALLETS LABELLED / OWNERSHIP UNKNOWN",
+    emotionalWeight: "SUSPICIOUS TOGETHERNESS",
+    description: "A fictional wallet diagram showing several early buyers connected by arrows, circles and a very confident headline about organic community momentum.",
+    curatorNote: "The diagram does not establish common ownership, intent or coordination. It is retained as an example of how quickly a chart can become a family tree.",
+    plaque: "A CLUSTER IS A QUESTION, NOT A VERDICT.",
+    keywords: ["bundle", "sniper", "wallet", "launch", "pump.fun"],
+  },
+  {
+    slug: "the-cto-handover-banner",
+    accession: "BHM-015",
+    title: "THE CTO HANDOVER BANNER",
+    category: "DIGITAL RELICS",
+    era: "THE COMMUNITY TAKEOVER PERIOD",
+    condition: "NEW HANDLE / OLD UNANSWERED QUESTIONS",
+    emotionalWeight: "DELEGATED HOPE",
+    description: "A fictional X banner announcing that the community is taking over after the deployer disappears. The artwork is new; the access checklist remains blank.",
+    curatorNote: "A community takeover may create a new chapter, but a new bio is not a transfer of authority, wallet access or operational responsibility.",
+    plaque: "NEW BANNER. WHO HAS THE KEYS?",
+    keywords: ["CTO", "community takeover", "deployer", "X", "handover"],
+  },
+];(slug: string): MuseumExhibit | undefined {
   return exhibits.find((exhibit) => exhibit.slug === slug);
 }
 

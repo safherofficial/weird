@@ -1,4 +1,4 @@
-export const DAILY_OFFICE_VERSION = 2;
+export const DAILY_OFFICE_VERSION = 3;
 
 export type DailyOfficeSection = {
   label: string;
@@ -55,6 +55,12 @@ const headlines = [
   "AN EXIT STRATEGY HAS BEEN SUBMITTED. IT IS A SCREENSHOT OF THE ENTRY.",
   "THE POST-MORTEM HAS BEEN COMPLETED BEFORE THE EVENT.",
   "A SECOND OPINION HAS BEEN REQUESTED FROM THE FIRST OPINION.",
+  "THE BONDING CURVE HAS BECOME THE MOST IMPORTANT BAR CHART IN THE BUILDING.",
+  "THE CTO HAS INHERITED THE CA, THE CHAT AND THE UNANSWERED QUESTIONS.",
+  "GRADUATION WAS CELEBRATED BEFORE ANYONE CHECKED THE POST-LAUNCH POOL.",
+  "FOUR ACCOUNTS HAVE DISCOVERED THE SAME 'UNDERVALUED' TICKER INDEPENDENTLY.",
+  "THE BUNDLE THEORY HAS BEEN PROMOTED TO A COMMUNITY IDENTITY.",
+  "THE FIRST GREEN CANDLE HAS BEEN MISTAKEN FOR A LONG-TERM BUSINESS PLAN.",
 ];
 
 const bulletins = [
@@ -72,6 +78,11 @@ const bulletins = [
   "On-Chain Division confirms a transfer between two fictional wallets and a remarkable amount of explanatory confidence.",
   "The Risk Department has downgraded an unresolved concern to a monitored narrative inconvenience.",
   "The Post-Mortem Office has preserved the original thesis and updated the definition of a successful outcome.",
+  "Pump.fun desk reports a fictional curve milestone; the chat has already printed commemorative T-shirts.",
+  "CT Intelligence has found five versions of the same CA call, each claiming to be the original discovery.",
+  "The fictional deployer has stopped posting. The CTO account has changed its banner and inherited the FUD.",
+  "A graduation screenshot is circulating as proof of durable demand. The Department requests a second screenshot with context.",
+  "The same three wallet labels have appeared in six unrelated threads. Their owners remain a work of fiction.",
 ];
 
 const incidents = [
@@ -125,6 +136,26 @@ const incidents = [
     body: "A cropped chart annotation was presented as confirmation of a thesis. The original chart, scale and timeframe were not available, but the arrow was exceptionally vivid.",
     stamp: "EVIDENCE / VISUALLY PERSUASIVE",
   },
+  {
+    heading: "THE CA THAT ARRIVED BEFORE THE CONTEXT",
+    body: "A fictional mint address was posted at 02:13 UTC and copied into several group chats. The launch thread supplied a ticker, three rocket emojis and no verifiable explanation of who controlled the deployer wallet.",
+    stamp: "LAUNCH / CONTEXT REQUESTED",
+  },
+  {
+    heading: "THE BUNDLE FAMILY PHOTO",
+    body: "A fictional cluster of early wallets was arranged into a graphic and labelled organic community demand. No independent evidence of common ownership or motive was supplied; the Department has classified the diagram as highly imaginative.",
+    stamp: "WALLET CLUSTER / OWNERSHIP UNCONFIRMED",
+  },
+  {
+    heading: "THE GRADUATION PARTY WITH NO EXIT PLAN",
+    body: "The fictional bonding curve completed and the group chat declared victory. The subsequent review found that graduation had been treated as a finish line rather than a change in market structure.",
+    stamp: "GRADUATION / CELEBRATION PREMATURE",
+  },
+  {
+    heading: "THE COMMUNITY TAKEOVER PASSWORD RESET",
+    body: "A fictional deployer went silent and a new CTO account appeared. The community inherited the ticker, the memes and a long list of access questions that were not answered by changing the banner.",
+    stamp: "CTO / ACCESS REVIEW PENDING",
+  },
 ];
 
 const memos = [
@@ -168,6 +199,16 @@ const memos = [
     body: "The interface team is reminded that an exit control is expected to remain visible after the entry animation. It must not be hidden behind the long-term vision.",
     stamp: "OPERATIONS / EXIT REQUESTED",
   },
+  {
+    heading: "INTERNAL MEMO / GRADUATION IS NOT PRODUCT-MARKET FIT",
+    body: "A completed bonding curve is a launch milestone, not proof of durable demand, user retention or a healthy post-graduation market. Do not use the word adoption without defining what was adopted.",
+    stamp: "PUMP.FUN DESK / TERMS CLARIFIED",
+  },
+  {
+    heading: "INTERNAL MEMO / A KOL REPOST IS NOT A SECOND SOURCE",
+    body: "Multiple accounts repeating the same CA, screenshot or catalyst do not create independent confirmation. Staff must locate the original source before describing a claim as corroborated.",
+    stamp: "CT INTELLIGENCE / SOURCE REQUIRED",
+  },
 ];
 
 const kolHeadings = [
@@ -192,6 +233,12 @@ const kolClaims = [
   "an unexplained reference to a major exchange",
   "a forecast with no stated invalidation point",
   "a rumour that cites a second rumour as confirmation",
+  "a CA posted by three accounts that all claim to have found it first",
+  "a bonding-curve progress screenshot with no timestamp or source",
+  "a graduation announcement presented as proof of organic demand",
+  "a CTO takeover thread with no clear explanation of who controls the deployer wallet",
+  "a chart crop showing only the green candle and not the later trading",
+  "a KOL call repeated word-for-word by several supposedly independent accounts",
 ];
 
 const kolTimings = [
@@ -249,6 +296,11 @@ const walletEvents = [
   "a balance change with no confirmed link to the fictional project team",
   "a series of movements whose common ownership has not been established",
   "a transfer that looks significant when the timeframe is hidden",
+  "a fictional deployer wallet funding several fresh wallets shortly before the token launch",
+  "a cluster of early buys presented as unrelated buyers without supporting context",
+  "a post-graduation transfer that the timeline immediately labels a coordinated exit",
+  "a wallet graph with labels supplied by an anonymous CT account",
+  "several small launch buys that look like broad distribution when grouped into one graphic",
 ];
 
 const walletInterpretations = [
@@ -294,6 +346,11 @@ const riskFlags = [
   "a risk disclosure written in a font smaller than the conviction",
   "a roadmap dependency with no measurable acceptance criteria",
   "a community thesis that relies on a single repeated source",
+  "a graduation badge being treated as a guarantee of post-launch liquidity",
+  "a launch bundle being presented as proof of organic community demand",
+  "a CTO handover with no documented access or responsibility map",
+  "a KOL call with no disclosure and no original research link",
+  "a price target presented as a product milestone",
   "an exit strategy that currently exists as an intention",
 ];
 
@@ -444,7 +501,7 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
     throw new Error("A valid UTC issue date is required.");
   }
 
-  const seed = hashText("THE-DYOR-DEPARTMENT/DAILY-OFFICE/V2/" + issueDate);
+  const seed = hashText("THE-DYOR-DEPARTMENT/DAILY-OFFICE/V3/" + issueDate);
   const incident = pick(incidents, seed, 13);
   const memo = pick(memos, seed, 29);
   const headline = pick(headlines, seed, 43);

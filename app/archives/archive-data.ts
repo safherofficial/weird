@@ -264,9 +264,64 @@ export const archiveRecords: ArchiveRecord[] = [
     relatedHref: "/roadmap-generator",
     keywords: ["phase two", "appeal", "roadmap", "timeline", "milestone"],
   },
-];
-
-export function getArchiveRecord(slug: string): ArchiveRecord | undefined {
+  {
+    slug: "the-curve-completed-the-thesis-did-not",
+    accession: "DDA-013",
+    title: "THE CURVE COMPLETED. THE THESIS DID NOT.",
+    category: "INCIDENT REPORTS",
+    department: "PUMP.FUN INTELLIGENCE / POST-GRADUATION REVIEW",
+    clearance: "PUBLIC / FICTIONAL CASE STUDY",
+    summary: "A fictional launch reached its bonding-curve milestone. The community treated the graduation screen as a final answer to every unanswered question.",
+    finding: "MILESTONE CONFIRMED / DEMAND NOT CERTIFIED.",
+    stamp: "GRADUATION IS NOT A GUARANTEE",
+    sections: [
+      { heading: "INCIDENT OVERVIEW", paragraphs: ["The fictional token completed its bonding curve and the group chat immediately declared the mission accomplished. The next review found that the celebration had not included a clear examination of holder distribution, post-graduation pool conditions or the original thesis.", "The file illustrates the difference between a launch mechanism reaching a milestone and a token establishing durable demand."] },
+      { heading: "DEPARTMENTAL OBSERVATION", paragraphs: ["No real token, pool, transaction or launch is represented. The Department does not inspect Pump.fun launches or infer market conditions from this fictional record."] },
+      { heading: "FINAL DISPOSITION", paragraphs: ["The graduation screenshot is archived as evidence of a celebration. It is not accepted as proof of product-market fit, safe liquidity or future price performance."] },
+    ],
+    relatedLabel: "OPEN THE PAPER MARKET SIMULATOR",
+    relatedHref: "/simulator",
+    keywords: ["pump.fun", "bonding curve", "graduation", "PumpSwap", "launch", "token"],
+  },
+  {
+    slug: "the-cto-handover-file",
+    accession: "DDA-014",
+    title: "THE CTO HANDOVER FILE",
+    category: "OFFICIAL MEMOS",
+    department: "SOLANA TRENCHES / COMMUNITY TAKEOVER UNIT",
+    clearance: "PUBLIC / FICTIONAL INTERNAL MEMO",
+    summary: "A fictional community takeover replaced the deployer's posting schedule but did not automatically answer who controlled access, decisions or the next deliverable.",
+    finding: "NEW ACCOUNT DETECTED / AUTHORITY TRANSFER NOT ESTABLISHED.",
+    stamp: "THE BANNER IS NOT THE HANDOVER",
+    sections: [
+      { heading: "PURPOSE", paragraphs: ["This memo records the fictional moment when a deployer stops communicating and a new CTO account announces that the community is taking over. The new account inherits the ticker, the memes and a large number of unanswered questions."] },
+      { heading: "ACCESS REVIEW", paragraphs: ["A credible handover requires clarity about responsibilities, permissions, custody and decision-making. A changed X bio, fresh banner or pinned thread does not by itself establish any of those things."] },
+      { heading: "FINAL DISPOSITION", paragraphs: ["The takeover is filed as satire. No real team, project, wallet or X account is being described or monitored."] },
+    ],
+    relatedLabel: "APPLY TO THE 99% CLUB",
+    relatedHref: "/club",
+    keywords: ["CTO", "community takeover", "deployer", "handover", "Solana", "X"],
+  },
+  {
+    slug: "the-independent-kol-consensus",
+    accession: "DDA-015",
+    title: "THE INDEPENDENT KOL CONSENSUS",
+    category: "PUBLIC NOTICES",
+    department: "KOL SURVEILLANCE / SOURCE-VALIDATION DESK",
+    clearance: "PUBLIC / FICTIONAL MEDIA REVIEW",
+    summary: "Several fictional accounts publish the same CA, chart crop and catalyst while describing the result as independent research.",
+    finding: "REPETITION DETECTED / CORROBORATION NOT ESTABLISHED.",
+    stamp: "SAME SCREENSHOT. DIFFERENT BIOS.",
+    sections: [
+      { heading: "NOTICE", paragraphs: ["The Department records a fictional timeline event in which several KOL-style accounts post the same token address and the same cropped chart within a short period. Each account describes the call as an independent discovery."] },
+      { heading: "SOURCE REVIEW", paragraphs: ["Repeated claims are not independent corroboration when they may share one original source. A screenshot, a verification badge or a large follower count does not establish the accuracy of the claim."] },
+      { heading: "FINAL DISPOSITION", paragraphs: ["This is a fictional satire case. No actual KOL, social account, token or market signal is tracked by the Department."] },
+    ],
+    relatedLabel: "READ THE DAILY OFFICE",
+    relatedHref: "/daily-office",
+    keywords: ["KOL", "Crypto Twitter", "CT", "CA", "screenshot", "social proof"],
+  },
+];(slug: string): ArchiveRecord | undefined {
   return archiveRecords.find((record) => record.slug === slug);
 }
 
