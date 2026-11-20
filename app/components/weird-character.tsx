@@ -6,7 +6,6 @@ import {
   CHARACTER_DEFAULTS,
   SPRITE_FRAME_SIZE,
   SPRITE_SOURCES,
-  SOURCE_GRID_FALLBACK,
   type ClipConfig,
   type ClipName,
 } from "./weird-character-config";
@@ -51,102 +50,6 @@ function loadImage(source: string): Promise<HTMLImageElement> {
     image.onerror = () => reject(new Error(`Unable to load character sprite: ${source}`));
     image.src = source;
   });
-}
-
-async function normalizeSpriteSheet(
-  image: HTMLImageElement,
-  key: keyof typeof SPRITE_SOURCES,
-): Promise<LoadedSheet> {
-  const width = image.naturalWidth;
-  const height = image.naturalHeight;
-  const naturalColumns = width / SPRITE_FRAME_SIZE;
-  const naturalRows = height / SPRITE_FRAME_SIZE;
-  const dimensionsAreAligned = Number.isInteger(naturalColumns) && Number.isInteger(naturalRows);
-  if (!dimensionsAreAligned && key === "fall" && process.env.NODE_ENV !== "production") {
-    console.warn(
-      `[WeirdCharacter] fall.png is ${width}x${height}, not aligned to ${SPRITE_FRAME_SIZE}px cells; normalizing with the detected ${SOURCE_GRID_FALLBACK.fall.columns}x${SOURCE_GRID_FALLBACK.fall.rows} source grid.`,
-    );
-  }
-
-  const columns = dimensionsAreAligned ? naturalColumns : SOURCE_GRID_FALLBACK[key].columns;
-  const rows = dimensionsAreAligned ? naturalRows : SOURCE_GRID_FALLBACK[key].rows;
-  const cellWidth = width / columns;
-  const cellHeight = height / rows;
-  const sourceCanvas = document.createElement("canvas");
-  sourceCanvas.width = width;
-  sourceCanvas.height = height;
-  const sourceContext = sourceCanvas.getContext("2d", { willReadFrequently: true });
-  if (!sourceContext) throw new Error(`Unable to read ${key}.png`);
-  sourceContext.drawImage(image, 0, 0);
-  const pixels = sourceContext.getImageData(0, 0, width, height).data;
-  const bounds: Array<{ x: number; y: number; width: number; height: number } | null> = [];
-  let maximumWidth = 0;
-  let maximumHeight = 0;
-
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const left = Math.floor(column * cellWidth);
-      const top = Math.floor(row * cellHeight);
-      const right = Math.floor((column + 1) * cellWidth);
-      const bottom = Math.floor((row + 1) * cellHeight);
-      let minX = right;
-      let minY = bottom;
-      let maxX = left - 1;
-      let maxY = top - 1;
-      for (let y = top; y < bottom; y += 1) {
-        for (let x = left; x < right; x += 1) {
-          if (pixels[(y * width + x) * 4 + 3] > 4) {
-            minX = Math.min(minX, x);
-            minY = Math.min(minY, y);
-            maxX = Math.max(maxX, x);
-            maxY = Math.max(maxY, y);
-          }
-        }
-      }
-      if (maxX < minX || maxY < minY) {
-        bounds.push(null);
-        continue;
-      }
-      const box = { x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 };
-      bounds.push(box);
-      maximumWidth = Math.max(maximumWidth, box.width);
-      maximumHeight = Math.max(maximumHeight, box.height);
-    }
-  }
-
-  if (!maximumWidth || !maximumHeight) throw new Error(`${key}.png contains no visible sprite frames`);
-  const padding = 20;
-  const scale = Math.min((SPRITE_FRAME_SIZE - padding * 2) / maximumWidth, (SPRITE_FRAME_SIZE - padding * 2) / maximumHeight);
-  const atlas = document.createElement("canvas");
-  atlas.width = columns * SPRITE_FRAME_SIZE;
-  atlas.height = rows * SPRITE_FRAME_SIZE;
-  const atlasContext = atlas.getContext("2d");
-  if (!atlasContext) throw new Error(`Unable to prepare ${key}.png`);
-  atlasContext.imageSmoothingEnabled = true;
-  atlasContext.imageSmoothingQuality = "high";
-
-  bounds.forEach((box, index) => {
-    if (!box) return;
-    const drawWidth = box.width * scale;
-    const drawHeight = box.height * scale;
-    const destinationX = (index % columns) * SPRITE_FRAME_SIZE + (SPRITE_FRAME_SIZE - drawWidth) / 2;
-    const destinationY = Math.floor(index / columns) * SPRITE_FRAME_SIZE + SPRITE_FRAME_SIZE - padding - drawHeight;
-    atlasContext.drawImage(image, box.x, box.y, box.width, box.height, destinationX, destinationY, drawWidth, drawHeight);
-  });
-
-  return { source: atlas.toDataURL("image/png"), columns, rows, frameCount: columns * rows };
-}
-
-async function matchTripContactFrame(fall: LoadedSheet, walk: LoadedSheet): Promise<LoadedSheet> {
-  const [fallImage, walkImage] = await Promise.all([loadImage(fall.source), loadImage(walk.source)]);
-  const canvas = document.createElement("canvas");
-  canvas.width = fall.columns * SPRITE_FRAME_SIZE;
-  canvas.height = fall.rows * SPRITE_FRAME_SIZE;
-  const context = canvas.getContext("2d");
-  if (!context) return fall;
-  context.drawImage(fallImage, 0, 0);
-  context.drawImage(walkImage, 0, 0, SPRITE_FRAME_SIZE, SPRITE_FRAME_SIZE, 0, 0, SPRITE_FRAME_SIZE, SPRITE_FRAME_SIZE);
-  return { ...fall, source: canvas.toDataURL("image/png") };
 }
 
 export default function WeirdCharacter({
@@ -228,14 +131,20 @@ export default function WeirdCharacter({
       const entries = await Promise.all(
         Object.entries(SPRITE_SOURCES).map(async ([key, source]) => {
           const image = await loadImage(source);
-          const normalized = await normalizeSpriteSheet(image, key as keyof typeof SPRITE_SOURCES);
-          return [key, normalized] as const;
+          const width = image.naturalWidth;
+          const height = image.naturalHeight;
+          if (width % SPRITE_FRAME_SIZE !== 0 || height % SPRITE_FRAME_SIZE !== 0) {
+            console.warn(
+              `[WeirdCharacter] ${source} dimensions ${width}x${height} are not multiples of ${SPRITE_FRAME_SIZE}px.`,
+            );
+          }
+          const columns = width / SPRITE_FRAME_SIZE;
+          const rows = height / SPRITE_FRAME_SIZE;
+          return [key, { source, columns, rows, frameCount: columns * rows }] as const;
         }),
       );
       if (!active) return;
-      const loaded = Object.fromEntries(entries) as Record<keyof typeof SPRITE_SOURCES, LoadedSheet>;
-      loaded.fall = await matchTripContactFrame(loaded.fall, loaded.walk);
-      sheetsRef.current = loaded;
+      sheetsRef.current = Object.fromEntries(entries) as typeof sheetsRef.current;
       // If the supplied fall sheet has only eight frames, the trip clip is skipped.
       machineRef.current = { ...machineRef.current, mode: "idle", frame: 0, accumulator: 0, lastTimestamp: 0 };
       publishFrame(machineRef.current);

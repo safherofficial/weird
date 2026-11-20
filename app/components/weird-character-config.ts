@@ -18,15 +18,6 @@ export const SPRITE_SOURCES = {
   fall: "/sprites/fall.png",
 } as const;
 
-// The checked-in artwork uses an 8-column contact sheet rather than 256px-aligned canvases.
-// These fallback grids are used only when the natural dimensions are not divisible by 256.
-export const SOURCE_GRID_FALLBACK = {
-  base: { columns: 8, rows: 1 },
-  idle: { columns: 8, rows: 1 },
-  walk: { columns: 8, rows: 1 },
-  fall: { columns: 8, rows: 2 },
-} as const;
-
 // All playback tuning lives here; the component contains no frame-count literals.
 export const ANIMATION_CONFIG: Record<ClipName, ClipConfig> = {
   idle: { source: SPRITE_SOURCES.idle, columns: 8, frameCount: 8, fps: 8, loop: true, startFrame: 0 },
