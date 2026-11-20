@@ -34,7 +34,7 @@ const sections = [
   {
     title: "04 / DEPARTMENT PASSPORT",
     paragraphs: [
-      "The optional Department Passport uses browser localStorage only after the visitor explicitly enables it. It records visited Department sections, UTC dates on which the Daily Department is opened, and which interactive experiences or collection records have been completed for local Stamps and Achievement Badges.",
+      "The optional Department Passport uses browser localStorage only after the visitor explicitly enables it. It records visited Department sections, UTC dates on which The Trenches Desk is opened, and which interactive experiences or collection records have been completed for local Stamps and Achievement Badges.",
       "Passport information is not uploaded to an application database, does not create an account or public profile, is not synchronized across devices and is not used for a leaderboard. Visitors can delete the complete Passport from its page or clear this site's browser data. Existing Passport records are migrated in the browser to the current format while preserving their visit stamps and Trenches Desk streak; earlier visits are not converted into completion badges.",
     ],
   },

@@ -76,7 +76,7 @@ export default function DepartmentPassportPage() {
             <article>
               <span>COLLECTION 02</span>
               <h3>ACHIEVEMENT BADGES</h3>
-              <p>Complete the experience or special challenge written on the badge. For example: finish the DYOR Audit, complete both a Museum exhibit and an Archive record, or build a seven-day Daily Department streak.</p>
+              <p>Complete the experience or special challenge written on the badge. For example: finish the DYOR Audit, complete both a Museum exhibit and an Archive record, or build a seven-day Trenches Desk streak.</p>
             </article>
           </div>
           <p className="passport-guide__fineprint">SPECIAL RULES: SEVEN-DAY DESK DUTY requires a visit on seven consecutive UTC calendar dates. THE COMPLETE CIRCUIT requires all seven core experiences. Your record stays in this browser only and is not synchronized across devices.</p>

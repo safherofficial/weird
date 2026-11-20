@@ -20,7 +20,7 @@ export const departments: DepartmentDivision[] = [
 
 export const departmentGroups = [
   { number: "01", code: "ENTRY & SURVIVAL / DIVISIONS 01—03", title: "ENTRY & SURVIVAL", description: "The launch, the trench and the moment FOMO gets mistaken for a research process.", items: departments.slice(0, 3) },
-  { number: "02", code: "INTELLIGENCE & OPERATIONS / DIVISIONS 04—08", title: "INTELLIGENCE & OPERATIONS", description: "KOL narratives, mystery wallets, emergency community takeovers, whitepapers and the next supposedly life-changing gem.", items: departments.slice(3, 8) },
+  { number: "02", code: "INTELLIGENCE & OPERATIONS / DIVISIONS 04—08", title: "INTELLIGENCE & OPERATIONS", description: "KOL narratives, mystery wallets, emergency community takeovers, fictional token dossiers and the next supposedly life-changing gem.", items: departments.slice(3, 8) },
   { number: "03", code: "REHABILITATION & COPE / DIVISIONS 09—10", title: "REHABILITATION & COPE", description: "The artifacts, emotional paperwork and official coping mechanisms left after the market has finished its business.", items: departments.slice(8, 10) },
 ];
 

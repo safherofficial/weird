@@ -276,7 +276,7 @@ export default function PassportClient() {
       <div className="passport-progress">
         <div className="passport-progress__top"><span>DEPARTMENT VISITS / STAMPS</span><strong>{visited.size} / {DEPARTMENT_STAMPS.length}</strong></div>
         <div className="passport-progress__bar" role="progressbar" aria-label="Department visit stamps" aria-valuemin={0} aria-valuemax={10} aria-valuenow={visited.size}><span style={{ width: progress + "%" }} /></div>
-        <div className="passport-progress__bottom"><span>{progress}% OF THE DIRECTORY VISITED</span><span>DAILY DESK DUTY / BEST {streak}-DAY STREAK</span></div>
+        <div className="passport-progress__bottom"><span>{progress}% OF THE DIRECTORY VISITED</span><span>TRENCHES DESK DUTY / BEST {streak}-DAY STREAK</span></div>
       </div>
 
       <div className="passport-activity-progress">
