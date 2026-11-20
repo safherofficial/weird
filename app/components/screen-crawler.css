@@ -1,4 +1,4 @@
-/* U18.6 — an autonomous screen-dwelling crawler with object-level occlusion. */
+/* U18.8 — autonomous crawler, object-level occlusion and playful click response. */
 .department-scene {
   position: relative;
   z-index: auto;
@@ -9,19 +9,33 @@
   top: 0;
   left: 0;
   z-index: 1;
+  display: block;
   width: 112px;
   height: 82px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  pointer-events: auto;
   opacity: 0;
-  pointer-events: none;
+  appearance: none;
+  -webkit-appearance: none;
   user-select: none;
+  touch-action: manipulation;
   will-change: transform;
   transition: opacity 420ms ease, filter 420ms ease;
 }
-.screen-crawler--ready { opacity: .88; }
-.screen-crawler[data-depth="background"] {
-  z-index: 1;
-  opacity: .88;
+.screen-crawler:focus-visible {
+  outline: 1px dashed rgba(182,255,101,.78);
+  outline-offset: 4px;
+  filter: drop-shadow(0 0 8px rgba(182,255,101,.5));
 }
+.screen-crawler--ready { opacity: .88; }
+.screen-crawler[data-depth="background"] { z-index: 1; opacity: .88; }
 .screen-crawler[data-depth="behind"] {
   z-index: 1;
   opacity: .66;
@@ -41,6 +55,7 @@
   filter: blur(15px);
   content: "";
   animation: crawler-aura-pulse 2.6s ease-in-out infinite;
+  pointer-events: none;
 }
 .screen-crawler__orientation {
   display: block;
@@ -49,6 +64,7 @@
   transform-origin: 50% 50%;
   transition: transform 480ms cubic-bezier(.2,.76,.2,1);
   will-change: transform;
+  pointer-events: none;
 }
 .screen-crawler[data-facing="right"] .screen-crawler__orientation { transform: rotate(0deg) scaleX(1); }
 .screen-crawler[data-facing="left"] .screen-crawler__orientation { transform: rotate(0deg) scaleX(-1); }
@@ -66,8 +82,53 @@
   transform-origin: 50% 58%;
   animation: crawler-body-bob 1.7s ease-in-out infinite;
   will-change: background-position, transform;
+  pointer-events: none;
 }
 .screen-crawler[data-motion="idle"] .screen-crawler__sprite { animation-duration: 2.7s; }
+.screen-crawler[data-motion="startled"] .screen-crawler__sprite {
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.7)) drop-shadow(0 0 12px rgba(182,255,101,.72));
+}
+.screen-crawler[data-reaction="caught"] .screen-crawler__orientation {
+  animation: crawler-caught 300ms ease-in-out 1;
+}
+.screen-crawler__speech {
+  position: absolute;
+  left: 52%;
+  bottom: calc(100% - 5px);
+  z-index: 2;
+  display: block;
+  width: max-content;
+  max-width: 190px;
+  padding: 7px 9px;
+  border: 1px solid rgba(182,255,101,.66);
+  background: rgba(8,12,8,.96);
+  color: #d9ffab;
+  font: 9px/1.35 var(--font-mono, monospace);
+  letter-spacing: .045em;
+  box-shadow: 0 0 16px rgba(182,255,101,.17), 0 5px 16px rgba(0,0,0,.48);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-8px, 5px) scale(.94);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+  pointer-events: none;
+}
+.screen-crawler__speech::after {
+  position: absolute;
+  left: 13px;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid rgba(182,255,101,.66);
+  border-bottom: 1px solid rgba(182,255,101,.66);
+  background: rgba(8,12,8,.96);
+  content: "";
+  transform: rotate(45deg);
+}
+.screen-crawler[data-reaction="caught"] .screen-crawler__speech {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-8px, 0) scale(1);
+}
 @keyframes crawler-body-bob {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-2.6px) scale(1.018); }
@@ -75,6 +136,11 @@
 @keyframes crawler-aura-pulse {
   0%, 100% { opacity: .3; transform: scale(.9); }
   50% { opacity: .88; transform: scale(1.1); }
+}
+@keyframes crawler-caught {
+  0%, 100% { scale: 1; rotate: 0deg; }
+  35% { scale: .82 1.12; rotate: -7deg; }
+  70% { scale: 1.12 .9; rotate: 5deg; }
 }
 @media (hover: none), (pointer: coarse) {
   .screen-crawler { display: none !important; }
