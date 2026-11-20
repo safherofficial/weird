@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./passport/achievements.css";
-import "./components/screen-crawler.css";
+import "./components/department-mascot.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
-import ScreenCrawler from "./components/screen-crawler";
+import DepartmentMascot from "./components/department-mascot";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <div className="crawler-background-plane">
-          <ScreenCrawler />
+          <DepartmentMascot />
         </div>
         <div className="department-scene">{children}</div>
         <AchievementToastHost />

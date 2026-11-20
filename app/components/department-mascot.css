@@ -1,0 +1,132 @@
+/* U18.13 — the human department mascot walks on the static habitat backdrop. */
+.crawler-background-plane {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
+.department-scene {
+  position: relative;
+  z-index: auto;
+  min-height: 100vh;
+}
+.department-mascot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: block;
+  width: 174px;
+  height: 174px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+  user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+  transition: opacity 460ms ease, filter 460ms ease, visibility 0s linear 460ms;
+}
+.department-mascot[data-presence="visible"] {
+  opacity: .98;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 520ms ease, filter 460ms ease, visibility 0s;
+}
+.department-mascot:focus-visible {
+  outline: 1px dashed rgba(182,255,101,.78);
+  outline-offset: 3px;
+  filter: drop-shadow(0 0 8px rgba(182,255,101,.45));
+}
+.department-mascot__sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("/mascot/department-mascot-sheet.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 400%;
+  background-position: 0% 0%;
+  filter: drop-shadow(0 5px 9px rgba(0,0,0,.48));
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.department-mascot[data-facing="left"] .department-mascot__sprite {
+  transform: scaleX(-1);
+}
+.department-mascot[data-mode="walking"] .department-mascot__sprite {
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,.54));
+}
+.department-mascot[data-mode="stumbling"] .department-mascot__sprite {
+  filter: drop-shadow(0 5px 12px rgba(0,0,0,.62));
+}
+.department-mascot::after {
+  position: absolute;
+  left: 24%;
+  bottom: 2.5%;
+  z-index: -1;
+  width: 52%;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(0 0 0 / 72%) 0%, rgb(0 0 0 / 34%) 48%, transparent 78%);
+  filter: blur(4px);
+  content: "";
+  opacity: .8;
+  pointer-events: none;
+}
+.department-mascot[data-mode="stumbling"]::after { opacity: .28; }
+.department-mascot__speech {
+  position: absolute;
+  left: 56%;
+  bottom: 75%;
+  z-index: 2;
+  display: block;
+  width: max-content;
+  max-width: 190px;
+  padding: 7px 9px;
+  border: 1px solid rgba(182,255,101,.66);
+  background: rgba(8,12,8,.96);
+  color: #d9ffab;
+  font: 9px/1.35 var(--font-mono, monospace);
+  letter-spacing: .045em;
+  box-shadow: 0 0 16px rgba(182,255,101,.17), 0 5px 16px rgba(0,0,0,.48);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-8px, 5px) scale(.94);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+  pointer-events: none;
+}
+.department-mascot__speech::after {
+  position: absolute;
+  left: 13px;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid rgba(182,255,101,.66);
+  border-bottom: 1px solid rgba(182,255,101,.66);
+  background: rgba(8,12,8,.96);
+  content: "";
+  transform: rotate(45deg);
+}
+.department-mascot[data-reaction="caught"] .department-mascot__speech {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-8px, 0) scale(1);
+}
+@media (hover: none), (pointer: coarse) {
+  .crawler-background-plane { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crawler-background-plane { display: none !important; }
+  .crawler-background-plane *, .crawler-background-plane *::before, .crawler-background-plane *::after { animation: none !important; transition: none !important; }
+}
