@@ -214,7 +214,6 @@ export const classifications: Record<WhitepaperArchetypeId, WhitepaperArchetype>
     disposition: "REFERRED TO THE OFFICE OF POST-LAUNCH PURPOSE RECOVERY.",
   },
 };
-};
 
 const sectors = [
   "SOLANA MEME TOKEN / CULTURAL TICKER",

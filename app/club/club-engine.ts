@@ -105,14 +105,14 @@ export const questions: ClubQuestion[] = [
 export const profiles: Record<ClubArchetypeId, ClubProfile> = {
   "conviction-custodian": {
     title: "THE CONVICTION CUSTODIAN",
-    subtitle: "You are not holding a position. You are safeguarding a post-graduation thesis of national importance."
+    subtitle: "You are not holding a position. You are safeguarding a post-graduation thesis of national importance.",
     motto: "THE CTO IS ALIVE. THE DEPLOYER IS NOT REPLYING.",
-    roast: "The Department asked for the deployer handover. You submitted a thread explaining why the original vision remains intact."
+    roast: "The Department asked for the deployer handover. You submitted a thread explaining why the original vision remains intact.",
     membership: "PERMANENT CUSTODIAN / BAG PRESERVATION DIVISION",
   },
   "average-down-citizen": {
     title: "THE AVERAGE-DOWN CITIZEN",
-    subtitle: "Your relationship with the bag has entered a complicated stage of post-graduation family planning."
+    subtitle: "Your relationship with the bag has entered a complicated stage of post-graduation family planning.",
     motto: "ONE MORE DIP AND THE ENTRY PRICE BECOMES LORE.",
     roast: "You did not catch the falling knife. You opened a family office for it.",
     membership: "HONORARY MEMBER / ADDITIONAL BAG ACQUISITION UNIT",
@@ -126,9 +126,9 @@ export const profiles: Record<ClubArchetypeId, ClubProfile> = {
   },
   "exit-liquidity-witness": {
     title: "THE POST-GRADUATION EXIT-LIQUIDITY WITNESS",
-    subtitle: "You were present when the fictional post-graduation pool thinned. Your witness statement includes screenshots and one unanswered DM."
+    subtitle: "You were present when the fictional post-graduation pool thinned. Your witness statement includes screenshots and one unanswered DM.",
     motto: "I SAW THE SPREAD. I SAW THE SPREAD.",
-    roast: "Your account is a first-hand record of CT calling a sell-off healthy rotation while the pool tells another story."
+    roast: "Your account is a first-hand record of CT calling a sell-off healthy rotation while the pool tells another story.",
     membership: "WITNESS STATUS / MARKET EVENTS ARCHIVE",
   },
   "chart-hermit": {
