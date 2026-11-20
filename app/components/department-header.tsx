@@ -12,7 +12,7 @@ type DepartmentHeaderProps = {
   ctaLabel?: string;
 };
 
-old section typetype DepartmentNavItem = {
+type DepartmentNavItem = {
   number: string;
   label: string;
   href: string;
