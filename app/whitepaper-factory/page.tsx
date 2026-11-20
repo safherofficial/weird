@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   description: "Generate a fictional Solana token dossier: launch narrative, deployer roles, notional allocation, KOL distribution, community governance and post-graduation risk.",
   openGraph: {
     title: "THE TOKEN DOSSIER FACTORY",
-    description: "A technically confident fictional token dossier. The supply chart is complete. The exit-liquidity questions are not.",
+    description: "A fictional Solana token dossier covering launch lore, deployer control, notional tokenomics, CT promotion and post-graduation exit-liquidity questions.",
     images: ["/whitepaper-factory/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE TOKEN DOSSIER FACTORY",
-    description: "Seven questions. Nine fictional sections. One invented token allocation and a carefully worded liquidity disclaimer.",
+    description: "Seven questions. Nine fictional sections. One invented token allocation and a carefully worded post-graduation risk disclaimer.",
     images: ["/whitepaper-factory/opengraph-image"],
   },
 };

@@ -41,7 +41,7 @@ export default async function WhitepaperCaseImage({
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 16, borderTop: "1px solid #30382f", color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
-          <span>NINE SECTIONS. ONE VERY AMBITIOUS ABSTRACT.</span>
+          <span>NINE SECTIONS. ONE FICTIONAL TOKEN DOSSIER.</span>
           <span style={{ color: "#7c8778", fontWeight: 400 }}>FICTIONAL</span>
         </div>
       </div>

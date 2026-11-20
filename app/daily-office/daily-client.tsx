@@ -64,7 +64,7 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
     '<path d="M28 110H1172M28 615H1172" stroke="#384137"/>' +
     '<text x="64" y="76" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
     '<text x="1136" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="14">TRENCHES DESK / ' + dispatch.issueDate + "</text>" +
-    '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">' + dispatch.reference + " / OFFICIAL DAILY DISPATCH</text>" +
+    '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">' + dispatch.reference + " / DAILY CT & SOLANA TRENCHES BRIEFING</text>" +
     titleSvg +
     '<rect x="64" y="267" width="1072" height="107" fill="#121713" stroke="#384137"/>' +
     '<text x="88" y="301" fill="#b6ff65" font-family="monospace" font-size="14">OFFICIAL BULLETIN</text>' +
@@ -121,7 +121,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
 
     try {
       await navigator.clipboard.writeText(text);
-      setNotice("TODAY'S DISPATCH AND SOURCE LINK COPIED.");
+      setNotice("TODAY'S TRENCHES BRIEFING AND SOURCE LINK COPIED.");
     } catch {
       setNotice("CLIPBOARD UNAVAILABLE. THE DISPATCH CAN STILL BE SHARED ON X.");
     }
@@ -157,12 +157,12 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
           const downloadUrl = URL.createObjectURL(png);
           const anchor = document.createElement("a");
           anchor.href = downloadUrl;
-          anchor.download = "dyor-daily-dispatch-" + dispatch.issueDate + ".png";
+          anchor.download = "dyor-trenches-briefing-" + dispatch.issueDate + ".png";
           document.body.appendChild(anchor);
           anchor.click();
           anchor.remove();
           window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-          setNotice("TODAY'S OFFICIAL DAILY CARD HAS BEEN ISSUED.");
+          setNotice("TODAY'S TRENCHES BRIEFING CARD HAS BEEN ISSUED.");
         }, "image/png");
       };
 
@@ -178,7 +178,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
   }
 
   return (
-    <section className="daily-office-panel" aria-label="Daily Departmental Absurdity dispatch">
+    <section className="daily-office-panel" aria-label="The Trenches Desk daily CT briefing">
       <div className="daily-office-panel__header">
         <span>{dispatch.reference} / DAILY CT BRIEFING RECORD</span>
         <span>UTC ISSUE / {dispatch.issueDate}</span>

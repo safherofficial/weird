@@ -334,7 +334,7 @@ export default function WhitepaperFactoryClient() {
 
       {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
-      <div className="whitepaper-progress" role="progressbar" aria-label="Whitepaper intake completion" aria-valuemin={0} aria-valuemax={100} aria-valuenow={completedPercent}>
+      <div className="whitepaper-progress" role="progressbar" aria-label="Token dossier intake completion" aria-valuemin={0} aria-valuemax={100} aria-valuenow={completedPercent}>
         <div style={{ width: completedPercent + "%" }} />
       </div>
       <div className="whitepaper-progress__meta">

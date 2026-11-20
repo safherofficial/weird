@@ -65,7 +65,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
     result.profile.title + ".",
     "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
     result.profile.roast.length > 62 ? result.profile.roast.slice(0, 58) + "…" : result.profile.roast,
-    "Your turn. Submit your technical vision.",
+    "Your turn. Submit your token narrative.",
   ].join(" ");
 
   return (
@@ -141,7 +141,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
         <div className="whitepaper-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
           <DepartmentPublicShare title="Fictional Token Dossier case file" shareText={xText} casePath={caseUrl} />
-          <Link className="button button--quiet" href="/whitepaper-factory">MAKE YOUR OWN WHITEPAPER ↗</Link>
+          <Link className="button button--quiet" href="/whitepaper-factory">GENERATE YOUR OWN TOKEN DOSSIER ↗</Link>
         </div>
 
         <DepartmentNextSteps currentDepartment="whitepaper" />
@@ -153,7 +153,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
         </p>
       </section>
 
-      <DepartmentFooter message={["A PUBLIC RECORD OF TECHNICAL-SOUNDING INTENT.", "DOCUMENT FILED / PRODUCT NOT VERIFIED."]} />
+      <DepartmentFooter message={["A PUBLIC RECORD OF A FICTIONAL TOKEN NARRATIVE.", "DOSSIER FILED / TOKEN, OWNERSHIP AND LIQUIDITY NOT VERIFIED."]} />
     </main>
   );
 }
