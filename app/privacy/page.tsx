@@ -41,7 +41,7 @@ const sections = [
   {
     title: "05 / PUBLIC RESULT LINKS",
     paragraphs: [
-      "The FOMO Control Unit Audit, Pump.fun Intelligence paper-market simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap and Exit Liquidity Department token dossier can create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Emergency Office and Exit Liquidity Department URLs also contain the sanitized project label.",
+      "The FOMO Control Unit Audit, Pump.fun Intelligence paper-market simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, Solana Trenches 99% Club membership and Copium Administration personal calibration can each create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Emergency Office and Exit Liquidity Department URLs also contain the sanitized project label; the other personal-result links encode answer selections only.",
       "Anyone who receives a public case link can view the corresponding result. Links may remain in browser history, messages, social posts and hosting request records. The site does not maintain a private account that can revoke a copied link. Do not include personal or confidential details in a project label.",
     ],
   },
@@ -71,7 +71,7 @@ const sections = [
     title: "09 / OPERATOR CONTACT",
     paragraphs: [
       "The legal identity and a dedicated contact channel for the site operator have not been supplied in this release. They must be added by the operator before this notice is treated as a complete statutory privacy notice or used as legal assurance.",
-      "This page is dated 19 November 2026 and should be reviewed whenever application behaviour, providers or data flows change.",
+      "This page is dated 21 November 2026 and should be reviewed whenever application behaviour, providers or data flows change.",
     ],
   },
 ];
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
     <main className="audit-page legal-page" id="main-content">
       <DepartmentHeader statusMessage="PRIVACY / OPERATIONAL TRANSPARENCY" ctaHref="/" ctaLabel="BACK TO HQ" />
       <article className="legal-document shell" id="content-start" tabIndex={-1}>
-        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / POLICY FILE</span><span>LAST REVIEWED / 19 NOV 2026</span></div>
+        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / POLICY FILE</span><span>LAST REVIEWED / 21 NOV 2026</span></div>
         <p className="eyebrow">DEPARTMENT OF DATA MINIMIZATION</p>
         <h1>PRIVACY<br /><span>NOTICE.</span></h1>
         <p className="legal-document__lead">We built a department for questionable research. We do not need your identity to do it.</p>
