@@ -218,7 +218,9 @@ export const exhibits: MuseumExhibit[] = [
     plaque: "NEW BANNER. WHO HAS THE KEYS?",
     keywords: ["CTO", "community takeover", "deployer", "X", "handover"],
   },
-];(slug: string): MuseumExhibit | undefined {
+];
+
+export function getExhibit(slug: string): MuseumExhibit | undefined {
   return exhibits.find((exhibit) => exhibit.slug === slug);
 }
 

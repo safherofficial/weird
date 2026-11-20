@@ -321,7 +321,9 @@ export const archiveRecords: ArchiveRecord[] = [
     relatedHref: "/daily-office",
     keywords: ["KOL", "Crypto Twitter", "CT", "CA", "screenshot", "social proof"],
   },
-];(slug: string): ArchiveRecord | undefined {
+];
+
+export function getArchiveRecord(slug: string): ArchiveRecord | undefined {
   return archiveRecords.find((record) => record.slug === slug);
 }
 
