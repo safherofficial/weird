@@ -36,7 +36,7 @@
   user-select: none;
   touch-action: manipulation;
   will-change: transform, opacity, filter;
-  transition: opacity 480ms cubic-bezier(.22,.68,.25,1), filter 520ms ease, visibility 0s linear 480ms;
+  transition: opacity 480ms cubic-bezier(.22,.68,.25,1), filter 520ms ease, visibility 0s;
 }
 .department-mascot[data-presence="visible"] {
   opacity: .98;
