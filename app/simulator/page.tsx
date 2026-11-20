@@ -5,16 +5,16 @@ import SimulatorClient from "./simulator-client";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/simulator" },
-  title: "Pump.fun Paper Market Simulator",
+  title: "Pump.fun Intelligence | Paper Market Simulator",
   description: "A fictional Solana launch from first CA drop to bonding-curve graduation, CTO noise and post-graduation exit liquidity. Seven paper-market decisions.",
   openGraph: {
-    title: "PUMP.FUN PAPER MARKET SIMULATOR",
+    title: "PUMP.FUN INTELLIGENCE | PAPER MARKET SIMULATOR",
     description: "A fictional launch cycle: CA drop, bundle chatter, KOL calls, graduation, CTO and the post-launch pool. No real token or money.",
     images: ["/simulator/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PUMP.FUN PAPER MARKET SIMULATOR",
+    title: "PUMP.FUN INTELLIGENCE | PAPER MARKET SIMULATOR",
     description: "Seven fictional launch events. Four choices per round. Your imaginary bag is on the record.",
     images: ["/simulator/opengraph-image"],
   },

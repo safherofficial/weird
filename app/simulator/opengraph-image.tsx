@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "PUMP.FUN PAPER MARKET SIMULATOR — A fictional launch cycle from CA discovery to graduation and exit liquidity.";
+export const alt = "PUMP.FUN INTELLIGENCE — A fictional paper-market launch cycle from CA discovery to graduation and exit liquidity."
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

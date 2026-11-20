@@ -144,7 +144,7 @@ export default function SimulatorClient() {
     const caseUrl = makeCaseUrl(result.decisions);
     const challengeUrl = makeChallengeUrl(result.decisions);
     const text = [
-      "THE DYOR DEPARTMENT — PUMP.FUN PAPER MARKET SIMULATOR",
+      "THE DYOR DEPARTMENT — PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR",
       "CASE No. " + result.caseNumber,
       result.profile.title,
       result.profile.subtitle,
@@ -169,7 +169,7 @@ export default function SimulatorClient() {
     if (!result) return;
     const caseUrl = makeCaseUrl(result.decisions);
     const text = [
-      "I survived THE DYOR DEPARTMENT Pump.fun Paper Market Simulator.",
+      "I survived THE DYOR DEPARTMENT Pump.fun Intelligence paper-market simulator.",
       "Classification: " + result.profile.title + ".",
       "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
       result.profile.roast,
@@ -241,7 +241,7 @@ export default function SimulatorClient() {
   if (result) {
     const caseUrl = makeCaseUrl(result.decisions);
     const xText = [
-      "I survived THE DYOR DEPARTMENT Pump.fun Paper Market Simulator.",
+      "I survived THE DYOR DEPARTMENT Pump.fun Intelligence paper-market simulator.",
       "Classification: " + result.profile.title + ".",
       "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
       result.profile.roast.length > 82 ? result.profile.roast.slice(0, 78) + "…" : result.profile.roast,
@@ -387,7 +387,7 @@ export default function SimulatorClient() {
   }).join(" ");
 
   return (
-    <section className="simulator-panel simulator-game" aria-label="Pump.fun Paper Market Simulator">
+    <section className="simulator-panel simulator-game" aria-label="Pump.fun Intelligence paper-market simulator">
       <div className="simulator-panel__header">
         <span>LIVE SIMULATION / ROUND {String(currentRound + 1).padStart(2, "0")} OF {SIMULATOR_ROUNDS}</span>
         <span className="simulator-status"><i /> POSITION OPEN</span>
