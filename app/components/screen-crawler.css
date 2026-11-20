@@ -1,4 +1,4 @@
-/* U18.10 — surface contact, scroll-aware habitat traversal and click response. */
+/* U18.11 — cursor pursuit with free movement independent of document scrolling. */
 .department-scene {
   position: relative;
   z-index: auto;
@@ -77,13 +77,6 @@
 .screen-crawler[data-motion="startled"]::after {
   opacity: .72;
   transform: scaleX(1.08) scaleY(.82);
-}
-.screen-crawler[data-scrolling="true"]::after {
-  opacity: 1;
-  transform: scaleX(1.18) scaleY(.74);
-}
-.screen-crawler[data-scrolling="true"] .screen-crawler__sprite {
-  filter: drop-shadow(0 5px 12px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(182,255,101,.12));
 }
 .screen-crawler__orientation {
   display: block;

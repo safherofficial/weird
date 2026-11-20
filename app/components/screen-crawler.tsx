@@ -6,13 +6,13 @@ type CrawlerFacing = "right" | "left" | "up" | "down";
 type CrawlerDepth = "background" | "behind" | "over";
 type CrawlerMotion = "moving" | "idle" | "startled";
 type Point = { x: number; y: number };
-type ScrollBias = "upper" | "lower" | null;
 type OcclusionMode = Exclude<CrawlerDepth, "background">;
 
 const CRAWLER_WIDTH = 112;
 const CRAWLER_HEIGHT = 82;
 const EDGE_GUTTER = 24;
 const OCCLUSION_CHECK_MS = 180;
+const CHASE_CHECK_MS = 360;
 const SPEECH_DURATION_MS = 1750;
 const STARTLE_BOOST_MS = 900;
 
@@ -59,75 +59,6 @@ export default function ScreenCrawler() {
     const now = () => window.performance.now();
     const rightEdge = () => Math.max(EDGE_GUTTER, window.innerWidth - CRAWLER_WIDTH - EDGE_GUTTER);
     const bottomEdge = () => Math.max(EDGE_GUTTER, window.innerHeight - CRAWLER_HEIGHT - EDGE_GUTTER);
-    const randomPoint = (): Point => ({
-      x: randomBetween(EDGE_GUTTER, rightEdge()),
-      y: randomBetween(EDGE_GUTTER, bottomEdge()),
-    });
-
-    // The insect chooses destinations in viewport space, but it chooses them
-    // from the real page surfaces currently visible after a scroll settles.
-    // It is deliberately fixed to the viewport, never carried by document flow.
-    const chooseDestination = (scrollBias: ScrollBias = null): Point => {
-      const surfaces = Array.from(document.querySelectorAll<HTMLElement>(WALKABLE_SURFACES))
-        .map((element) => ({ element, rect: element.getBoundingClientRect() }))
-        .filter(({ element, rect }) => {
-          if (element.closest(".screen-crawler")) return false;
-          const area = rect.width * rect.height;
-          if (rect.width < 150 || rect.height < 90 || area < CRAWLER_WIDTH * CRAWLER_HEIGHT || area > window.innerWidth * window.innerHeight * 0.48) return false;
-          if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return false;
-          const zIndex = Number.parseInt(window.getComputedStyle(element).zIndex, 10);
-          return !Number.isFinite(zIndex) || zIndex < 80;
-        });
-
-      const lowerViewportPosition = Math.max(EDGE_GUTTER, window.innerHeight * 0.52 - CRAWLER_HEIGHT / 2);
-      const upperViewportPosition = Math.max(EDGE_GUTTER, window.innerHeight * 0.48 - CRAWLER_HEIGHT / 2);
-      const preferredSurfaces = scrollBias
-        ? surfaces.filter(({ rect }) => {
-            const validTop = Math.max(EDGE_GUTTER, rect.top - CRAWLER_HEIGHT * 0.35);
-            const validBottom = Math.min(bottomEdge(), rect.bottom - CRAWLER_HEIGHT * 0.65);
-            return scrollBias === "lower"
-              ? validBottom >= lowerViewportPosition
-              : validTop <= upperViewportPosition;
-          })
-        : surfaces;
-      const surfacePool = preferredSurfaces.length ? preferredSurfaces : surfaces;
-
-      if (surfacePool.length && Math.random() < (scrollBias ? 0.9 : 0.68)) {
-        // During scroll navigation, choose from the nearest newly revealed
-        // surfaces so it looks as if the crawler deliberately explores them.
-        const ranked = [...surfacePool].sort((a, b) => {
-          const distance = ({ rect }: typeof a) => Math.hypot(
-            rect.left + rect.width / 2 - (currentX + CRAWLER_WIDTH / 2),
-            rect.top + rect.height / 2 - (currentY + CRAWLER_HEIGHT / 2),
-          );
-          return distance(a) - distance(b);
-        });
-        const shortlist = scrollBias ? ranked.slice(0, Math.min(4, ranked.length)) : surfacePool;
-        const selected = shortlist[Math.floor(Math.random() * shortlist.length)];
-        const rect = selected.rect;
-        const left = Math.max(EDGE_GUTTER, rect.left - CRAWLER_WIDTH * 0.35);
-        const right = Math.min(rightEdge(), rect.right - CRAWLER_WIDTH * 0.65);
-        const top = Math.max(EDGE_GUTTER, rect.top - CRAWLER_HEIGHT * 0.35);
-        const bottom = Math.min(bottomEdge(), rect.bottom - CRAWLER_HEIGHT * 0.65);
-        const biasedTop = scrollBias === "lower" ? Math.max(top, lowerViewportPosition) : top;
-        const biasedBottom = scrollBias === "upper" ? Math.min(bottom, upperViewportPosition) : bottom;
-        if (right >= left && biasedBottom >= biasedTop) {
-          return { x: randomBetween(left, right), y: randomBetween(biasedTop, biasedBottom) };
-        }
-      }
-
-      // On long pages the user may reveal an open stretch between cards.
-      // Keep the crawler in the newly exposed half of the viewport in that case.
-      const point = randomPoint();
-      if (scrollBias === "lower") point.y = randomBetween(lowerViewportPosition, Math.max(lowerViewportPosition, bottomEdge()));
-      else if (scrollBias === "upper") point.y = randomBetween(EDGE_GUTTER, upperViewportPosition);
-      else if (Math.random() < 0.46) {
-        if (Math.random() < 0.5) point.x = Math.random() < 0.5 ? EDGE_GUTTER : rightEdge();
-        else point.y = Math.random() < 0.5 ? EDGE_GUTTER : bottomEdge();
-      }
-      return point;
-    };
-
     let currentX = randomBetween(EDGE_GUTTER, rightEdge());
     let currentY = randomBetween(EDGE_GUTTER, bottomEdge());
     let targetX = currentX;
@@ -145,14 +76,17 @@ export default function ScreenCrawler() {
     let lastDepthCheck = 0;
     let clickCount = 0;
     let speedBoostUntil = 0;
-    let roamTimer = 0;
     let speechTimer = 0;
     let boostTimer = 0;
     let reactionTimer = 0;
-    let scrollTimer = 0;
-    let lastScrollY = window.scrollY;
-    let scrollDirection: "up" | "down" = "down";
+    let chaseTimer = 0;
     let depthTimer = 0;
+    let hasPointer = false;
+    let pointerX = window.innerWidth / 2;
+    let pointerY = window.innerHeight / 2;
+    let lastPlannedPointer: Point = { x: pointerX, y: pointerY };
+    let nextChaseAt = 0;
+    let chasePauseUntil = 0;
     let gaitTimer = 0;
     let obstacleMode = new WeakMap<Element, OcclusionMode>();
     let elevatedSurfaces = new WeakMap<HTMLElement, { position: string; zIndex: string }>();
@@ -272,6 +206,110 @@ export default function ScreenCrawler() {
       }
     };
 
+    const chooseChaseDestination = (escape = false): Point => {
+      const centerX = currentX + CRAWLER_WIDTH / 2;
+      const centerY = currentY + CRAWLER_HEIGHT / 2;
+      const dx = pointerX - centerX;
+      const dy = pointerY - centerY;
+      const distance = Math.hypot(dx, dy);
+      let candidate: Point;
+
+      if (escape) {
+        // After a successful catch, scuttle decisively away from the user's
+        // pointer before resuming the pursuit.
+        const awayAngle = distance > 2 ? Math.atan2(-dy, -dx) : randomBetween(0, Math.PI * 2);
+        const angle = awayAngle + randomBetween(-0.32, 0.32);
+        const radius = randomBetween(170, 235);
+        candidate = { x: pointerX + Math.cos(angle) * radius, y: pointerY + Math.sin(angle) * radius };
+      } else if (distance > 150) {
+        // Close the distance, but stop just short of the cursor so the creature
+        // remains visible and catchable instead of sitting directly under it.
+        const standoff = randomBetween(72, 98);
+        candidate = {
+          x: pointerX - (dx / distance) * standoff,
+          y: pointerY - (dy / distance) * standoff,
+        };
+      } else {
+        // Once close, circle around the user in small unpredictable steps.
+        const currentAngle = distance > 2 ? Math.atan2(-dy, -dx) : randomBetween(0, Math.PI * 2);
+        const angle = currentAngle + randomBetween(-1.15, 1.15);
+        const radius = randomBetween(78, 118);
+        candidate = { x: pointerX + Math.cos(angle) * radius, y: pointerY + Math.sin(angle) * radius };
+      }
+
+      candidate.x = clamp(candidate.x - CRAWLER_WIDTH / 2, EDGE_GUTTER, rightEdge());
+      candidate.y = clamp(candidate.y - CRAWLER_HEIGHT / 2, EDGE_GUTTER, bottomEdge());
+
+      // Prefer landing on an actual visible card, panel or banner when one is
+      // near the pursuit path. The page texture fills the gaps between surfaces.
+      const nearbySurfaces = Array.from(document.querySelectorAll<HTMLElement>(WALKABLE_SURFACES))
+        .filter((element) => !element.closest(".screen-crawler"))
+        .map((element) => ({ element, rect: element.getBoundingClientRect() }))
+        .filter(({ element, rect }) => {
+          const area = rect.width * rect.height;
+          if (rect.width < 120 || rect.height < 64 || area > window.innerWidth * window.innerHeight * 0.48) return false;
+          if (rect.bottom <= 0 || rect.top >= window.innerHeight || rect.right <= 0 || rect.left >= window.innerWidth) return false;
+          const zIndex = Number.parseInt(window.getComputedStyle(element).zIndex, 10);
+          return !Number.isFinite(zIndex) || zIndex < 80;
+        });
+
+      let surfaceTarget: Point | null = null;
+      let nearestSurfaceDistance = 140;
+      for (const { rect } of nearbySurfaces) {
+        const minX = clamp(rect.left - 24, EDGE_GUTTER, rightEdge());
+        const maxX = clamp(rect.right - CRAWLER_WIDTH + 24, EDGE_GUTTER, rightEdge());
+        const minY = clamp(rect.top - 18, EDGE_GUTTER, bottomEdge());
+        const maxY = clamp(rect.bottom - CRAWLER_HEIGHT + 18, EDGE_GUTTER, bottomEdge());
+        if (maxX < minX || maxY < minY) continue;
+        const projected = { x: clamp(candidate.x, minX, maxX), y: clamp(candidate.y, minY, maxY) };
+        const surfaceDistance = Math.hypot(projected.x - candidate.x, projected.y - candidate.y);
+        if (surfaceDistance < nearestSurfaceDistance) {
+          nearestSurfaceDistance = surfaceDistance;
+          surfaceTarget = projected;
+        }
+      }
+
+      return surfaceTarget ?? candidate;
+    };
+
+    const planChase = (force = false) => {
+      const timestamp = now();
+      if (!active || !hasPointer || timestamp < chasePauseUntil || (motion === "startled" && speedBoostUntil > timestamp)) return;
+      if (!force && timestamp < nextChaseAt) return;
+
+      const centerX = currentX + CRAWLER_WIDTH / 2;
+      const centerY = currentY + CRAWLER_HEIGHT / 2;
+      const cursorDistance = Math.hypot(pointerX - centerX, pointerY - centerY);
+      const cursorShift = Math.hypot(pointerX - lastPlannedPointer.x, pointerY - lastPlannedPointer.y);
+      const routeIsIdle = motion === "idle" && route.length === 0;
+      const needsPursuit = routeIsIdle || cursorDistance > 154 || cursorShift > 66;
+      if (!force && !needsPursuit) return;
+
+      const destination = chooseChaseDestination();
+      const remaining = Math.hypot(destination.x - currentX, destination.y - currentY);
+      lastPlannedPointer = { x: pointerX, y: pointerY };
+      nextChaseAt = timestamp + (cursorDistance < 155 ? randomBetween(620, 1050) : randomBetween(330, 560));
+      if (remaining > 18) setRoute(destination);
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      pointerX = clamp(event.clientX, 0, window.innerWidth);
+      pointerY = clamp(event.clientY, 0, window.innerHeight);
+      hasPointer = true;
+      // Debounce the first reaction very briefly. This keeps the crawler
+      // physically catchable when the cursor lands on it, while the pursuit
+      // timer still reacts quickly to every user movement.
+      if (motion === "idle" || Math.hypot(pointerX - lastPlannedPointer.x, pointerY - lastPlannedPointer.y) > 66) {
+        nextChaseAt = Math.min(nextChaseAt, now() + 110);
+      }
+    };
+
+    const handlePointerLeave = () => {
+      // Finish the current step naturally; the next pointer entry resumes pursuit.
+      hasPointer = false;
+    };
+
     const nextLeg = () => {
       const point = route.shift();
       if (!point) {
@@ -280,7 +318,7 @@ export default function ScreenCrawler() {
         velocityX = 0;
         velocityY = 0;
         setMotion("idle");
-        if (!roamTimer) roamTimer = window.setTimeout(beginRoam, randomBetween(650, 1650));
+        nextChaseAt = now() + randomBetween(420, 820);
         return;
       }
       targetX = point.x;
@@ -305,12 +343,6 @@ export default function ScreenCrawler() {
         });
       }
       nextLeg();
-    };
-
-    const beginRoam = () => {
-      roamTimer = 0;
-      if (!active || motion === "startled") return;
-      setRoute(chooseDestination());
     };
 
     const requestFrame = () => {
@@ -356,9 +388,12 @@ export default function ScreenCrawler() {
     const handleCatch = (event: Event) => {
       event.preventDefault();
       event.stopPropagation();
+      if (event instanceof MouseEvent && event.detail > 0) {
+        pointerX = clamp(event.clientX, 0, window.innerWidth);
+        pointerY = clamp(event.clientY, 0, window.innerHeight);
+        hasPointer = true;
+      }
       clickCount += 1;
-      if (roamTimer) window.clearTimeout(roamTimer);
-      roamTimer = 0;
       if (speechTimer) window.clearTimeout(speechTimer);
       if (boostTimer) window.clearTimeout(boostTimer);
       if (reactionTimer) window.clearTimeout(reactionTimer);
@@ -378,22 +413,22 @@ export default function ScreenCrawler() {
         if (motion === "startled") setMotion("moving");
       }, STARTLE_BOOST_MS);
 
-      // It freezes for a beat, then scuttles away along a fresh cardinal route.
+      // Freeze for a beat, then flee away from the user. The pursuit resumes
+      // only after the short startled escape has finished.
       route = [];
       targetX = currentX;
       targetY = currentY;
       velocityX = 0;
       velocityY = 0;
+      chasePauseUntil = now() + STARTLE_BOOST_MS + 650;
+      nextChaseAt = chasePauseUntil;
       if (frame) window.cancelAnimationFrame(frame);
       frame = 0;
-      const destination = chooseDestination();
+      const destination = chooseChaseDestination(true);
       const dx = destination.x - currentX;
       const dy = destination.y - currentY;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        destination.y = currentY;
-      } else {
-        destination.x = currentX;
-      }
+      if (Math.abs(dx) > Math.abs(dy)) destination.y = currentY;
+      else destination.x = currentX;
       reactionTimer = window.setTimeout(() => {
         reactionTimer = 0;
         if (!active) return;
@@ -401,43 +436,13 @@ export default function ScreenCrawler() {
       }, 300);
     };
 
-    const handlePageScroll = () => {
-      const nextScrollY = window.scrollY;
-      if (nextScrollY !== lastScrollY) scrollDirection = nextScrollY > lastScrollY ? "down" : "up";
-      lastScrollY = nextScrollY;
-
-      if (scrollTimer) window.clearTimeout(scrollTimer);
-      if (roamTimer) window.clearTimeout(roamTimer);
-      roamTimer = 0;
-
-      // The crawler holds its screen-space foothold while the document moves
-      // beneath it. It is not translated by scrollY or attached to page flow.
-      // Once scrolling stops, it chooses a surface in the newly revealed area
-      // and physically walks there using its normal cardinal route.
-      crawler.dataset.scrolling = "true";
-      route = [];
-      targetX = currentX;
-      targetY = currentY;
-      velocityX = 0;
-      velocityY = 0;
-      if (frame) window.cancelAnimationFrame(frame);
-      frame = 0;
-      setMotion("idle");
-
-      scrollTimer = window.setTimeout(() => {
-        scrollTimer = 0;
-        crawler.dataset.scrolling = "false";
-        if (!active || motion === "startled") return;
-        const bias: ScrollBias = scrollDirection === "down" ? "lower" : "upper";
-        setRoute(chooseDestination(bias));
-      }, 260);
-    };
-
     const handleResize = () => {
       currentX = clamp(currentX, EDGE_GUTTER, rightEdge());
       currentY = clamp(currentY, EDGE_GUTTER, bottomEdge());
       targetX = clamp(targetX, EDGE_GUTTER, rightEdge());
       targetY = clamp(targetY, EDGE_GUTTER, bottomEdge());
+      pointerX = clamp(pointerX, 0, window.innerWidth);
+      pointerY = clamp(pointerY, 0, window.innerHeight);
       crawler.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
     };
 
@@ -456,24 +461,27 @@ export default function ScreenCrawler() {
     crawler.dataset.depth = depth;
     crawler.classList.add("screen-crawler--ready");
     crawler.addEventListener("click", handleCatch);
-    document.addEventListener("scroll", handlePageScroll, { passive: true, capture: true });
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerleave", handlePointerLeave, { passive: true });
+    window.addEventListener("blur", handlePointerLeave);
     depthTimer = window.setInterval(() => inspectDepth(now()), OCCLUSION_CHECK_MS);
     gaitTimer = window.setInterval(advanceGait, 32);
-    roamTimer = window.setTimeout(beginRoam, randomBetween(500, 1100));
+    chaseTimer = window.setInterval(() => planChase(), CHASE_CHECK_MS);
     window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       active = false;
       crawler.removeEventListener("click", handleCatch);
-      document.removeEventListener("scroll", handlePageScroll, true);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerleave", handlePointerLeave);
+      window.removeEventListener("blur", handlePointerLeave);
       window.removeEventListener("resize", handleResize);
-      window.clearTimeout(roamTimer);
       window.clearTimeout(speechTimer);
       window.clearTimeout(boostTimer);
       window.clearTimeout(reactionTimer);
-      window.clearTimeout(scrollTimer);
       window.clearInterval(depthTimer);
       window.clearInterval(gaitTimer);
+      window.clearInterval(chaseTimer);
       if (activeSurface) restoreSurface(activeSurface);
       activeSurface = null;
       if (frame) window.cancelAnimationFrame(frame);
