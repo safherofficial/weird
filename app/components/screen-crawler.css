@@ -1,7 +1,7 @@
-/* U18.6 — an autonomous screen-dwelling crawler with real page occlusion. */
+/* U18.6 — an autonomous screen-dwelling crawler with object-level occlusion. */
 .department-scene {
   position: relative;
-  z-index: 2;
+  z-index: auto;
   min-height: 100vh;
 }
 .screen-crawler {
@@ -28,7 +28,7 @@
   filter: brightness(.86) saturate(.82);
 }
 .screen-crawler[data-depth="over"] {
-  z-index: 3;
+  z-index: 1;
   opacity: .98;
   filter: drop-shadow(0 5px 16px rgba(0,0,0,.7)) drop-shadow(0 0 8px rgba(182,255,101,.16));
 }
@@ -67,9 +67,7 @@
   animation: crawler-body-bob 1.7s ease-in-out infinite;
   will-change: background-position, transform;
 }
-.screen-crawler[data-motion="idle"] .screen-crawler__sprite {
-  animation-duration: 2.7s;
-}
+.screen-crawler[data-motion="idle"] .screen-crawler__sprite { animation-duration: 2.7s; }
 @keyframes crawler-body-bob {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-2.6px) scale(1.018); }

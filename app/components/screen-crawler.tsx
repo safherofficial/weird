@@ -105,6 +105,8 @@ export default function ScreenCrawler() {
     let motion: "moving" | "idle" = "idle";
     let depth: CrawlerDepth = "background";
     let obstacleMode = new WeakMap<Element, OcclusionMode>();
+    let elevatedSurfaces = new WeakMap<HTMLElement, { position: string; zIndex: string }>();
+    let activeElement: HTMLElement | null = null;
     let lastDepthCheck = 0;
     let depthTimer = 0;
     let gaitTimer = 0;
@@ -130,6 +132,31 @@ export default function ScreenCrawler() {
       crawler.dataset.motion = next;
     };
 
+    const bringSurfaceForward = (element: HTMLElement) => {
+      if (elevatedSurfaces.has(element)) return;
+      const computed = window.getComputedStyle(element);
+      const currentZIndex = Number.parseInt(computed.zIndex, 10);
+      // Never downgrade existing overlays, headers or fixed navigation layers.
+      if (Number.isFinite(currentZIndex) && currentZIndex > 1) return;
+      const parentDisplay = element.parentElement ? window.getComputedStyle(element.parentElement).display : "block";
+      elevatedSurfaces.set(element, {
+        position: element.style.position,
+        zIndex: element.style.zIndex,
+      });
+      if (computed.position === "static" && parentDisplay !== "grid" && parentDisplay !== "inline-grid" && parentDisplay !== "flex" && parentDisplay !== "inline-flex") {
+        element.style.position = "relative";
+      }
+      element.style.zIndex = "2";
+    };
+
+    const restoreSurface = (element: HTMLElement) => {
+      const original = elevatedSurfaces.get(element);
+      if (!original) return;
+      element.style.position = original.position;
+      element.style.zIndex = original.zIndex;
+      elevatedSurfaces.delete(element);
+    };
+
     const mirrorPointer = () => {
       const bounds = getOppositeBounds(pointerX, pointerY);
       anchorX = clamp(window.innerWidth - pointerX - CRAWLER_WIDTH / 2, bounds.minX, bounds.maxX);
@@ -138,15 +165,22 @@ export default function ScreenCrawler() {
       targetY = anchorY;
     };
 
-    const chooseFacingFromMovement = (vx: number, vy: number) => {
-      const horizontal = Math.abs(vx);
-      const vertical = Math.abs(vy);
+    const chooseFacingFromMovement = (vx: number, vy: number, intendedX: number, intendedY: number) => {
+      // Prefer the dominant destination axis when the pointer changes quickly;
+      // spring inertia can briefly point the body the old way during a turn.
+      const horizontalIntent = Math.abs(intendedX);
+      const verticalIntent = Math.abs(intendedY);
+      const intentIsClear = Math.max(horizontalIntent, verticalIntent) > 8;
+      const horizontal = intentIsClear ? horizontalIntent : Math.abs(vx);
+      const vertical = intentIsClear ? verticalIntent : Math.abs(vy);
+      const directionX = intentIsClear ? intendedX : vx;
+      const directionY = intentIsClear ? intendedY : vy;
       if (horizontal < 0.42 && vertical < 0.42) return;
       const currentlyHorizontal = facing === "left" || facing === "right";
-      if (horizontal > vertical * 1.18 || (currentlyHorizontal && horizontal >= vertical * 0.86)) {
-        setFacing(vx >= 0 ? "right" : "left");
-      } else if (vertical > horizontal * 1.18 || (!currentlyHorizontal && vertical >= horizontal * 0.86)) {
-        setFacing(vy < 0 ? "up" : "down");
+      if (horizontal > vertical * 1.12 || (currentlyHorizontal && horizontal >= vertical * 0.86)) {
+        setFacing(directionX >= 0 ? "right" : "left");
+      } else if (vertical > horizontal * 1.12 || (!currentlyHorizontal && vertical >= horizontal * 0.86)) {
+        setFacing(directionY < 0 ? "up" : "down");
       }
     };
 
@@ -185,13 +219,27 @@ export default function ScreenCrawler() {
         const overlapHeight = Math.max(0, Math.min(crawlerBottom, rect.bottom) - Math.max(crawlerTop, rect.top));
         const overlapArea = overlapWidth * overlapHeight;
         const elementArea = rect.width * rect.height;
-        if (overlapArea / crawlerArea < 0.2 || elementArea >= bestElementArea) continue;
+        // Ignore tiny text fragments: the insect should interact with the
+        // card, panel or banner itself, not raise a single label above it.
+        if (elementArea < crawlerArea * 0.72 || overlapArea / crawlerArea < 0.2 || elementArea >= bestElementArea) continue;
 
         let mode = obstacleMode.get(element);
         if (!mode) {
           const zIndex = Number.parseInt(window.getComputedStyle(element).zIndex, 10);
-          // Pop-up navigation and modal layers must always stay in front.
-          mode = Number.isFinite(zIndex) && zIndex >= 20 ? "behind" : Math.random() < 0.7 ? "behind" : "over";
+          let elevatedAncestor = false;
+          let ancestor = element.parentElement;
+          while (ancestor && ancestor !== document.body && !ancestor.classList.contains("department-scene")) {
+            const ancestorZIndex = Number.parseInt(window.getComputedStyle(ancestor).zIndex, 10);
+            if (Number.isFinite(ancestorZIndex) && ancestorZIndex >= 1) {
+              elevatedAncestor = true;
+              break;
+            }
+            ancestor = ancestor.parentElement;
+          }
+          // Existing overlays and their stacking contexts remain in front.
+          // Ordinary content is chosen randomly so the insect alternates
+          // between slipping underneath it and crawling across its surface.
+          mode = elevatedAncestor || (Number.isFinite(zIndex) && zIndex >= 1) ? "behind" : Math.random() < 0.56 ? "behind" : "over";
           obstacleMode.set(element, mode);
         }
         bestElementArea = elementArea;
@@ -201,7 +249,16 @@ export default function ScreenCrawler() {
 
       if (bestElement && bestMode) {
         setDepth(bestMode);
+        // Raise only the panel currently covering the crawler. This gives
+        // genuine per-object foreground/background crossings without lifting
+        // the whole page above the creature.
+        if (activeElement && activeElement !== bestElement) restoreSurface(activeElement);
+        if (bestMode === "behind") bringSurfaceForward(bestElement);
+        else if (activeElement === bestElement) restoreSurface(bestElement);
+        activeElement = bestElement;
       } else {
+        if (activeElement) restoreSurface(activeElement);
+        activeElement = null;
         setDepth("background");
       }
     };
@@ -224,7 +281,7 @@ export default function ScreenCrawler() {
 
       crawler.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
       setMotion(Math.hypot(velocityX, velocityY) > 0.5 ? "moving" : "idle");
-      chooseFacingFromMovement(velocityX, velocityY);
+      chooseFacingFromMovement(velocityX, velocityY, dx, dy);
       inspectDepth(timestamp);
 
       if (Math.abs(targetX - currentX) > 0.3 || Math.abs(targetY - currentY) > 0.3 || Math.abs(velocityX) > 0.22 || Math.abs(velocityY) > 0.22) {
@@ -303,6 +360,8 @@ export default function ScreenCrawler() {
       window.clearInterval(patrolTimer);
       window.clearInterval(depthTimer);
       window.clearInterval(gaitTimer);
+      if (activeElement) restoreSurface(activeElement);
+      activeElement = null;
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
