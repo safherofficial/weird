@@ -1,11 +1,19 @@
-/* U18.11 — cursor pursuit with free movement independent of document scrolling. */
+/* U18.12 — the crawler belongs to the static backdrop, not the scrolling document. */
+.crawler-background-plane {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
 .department-scene {
   position: relative;
   z-index: auto;
   min-height: 100vh;
 }
 .screen-crawler {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
@@ -20,31 +28,26 @@
   color: inherit;
   text-align: left;
   cursor: pointer;
-  pointer-events: auto;
+  pointer-events: none;
   opacity: 0;
+  visibility: hidden;
   appearance: none;
   -webkit-appearance: none;
   user-select: none;
   touch-action: manipulation;
   will-change: transform;
-  transition: opacity 420ms ease, filter 420ms ease;
+  transition: opacity 420ms ease, filter 420ms ease, visibility 0s linear 420ms;
+}
+.screen-crawler[data-presence="visible"] {
+  opacity: .9;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 360ms ease, filter 420ms ease, visibility 0s;
 }
 .screen-crawler:focus-visible {
   outline: 1px dashed rgba(182,255,101,.78);
   outline-offset: 4px;
   filter: drop-shadow(0 0 8px rgba(182,255,101,.5));
-}
-.screen-crawler--ready { opacity: .88; }
-.screen-crawler[data-depth="background"] { z-index: 1; opacity: .88; }
-.screen-crawler[data-depth="behind"] {
-  z-index: 1;
-  opacity: .66;
-  filter: brightness(.86) saturate(.82);
-}
-.screen-crawler[data-depth="over"] {
-  z-index: 18;
-  opacity: .98;
-  filter: drop-shadow(0 5px 16px rgba(0,0,0,.7)) drop-shadow(0 0 8px rgba(182,255,101,.16));
 }
 .screen-crawler::before {
   position: absolute;
@@ -164,9 +167,9 @@
   70% { scale: 1.12 .9; rotate: 5deg; }
 }
 @media (hover: none), (pointer: coarse) {
-  .screen-crawler { display: none !important; }
+  .crawler-background-plane { display: none !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .screen-crawler { display: none !important; }
-  .screen-crawler *, .screen-crawler *::before, .screen-crawler *::after { animation: none !important; transition: none !important; }
+  .crawler-background-plane { display: none !important; }
+  .crawler-background-plane *, .crawler-background-plane *::before, .crawler-background-plane *::after { animation: none !important; transition: none !important; }
 }

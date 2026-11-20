@@ -48,7 +48,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
-        <ScreenCrawler />
+        <div className="crawler-background-plane">
+          <ScreenCrawler />
+        </div>
         <div className="department-scene">{children}</div>
         <AchievementToastHost />
       </body>
