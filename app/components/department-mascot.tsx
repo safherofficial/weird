@@ -3,12 +3,15 @@
 import { useEffect, useRef } from "react";
 
 type Point = { x: number; y: number };
-type MascotMode = "idle" | "walking" | "stumbling" | "reacting";
+type MascotMode = "idle" | "walking" | "stumbling" | "reacting" | "departing";
 type TimedFrame = { frame: number; duration: number };
 
 const MASCOT_SIZE = 174;
 const EDGE_GUTTER = 18;
-const WALK_SPEED = 48; // CSS pixels per second: a relaxed, readable walking pace.
+const WALK_SPEED = 54; // CSS pixels per second: a relaxed, readable walking pace.
+const WALK_FRAME_INTERVAL_MS = 175;
+const DEPARTURE_LOOK_MS = 420;
+const DEPARTURE_DISSOLVE_MS = 1050;
 const REVEAL_CHANCE = 0.72;
 const SCROLL_CHECK_MIN_MS = 950;
 const SCROLL_CHECK_MAX_MS = 1550;
@@ -133,8 +136,72 @@ export default function DepartmentMascot() {
     const hideMascot = () => {
       if (presenceTimer) window.clearTimeout(presenceTimer);
       presenceTimer = 0;
-      if (mascot.dataset.reaction === "caught") return;
-      setVisible(false);
+      if (!visible || mascot.dataset.reaction === "caught" || mode === "departing") return;
+
+      // Do not abruptly toggle visibility. The character notices it is time to
+      // leave, glances up, walks a few deliberate steps and only then dissolves.
+      clearActionTimer();
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      setMode("departing");
+      setFrame(3);
+      speech.textContent = "";
+
+      scheduleAction(() => {
+        const towardLeft = currentX + MASCOT_SIZE / 2 < window.innerWidth / 2;
+        const exitDirection: -1 | 1 = towardLeft ? -1 : 1;
+        const available = exitDirection < 0 ? currentX - EDGE_GUTTER : maxX() - currentX;
+        const distance = Math.min(randomBetween(78, 124), Math.max(0, available));
+        if (distance < 18) {
+          beginDissolve();
+          return;
+        }
+        direction = exitDirection;
+        setFacing(direction);
+        setMode("departing");
+        const startX = currentX;
+        const endX = currentX + direction * distance;
+        const duration = distance / (WALK_SPEED * 1.25) * 1000;
+        let startedAt = 0;
+        let lastFrameAt = 0;
+        let stepIndex = 0;
+        const walkOut = (timestamp: number) => {
+          if (!active || !visible || mode !== "departing") return;
+          if (!startedAt) startedAt = timestamp;
+          const progress = clamp((timestamp - startedAt) / duration, 0, 1);
+          const eased = progress * progress * (3 - 2 * progress);
+          currentX = startX + (endX - startX) * eased;
+          positionMascot();
+          if (timestamp - lastFrameAt >= WALK_FRAME_INTERVAL_MS) {
+            stepIndex = (stepIndex + 1) % 4;
+            setFrame(4 + stepIndex);
+            lastFrameAt = timestamp;
+          }
+          if (progress >= 1) {
+            animationFrame = 0;
+            setFrame(15);
+            scheduleAction(beginDissolve, 360);
+            return;
+          }
+          animationFrame = window.requestAnimationFrame(walkOut);
+        };
+        animationFrame = window.requestAnimationFrame(walkOut);
+      }, DEPARTURE_LOOK_MS);
+    };
+
+    const beginDissolve = () => {
+      if (!visible || !active) return;
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      setMode("departing");
+      mascot.dataset.presence = "exiting";
+      mascot.dataset.departure = "dissolve";
+      mascot.setAttribute("aria-hidden", "true");
+      mascot.tabIndex = -1;
+      scheduleAction(() => {
+        setVisible(false);
+        mascot.dataset.departure = "";
+      }, DEPARTURE_DISSOLVE_MS);
     };
 
     const hasRoomAt = (x: number, y: number) => {
@@ -269,18 +336,22 @@ export default function DepartmentMascot() {
       setFrame(4);
       walksThisVisit += 1;
 
-      let previousTime = 0;
+      const startX = currentX;
+      const distance = Math.abs(targetX - startX);
+      const duration = (distance / WALK_SPEED) * 1000;
+      let startedAt = 0;
       const step = (timestamp: number) => {
         if (!active || !visible || mode !== "walking") return;
-        if (!previousTime) previousTime = timestamp;
-        const delta = Math.min((timestamp - previousTime) / 1000, .04);
-        previousTime = timestamp;
-        currentX += direction * WALK_SPEED * delta;
-        const arrived = direction > 0 ? currentX >= targetX : currentX <= targetX;
+        if (!startedAt) startedAt = timestamp;
+        const progress = clamp((timestamp - startedAt) / duration, 0, 1);
+        // Gentle ease-in/ease-out makes the walk feel weighted instead of motor-driven.
+        const eased = progress * progress * (3 - 2 * progress);
+        currentX = startX + (targetX - startX) * eased;
+        const arrived = progress >= 1;
         if (arrived) currentX = targetX;
         positionMascot();
 
-        if (timestamp - lastWalkFrameAt >= 175) {
+        if (timestamp - lastWalkFrameAt >= WALK_FRAME_INTERVAL_MS) {
           walkFrameIndex = (walkFrameIndex + 1) % 4;
           setFrame(4 + walkFrameIndex);
           lastWalkFrameAt = timestamp;
@@ -442,7 +513,9 @@ export default function DepartmentMascot() {
       data-presence="hidden"
       tabIndex={-1}
     >
-      <span ref={spriteRef} className="department-mascot__sprite" aria-hidden="true" />
+      <span className="department-mascot__body-motion" aria-hidden="true">
+        <span ref={spriteRef} className="department-mascot__sprite" />
+      </span>
       <span ref={speechRef} className="department-mascot__speech" aria-live="polite" />
     </button>
   );
