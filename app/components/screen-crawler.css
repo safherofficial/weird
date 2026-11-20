@@ -42,7 +42,7 @@
   filter: brightness(.86) saturate(.82);
 }
 .screen-crawler[data-depth="over"] {
-  z-index: 1;
+  z-index: 18;
   opacity: .98;
   filter: drop-shadow(0 5px 16px rgba(0,0,0,.7)) drop-shadow(0 0 8px rgba(182,255,101,.16));
 }

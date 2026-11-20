@@ -204,17 +204,21 @@ export default function ScreenCrawler() {
         let mode = obstacleMode.get(element);
         if (!mode) {
           const zIndex = Number.parseInt(window.getComputedStyle(element).zIndex, 10);
-          let elevatedAncestor = false;
+          let protectedAncestor = false;
           let ancestor = element.parentElement;
           while (ancestor && ancestor !== document.body && !ancestor.classList.contains("department-scene")) {
             const ancestorZIndex = Number.parseInt(window.getComputedStyle(ancestor).zIndex, 10);
-            if (Number.isFinite(ancestorZIndex) && ancestorZIndex >= 1) {
-              elevatedAncestor = true;
+            // Only genuinely high-priority layers (navigation, dialogs, modal
+            // overlays) are guaranteed to remain in front of the creature.
+            if (Number.isFinite(ancestorZIndex) && ancestorZIndex >= 18) {
+              protectedAncestor = true;
               break;
             }
             ancestor = ancestor.parentElement;
           }
-          mode = elevatedAncestor || (Number.isFinite(zIndex) && zIndex >= 1) ? "behind" : Math.random() < 0.56 ? "behind" : "over";
+          mode = protectedAncestor || (Number.isFinite(zIndex) && zIndex >= 18)
+            ? "behind"
+            : Math.random() < 0.42 ? "behind" : "over";
           obstacleMode.set(element, mode);
         }
         bestElementArea = area;
