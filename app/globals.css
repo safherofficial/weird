@@ -11800,3 +11800,23 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   .hq-hero__culture-strip { gap: 6px; margin-top: 17px; }
   .hq-hero__culture-strip span { min-height: 23px; padding-inline: 7px; font-size: 5px; }
 }
+
+
+/* U18 — visible division identity between global masthead and local experience. */
+.division-idbar { display:grid; grid-template-columns:102px minmax(0,1fr) minmax(190px,.72fr); align-items:center; gap:16px; margin:0 auto 8px; padding:11px 15px; border:1px solid #34412f; border-left:2px solid var(--green); background:linear-gradient(100deg,#131a12 0%,#0d110d 58%,#10140f 100%); }
+.division-idbar__index { color:var(--green); font:7px/1.5 var(--mono); letter-spacing:.1em; white-space:nowrap; }
+.division-idbar__identity { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 13px; min-width:0; }
+.division-idbar__identity strong { color:#edf1e8; font:700 10px/1.4 var(--mono); letter-spacing:.045em; overflow-wrap:anywhere; }
+.division-idbar__identity span { color:#819078; font:6px/1.5 var(--mono); letter-spacing:.065em; }
+.division-idbar > p { margin:0; color:#899684; font:6px/1.65 var(--mono); letter-spacing:.045em; text-align:right; }
+@media (max-width:800px) {
+  .division-idbar { grid-template-columns:85px minmax(0,1fr); gap:7px 12px; padding:10px 12px; }
+  .division-idbar > p { grid-column:2; text-align:left; }
+}
+@media (max-width:520px) {
+  .division-idbar { grid-template-columns:1fr; gap:4px; margin-bottom:6px; padding:9px 11px; }
+  .division-idbar__identity { gap:4px 9px; }
+  .division-idbar__identity strong { font-size:8px; }
+  .division-idbar__identity span, .division-idbar__index, .division-idbar > p { font-size:5px; }
+  .division-idbar > p { grid-column:1; }
+}

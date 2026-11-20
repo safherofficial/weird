@@ -9,6 +9,25 @@ The visitor is not an outsider who needs crypto explained. The visitor is one of
 
 **Core line:** You came for the 100x. You stayed because you can't sell at a loss.
 
+## The ten operational divisions
+
+Each division is an editorial identity wrapped around an existing experience. The division name is the public-facing identity; the experience label tells visitors what the existing interaction actually does. Do not imply that the site has a live service, analyst team, feed, or data source where none exists.
+
+| Division | Existing experience | Editorial territory |
+| --- | --- | --- |
+| 01. Pump.fun Intelligence | Bagholder Simulator | Fictional launches, bonding curves, graduation, migration and paper-market decisions. |
+| 02. Solana Trenches | 99% Club | Survivor identity, microcap fatigue, missed calls and re-entry habits. |
+| 03. FOMO Control Unit | DYOR Audit | KOL triggers, green-candle chasing, crowd dependency and research-to-entry behaviour. |
+| 04. KOL Surveillance | Daily Department | Date-seeded fictional CT briefings; no real accounts are monitored. |
+| 05. Whale & Wallet Investigation | Department Archives | Fictional wallet dossiers, suspicious labels, screenshot trails and evidence folklore. |
+| 06. CTO Emergency Office | Roadmap Generator | Community takeovers, abandoned-dev scenarios, recovery phases and soon-based deadlines. |
+| 07. Exit Liquidity Department | Whitepaper Factory | Fictional token documents, allocations, supply narratives and the people expected to provide liquidity. |
+| 08. 100X Research Bureau | Utility Inspector | Token purpose, product claims, narrative inflation and the next-gem fantasy. |
+| 09. Bagholder Rehabilitation | Bagholder Museum | Preserved relics, missed exits, abandoned roadmaps and long-term conviction artifacts. |
+| 10. Copium Administration | Global Cope Index | Synthetic readings of cope, narrative fog, Telegram dependency and refusal to close the chart. |
+
+The ten names do not create ten new products. They organize the existing ten experiences while their original routes and interactive logic remain intact.
+
 ## What the Department is — and is not
 - It is a self-aware insider parody of degen behaviour, FOMO, overconfidence, cope and bagholding.
 - It is not a market terminal, token tracker, trading tool, alpha group, launchpad, wallet analyser or financial-advice product.

@@ -20,7 +20,9 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 
 ## Current release
 
-- Institutional-style landing page.
+- Ten numbered operational divisions now organize the existing experiences: Pump.fun Intelligence, Solana Trenches, FOMO Control Unit, KOL Surveillance, Whale & Wallet Investigation, CTO Emergency Office, Exit Liquidity Department, 100X Research Bureau, Bagholder Rehabilitation and Copium Administration. These are editorial identities over existing routes, not ten newly built products.
+
+- Institutional-style landing page with a ten-division directory and shared division identity in navigation and page mastheads.
 - DYOR Audit 2.0 with ten questions, 17 satirical archetypes and deterministic multi-signal scoring.
 - Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
 - Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.

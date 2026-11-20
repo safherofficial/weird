@@ -3,61 +3,23 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { recordDepartmentVisit } from "../passport/passport-store";
+import { divisionIdentityBySection, divisionNavigationGroups, type DepartmentSection } from "../divisions";
 
 type DepartmentHeaderProps = {
-  activeSection?: "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily" | "passport";
+  activeSection?: DepartmentSection;
   statusMessage?: string;
   ctaHref?: string;
   ctaLabel?: string;
 };
 
-type DepartmentSection = NonNullable<DepartmentHeaderProps["activeSection"]>;
-
-type DepartmentNavItem = {
+old section typetype DepartmentNavItem = {
   number: string;
   label: string;
   href: string;
   section: DepartmentSection;
 };
 
-const navigationGroups: {
-  number: string;
-  label: string;
-  descriptor: string;
-  items: DepartmentNavItem[];
-}[] = [
-  {
-    number: "01",
-    label: "CASEWORK",
-    descriptor: "INVESTIGATION / 01—03",
-    items: [
-      { number: "01", label: "THE DYOR AUDIT", href: "/audit", section: "audit" },
-      { number: "02", label: "BAGHOLDER SIMULATOR", href: "/simulator", section: "simulator" },
-      { number: "03", label: "UTILITY INSPECTOR", href: "/utility-inspector", section: "utility" },
-    ],
-  },
-  {
-    number: "02",
-    label: "PROJECT OFFICE",
-    descriptor: "DOCUMENTS / 04—05",
-    items: [
-      { number: "04", label: "ROADMAP GENERATOR", href: "/roadmap-generator", section: "roadmap" },
-      { number: "05", label: "WHITEPAPER FACTORY", href: "/whitepaper-factory", section: "whitepaper" },
-    ],
-  },
-  {
-    number: "03",
-    label: "PUBLIC RECORDS",
-    descriptor: "COLLECTION / 06—10",
-    items: [
-      { number: "06", label: "THE BAGHOLDER MUSEUM", href: "/museum", section: "museum" },
-      { number: "07", label: "THE 99% CLUB", href: "/club", section: "club" },
-      { number: "08", label: "GLOBAL COPE INDEX", href: "/cope-index", section: "cope" },
-      { number: "09", label: "DEPARTMENT ARCHIVES", href: "/archives", section: "archives" },
-      { number: "10", label: "DAILY DEPARTMENT", href: "/daily-office", section: "daily" },
-    ],
-  },
-];
+const navigationGroups = divisionNavigationGroups;
 
 const passportItem: DepartmentNavItem = {
   number: "11",
@@ -74,13 +36,14 @@ export default function DepartmentHeader({
   activeSection = "home",
   statusMessage = "ALL SYSTEMS NOMINALLY USELESS",
   ctaHref = "/audit",
-  ctaLabel = "OPEN A DEGEN CASE",
+  ctaLabel = "ENTER FOMO CONTROL",
 }: DepartmentHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const departmentsHref = activeSection === "home" ? "#departments" : "/#departments";
   const manifestoHref = activeSection === "home" ? "#manifesto" : "/#manifesto";
+  const activeDivision = divisionIdentityBySection[activeSection];
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -133,6 +96,17 @@ export default function DepartmentHeader({
           <span>{statusMessage}</span>
         </span>
       </div>
+
+      {activeDivision && (
+        <div className="division-idbar shell" aria-label={"Division " + activeDivision.number + ": " + activeDivision.title}>
+          <span className="division-idbar__index">DIVISION / {activeDivision.number}</span>
+          <div className="division-idbar__identity">
+            <strong>{activeDivision.title}</strong>
+            <span>{activeDivision.category}</span>
+          </div>
+          <p>{activeDivision.mandate}</p>
+        </div>
+      )}
 
       <header className="site-header shell">
         <Link className="brand" href="/" aria-label="The DYOR Department home" onClick={closeMenu}>

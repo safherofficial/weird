@@ -2,6 +2,7 @@ import Link from "next/link";
 import DepartmentHeader from "./components/department-header";
 import DepartmentFooter from "./components/department-footer";
 import SectionLabel from "./components/section-label";
+import { departmentGroups } from "./divisions";
 
 const conditions = [
   { label: "BONDING CURVE", value: "GRADUATED / TOO LATE", tone: "green" },
@@ -9,123 +10,6 @@ const conditions = [
   { label: "DEV STATUS", value: "COOKING / KITCHEN UNKNOWN", tone: "green" },
   { label: "EXIT LIQUIDITY", value: "YOU", tone: "red" },
   { label: "COPE RESERVES", value: "INFINITE", tone: "red" },
-];
-
-const departments = [
-  {
-    number: "01",
-    title: "THE DYOR AUDIT",
-    category: "CASE INVESTIGATION",
-    description: "Reconstruct the research spiral: the KOL call, the green candle, the Telegram raid and the entry you called conviction.",
-    status: "ACCEPTING CASES",
-    href: "/audit",
-    symbol: "⌁",
-  },
-  {
-    number: "02",
-    title: "THE BAGHOLDER SIMULATOR",
-    category: "BEHAVIOURAL SIMULATION",
-    description: "Survive a fictional pump.fun launch: bonding curve, graduation, migration, sudden red candles and the exit you never planned.",
-    status: "SIMULATION OPEN",
-    href: "/simulator",
-    symbol: "↘",
-  },
-  {
-    number: "03",
-    title: "UTILITY INSPECTOR",
-    category: "CLAIM ASSESSMENT",
-    description: "Interrogate a fictional memecoin's utility claims, token narrative and community promises. The answer may still be 'number go up'.",
-    status: "CLAIMS ACCEPTED",
-    href: "/utility-inspector",
-    symbol: "⌕",
-  },
-  {
-    number: "04",
-    title: "ROADMAP GENERATOR",
-    category: "PROJECT DOCUMENTS",
-    description: "Generate a CTO-ready roadmap full of exchange teases, ecosystem expansion and milestones scheduled for the legendary date known as soon.",
-    status: "MILESTONES OPEN",
-    href: "/roadmap-generator",
-    symbol: "⇢",
-  },
-  {
-    number: "05",
-    title: "WHITEPAPER FACTORY",
-    category: "PROJECT DOCUMENTS",
-    description: "Turn 'community is the product' into nine pages of technical-looking confidence, tokenomics and carefully undefined deliverables.",
-    status: "ABSTRACTS OPEN",
-    href: "/whitepaper-factory",
-    symbol: "▤",
-  },
-  {
-    number: "06",
-    title: "THE BAGHOLDER MUSEUM",
-    category: "CULTURAL COLLECTION",
-    description: "Preserved relics from the trenches: suspicious screenshots, abandoned roadmaps, empty liquidity promises and the sacred green arrow.",
-    status: "COLLECTION OPEN",
-    href: "/museum",
-    symbol: "▧",
-  },
-  {
-    number: "07",
-    title: "THE 99% CLUB",
-    category: "MEMBERSHIP OFFICE",
-    description: "Apply for completely useless survivor status. Prior rugs, missed 100x calls and unexplained re-entries may count as experience.",
-    status: "APPLICATIONS OPEN",
-    href: "/club",
-    symbol: "◉",
-  },
-  {
-    number: "08",
-    title: "THE GLOBAL COPE INDEX",
-    category: "SYNTHETIC MONITORING",
-    description: "A fictional daily reading of FOMO pressure, KOL echo, cope reserves, exit readiness and general trenches fatigue.",
-    status: "DAILY SYNTHETIC INDEX",
-    href: "/cope-index",
-    symbol: "⌁",
-  },
-  {
-    number: "09",
-    title: "THE DEPARTMENT ARCHIVES",
-    category: "PUBLIC RECORDS",
-    description: "A searchable record of fictional rugs, CTO emergencies, missed launches, paid-call folklore and other trenches paperwork.",
-    status: "ARCHIVE OPEN",
-    href: "/archives",
-    symbol: "▥",
-  },
-  {
-    number: "10",
-    title: "THE DAILY DEPARTMENT",
-    category: "DAILY DISPATCH",
-    description: "One fictional dispatch every UTC day: pump.fun incidents, KOL consensus, wallet theories, CTO crises and bagholder post-mortems.",
-    status: "TODAY'S DISPATCH FILED",
-    href: "/daily-office",
-    symbol: "▣",
-  },
-];
-
-const departmentGroups = [
-  {
-    number: "01",
-    code: "INVESTIGATION / 01—03",
-    title: "CASEWORK",
-    description: "From ape-in to exit denial: investigations into FOMO entries, KOL calls and the research that somehow missed the sell button.",
-    items: departments.slice(0, 3),
-  },
-  {
-    number: "02",
-    code: "DOCUMENTS / 04—05",
-    title: "PROJECT OFFICE",
-    description: "The paperwork behind every 'soon', major CEX tease and community takeover. Formatting is immaculate. Delivery remains fictional.",
-    items: departments.slice(3, 5),
-  },
-  {
-    number: "03",
-    code: "COLLECTION / 06—10",
-    title: "PUBLIC RECORDS",
-    description: "A public record of trench survival, suspicious alpha, fictional rugs, wallet folklore and institutional-grade copium.",
-    items: departments.slice(5),
-  },
 ];
 
 export default function Home() {
@@ -154,7 +38,7 @@ export default function Home() {
               <span>100X RECOVERY UNIT</span>
             </div>
             <div className="hq-hero__actions">
-              <Link className="button button--primary" href="/audit">OPEN A DEGEN CASE <span>↗</span></Link>
+              <Link className="button button--primary" href="/audit">ENTER FOMO CONTROL <span>↗</span></Link>
               <a className="button button--quiet" href="#departments">ENTER THE DEPARTMENT <span>↓</span></a>
             </div>
             <div className="hq-hero__disclaimer">
@@ -205,7 +89,7 @@ export default function Home() {
         </div>
 
         <div className="hq-hero__register" aria-label="Department overview">
-          <div><strong>10</strong><span>DEPARTMENTS</span></div>
+          <div><strong>10</strong><span>DIVISIONS</span></div>
           <div><strong>11</strong><span>PUBLIC DESTINATIONS</span></div>
           <div><strong>0</strong><span>FINANCIAL ADVICE</span></div>
           <p>YOU ARE NOT THE FIRST. YOU WILL NOT BE THE LAST.</p>
@@ -249,7 +133,7 @@ export default function Home() {
             <SectionLabel>INTERNAL ROUTING / TRENCHES AFTERCARE</SectionLabel>
             <h2 id="hq-directory-title">YOUR NEXT<br /><span>BAD DECISION.</span></h2>
           </div>
-          <p>Ten existing experiences. One shared condition.<br />No alpha. No financial recovery plan.</p>
+          <p>Ten numbered divisions. Three operational offices.<br />No alpha. No financial recovery plan.</p>
         </div>
 
         <div className="hq-directory__groups">
