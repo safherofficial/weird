@@ -203,7 +203,7 @@ export const archiveRecords: ArchiveRecord[] = [
       { heading: "CURATORIAL NOTE", paragraphs: ["The emoji count is part of the joke. No actual market activity, person or community is being described."] },
       { heading: "FINAL DISPOSITION", paragraphs: ["The exhibit remains available for public viewing. Please do not tap the glass."] },
     ],
-    relatedLabel: "VISIT THE BAGHOLDER MUSEUM",
+    relatedLabel: "VISIT THE BAGHOLDER REHABILITATION MUSEUM",
     relatedHref: "/museum",
     keywords: ["museum", "Crypto Twitter", "CT", "pump.fun", "rocket", "CA"],
   },

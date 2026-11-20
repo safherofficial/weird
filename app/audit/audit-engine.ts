@@ -57,7 +57,7 @@ function getDisposition(research: number, cope: number, crowd: number) {
   if (cope >= 82) return "REFER TO THE OFFICE OF UNFINISHED EXIT PLANS";
   if (crowd >= 70) return "PLACE UNDER COMMUNITY OBSERVATION";
   if (research >= 76 && cope >= 56) return "FORWARD TO THE DEPARTMENT OF POST-TRADE RATIONALISATION";
-  if (research < 30) return "ASSIGN A WHITEPAPER. DO NOT OPEN TELEGRAM.";
+  if (research < 30) return "ASSIGN A TOKEN DOSSIER. DO NOT OPEN CT OR TELEGRAM.";
   if (research >= 76 && cope < 38) return "FILE UNDER: DID EVERYTHING RIGHT-ISH";
   if (crowd <= 20) return "RELEASE WITH A CAUTIONARY FOOTNOTE";
   return "KEEP FILE OPEN PENDING MARKET BEHAVIOUR";

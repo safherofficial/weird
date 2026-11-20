@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "THE GLOBAL COPE INDEX — A fictional daily dashboard of conviction, narrative fog and liquidity anxiety.";
+export const alt = "COPIUM ADMINISTRATION — A fictional daily Solana trenches index of CT echo, launch FOMO and post-graduation cope.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -14,7 +14,7 @@ export default function CopeIndexOpenGraphImage() {
           <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>COPIUM ADMINISTRATION / SYNTHETIC TRENCHES INDEX</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 53 }}>
-          <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>DAILY DEPARTMENTAL READING / SYNTHETIC VALUES</span>
+          <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>DAILY TRENCHES READING / SYNTHETIC VALUES</span>
           <span style={{ display: "flex", marginTop: 17, fontSize: 76, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE GLOBAL</span>
           <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 76, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>COPE INDEX.</span>
           <span style={{ display: "flex", marginTop: 20, color: "#c5cec0", fontSize: 24 }}>Daily trenches readings. Entirely synthetic.</span>

@@ -493,7 +493,7 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
     issueDate,
     reference: "DD-" + issueDate.replace(/-/g, "") + "-" + referenceNumber,
     headline,
-    subheading: "THE DAILY DEPARTMENTAL ABSURDITY / ISSUE " + referenceNumber,
+    subheading: "THE TRENCHES DESK / DAILY CT BRIEFING / ISSUE " + referenceNumber,
     bulletin,
     sections: [
       { label: "INCIDENT REPORT", heading: incident.heading, body: incident.body, stamp: incident.stamp },

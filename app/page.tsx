@@ -175,14 +175,14 @@ export default function Home() {
         <div className="hq-dispatch__panel">
           <div className="hq-dispatch__stamp" aria-hidden="true">DAILY<br />RECORD</div>
           <div className="hq-dispatch__content">
-            <SectionLabel>THE DAILY DEPARTMENT / UTC TRENCHES DISPATCH</SectionLabel>
+            <SectionLabel>THE TRENCHES DESK / UTC DAILY CT BRIEFING</SectionLabel>
             <h2 id="hq-dispatch-title">THE TRENCHES<br /><span>NEVER FILE A REPORT.</span></h2>
             <p>We do. One fictional dispatch every UTC day: pump.fun incidents, KOL echo chambers, wallet theories, CTO emergencies, FOMO behaviour and post-mortems with absolutely no admission of fault.</p>
             <Link className="button button--outline" href="/daily-office">READ TODAY'S TRENCHES REPORT <span>↗</span></Link>
           </div>
           <div className="hq-dispatch__meta">
             <span>DOCUMENT CLASS</span><strong>PUBLIC RECORD</strong>
-            <span>ISSUING OFFICE</span><strong>DAILY DEPARTMENT</strong>
+            <span>ISSUING OFFICE</span><strong>THE TRENCHES DESK</strong>
             <span>DATA STATUS</span><strong className="is-positive">FICTIONAL / SATIRICAL</strong>
           </div>
         </div>
