@@ -9,16 +9,16 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   alternates: { canonical: "/cope-index" },
   title: "Global Cope Index",
-  description: "A fictional daily dashboard for conviction pressure, narrative fog, Telegram reliance, liquidity anxiety and the eternal promise of soon.",
+  description: "A synthetic daily Cope Index for Solana trenches behaviour: CT dependency, KOL echo, bonding-curve FOMO, CTO hope and post-graduation liquidity anxiety.",
   openGraph: {
     title: "THE GLOBAL COPE INDEX",
-    description: "Daily departmental readings. Entirely synthetic. Emotionally familiar.",
+    description: "Daily trenches readings. Entirely synthetic. Emotionally familiar.",
     images: ["/cope-index/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE GLOBAL COPE INDEX",
-    description: "A daily synthetic reading of the Department's fictional cope levels.",
+    description: "A fictional daily reading of CT echo, post-graduation anxiety and the promise that the next ticker will be the one.",
     images: ["/cope-index/opengraph-image"],
   },
 };
@@ -34,10 +34,10 @@ export default function CopeIndexPage() {
       <div className="cope-index-shell shell" id="content-start" tabIndex={-1}>
         <header className="cope-index-intro">
           <div className="audit-intro__meta"><span>INDEX No. GCI-001</span><span>ISSUE / UTC {issueDate}</span></div>
-          <p className="eyebrow">OFFICE OF COLLECTIVE NARRATIVE VOLATILITY</p>
+          <p className="eyebrow">COPIUM ADMINISTRATION / SYNTHETIC TRENCHES INDEX</p>
           <h1>THE GLOBAL<br /><span>COPE INDEX.</span></h1>
           <p className="audit-intro__lead">
-            A daily reading of the Department's fictional emotional climate. The numbers are synthetic. The situations are painfully familiar.
+            A date-seeded reading of fictional CT echo, launch FOMO, CTO optimism and exit-liquidity denial. The numbers are synthetic. The situations are painfully familiar.
           </p>
           <div className="cope-index-intro__warning">
             <strong>NOT A LIVE MARKET OR COMMUNITY INDEX.</strong>

@@ -5,17 +5,17 @@ import SimulatorClient from "./simulator-client";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/simulator" },
-  title: "The Bagholder Simulator",
-  description: "Seven rounds, four questionable decisions and one completely fictional asset. Find out how you would handle the imaginary bag.",
+  title: "Pump.fun Paper Market Simulator",
+  description: "A fictional Solana launch from first CA drop to bonding-curve graduation, CTO noise and post-graduation exit liquidity. Seven paper-market decisions.",
   openGraph: {
-    title: "THE BAGHOLDER SIMULATOR",
-    description: "Seven rounds. Four questionable decisions. One imaginary bag. No real money involved.",
+    title: "PUMP.FUN PAPER MARKET SIMULATOR",
+    description: "A fictional launch cycle: CA drop, bundle chatter, KOL calls, graduation, CTO and the post-launch pool. No real token or money.",
     images: ["/simulator/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE BAGHOLDER SIMULATOR",
-    description: "Seven rounds. Four questionable decisions. One imaginary bag.",
+    title: "PUMP.FUN PAPER MARKET SIMULATOR",
+    description: "Seven fictional launch events. Four choices per round. Your imaginary bag is on the record.",
     images: ["/simulator/opengraph-image"],
   },
 };
@@ -27,12 +27,12 @@ export default function SimulatorPage() {
 
       <div className="simulator-shell shell" id="content-start" tabIndex={-1}>
         <div className="simulator-intro">
-          <div className="audit-intro__meta"><span>FORM BHS-001</span><span>RISK-FREE FINANCIAL REGRET</span></div>
-          <p className="eyebrow">OFFICE OF IMAGINARY MARKET LOSSES</p>
+          <div className="audit-intro__meta"><span>FORM BHS-001</span><span>PUMP.FUN PAPER MARKET / FICTIONAL LAUNCH</span></div>
+          <p className="eyebrow">PUMP.FUN INTELLIGENCE / PAPER MARKET DESK</p>
           <h1>THE BAGHOLDER<br /><span>SIMULATOR.</span></h1>
           <p className="audit-intro__lead">
-            Seven rounds. Four questionable options. One fictional asset.
-            Every decision is yours. Every market event is made up.
+            Seven rounds. One fictional Solana launch. From the first CA drop to graduation, a community takeover and the post-launch pool.
+            Your decisions change the paper bag. The scripted market does not care.
           </p>
           <div className="audit-warning">
             <span>!</span>
@@ -42,7 +42,7 @@ export default function SimulatorPage() {
         <SimulatorClient />
       </div>
 
-      <DepartmentFooter message={["YOUR PAPER CAPITAL HAS BEEN ACKNOWLEDGED.", "YOUR REAL FINANCIAL DIGNITY IS NOT UNDER REVIEW."]} />
+      <DepartmentFooter message={["YOUR FICTIONAL LAUNCH HAS BEEN FILED.", "YOUR EXIT PLAN IS STILL MISSING."]} />
     </main>
   );
 }

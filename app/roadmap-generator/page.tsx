@@ -5,17 +5,17 @@ import RoadmapGeneratorClient from "./roadmap-generator-client";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/roadmap-generator" },
-  title: "Roadmap Generator",
-  description: "Six questions. Seven fictional phases. Generate a crypto roadmap featuring ambitious milestones, questionable deadlines and a generous amount of soon.",
+  title: "CTO Emergency Office | Community Takeover Roadmap",
+  description: "The fictional CTO Emergency Office generates seven recovery phases for an abandoned Solana memecoin: deployer silence, community takeover, access questions and endless soon.",
   openGraph: {
     title: "THE ROADMAP GENERATOR",
-    description: "Every milestone is achievable. Eventually. Probably. Soon.",
+    description: "The deployer went quiet. The community took over. Seven fictional recovery phases are now due: soon.",
     images: ["/roadmap-generator/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE ROADMAP GENERATOR",
-    description: "Six questions. Seven fictional phases. One very ambitious timeline.",
+    description: "Generate a fictional CTO takeover plan, complete with access questions, community milestones and an impossible ETA.",
     images: ["/roadmap-generator/opengraph-image"],
   },
 };
@@ -27,16 +27,16 @@ export default function RoadmapGeneratorPage() {
 
       <div className="roadmap-shell shell" id="content-start" tabIndex={-1}>
         <aside className="roadmap-intro">
-          <div className="audit-intro__meta"><span>FORM RPG-001</span><span>ESTIMATED ARRIVAL: SOON</span></div>
-          <p className="eyebrow">OFFICE OF FUTURE DELIVERABLES</p>
+          <div className="audit-intro__meta"><span>FORM RPG-001</span><span>DEPLOYER STATUS: LAST SEEN / SOON</span></div>
+          <p className="eyebrow">CTO EMERGENCY OFFICE / COMMUNITY TAKEOVER DESK</p>
           <h1>THE ROADMAP<br /><span>GENERATOR.</span></h1>
           <p className="audit-intro__lead">
-            Every project has a vision. Every vision has phases. Every phase has a date that will be reviewed in a future phase.
+            The deployer has stopped posting. A new CTO account has appeared. Generate seven fictional recovery phases for the CA, the community, the keys and the next promised update.
           </p>
           <div className="roadmap-intro__stamp">
-            <span>OFFICIAL DEPARTMENTAL GUIDANCE</span>
-            <strong>SOON™ IS A FLEXIBLE DELIVERY WINDOW.</strong>
-            <small>ALL MILESTONES SUBJECT TO A FURTHER ANNOUNCEMENT.</small>
+            <span>HANDOVER CHECKLIST / ACCESS NOT VERIFIED</span>
+            <strong>A NEW X BIO IS NOT A VERIFIED HANDOVER.</strong>
+            <small>ALL RECOVERY PHASES SUBJECT TO THE NEXT COMMUNITY UPDATE.</small>
           </div>
           <div className="roadmap-intro__fineprint">
             THIS IS A PARODY GENERATOR. NO REAL PROJECT, TEAM OR TOKEN IS INSPECTED.
@@ -46,7 +46,7 @@ export default function RoadmapGeneratorPage() {
         <RoadmapGeneratorClient />
       </div>
 
-      <DepartmentFooter message={["YOUR MILESTONES HAVE BEEN ACKNOWLEDGED.", "YOUR DEADLINES REMAIN UNDER DISCUSSION."]} />
+      <DepartmentFooter message={["YOUR CTO PLAN HAS BEEN FILED.", "THE DEPLOYER STILL HAS NOT REPLIED."]} />
     </main>
   );
 }

@@ -8,17 +8,17 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/daily-office" },
-  title: "Daily Departmental Absurdity",
-  description: "A date-seeded fictional dispatch from THE DYOR DEPARTMENT, featuring KOL Intelligence, on-chain interpretations, risk reclassification, conviction scores and a Bagholder post-mortem.",
+  title: "The Trenches Desk | Daily CT Briefing",
+  description: "A date-seeded fictional Crypto Twitter and Solana trenches briefing: copied KOL calls, pump.fun launch incidents, bundle theories, CTO handovers and bagholder post-mortems.",
   openGraph: {
-    title: "THE DAILY DEPARTMENTAL ABSURDITY",
-    description: "The Department has filed another day of completely fictional business.",
+    title: "THE TRENCHES DESK / DAILY CT BRIEFING",
+    description: "Another UTC issue from the fictional CT and Solana trenches desk. No real accounts, wallets or market events are monitored.",
     images: ["/daily-office/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE DAILY DEPARTMENTAL ABSURDITY",
-    description: "One daily fictional dispatch. Zero real-world market information.",
+    title: "THE TRENCHES DESK / DAILY CT BRIEFING",
+    description: "Daily fictional CT dispatches. Zero live KOL tracking. Zero real wallet or market data.",
     images: ["/daily-office/opengraph-image"],
   },
 };
@@ -37,10 +37,10 @@ export default function DailyOfficePage() {
             <span>DAILY REGISTER / {dispatch.reference}</span>
             <span>ISSUED / {dispatch.issueDate} UTC</span>
           </div>
-          <p className="eyebrow">OFFICE OF DEPARTMENTAL ABSURDITY</p>
-          <h1>THE DAILY<br /><span>DEPARTMENT.</span></h1>
+          <p className="eyebrow">KOL SURVEILLANCE / DAILY CT & SOLANA TRENCHES BRIEFING</p>
+          <h1>THE TRENCHES<br /><span>DESK.</span></h1>
           <p className="audit-intro__lead">
-            One UTC-dated fictional dispatch: social consensus investigations, suspicious wallet interpretations, risk reclassification, a synthetic conviction index and a post-mortem that refuses to admit defeat.
+            One UTC-dated fictional CT briefing: copied KOL calls, pump.fun launch incidents, bundle-wallet theories, CTO handovers, liquidity denial and a post-mortem that refuses to admit defeat.
           </p>
           <div className="daily-office-intro__notice">
             <span>EDITORIAL NOTICE / NOT A NEWS SERVICE</span>
@@ -51,7 +51,7 @@ export default function DailyOfficePage() {
         <DailyOfficeClient dispatch={dispatch} />
       </div>
 
-      <DepartmentFooter message={["TODAY'S DISPATCH HAS BEEN FILED.", "TOMORROW'S PROBLEMS ARE ALREADY IN REVIEW."]} />
+      <DepartmentFooter message={["TODAY'S TRENCHES REPORT HAS BEEN FILED.", "TOMORROW'S PROBLEMS ARE ALREADY IN REVIEW."]} />
     </main>
   );
 }

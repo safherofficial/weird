@@ -5,17 +5,17 @@ import WhitepaperFactoryClient from "./whitepaper-factory-client";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/whitepaper-factory" },
-  title: "Whitepaper Factory",
-  description: "Seven questions. Nine sections. Generate a fictional crypto whitepaper filled with technical-sounding language, tokenomics and appropriately neglected footnotes.",
+  title: "Exit Liquidity Department | Whitepaper Factory",
+  description: "Generate a fictional Solana memecoin whitepaper dossier: launch narrative, deployer roles, token allocation, KOL distribution, community governance and exit-liquidity footnotes.",
   openGraph: {
     title: "THE WHITEPAPER FACTORY",
-    description: "A whitepaper-shaped document for a project that may or may not exist.",
+    description: "A technically confident fictional token dossier. The supply chart is complete. The exit-liquidity questions are not.",
     images: ["/whitepaper-factory/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE WHITEPAPER FACTORY",
-    description: "Seven questions. Nine sections. One technically impressive PDF-shaped situation.",
+    description: "Seven questions. Nine fictional sections. One invented token allocation and a carefully worded liquidity disclaimer.",
     images: ["/whitepaper-factory/opengraph-image"],
   },
 };
@@ -27,16 +27,16 @@ export default function WhitepaperFactoryPage() {
 
       <div className="whitepaper-shell shell" id="content-start" tabIndex={-1}>
         <aside className="whitepaper-intro">
-          <div className="audit-intro__meta"><span>FORM WPF-001</span><span>PAGE COUNT / FLEXIBLE</span></div>
-          <p className="eyebrow">OFFICE OF TECHNICAL-SOUNDING DOCUMENTATION</p>
+          <div className="audit-intro__meta"><span>FORM WPF-001</span><span>TOKEN SUPPLY / NOTIONAL</span></div>
+          <p className="eyebrow">EXIT LIQUIDITY DEPARTMENT / TOKEN DOSSIER OFFICE</p>
           <h1>THE WHITEPAPER<br /><span>FACTORY.</span></h1>
           <p className="audit-intro__lead">
-            Give us a project name and seven answers. We will give you nine sections, a token allocation and enough terminology to request a conference panel.
+            Give the fictional token a public label and answer seven questions. The Department will produce nine sections of launch lore, tokenomics, deployer roles, KOL distribution and carefully neglected footnotes.
           </p>
           <div className="whitepaper-intro__stamp">
-            <span>OFFICIAL DOCUMENT CONTROL</span>
-            <strong>ABSTRACT COMPLETE.</strong>
-            <small>PRODUCT STATUS / NOT LOCATED.</small>
+            <span>TOKEN DOSSIER / FICTIONAL ISSUE</span>
+            <strong>TOKENOMICS TABLE COMPLETE.</strong>
+            <small>EXIT LIQUIDITY / NOT GUARANTEED.</small>
           </div>
           <div className="whitepaper-intro__fineprint">
             THIS IS A SATIRE GENERATOR. THE RESULT IS NOT A REAL TECHNICAL OR INVESTMENT DOCUMENT.
@@ -46,7 +46,7 @@ export default function WhitepaperFactoryPage() {
         <WhitepaperFactoryClient />
       </div>
 
-      <DepartmentFooter message={["YOUR TECHNICAL VISION HAS BEEN DOCUMENTED.", "YOUR PRODUCT REMAINS SUBJECT TO VERIFICATION."]} />
+      <DepartmentFooter message={["YOUR TOKEN NARRATIVE HAS BEEN DOCUMENTED.", "YOUR COMMUNITY STILL NEEDS A REASON TO STAY."]} />
     </main>
   );
 }

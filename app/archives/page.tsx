@@ -7,16 +7,16 @@ import { archiveRecords } from "./archive-data";
 export const metadata: Metadata = {
   alternates: { canonical: "/archives" },
   title: "Department Archives",
-  description: "A searchable archive of fictional Department memos, incident reports, technical appendices, membership files and public notices.",
+  description: "Fifteen fictional case records from Solana trenches: deployer silence, bundle-wallet theories, bonding-curve graduation, copied KOL calls and missing exit plans.",
   openGraph: {
     title: "THE DEPARTMENT ARCHIVES",
-    description: "Twelve fictional records. No real market history. Nothing to redact.",
+    description: archiveRecords.length + " fictional Solana trenches records. No live wallets, real KOLs or actual market history.",
     images: ["/archives/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DEPARTMENT ARCHIVES",
-    description: "Twelve fictional records from the archive of questionable conviction.",
+    description: archiveRecords.length + " fictional case files from the aftermath of pump.fun launches and Crypto Twitter conviction.",
     images: ["/archives/opengraph-image"],
   },
 };
@@ -28,11 +28,11 @@ export default function ArchivesPage() {
 
       <div className="archives-shell shell" id="content-start" tabIndex={-1}>
         <header className="archives-intro">
-          <div className="audit-intro__meta"><span>REGISTER / DDA-001–012</span><span>ACCESS / PUBLIC COLLECTION</span></div>
-          <p className="eyebrow">OFFICE OF PRESERVED QUESTIONABLE DECISIONS</p>
+          <div className="audit-intro__meta"><span>REGISTER / {archiveRecords[0]?.accession ?? "DDA-001"}–{archiveRecords[archiveRecords.length - 1]?.accession ?? "DDA-015"}</span><span>ACCESS / PUBLIC COLLECTION</span></div>
+          <p className="eyebrow">WHALE & WALLET INVESTIGATION / FICTIONAL CASE ARCHIVE</p>
           <h1>THE DEPARTMENT<br /><span>ARCHIVES.</span></h1>
           <p className="audit-intro__lead">
-            Memos, incident reports and technical appendices recovered from the fictional administrative aftermath of doing your own research.
+            Fictional wallet dossiers, KOL screenshot trails, bundle theories, graduation reports and CTO handover files recovered from the Solana trenches.
           </p>
           <div className="archives-intro__notice">
             <span>COLLECTION NOTICE</span>

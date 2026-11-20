@@ -5,17 +5,17 @@ import UtilityInspectorClient from "./utility-inspector-client";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/utility-inspector" },
-  title: "Utility Inspector",
-  description: "Seven questions. Three departmental scores. Find out whether your project pitch contains a product, a token with a job or a suspicious amount of narrative fog.",
+  title: "100X Research Bureau | Utility Inspector",
+  description: "The 100X Research Bureau inspects fictional Solana token narratives: actual use, post-launch purpose, community demand and evidence beyond the KOL thread.",
   openGraph: {
     title: "THE UTILITY INSPECTOR",
-    description: "Show us the utility. Seven questions, three fictional scores and one uncomfortable inspection.",
+    description: "Before calling the next Solana microcap a 100x, explain what the ticker does after the launch thread.",
     images: ["/utility-inspector/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE UTILITY INSPECTOR",
-    description: "Show us the utility. Seven questions. Three fictional scores.",
+    description: "Seven fictional questions. Three scores. No live token scanner, wallet analysis or actual alpha.",
     images: ["/utility-inspector/opengraph-image"],
   },
 };
@@ -27,11 +27,11 @@ export default function UtilityInspectorPage() {
 
       <div className="utility-shell shell" id="content-start" tabIndex={-1}>
         <aside className="utility-intro">
-          <div className="audit-intro__meta"><span>FORM UTI-001</span><span>USE CASE / UNKNOWN</span></div>
-          <p className="eyebrow">OFFICE OF CLAIMED REVOLUTIONARY SOLUTIONS</p>
+          <div className="audit-intro__meta"><span>FORM UTI-001</span><span>TOKEN PURPOSE / UNDER REVIEW</span></div>
+          <p className="eyebrow">100X RESEARCH BUREAU / NARRATIVE & TOKEN PURPOSE DESK</p>
           <h1>THE UTILITY<br /><span>INSPECTOR.</span></h1>
           <p className="audit-intro__lead">
-            Every project promises to change everything. We would like to know what it actually does.
+            Every ticker has a story. The Bureau wants to know what remains when the first pump, KOL thread and Telegram raid are over.
           </p>
           <div className="utility-intro__stamp">
             <span>DEPARTMENTAL REMINDER</span>
@@ -46,7 +46,7 @@ export default function UtilityInspectorPage() {
         <UtilityInspectorClient />
       </div>
 
-      <DepartmentFooter message={["UTILITY CLAIMS HAVE BEEN RECEIVED.", "PROOF IS A SEPARATE DEPARTMENT."]} />
+      <DepartmentFooter message={["THE NARRATIVE HAS BEEN RECEIVED.", "THE ACTUAL USE CASE IS STILL UNDER REVIEW."]} />
     </main>
   );
 }

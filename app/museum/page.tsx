@@ -6,17 +6,17 @@ import { exhibits } from "./museum-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/museum" },
-  title: "The Bagholder Museum",
-  description: "A curated archive of fictional crypto relics, lost roadmaps, suspicious certificates and preserved specimens of spectacular conviction.",
+  title: "Bagholder Rehabilitation | Museum of Crypto Relics",
+  description: "Fifteen fictional Solana trenches relics: bonding-curve progress bars, bundle-wallet diagrams, KOL screenshots, abandoned deployers and artifacts of bagholder conviction.",
   openGraph: {
     title: "THE BAGHOLDER MUSEUM",
-    description: "Twelve exhibits. Countless lessons. Absolutely no refunds.",
+    description: "Fifteen exhibits from the Solana trenches. Countless missed exits. Absolutely no refunds.",
     images: ["/museum/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE BAGHOLDER MUSEUM",
-    description: "Twelve exhibits. Countless lessons. Absolutely no refunds.",
+    description: "Fifteen exhibits from the Solana trenches. Countless missed exits. Absolutely no refunds.",
     images: ["/museum/opengraph-image"],
   },
 };
@@ -28,11 +28,11 @@ export default function MuseumPage() {
 
       <div className="museum-shell shell" id="content-start" tabIndex={-1}>
         <header className="museum-intro">
-          <div className="audit-intro__meta"><span>INSTITUTION EST. YESTERDAY</span><span>ACCESSION REGISTER / 001–012</span></div>
-          <p className="eyebrow">THE NATIONAL ARCHIVE OF QUESTIONABLE CONVICTION</p>
+          <div className="audit-intro__meta"><span>INSTITUTION EST. YESTERDAY</span><span>ACCESSION REGISTER / {exhibits[0]?.accession ?? "BHM-001"}–{exhibits[exhibits.length - 1]?.accession ?? "BHM-015"}</span></div>
+          <p className="eyebrow">BAGHOLDER REHABILITATION / THE TRENCHES RELIC COLLECTION</p>
           <h1>THE BAGHOLDER<br /><span>MUSEUM.</span></h1>
           <p className="audit-intro__lead">
-            A permanent collection of the objects, documents and digital remains left behind by people who did their own research.
+            A permanent collection of launch-night screenshots, bonding-curve celebrations, bundle theories, KOL calls and CTO banners left behind in the trenches.
           </p>
           <div className="museum-intro__notice">
             <span>VISITOR NOTICE / PLEASE READ</span>
