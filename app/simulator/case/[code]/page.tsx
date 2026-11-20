@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: SimulatorCasePageProps): Prom
   }
 
   const result = buildSimulatorResult(decisions);
-  const title = result.profile.title + " | THE PUMP.FUN PAPER MARKET SIMULATOR";
+  const title = result.profile.title + " | PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR";
   const description = result.profile.subtitle + " " + result.profile.roast;
   const route = "/simulator/case/" + encodeURIComponent(encodeSimulatorCode(decisions));
   const image = route + "/opengraph-image";

@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: RoadmapCasePageProps): Promis
 
   if (!decoded) {
     return {
-      title: "Unrecognized CTO Takeover Roadmap",
-      description: "This fictional CTO takeover roadmap could not be verified.",
+      title: "Unrecognized CTO Emergency Office Roadmap",
+      description: "This fictional CTO Emergency Office roadmap could not be verified.",
       robots: { index: false, follow: false },
     };
   }
@@ -69,11 +69,11 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
 
   return (
     <main className="audit-page roadmap-case-page" id="main-content">
-      <DepartmentHeader activeSection="roadmap" statusMessage="PUBLIC CTO TAKEOVER FILE / FICTIONAL" ctaHref="/roadmap-generator" ctaLabel="GENERATE CTO PLAN" />
+      <DepartmentHeader activeSection="roadmap" statusMessage="PUBLIC CTO EMERGENCY OFFICE FILE / FICTIONAL" ctaHref="/roadmap-generator" ctaLabel="GENERATE CTO PLAN" />
 
       <section className="roadmap-public-case shell" id="content-start" tabIndex={-1}>
         <div className="roadmap-public-case__meta">
-          <span>PUBLIC ROADMAP RECORD / CASE No. {result.caseNumber}</span>
+          <span>PUBLIC CTO EMERGENCY OFFICE ROADMAP / CASE No. {result.caseNumber}</span>
           <span>PROJECT: {result.projectLabel} / FORM RPG-001</span>
         </div>
 
@@ -130,8 +130,8 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
 
         <div className="roadmap-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <DepartmentPublicShare title="CTO Takeover Roadmap case file" shareText={xText} casePath={caseUrl} />
-          <Link className="button button--quiet" href="/roadmap-generator">GENERATE YOUR OWN CTO TAKEOVER PLAN ↗</Link>
+          <DepartmentPublicShare title="CTO Emergency Office roadmap case file" shareText={xText} casePath={caseUrl} />
+          <Link className="button button--quiet" href="/roadmap-generator">GENERATE YOUR OWN CTO EMERGENCY OFFICE ROADMAP ↗</Link>
         </div>
 
         <DepartmentNextSteps currentDepartment="roadmap" />

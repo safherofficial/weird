@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildSimulatorResult, decodeSimulatorCode } from "../../simulator-engine";
 
 export const runtime = "edge";
-export const alt = "A fictional Pump.fun Paper Market Simulator result card from THE DYOR DEPARTMENT.";
+export const alt = "A fictional Pump.fun Intelligence paper-market simulation result card from THE DYOR DEPARTMENT.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
