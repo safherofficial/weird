@@ -68,6 +68,7 @@ export type WhitepaperResult = WhitepaperProgress & {
   governanceModel: string;
   adoptionModel: string;
   riskPosture: string;
+  narrative: string;
   primaryTag: WhitepaperArchetypeId;
   secondaryTag: WhitepaperArchetypeId;
   profile: WhitepaperArchetype;
@@ -216,46 +217,46 @@ export const classifications: Record<WhitepaperArchetypeId, WhitepaperArchetype>
 };
 
 const sectors = [
-  "SOLANA MEME TOKEN / CULTURAL TICKER",
-  "CT NARRATIVE / KOL-AMPLIFIED LAUNCH",
-  "COMMUNITY TAKEOVER / CTO-LED RELAUNCH",
-  "MICROCAP LAUNCH / NEXT-100X FANTASY",
+  "AI-POWERED MEME INFRASTRUCTURE",
+  "COMMUNITY-POWERED CULTURE / SOCIAL COORDINATION",
+  "FROG-THEMED MEMECOIN / FINANCIAL SATIRE",
+  "LORE-LED MEMECOIN / FUTURE-PHASE ROADMAP",
 ];
 const architectures = [
-  "FICTIONAL SPL TOKEN / LAUNCH TRANSACTION TRACE",
-  "BONDING CURVE / POST-GRADUATION POOL",
-  "CT & TELEGRAM COORDINATION / COMMUNITY ROUTING",
-  "DEPLOYER PERMISSIONS / DETAILS PENDING",
+  "DOCUMENTED SOLANA PROGRAM / TOKEN STANDARD",
+  "PROPRIETARY LAUNCH STACK / TECHNICAL DETAILS WITHHELD",
+  "OMNICHAIN / AI-NATIVE MEME SUPERSTRUCTURE",
+  "PINNED ARCHITECTURE DIAGRAM / IMPLEMENTATION PENDING",
 ];
 const consensusModels = [
-  "NAMED OPERATORS / PUBLISHED RESPONSIBILITIES",
-  "COMMUNITY CTO / ACCESS AND HANDOVER REVIEW",
-  "TELEGRAM CONSENSUS / PINNED MESSAGE RATIFICATION",
-  "KOL CONSENSUS / SAME SCREENSHOT CIRCULATION",
+  "SOURCE-LINKED LAUNCH / OWNERSHIP DOCUMENTATION",
+  "NAMED OPERATOR / GOVERNANCE AND ACCESS CONTROLS",
+  "COMMUNITY CONSENSUS / TRUST-THE-PROCESS RATIFICATION",
+  "PINNED-POST SELF-CERTIFICATION / DETAILS COMING SOON",
 ];
 const tokenModels = [
-  "MEME / CULTURAL IDENTIFIER / NO UTILITY CLAIM",
-  "COMMUNITY INCENTIVES / SCOPE AND LIMITS",
-  "FUTURE COMMUNITY ROLE / PHASE 4",
-  "PROGRAMMABLE EVERYTHING / PURPOSE TBD",
+  "DEFINED TOKEN ROLE / TRANSPARENT MECHANICS",
+  "COMMUNITY INCENTIVES / GOVERNANCE ROLE / LIMITS",
+  "FUTURE UTILITY / PHASE 4 DEPENDENCY",
+  "CULTURAL TICKER / PURPOSE STILL UNDEFINED",
 ];
 const governanceModels = [
-  "NAMED DEPLOYER / PUBLIC RESPONSIBILITY MAP",
+  "NAMED ROLES / PUBLIC RESPONSIBILITY MAP",
   "STAGED CTO HANDOVER / SCOPED PERMISSIONS",
   "COMMUNITY DECIDES / SUBJECT TO ADMIN APPROVAL",
   "KOL ADVISORY COUNCIL / IDENTITIES IN APPENDIX",
 ];
 const adoptionModels = [
-  "REPEAT COMMUNITY CONTRIBUTORS / TRACEABLE PARTICIPATION",
-  "CT AUDIENCE / SPACES / TELEGRAM MEMBERS",
-  "KOL REACH / QUOTE-POSTS / CAMPAIGN ACTIVITY",
-  "FUTURE HOLDERS / THE NEXT 100X TIMELINE",
+  "AI / AGENT-FOCUSED USERS / AUTOMATION NARRATIVE",
+  "COMMUNITY CONTRIBUTORS / CULTURE PARTICIPATION",
+  "MEME-CULTURE PARTICIPANTS / FROG-LED COMMUNITY",
+  "LORE-FIRST HOLDERS / FUTURE-PHASE FOLLOWERS",
 ];
 const riskPostures = [
-  "DEPLOYER ACCESS / PERMISSIONS / INCIDENT RESPONSE",
-  "WALLET DISTRIBUTION / BUNDLE & SNIPER REVIEW",
-  "POST-GRADUATION POOL / SLIPPAGE DISCLOSURE",
-  "COMMUNITY CONVICTION / RISK APPENDIX PENDING",
+  "DOCUMENTED RISK REGISTER / ACCESS CONTROLS / INCIDENT RESPONSE",
+  "PUBLIC REVIEW / NAMED OWNERS / VERIFIABLE REMEDIATION",
+  "DIFFUSED ACCOUNTABILITY / DECENTRALISATION CLAIM",
+  "COMMUNITY CONVICTION / ROCKET-EMOJI RISK CONTROL",
 ];
 
 function round(value: number) {
@@ -379,6 +380,7 @@ function buildAllocations(tokenAnswer: number): TokenAllocation[] {
 
 function buildSections(
   projectLabel: string,
+  narrative: string,
   sector: string,
   problemStatement: string,
   architecture: string,
@@ -407,10 +409,10 @@ function buildSections(
       title: "NARRATIVE & INTENDED AUDIENCE",
       eyebrow: "THE CA HAS A STORY. DOES THE STORY HAVE A SOURCE?",
       paragraphs: [
-        "The selected narrative is: \"" + problemStatement + "\". The Department has not verified that this claim, the intended audience or the alleged demand exists. " + (progress.productClarity >= 60 ? "The answers suggest a specific community role, although independent evidence is still absent." : "The intended holder, user and practical purpose remain subject to clarification."),
+        "The selected narrative is: \"" + narrative + "\". The Department has not verified that this narrative, the intended audience or the alleged demand exists. " + (progress.productClarity >= 60 ? "The answers suggest a specific community role, although independent evidence is still absent." : "The intended holder, user and practical purpose remain subject to clarification."),
         "No CT audience research, KOL disclosure review, holder survey or community activity sample has been conducted by this generator. A follower count, reply count or launch-day raid is not proof of durable demand.",
       ],
-      bullets: ["Intended community: TO BE DEFINED", "Demand validation: NOT PROVIDED", "KOL / promotion disclosures: NOT REVIEWED"],
+      bullets: ["Declared audience model: " + adoptionModel, "Demand validation: NOT PROVIDED", "KOL / promotion disclosures: NOT REVIEWED"],
     },
     {
       number: "03",
@@ -427,7 +429,7 @@ function buildSections(
       title: "DEPLOYER, CTO & COMMUNITY CONTROL",
       eyebrow: "A NEW X BIO IS NOT A HANDOVER",
       paragraphs: [
-        "The selected control model is " + consensus.toLowerCase() + ". This is a category chosen from the intake form, not proof that a deployer, community team, wallet custodian or operational handover exists.",
+        "The selected launch-and-ownership approach is " + consensus.toLowerCase() + ". This is a category chosen from the intake form, not proof that a deployer, community team, wallet custodian or operational handover exists.",
         "A real takeover record would identify who controls relevant permissions, who can publish updates, which responsibilities have changed and how disagreements are resolved. No team, wallet or access permission is inspected here.",
       ],
       bullets: ["Governance model: " + governanceModel, "Access / custody map: NOT PROVIDED", "Independent handover verification: NOT PERFORMED"],
@@ -508,6 +510,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
   const secondaryTag = ranking[1]?.[0] ?? ranking[0]?.[0] ?? "abstract-maximalist";
   const seed = answers.reduce((sum, answer, index) => ((sum * 41) + (answer + 1) * (index + 23)) % 900000, 808080);
   const caseNumber = String(seed + 100000).slice(-6);
+  const narrative = questions[0].options[answers[0]].label;
   const sector = sectors[answers[0]];
   const problemStatement = questions[1].options[answers[1]].label;
   const architecture = architectures[answers[2]];
@@ -526,7 +529,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
         ? "PRODUCT NOT LOCATED. CHECK THE APPENDIX."
         : "DOCUMENT GENERATED / VALIDATION NOT INCLUDED.";
   const allocations = buildAllocations(answers[4]);
-  const sections = buildSections(projectLabel, sector, problemStatement, architecture, consensus, tokenModel, governanceModel, adoptionModel, riskPosture, progress, profile, secondaryProfile);
+  const sections = buildSections(projectLabel, narrative, sector, problemStatement, architecture, consensus, tokenModel, governanceModel, adoptionModel, riskPosture, progress, profile, secondaryProfile);
 
   return {
     ...progress,
@@ -541,6 +544,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
     governanceModel,
     adoptionModel,
     riskPosture,
+    narrative,
     primaryTag,
     secondaryTag,
     profile,
