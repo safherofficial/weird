@@ -34,7 +34,7 @@ const sections = [
   {
     title: "04 / PUBLIC CASES AND PROJECT LABELS",
     paragraphs: [
-      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap and Exit Liquidity Department token dossier. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's project designation in the shareable URL.",
+      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, Solana Trenches 99% Club membership and Copium Administration personal calibration. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's sanitized project designation in the shareable URL.",
       "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. Visitors are responsible for deciding whether to publish or share a case link.",
     ],
   },
@@ -62,7 +62,7 @@ const sections = [
     title: "08 / OPERATOR DETAILS",
     paragraphs: [
       "The legal identity and contact details for the site operator have not been supplied in this release. They must be added by the operator before these terms are treated as a complete legal agreement.",
-      "Last reviewed: 19 November 2026.",
+      "Last reviewed: 21 November 2026.",
     ],
   },
 ];
@@ -72,7 +72,7 @@ export default function TermsPage() {
     <main className="audit-page legal-page" id="main-content">
       <DepartmentHeader statusMessage="TERMS / ENTERTAINMENT ONLY" ctaHref="/" ctaLabel="BACK TO HQ" />
       <article className="legal-document shell" id="content-start" tabIndex={-1}>
-        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / TERMS FILE</span><span>LAST REVIEWED / 19 NOV 2026</span></div>
+        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / TERMS FILE</span><span>LAST REVIEWED / 21 NOV 2026</span></div>
         <p className="eyebrow">THE DYOR DEPARTMENT / TERMS OF ENGAGEMENT</p>
         <h1>TERMS &<br /><span>DISCLAIMER.</span></h1>
         <p className="legal-document__lead">Read the fine print. It is shorter than the token dossier and considerably more useful.</p>
