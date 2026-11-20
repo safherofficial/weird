@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CopeCasePageProps): Promise<M
   }
 
   const result = buildPersonalCopeResult(answers);
-  const title = result.profile.title + " | GLOBAL COPE INDEX";
+  const title = result.profile.title + " | COPIUM ADMINISTRATION / TRENCHES READING";
   const description = result.profile.subtitle + " " + result.profile.roast;
   const route = "/cope-index/case/" + encodeURIComponent(encodeCopeCode(answers));
   const image = route + "/opengraph-image";

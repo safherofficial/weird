@@ -15,7 +15,7 @@ export default async function WhitepaperCaseImage({
   const decoded = decodeWhitepaperCode(code);
   const result = decoded ? buildWhitepaperResult(decoded.answers, decoded.projectSlug) : null;
   const project = result?.projectLabel ?? "PROJECT PENDING";
-  const title = result?.profile.title ?? "UNRECOGNIZED WHITEPAPER FILE";
+  const title = result?.profile.title ?? "UNRECOGNIZED TOKEN DOSSIER FILE";
   const metrics = [
     { label: "TECHNICAL DENSITY", value: result?.technicalDensity ?? 0, color: "#b6ff65" },
     { label: "BUZZWORD DENSITY", value: result?.buzzwordDensity ?? 0, color: "#ff7777" },

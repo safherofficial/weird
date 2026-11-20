@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: ExhibitPageProps): Promise<Me
       robots: { index: false, follow: false },
     };
   }
-  const title = exhibit.title + " | THE BAGHOLDER MUSEUM";
+  const title = exhibit.title + " | BAGHOLDER REHABILITATION";
   const description = exhibit.description;
   const image = "/museum/exhibits/" + exhibit.slug + "/opengraph-image";
   return {
@@ -53,7 +53,7 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
 
   const path = "/museum/exhibits/" + exhibit.slug;
   const xText = [
-    "I visited THE BAGHOLDER MUSEUM.",
+    "I visited the Museum of Trenches Relics.",
     "Exhibit " + exhibit.accession + ": " + exhibit.title + ".",
     exhibit.plaque,
     "A fictional artifact from the archive of questionable conviction.",
@@ -62,7 +62,7 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
   return (
     <main className="audit-page museum-exhibit-page" id="main-content">
       <RecordPassportActivity activity="museum-exhibit" />
-      <DepartmentHeader activeSection="museum" statusMessage="PUBLIC EXHIBIT / FICTIONAL COLLECTION" ctaHref="/museum" ctaLabel="BACK TO MUSEUM" />
+      <DepartmentHeader activeSection="museum" statusMessage="PUBLIC EXHIBIT / FICTIONAL COLLECTION" ctaHref="/museum" ctaLabel="BACK TO RELIC COLLECTION" />
 
       <article className="museum-exhibit shell" id="content-start" tabIndex={-1}>
         <div className="museum-exhibit__topline">
@@ -71,7 +71,7 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
         </div>
 
         <div className="museum-exhibit__artifact" aria-label="Illustrative museum artifact card">
-          <span>THE DYOR DEPARTMENT / MUSEUM COLLECTION</span>
+          <span>BAGHOLDER REHABILITATION / TRENCHES RELIC COLLECTION</span>
           <b>{exhibit.accession}</b>
           <strong>{exhibit.title}</strong>
           <small>CONDITION: {exhibit.condition}</small>
@@ -97,7 +97,7 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
           </div>
           <div className="museum-exhibit__actions">
             <DepartmentPublicShare
-              title="THE BAGHOLDER MUSEUM / Exhibit"
+              title="BAGHOLDER REHABILITATION / Exhibit"
               shareText={xText}
               casePath={path}
               resourceLabel="MUSEUM EXHIBIT"

@@ -65,7 +65,7 @@ export default function WhitepaperFactoryClient() {
         setChallengeMessage(nominated.profile.title + " HAS NOMINATED " + nominated.projectLabel + ". SUBMIT YOUR OWN TECHNICAL DOCUMENT.");
       }
     } catch {
-      setNotice("THE DEPARTMENT COULD NOT READ THE NOMINATION. A NEW WHITEPAPER BRIEF IS AVAILABLE.");
+      setNotice("THE DEPARTMENT COULD NOT READ THE NOMINATION. A NEW TOKEN DOSSIER BRIEF IS AVAILABLE.");
     }
   }, []);
 
@@ -158,7 +158,7 @@ export default function WhitepaperFactoryClient() {
       try {
         await navigator.share({ title: result.projectLabel + " — Fictional Token Dossier", text, url: caseUrl });
       } catch {
-        setNotice("SHARE CANCELLED. THE WHITEPAPER REMAINS FILED.");
+        setNotice("SHARE CANCELLED. THE TOKEN DOSSIER REMAINS FILED.");
       }
     } else {
       await copyWhitepaper();
@@ -172,7 +172,7 @@ export default function WhitepaperFactoryClient() {
       result.profile.title + ".",
       "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
       safeXCopy(result.profile.roast),
-      "Your turn. Submit your technical vision.",
+      "Your turn. Submit your token narrative.",
     ].join(" ");
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(caseUrl);
     const challengeText = "THE DYOR DEPARTMENT generated a fictional Solana token dossier for " + result.projectLabel + ". Can your token narrative survive the same review?";
@@ -278,7 +278,7 @@ export default function WhitepaperFactoryClient() {
       <section className="whitepaper-panel whitepaper-briefing">
         <div className="whitepaper-panel__header">
           <span>FORM WPF-001 / DOCUMENT INTAKE</span>
-          <span className="whitepaper-status"><i /> READY TO ABSTRACT</span>
+          <span className="whitepaper-status"><i /> READY TO BUILD DOSSIER</span>
         </div>
 
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
@@ -312,7 +312,7 @@ export default function WhitepaperFactoryClient() {
 
           <div className="whitepaper-briefing__warning">
             <span>IMPORTANT / DOCUMENT DISCLAIMER</span>
-            <p>This is a parody generator, not a technical writing service or project validator. All architectures, allocations, risk statements and milestones are invented. Never present the generated document as a real whitepaper or token disclosure.</p>
+            <p>This is a parody generator, not a technical writing service or project validator. All architectures, allocations, risk statements and milestones are invented. Never present the generated document as real token documentation, an offer or project disclosure.</p>
           </div>
 
           <div className="whitepaper-briefing__actions">
@@ -326,10 +326,10 @@ export default function WhitepaperFactoryClient() {
 
   const currentAnswer = answers[current];
   return (
-    <section className="whitepaper-panel whitepaper-game" aria-label="Whitepaper Factory questionnaire">
+    <section className="whitepaper-panel whitepaper-game" aria-label="Token Dossier intake">
       <div className="whitepaper-panel__header">
         <span>DOCUMENT INTAKE / {String(current + 1).padStart(2, "0")} OF 07</span>
-        <span className="whitepaper-status"><i /> ABSTRACT UNDER REVIEW</span>
+        <span className="whitepaper-status"><i /> DOSSIER UNDER REVIEW</span>
       </div>
 
       {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
@@ -349,7 +349,7 @@ export default function WhitepaperFactoryClient() {
       </div>
 
       <div className="whitepaper-question">
-        <div className="whitepaper-question__number">DOCUMENT REVIEW // {String(current + 1).padStart(2, "0")}</div>
+        <div className="whitepaper-question__number">DOSSIER REVIEW // {String(current + 1).padStart(2, "0")}</div>
         <h2 id="whitepaper-current-question" aria-live="polite" aria-atomic="true">{question.prompt}</h2>
         <p>{question.note}</p>
         <div className="whitepaper-answer-list" role="group" aria-labelledby="whitepaper-current-question">

@@ -45,16 +45,16 @@ export default function WhitepaperPublicActions({
     ].join("\n");
 
     downloadTextFile(
-      "dyor-whitepaper-" + result.projectSlug.toLowerCase() + ".md",
+      "dyor-token-dossier-" + result.projectSlug.toLowerCase() + ".md",
       content,
       "text/markdown;charset=utf-8"
     );
-    setNotice("MARKDOWN WHITEPAPER DOWNLOADED.");
+    setNotice("MARKDOWN TOKEN DOSSIER DOWNLOADED.");
   }
 
   function downloadHtml() {
     downloadTextFile(
-      "dyor-whitepaper-" + result.projectSlug.toLowerCase() + ".html",
+      "dyor-token-dossier-" + result.projectSlug.toLowerCase() + ".html",
       formatWhitepaperHtml(result),
       "text/html;charset=utf-8"
     );
@@ -71,7 +71,7 @@ export default function WhitepaperPublicActions({
 
     try {
       await navigator.clipboard.writeText(content);
-      setNotice("WHITEPAPER TEXT AND PUBLIC LINKS COPIED.");
+      setNotice("TOKEN DOSSIER TEXT AND PUBLIC LINKS COPIED.");
     } catch {
       setNotice("CLIPBOARD UNAVAILABLE. DOWNLOAD THE MARKDOWN OR HTML DOCUMENT.");
     }

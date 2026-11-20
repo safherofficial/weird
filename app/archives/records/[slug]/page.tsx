@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: ArchiveRecordPageProps): Prom
       robots: { index: false, follow: false },
     };
   }
-  const title = record.title + " | THE DEPARTMENT ARCHIVES";
+  const title = record.title + " | WHALE & WALLET INVESTIGATION";
   const description = record.summary;
   const route = "/archives/records/" + record.slug;
   const image = route + "/opengraph-image";
@@ -73,7 +73,7 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
 
         <div className="archive-record__document">
           <div className="archive-record__document-head">
-            <span>THE DYOR DEPARTMENT / CENTRAL RECORDS OFFICE</span>
+            <span>WHALE & WALLET INVESTIGATION / FICTIONAL CASE ARCHIVE</span>
             <strong>{record.accession}</strong>
           </div>
           <p className="eyebrow">{record.department}</p>
@@ -108,7 +108,7 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
 
         <div className="archive-record__actions">
           <DepartmentPublicShare
-            title="THE DYOR DEPARTMENT ARCHIVES / Record"
+            title="WHALE & WALLET INVESTIGATION / Record"
             shareText={xText}
             casePath={route}
             resourceLabel="ARCHIVE RECORD"
