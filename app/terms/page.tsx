@@ -34,7 +34,7 @@ const sections = [
   {
     title: "04 / PUBLIC CASES AND PROJECT LABELS",
     paragraphs: [
-      "Visitors may create public case links for Audit, Simulator, Utility Inspector, CTO Takeover Roadmap and Token Dossier Factory results. Anyone with a case URL may view its contents. CTO Takeover Roadmap and Token Dossier Factory include the visitor's project designation in the shareable URL.",
+      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Paper Market Simulator, 100X Research Bureau, CTO Takeover Roadmap and Token Dossier Factory results. Anyone with a case URL may view its contents. CTO Takeover Roadmap and Token Dossier Factory include the visitor's project designation in the shareable URL.",
       "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. Visitors are responsible for deciding whether to publish or share a case link.",
     ],
   },

@@ -60,15 +60,15 @@ const departmentRoutes: Record<DepartmentJourneyId, readonly DepartmentDestinati
     },
     {
       href: "/utility-inspector",
-      title: "100X RESEARCH BUREAU / UTILITY INSPECTOR",
+      title: "100X RESEARCH BUREAU / TOKEN-PURPOSE INSPECTION",
       description: "Inspect what the token does after the launch thread, the KOL call and the first green candle.",
     },
   ],
   whitepaper: [
     {
       href: "/utility-inspector",
-      title: "100X RESEARCH BUREAU / UTILITY INSPECTOR",
-      description: "Put the token narrative back under review. A ticker, a KOL call and a whitepaper do not establish a use case.",
+      title: "100X RESEARCH BUREAU / TOKEN-PURPOSE INSPECTION",
+      description: "Put the token narrative back under review. A ticker, a KOL call and a token dossier do not establish a use case.",
     },
     {
       href: "/museum",

@@ -41,7 +41,7 @@ const sections = [
   {
     title: "05 / PUBLIC RESULT LINKS",
     paragraphs: [
-      "Audit, Simulator, Utility Inspector, CTO Takeover Roadmap and Token Dossier Factory can create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Takeover Roadmap and Token Dossier Factory URLs also contain the sanitized project label.",
+      "FOMO Control Unit Audit, Pump.fun Paper Market Simulator, 100X Research Bureau, CTO Takeover Roadmap and Token Dossier Factory can create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Takeover Roadmap and Token Dossier Factory URLs also contain the sanitized project label.",
       "Anyone who receives a public case link can view the corresponding result. Links may remain in browser history, messages, social posts and hosting request records. The site does not maintain a private account that can revoke a copied link. Do not include personal or confidential details in a project label.",
     ],
   },
