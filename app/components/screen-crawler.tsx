@@ -6,6 +6,7 @@ type CrawlerFacing = "right" | "left" | "up" | "down";
 type CrawlerDepth = "background" | "behind" | "over";
 type CrawlerMotion = "moving" | "idle" | "startled";
 type Point = { x: number; y: number };
+type ScrollBias = "upper" | "lower" | null;
 type OcclusionMode = Exclude<CrawlerDepth, "background">;
 
 const CRAWLER_WIDTH = 112;
@@ -63,13 +64,14 @@ export default function ScreenCrawler() {
       y: randomBetween(EDGE_GUTTER, bottomEdge()),
     });
 
-    // The insect chooses its own destinations. It favours actual page surfaces,
-    // but occasionally crosses open space as if exploring its whole habitat.
-    const chooseDestination = (): Point => {
+    // The insect chooses destinations in viewport space, but it chooses them
+    // from the real page surfaces currently visible after a scroll settles.
+    // It is deliberately fixed to the viewport, never carried by document flow.
+    const chooseDestination = (scrollBias: ScrollBias = null): Point => {
       const surfaces = Array.from(document.querySelectorAll<HTMLElement>(WALKABLE_SURFACES))
-        .filter((element) => {
+        .map((element) => ({ element, rect: element.getBoundingClientRect() }))
+        .filter(({ element, rect }) => {
           if (element.closest(".screen-crawler")) return false;
-          const rect = element.getBoundingClientRect();
           const area = rect.width * rect.height;
           if (rect.width < 150 || rect.height < 90 || area < CRAWLER_WIDTH * CRAWLER_HEIGHT || area > window.innerWidth * window.innerHeight * 0.48) return false;
           if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return false;
@@ -77,21 +79,49 @@ export default function ScreenCrawler() {
           return !Number.isFinite(zIndex) || zIndex < 80;
         });
 
-      if (surfaces.length && Math.random() < 0.68) {
-        const surface = surfaces[Math.floor(Math.random() * surfaces.length)];
-        const rect = surface.getBoundingClientRect();
+      const lowerViewportPosition = Math.max(EDGE_GUTTER, window.innerHeight * 0.52 - CRAWLER_HEIGHT / 2);
+      const upperViewportPosition = Math.max(EDGE_GUTTER, window.innerHeight * 0.48 - CRAWLER_HEIGHT / 2);
+      const preferredSurfaces = scrollBias
+        ? surfaces.filter(({ rect }) => {
+            const validTop = Math.max(EDGE_GUTTER, rect.top - CRAWLER_HEIGHT * 0.35);
+            const validBottom = Math.min(bottomEdge(), rect.bottom - CRAWLER_HEIGHT * 0.65);
+            return scrollBias === "lower"
+              ? validBottom >= lowerViewportPosition
+              : validTop <= upperViewportPosition;
+          })
+        : surfaces;
+      const surfacePool = preferredSurfaces.length ? preferredSurfaces : surfaces;
+
+      if (surfacePool.length && Math.random() < (scrollBias ? 0.9 : 0.68)) {
+        // During scroll navigation, choose from the nearest newly revealed
+        // surfaces so it looks as if the crawler deliberately explores them.
+        const ranked = [...surfacePool].sort((a, b) => {
+          const distance = ({ rect }: typeof a) => Math.hypot(
+            rect.left + rect.width / 2 - (currentX + CRAWLER_WIDTH / 2),
+            rect.top + rect.height / 2 - (currentY + CRAWLER_HEIGHT / 2),
+          );
+          return distance(a) - distance(b);
+        });
+        const shortlist = scrollBias ? ranked.slice(0, Math.min(4, ranked.length)) : surfacePool;
+        const selected = shortlist[Math.floor(Math.random() * shortlist.length)];
+        const rect = selected.rect;
         const left = Math.max(EDGE_GUTTER, rect.left - CRAWLER_WIDTH * 0.35);
         const right = Math.min(rightEdge(), rect.right - CRAWLER_WIDTH * 0.65);
         const top = Math.max(EDGE_GUTTER, rect.top - CRAWLER_HEIGHT * 0.35);
         const bottom = Math.min(bottomEdge(), rect.bottom - CRAWLER_HEIGHT * 0.65);
-        if (right >= left && bottom >= top) {
-          return { x: randomBetween(left, right), y: randomBetween(top, bottom) };
+        const biasedTop = scrollBias === "lower" ? Math.max(top, lowerViewportPosition) : top;
+        const biasedBottom = scrollBias === "upper" ? Math.min(bottom, upperViewportPosition) : bottom;
+        if (right >= left && biasedBottom >= biasedTop) {
+          return { x: randomBetween(left, right), y: randomBetween(biasedTop, biasedBottom) };
         }
       }
 
-      // Add a mild bias to the edges: insects tend to travel along seams and borders.
+      // On long pages the user may reveal an open stretch between cards.
+      // Keep the crawler in the newly exposed half of the viewport in that case.
       const point = randomPoint();
-      if (Math.random() < 0.46) {
+      if (scrollBias === "lower") point.y = randomBetween(lowerViewportPosition, Math.max(lowerViewportPosition, bottomEdge()));
+      else if (scrollBias === "upper") point.y = randomBetween(EDGE_GUTTER, upperViewportPosition);
+      else if (Math.random() < 0.46) {
         if (Math.random() < 0.5) point.x = Math.random() < 0.5 ? EDGE_GUTTER : rightEdge();
         else point.y = Math.random() < 0.5 ? EDGE_GUTTER : bottomEdge();
       }
@@ -119,6 +149,9 @@ export default function ScreenCrawler() {
     let speechTimer = 0;
     let boostTimer = 0;
     let reactionTimer = 0;
+    let scrollTimer = 0;
+    let lastScrollY = window.scrollY;
+    let scrollDirection: "up" | "down" = "down";
     let depthTimer = 0;
     let gaitTimer = 0;
     let obstacleMode = new WeakMap<Element, OcclusionMode>();
@@ -368,6 +401,38 @@ export default function ScreenCrawler() {
       }, 300);
     };
 
+    const handlePageScroll = () => {
+      const nextScrollY = window.scrollY;
+      if (nextScrollY !== lastScrollY) scrollDirection = nextScrollY > lastScrollY ? "down" : "up";
+      lastScrollY = nextScrollY;
+
+      if (scrollTimer) window.clearTimeout(scrollTimer);
+      if (roamTimer) window.clearTimeout(roamTimer);
+      roamTimer = 0;
+
+      // The crawler holds its screen-space foothold while the document moves
+      // beneath it. It is not translated by scrollY or attached to page flow.
+      // Once scrolling stops, it chooses a surface in the newly revealed area
+      // and physically walks there using its normal cardinal route.
+      crawler.dataset.scrolling = "true";
+      route = [];
+      targetX = currentX;
+      targetY = currentY;
+      velocityX = 0;
+      velocityY = 0;
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      setMotion("idle");
+
+      scrollTimer = window.setTimeout(() => {
+        scrollTimer = 0;
+        crawler.dataset.scrolling = "false";
+        if (!active || motion === "startled") return;
+        const bias: ScrollBias = scrollDirection === "down" ? "lower" : "upper";
+        setRoute(chooseDestination(bias));
+      }, 260);
+    };
+
     const handleResize = () => {
       currentX = clamp(currentX, EDGE_GUTTER, rightEdge());
       currentY = clamp(currentY, EDGE_GUTTER, bottomEdge());
@@ -391,6 +456,7 @@ export default function ScreenCrawler() {
     crawler.dataset.depth = depth;
     crawler.classList.add("screen-crawler--ready");
     crawler.addEventListener("click", handleCatch);
+    document.addEventListener("scroll", handlePageScroll, { passive: true, capture: true });
     depthTimer = window.setInterval(() => inspectDepth(now()), OCCLUSION_CHECK_MS);
     gaitTimer = window.setInterval(advanceGait, 32);
     roamTimer = window.setTimeout(beginRoam, randomBetween(500, 1100));
@@ -399,11 +465,13 @@ export default function ScreenCrawler() {
     return () => {
       active = false;
       crawler.removeEventListener("click", handleCatch);
+      document.removeEventListener("scroll", handlePageScroll, true);
       window.removeEventListener("resize", handleResize);
       window.clearTimeout(roamTimer);
       window.clearTimeout(speechTimer);
       window.clearTimeout(boostTimer);
       window.clearTimeout(reactionTimer);
+      window.clearTimeout(scrollTimer);
       window.clearInterval(depthTimer);
       window.clearInterval(gaitTimer);
       if (activeSurface) restoreSurface(activeSurface);

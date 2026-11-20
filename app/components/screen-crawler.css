@@ -1,4 +1,4 @@
-/* U18.8 — autonomous crawler, object-level occlusion and playful click response. */
+/* U18.10 — surface contact, scroll-aware habitat traversal and click response. */
 .department-scene {
   position: relative;
   z-index: auto;
@@ -56,6 +56,34 @@
   content: "";
   animation: crawler-aura-pulse 2.6s ease-in-out infinite;
   pointer-events: none;
+}
+.screen-crawler::after {
+  position: absolute;
+  left: 20%;
+  bottom: 4%;
+  z-index: -1;
+  width: 60%;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(0 0 0 / 88%) 0%, rgb(0 0 0 / 56%) 48%, transparent 78%);
+  filter: blur(4px);
+  content: "";
+  opacity: .92;
+  transform: scaleX(.9);
+  transition: opacity 240ms ease, transform 240ms ease;
+  pointer-events: none;
+}
+.screen-crawler[data-motion="moving"]::after,
+.screen-crawler[data-motion="startled"]::after {
+  opacity: .72;
+  transform: scaleX(1.08) scaleY(.82);
+}
+.screen-crawler[data-scrolling="true"]::after {
+  opacity: 1;
+  transform: scaleX(1.18) scaleY(.74);
+}
+.screen-crawler[data-scrolling="true"] .screen-crawler__sprite {
+  filter: drop-shadow(0 5px 12px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(182,255,101,.12));
 }
 .screen-crawler__orientation {
   display: block;
