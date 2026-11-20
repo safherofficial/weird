@@ -43,34 +43,40 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
   const bulletinLines = wrapSvgText(dispatch.bulletin, 96).slice(0, 2);
   const quoteLines = wrapSvgText(dispatch.quote, 78).slice(0, 2);
   const titleSvg = headlineLines.map((line, index) =>
-    '<text x="64" y="' + (206 + index * 39) + '" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="36" font-weight="900">' + escapeXml(line) + '</text>'
+    '<text x="64" y="' + (206 + index * 39) + '" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="36" font-weight="900">' + escapeXml(line) + "</text>"
   ).join("");
   const bulletinSvg = bulletinLines.map((line, index) =>
-    '<text x="88" y="' + (322 + index * 24) + '" fill="#d8dfd3" font-family="Arial,sans-serif" font-size="16">' + escapeXml(line) + '</text>'
+    '<text x="88" y="' + (322 + index * 24) + '" fill="#d8dfd3" font-family="Arial,sans-serif" font-size="16">' + escapeXml(line) + "</text>"
   ).join("");
   const quoteSvg = quoteLines.map((line, index) =>
-    '<text x="64" y="' + (510 + index * 24) + '" fill="#d8b477" font-family="Arial,sans-serif" font-size="18">“' + escapeXml(line) + '”</text>'
+    '<text x="64" y="' + (542 + index * 22) + '" fill="#d8b477" font-family="Arial,sans-serif" font-size="17">“' + escapeXml(line) + "”</text>"
   ).join("");
-  const incident = escapeXml(dispatch.sections[0].heading);
-  const memo = escapeXml(dispatch.sections[1].heading);
+  const reportLines = dispatch.sections.slice(0, 3).map((section) =>
+    wrapSvgText(section.label + " / " + section.heading, 112).slice(0, 1)[0] || section.label
+  );
+  const reportSvg = reportLines.map((line, index) =>
+    '<text x="64" y="' + (445 + index * 23) + '" fill="#8d968a" font-family="monospace" font-size="12">' + escapeXml(line) + "</text>"
+  ).join("");
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">' +
     '<rect width="1200" height="675" fill="#090b09"/>' +
     '<rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
-    '<path d="M28 110H1172M28 570H1172" stroke="#384137"/>' +
+    '<path d="M28 110H1172M28 615H1172" stroke="#384137"/>' +
     '<text x="64" y="76" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="14">DAILY OFFICE / ' + dispatch.issueDate + '</text>' +
-    '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">' + dispatch.reference + ' / OFFICIAL DAILY DISPATCH</text>' +
+    '<text x="1136" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="14">DAILY OFFICE / ' + dispatch.issueDate + "</text>" +
+    '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">' + dispatch.reference + " / OFFICIAL DAILY DISPATCH</text>" +
     titleSvg +
     '<rect x="64" y="267" width="1072" height="107" fill="#121713" stroke="#384137"/>' +
     '<text x="88" y="301" fill="#b6ff65" font-family="monospace" font-size="14">OFFICIAL BULLETIN</text>' +
     bulletinSvg +
-    '<text x="64" y="414" fill="#8d968a" font-family="monospace" font-size="13">INCIDENT / ' + incident + '</text>' +
-    '<text x="64" y="443" fill="#8d968a" font-family="monospace" font-size="13">MEMO / ' + memo + '</text>' +
+    '<text x="64" y="408" fill="#d8b477" font-family="monospace" font-size="16" font-weight="bold">CONVICTION INDEX / ' +
+    dispatch.convictionIndex.score + "/100 — " + escapeXml(dispatch.convictionIndex.classification) + "</text>" +
+    reportSvg +
+    '<text x="64" y="525" fill="#bda16d" font-family="monospace" font-size="12">QUOTE OF THE DAY / UNATTRIBUTED</text>' +
     quoteSvg +
-    '<text x="64" y="610" fill="#b6ff65" font-family="monospace" font-size="14" font-weight="bold">FICTIONAL DAILY SATIRE / NOT REAL NEWS OR MARKET DATA</text>' +
-    '<text x="1136" y="610" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
-    '</svg>'
+    '<text x="64" y="638" fill="#b6ff65" font-family="monospace" font-size="13" font-weight="bold">FICTIONAL DAILY SATIRE / NOT REAL NEWS OR MARKET DATA</text>' +
+    '<text x="1136" y="638" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
+    "</svg>"
   );
 }
 
@@ -82,6 +88,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
     "THE DYOR DEPARTMENT / DAILY OFFICE",
     dispatch.headline,
     dispatch.bulletin,
+    "CONVICTION INDEX: " + dispatch.convictionIndex.score + "/100 — " + dispatch.convictionIndex.classification,
     dispatch.quote,
     "A fictional daily dispatch. Not real news or market data.",
   ].join(" ");
@@ -94,7 +101,17 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
       dispatch.issueDate + " / UTC",
       dispatch.headline,
       dispatch.bulletin,
-      ...dispatch.sections.flatMap(section => [section.heading, section.body, section.stamp]),
+      "CONVICTION INDEX: " + dispatch.convictionIndex.score + "/100 — " + dispatch.convictionIndex.classification,
+      ...dispatch.convictionIndex.readings.map((reading) =>
+        reading.label + ": " + reading.score + "/100 — " + reading.assessment
+      ),
+      dispatch.convictionIndex.note,
+      ...dispatch.sections.flatMap((section) => [
+        section.label,
+        section.heading,
+        section.body,
+        section.stamp,
+      ]),
       dispatch.quote,
       "ASSIGNED DEPARTMENT: " + dispatch.assignedDepartment,
       "DISPOSITION: " + dispatch.disposition,
@@ -178,12 +195,47 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
         <p>{dispatch.bulletin}</p>
       </div>
 
+      <section className="daily-office-index" aria-labelledby="daily-office-index-title">
+        <div className="daily-office-index__header">
+          <div>
+            <span>FICTIONAL SYNTHETIC READING / NOT A RISK MODEL</span>
+            <h3 id="daily-office-index-title">THE CONVICTION INDEX</h3>
+            <p>{dispatch.convictionIndex.classification}</p>
+          </div>
+          <div className="daily-office-index__score" aria-label={"Final conviction score: " + dispatch.convictionIndex.score + " out of 100"}>
+            <strong>{dispatch.convictionIndex.score}</strong><span>/100</span>
+          </div>
+        </div>
+        <div className="daily-office-index__readings">
+          {dispatch.convictionIndex.readings.map((reading) => (
+            <div className="daily-office-index__reading" data-tone={reading.tone} key={reading.label}>
+              <div className="daily-office-index__reading-label">
+                <span>{reading.label}</span>
+                <strong>{reading.score}/100 <i>— {reading.assessment}</i></strong>
+              </div>
+              <div
+                className="daily-office-index__bar"
+                role="meter"
+                aria-label={reading.label}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={reading.score}
+                aria-valuetext={reading.assessment}
+              >
+                <span style={{ width: reading.score + "%" }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="daily-office-index__note">{dispatch.convictionIndex.note}</p>
+      </section>
+
       <div className="daily-office-sections">
         {dispatch.sections.map((section, index) => (
           <article className="daily-office-section" key={section.label}>
             <div className="daily-office-section__top">
               <span>{section.label}</span>
-              <small>{String(index + 1).padStart(2, "0")} / 02</small>
+              <small>{String(index + 1).padStart(2, "0")} / {String(dispatch.sections.length).padStart(2, "0")}</small>
             </div>
             <h3>{section.heading}</h3>
             <p>{section.body}</p>

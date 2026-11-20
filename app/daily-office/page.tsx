@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   alternates: { canonical: "/daily-office" },
   title: "Daily Departmental Absurdity",
-  description: "One daily fictional dispatch from THE DYOR DEPARTMENT: an official bulletin, an incident report, an internal memo and a quote that should never have been approved.",
+  description: "A date-seeded fictional dispatch from THE DYOR DEPARTMENT, featuring KOL Intelligence, on-chain interpretations, risk reclassification, conviction scores and a Bagholder post-mortem.",
   openGraph: {
     title: "THE DAILY DEPARTMENTAL ABSURDITY",
     description: "The Department has filed another day of completely fictional business.",
@@ -40,7 +40,7 @@ export default function DailyOfficePage() {
           <p className="eyebrow">OFFICE OF DEPARTMENTAL ABSURDITY</p>
           <h1>THE DAILY<br /><span>DEPARTMENT.</span></h1>
           <p className="audit-intro__lead">
-            A fresh bulletin, incident report and internal memo from the fictional administrative machinery of crypto conviction.
+            One UTC-dated fictional dispatch: social consensus investigations, suspicious wallet interpretations, risk reclassification, a synthetic conviction index and a post-mortem that refuses to admit defeat.
           </p>
           <div className="daily-office-intro__notice">
             <span>EDITORIAL NOTICE / NOT A NEWS SERVICE</span>

@@ -287,7 +287,7 @@ export default function Home() {
           <div className="hq-dispatch__content">
             <SectionLabel>THE DAILY DEPARTMENT / UTC DISPATCH</SectionLabel>
             <h2 id="hq-dispatch-title">THE MARKET<br /><span>NEVER FILES A REPORT.</span></h2>
-            <p>We do. One fresh fictional dispatch every UTC day: official bulletins, internal memos and incidents that should never have happened.</p>
+            <p>We do. One date-seeded fictional dispatch every UTC day: KOL Intelligence, on-chain interpretations, risk reclassification, conviction metrics and a post-mortem that refuses to admit defeat.</p>
             <Link className="button button--outline" href="/daily-office">READ TODAY'S DISPATCH <span>↗</span></Link>
           </div>
           <div className="hq-dispatch__meta">
