@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "THE UTILITY INSPECTOR — Seven questions. Three fictional scores. Show us the utility.";
+export const alt = "THE 100X RESEARCH BUREAU — Inspect a fictional Solana token narrative, purpose and evidence.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -15,8 +15,8 @@ export default function UtilityInspectorOpenGraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 52 }}>
           <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>FORM UTI-001 / CLAIMS INTAKE</span>
-          <span style={{ display: "flex", marginTop: 17, fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE UTILITY</span>
-          <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>INSPECTOR.</span>
+          <span style={{ display: "flex", marginTop: 17, fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE TOKEN PURPOSE</span>
+          <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>INSPECTION.</span>
           <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>7 questions. 3 fictional scores. 1 uncomfortable inspection.</span>
         </div>
         <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>

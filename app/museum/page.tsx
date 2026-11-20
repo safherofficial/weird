@@ -6,16 +6,16 @@ import { exhibits } from "./museum-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/museum" },
-  title: "Bagholder Rehabilitation | Museum of Crypto Relics",
+  title: "Bagholder Rehabilitation | Museum of Trenches Relics",
   description: "Fifteen fictional Solana trenches relics: bonding-curve progress bars, bundle-wallet diagrams, KOL screenshots, abandoned deployers and artifacts of bagholder conviction.",
   openGraph: {
-    title: "THE BAGHOLDER MUSEUM",
+    title: "THE MUSEUM OF TRENCHES RELICS",
     description: "Fifteen exhibits from the Solana trenches. Countless missed exits. Absolutely no refunds.",
     images: ["/museum/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE BAGHOLDER MUSEUM",
+    title: "THE MUSEUM OF TRENCHES RELICS",
     description: "Fifteen exhibits from the Solana trenches. Countless missed exits. Absolutely no refunds.",
     images: ["/museum/opengraph-image"],
   },
@@ -30,7 +30,7 @@ export default function MuseumPage() {
         <header className="museum-intro">
           <div className="audit-intro__meta"><span>INSTITUTION EST. YESTERDAY</span><span>ACCESSION REGISTER / {exhibits[0]?.accession ?? "BHM-001"}–{exhibits[exhibits.length - 1]?.accession ?? "BHM-015"}</span></div>
           <p className="eyebrow">BAGHOLDER REHABILITATION / THE TRENCHES RELIC COLLECTION</p>
-          <h1>THE BAGHOLDER<br /><span>MUSEUM.</span></h1>
+          <h1>THE TRENCHES<br /><span>RELIC MUSEUM.</span></h1>
           <p className="audit-intro__lead">
             A permanent collection of launch-night screenshots, bonding-curve celebrations, bundle theories, KOL calls and CTO banners left behind in the trenches.
           </p>

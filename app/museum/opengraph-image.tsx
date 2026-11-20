@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "THE BAGHOLDER MUSEUM — Fifteen fictional Solana trenches relics, including bonding-curve, bundle and CTO artifacts.";
+export const alt = "THE MUSEUM OF TRENCHES RELICS — Fifteen fictional Solana launch artifacts, bundle diagrams and CTO handover relics.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -14,10 +14,10 @@ export default function MuseumOpenGraphImage() {
           <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>BAGHOLDER REHABILITATION / TRENCHES RELIC COLLECTION</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 53 }}>
-          <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>ACCESSION REGISTER / 001–012</span>
-          <span style={{ display: "flex", marginTop: 16, fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE BAGHOLDER</span>
+          <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>ACCESSION REGISTER / BHM-001–015</span>
+          <span style={{ display: "flex", marginTop: 16, fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE TRENCHES RELIC</span>
           <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>MUSEUM.</span>
-          <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>12 exhibits. Countless lessons. Absolutely no refunds.</span>
+          <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>15 exhibits. Countless missed exits. Absolutely no refunds.</span>
         </div>
         <div style={{ display: "flex", marginTop: "auto", color: "#ff8580", fontSize: 13, letterSpacing: 1 }}>ALL ARTIFACTS ARE FICTIONAL / NO REAL PEOPLE OR PROJECTS</div>
       </div>

@@ -10,7 +10,7 @@ export default function MuseumClient() {
   const filtered = useMemo(() => searchExhibits(query, category), [query, category]);
 
   return (
-    <section className="museum-gallery" aria-label="Bagholder Museum exhibition gallery">
+    <section className="museum-gallery" aria-label="Trenches relic collection gallery">
       <div className="museum-gallery__toolbar">
         <label className="museum-search">
           <span>SEARCH THE COLLECTION</span>

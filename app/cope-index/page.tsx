@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   title: "Global Cope Index",
   description: "A synthetic daily Cope Index for Solana trenches behaviour: CT dependency, KOL echo, bonding-curve FOMO, CTO hope and post-graduation liquidity anxiety.",
   openGraph: {
-    title: "THE GLOBAL COPE INDEX",
+    title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX",
     description: "Daily trenches readings. Entirely synthetic. Emotionally familiar.",
     images: ["/cope-index/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE GLOBAL COPE INDEX",
+    title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX",
     description: "A fictional daily reading of CT echo, post-graduation anxiety and the promise that the next ticker will be the one.",
     images: ["/cope-index/opengraph-image"],
   },

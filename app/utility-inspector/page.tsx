@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   title: "100X Research Bureau | Utility Inspector",
   description: "The 100X Research Bureau inspects fictional Solana token narratives: actual use, post-launch purpose, community demand and evidence beyond the KOL thread.",
   openGraph: {
-    title: "THE UTILITY INSPECTOR",
+    title: "THE 100X TOKEN-PURPOSE INSPECTOR",
     description: "Before calling the next Solana microcap a 100x, explain what the ticker does after the launch thread.",
     images: ["/utility-inspector/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "THE UTILITY INSPECTOR",
+    title: "THE 100X TOKEN-PURPOSE INSPECTOR",
     description: "Seven fictional questions. Three scores. No live token scanner, wallet analysis or actual alpha.",
     images: ["/utility-inspector/opengraph-image"],
   },
@@ -29,14 +29,14 @@ export default function UtilityInspectorPage() {
         <aside className="utility-intro">
           <div className="audit-intro__meta"><span>FORM UTI-001</span><span>TOKEN PURPOSE / UNDER REVIEW</span></div>
           <p className="eyebrow">100X RESEARCH BUREAU / NARRATIVE & TOKEN PURPOSE DESK</p>
-          <h1>THE UTILITY<br /><span>INSPECTOR.</span></h1>
+          <h1>THE TOKEN-PURPOSE<br /><span>INSPECTOR.</span></h1>
           <p className="audit-intro__lead">
             Every ticker has a story. The Bureau wants to know what remains when the first pump, KOL thread and Telegram raid are over.
           </p>
           <div className="utility-intro__stamp">
             <span>DEPARTMENTAL REMINDER</span>
             <strong>A TOKEN IS NOT A PRODUCT.</strong>
-            <small>A WHITEPAPER IS NOT A DEMO.</small>
+            <small>A TICKER IS NOT A USE CASE.</small>
           </div>
           <div className="utility-intro__fineprint">
             THIS IS A SATIRICAL QUESTIONNAIRE. NO PROJECT, TOKEN, SMART CONTRACT OR MARKET DATA IS INSPECTED.

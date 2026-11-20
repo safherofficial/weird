@@ -13,7 +13,7 @@ const sections = [
   {
     title: "01 / ENTERTAINMENT ONLY",
     paragraphs: [
-      "THE DYOR DEPARTMENT is a satire and entertainment project. Its questions, classifications, scores, market events, artifacts, roadmap milestones, whitepapers and generated case files are fictional.",
+      "THE DYOR DEPARTMENT is a satire and entertainment project. Its questions, classifications, scores, market events, artifacts, roadmap milestones, fictional token dossiers and generated case files are fictional.",
       "The experiences are not financial, investment, legal, tax, accounting, technical-security or business advice. Nothing on this site is an offer, solicitation, recommendation or promise to buy, sell or hold an asset.",
     ],
   },
@@ -27,21 +27,21 @@ const sections = [
   {
     title: "03 / GENERATED DOCUMENTS",
     paragraphs: [
-      "Roadmap Generator and Whitepaper Factory create fictional parody documents based on answer choices. Their architectures, security language, token allocations, project labels, milestones, dates and claims are not verified or independently researched.",
-      "Do not present generated documents as actual project whitepapers, security audits, token disclosures, business plans, roadmaps, partnership announcements or delivery commitments. A generated document is not evidence that a product, team, contract or partnership exists.",
+      "CTO Takeover Roadmap and Token Dossier Factory create fictional parody documents based on answer choices. Their architectures, security language, token allocations, project labels, milestones, dates and claims are not verified or independently researched.",
+      "Do not present generated documents as actual project fictional token dossiers, security audits, token disclosures, business plans, roadmaps, partnership announcements or delivery commitments. A generated document is not evidence that a product, team, contract or partnership exists.",
     ],
   },
   {
     title: "04 / PUBLIC CASES AND PROJECT LABELS",
     paragraphs: [
-      "Visitors may create public case links for Audit, Simulator, Utility Inspector, Roadmap Generator and Whitepaper Factory results. Anyone with a case URL may view its contents. Roadmap Generator and Whitepaper Factory include the visitor's project designation in the shareable URL.",
+      "Visitors may create public case links for Audit, Simulator, Utility Inspector, CTO Takeover Roadmap and Token Dossier Factory results. Anyone with a case URL may view its contents. CTO Takeover Roadmap and Token Dossier Factory include the visitor's project designation in the shareable URL.",
       "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. Visitors are responsible for deciding whether to publish or share a case link.",
     ],
   },
   {
     title: "05 / MUSEUM COLLECTION",
     paragraphs: [
-      "The Bagholder Museum is a curated fictional collection. Its artifacts, accession notes, eras, conditions and curator comments are invented. They are not claims about any identifiable person, company, token, project or community.",
+      "The Bagholder Rehabilitation / Museum of Trenches Relics is a curated fictional collection. Its artifacts, accession notes, eras, conditions and curator comments are invented. They are not claims about any identifiable person, company, token, project or community.",
     ],
   },
   {
@@ -75,7 +75,7 @@ export default function TermsPage() {
         <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / TERMS FILE</span><span>LAST REVIEWED / 19 NOV 2026</span></div>
         <p className="eyebrow">OFFICE OF QUESTIONABLE DISCLAIMERS</p>
         <h1>TERMS &<br /><span>DISCLAIMER.</span></h1>
-        <p className="legal-document__lead">Read the fine print. It is shorter than the whitepaper and considerably more useful.</p>
+        <p className="legal-document__lead">Read the fine print. It is shorter than the token dossier and considerably more useful.</p>
         <div className="legal-document__notice">
           <strong>IMPORTANT</strong>
           <p>This website is a satirical entertainment project. Nothing here is a real asset, market feed, investment assessment, technical audit or project commitment.</p>
@@ -91,7 +91,7 @@ export default function TermsPage() {
           <Link className="button button--quiet" href="/">RETURN TO THE DEPARTMENT ↗</Link>
         </div>
       </article>
-      <DepartmentFooter message={["NO TOKEN. NO UTILITY. NO FINANCIAL ADVICE.", "THESE TERMS ARE NOT A ROADMAP."]} />
+      <DepartmentFooter message={["NO TOKEN. NO ALPHA. NO FINANCIAL ADVICE.", "THESE TERMS ARE NOT A CTO HANDOVER PLAN."]} />
     </main>
   );
 }
