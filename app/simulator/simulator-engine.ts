@@ -78,9 +78,9 @@ export const actions: SimulatorAction[] = [
   },
   {
     id: "average",
-    label: "AVERAGE DOWN",
-    shortLabel: "BUY MORE",
-    description: "Deploy up to 125 Department Credits from your imaginary cash reserve.",
+    label: "ADD TO POSITION",
+    shortLabel: "ADD",
+    description: "Deploy up to 125 Department Credits from your imaginary cash reserve to buy more fictional units at the current paper price.",
   },
   {
     id: "telegram",
@@ -160,7 +160,7 @@ const profiles: Record<string, SimulatorProfile> = {
     title: "THE POST-GRADUATION ACCUMULATOR",
     subtitle: "Every post-graduation red candle became a reason to add another chapter to the bag's lore.",
     roast: "You did not catch the falling knife. You joined its CTO Telegram and asked when the next catalyst lands.",
-    ending: "AWARDED THE GOLDEN AVERAGE-DOWN CERTIFICATE.",
+    ending: "AWARDED THE GOLDEN POSITION-EXPANSION CERTIFICATE.",
   },
   defector: {
     title: "THE EARLY POOL DEFECTOR",
@@ -321,7 +321,7 @@ export function buildSimulatorResult(decisions: number[]): SimulatorResult {
   const decisionSummary = [
     counts.hold + " holds",
     counts.trim + " trims",
-    counts.average + " average-downs",
+    counts.average + " additional buys",
     counts.telegram + " CT / Telegram consultations",
   ].join(" / ");
 
