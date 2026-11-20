@@ -220,7 +220,7 @@ export default function UtilityInspectorClient() {
           const downloadUrl = URL.createObjectURL(png);
           const anchor = document.createElement("a");
           anchor.href = downloadUrl;
-          anchor.download = "dyor-utility-inspector-" + result.caseNumber + ".png";
+          anchor.download = "dyor-100x-research-bureau-" + result.caseNumber + ".png";
           document.body.appendChild(anchor);
           anchor.click();
           anchor.remove();

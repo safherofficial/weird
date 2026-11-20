@@ -2259,7 +2259,7 @@ body {
 }
 
 
-/* U06 — Utility Inspector */
+/* U06 — 100X Research Bureau */
 .utility-shell {
   display: grid;
   grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
@@ -3070,7 +3070,7 @@ body {
 }
 
 
-/* U07 — Roadmap Generator */
+/* U07 — CTO Emergency Office */
 .roadmap-shell {
   display: grid;
   grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
@@ -4000,7 +4000,7 @@ body {
 }
 
 
-/* U08 — Whitepaper Factory */
+/* U08 — Exit Liquidity Department */
 .whitepaper-shell {
   display: grid;
   grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
@@ -10837,7 +10837,7 @@ main.audit-page.simulator-page {
 .simulator-page .simulator-choice__button:focus-visible { border-color: var(--department-accent); background: var(--department-accent-soft); }
 .simulator-page .simulator-choice__key { border-color: var(--department-accent-line); }
 
-/* 03 / UTILITY INSPECTOR — technical inspection bench and calibration marks. */
+/* 08 / 100X RESEARCH BUREAU — token-purpose inspection station. */
 main.audit-page.utility-page {
   --department-accent: #6fd0bd;
   --department-accent-rgb: 111, 208, 189;
@@ -10906,7 +10906,7 @@ main.audit-page.roadmap-page {
 .roadmap-page .roadmap-answer:focus-visible,
 .roadmap-page .roadmap-answer.is-selected { border-color: var(--department-accent); background: var(--department-accent-soft); }
 
-/* 05 / WHITEPAPER FACTORY — document lab, folios and technical paper stock. */
+/* 07 / EXIT LIQUIDITY DEPARTMENT — token dossier and tokenomics archive. */
 main.audit-page.whitepaper-page {
   --department-accent: #c3a1f5;
   --department-accent-rgb: 195, 161, 245;

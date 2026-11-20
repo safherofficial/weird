@@ -218,7 +218,7 @@ export default function SimulatorClient() {
           const downloadUrl = URL.createObjectURL(png);
           const anchor = document.createElement("a");
           anchor.href = downloadUrl;
-          anchor.download = "dyor-pumpfun-paper-case-" + result.caseNumber + ".png";
+          anchor.download = "dyor-pumpfun-intelligence-case-" + result.caseNumber + ".png";
           document.body.appendChild(anchor);
           anchor.click();
           anchor.remove();

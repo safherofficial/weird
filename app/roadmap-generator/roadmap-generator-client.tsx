@@ -225,7 +225,7 @@ export default function RoadmapGeneratorClient() {
           const downloadUrl = URL.createObjectURL(png);
           const anchor = document.createElement("a");
           anchor.href = downloadUrl;
-          anchor.download = "dyor-cto-takeover-" + result.caseNumber + ".png";
+          anchor.download = "dyor-cto-emergency-office-" + result.caseNumber + ".png";
           document.body.appendChild(anchor);
           anchor.click();
           anchor.remove();
