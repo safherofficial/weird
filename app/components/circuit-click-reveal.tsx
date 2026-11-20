@@ -315,12 +315,19 @@ export default function CircuitClickReveal() {
     const handleClick = (event: MouseEvent) => {
       if (!motionEnabled) return;
 
+      const target = event.target;
+      if (target instanceof Element && target.closest(
+        'a[href], area[href], button, input:not([type="hidden"]), select, textarea, summary, label, [role="button"], [role="link"], [contenteditable="true"]',
+      )) {
+        return;
+      }
+
       let x = event.clientX;
       let y = event.clientY;
 
-      // Keyboard-activated controls have no pointer coordinates; use their centre.
-      if (event.detail === 0 && event.target instanceof Element) {
-        const bounds = event.target.getBoundingClientRect();
+      // Keyboard-activated non-control surfaces have no pointer coordinates; use their centre.
+      if (event.detail === 0 && target instanceof Element) {
+        const bounds = target.getBoundingClientRect();
         x = bounds.left + bounds.width / 2;
         y = bounds.top + bounds.height / 2;
       }
