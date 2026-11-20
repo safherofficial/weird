@@ -129,64 +129,64 @@ export const questions: RoadmapQuestion[] = [
 
 export const classifications: Record<RoadmapArchetypeId, RoadmapArchetype> = {
   "actually-shipping": {
-    title: "THE RELUCTANT SHIPPER",
-    subtitle: "You have deliverables, owners and a slightly concerning relationship with deadlines.",
-    roast: "The Department has detected actual work. Please stop immediately and explain how this happened.",
+    title: "THE RARELY SHIPPING CTO",
+    subtitle: "You have named owners, working access and a public handover checklist. The Department is suspicious.",
+    roast: "The community takeover contains actual deliverables. CT has asked whether the deployer is feeling alright.",
     disposition: "RELEASED UNDER OBSERVATION FOR EXCESSIVE EXECUTION.",
   },
   "forever-beta": {
-    title: "THE FOREVER BETA",
-    subtitle: "The beta is public. The product is improving. The finish line has moved again.",
-    roast: "Your roadmap is technically progressing. It is just progressing in a circular direction.",
-    disposition: "PLACED IN PERMANENT BETA REVIEW.",
+    title: "THE FOREVER COMMUNITY TAKEOVER",
+    subtitle: "The new account is active. The handover is improving. The promised relaunch is still in a private channel.",
+    roast: "Your CTO is technically progressing. It is just progressing through a new pinned post every week.",
+    disposition: "PLACED IN PERMANENT HANDOVER REVIEW.",
   },
   "soon-architect": {
-    title: "THE SOON™ ARCHITECT",
-    subtitle: "Every milestone is imminent. The calendar has requested legal representation.",
-    roast: "You have turned 'soon' into a multi-phase delivery methodology.",
-    disposition: "REFERRED TO THE OFFICE OF TEMPORAL AMBIGUITY.",
+    title: "THE SOON™ CTO",
+    subtitle: "Every recovery phase is imminent. The calendar has blocked the account.",
+    roast: "You have turned 'soon' into a seven-stage community takeover methodology.",
+    disposition: "REFERRED TO THE OFFICE OF DEPLOYER SILENCE.",
   },
   "ticker-decoration": {
-    title: "THE TICKER DECORATION",
-    subtitle: "The token has a future role. The present role is appearing on the chart.",
-    roast: "The roadmap gives the token utility in Phase 6. Phase 6 has been moved to Phase 6.5.",
-    disposition: "REQUESTED TO PROVIDE A TOKEN PURPOSE BEFORE THE NEXT ANNOUNCEMENT.",
+    title: "THE TICKER WITH A FUTURE JOB",
+    subtitle: "The token will become useful after the relaunch, the rebrand and the next three announcements.",
+    roast: "The roadmap gives the ticker a purpose in Phase 6. Phase 6 is waiting for the new banner.",
+    disposition: "REQUESTED TO PROVIDE A TOKEN PURPOSE BEFORE THE NEXT CTO SPACE.",
   },
   "partnership-vaporist": {
-    title: "THE PARTNERSHIP VAPORIST",
-    subtitle: "Strategic conversations are happening in rooms that cannot be independently located.",
-    roast: "You have announced the pre-announcement of a partnership with the possibility of a conversation.",
-    disposition: "REFERRED TO THE OFFICE OF MUTUAL NON-DISCLOSURE.",
+    title: "THE STRATEGIC KOL ALLIANCE",
+    subtitle: "Several accounts have posted the same CA. The Department is still looking for the original source.",
+    roast: "You have announced the pre-announcement of a KOL partnership with the possibility of a quote-tweet.",
+    disposition: "REFERRED TO THE OFFICE OF INDEPENDENT SOURCE VALIDATION.",
   },
   "community-amplifier": {
-    title: "THE COMMUNITY AMPLIFIER",
-    subtitle: "The community is growing. The product team is still checking the numbers.",
-    roast: "Your roadmap has a very active social layer and a product layer currently set to private.",
-    disposition: "ASSIGNED TO THE DEPARTMENT OF ENGAGEMENT-BASED DELIVERY.",
+    title: "THE TELEGRAM REPLY FARM",
+    subtitle: "The community is active. The chat is moving. The deployer access checklist is still blank.",
+    roast: "Your roadmap has a very active social layer and a handover layer currently set to private.",
+    disposition: "ASSIGNED TO THE DEPARTMENT OF COMMUNITY-BASED RECOVERY.",
   },
   "global-adoption-intern": {
-    title: "THE GLOBAL ADOPTION INTERN",
-    subtitle: "You have been asked to achieve mass adoption before the first public release.",
-    roast: "Your final milestone serves eight billion users. Your beta has seventeen test accounts.",
-    disposition: "PROMOTED TO VICE PRESIDENT OF THE ENTIRE PLANET.",
+    title: "THE 100X REBRAND INTERN",
+    subtitle: "You have been asked to rebuild the entire Solana timeline before the next five-minute candle.",
+    roast: "Your final milestone serves every wallet on the planet. Your CTO Telegram has seventeen active members.",
+    disposition: "PROMOTED TO VICE PRESIDENT OF THE ENTIRE TIMELINE.",
   },
   "multiverse-expansionist": {
-    title: "THE MULTIVERSE EXPANSIONIST",
-    subtitle: "One product. Twelve sectors. Three dimensions. No known constraints.",
-    roast: "You are building the everything-app for everyone, including several markets that do not exist.",
-    disposition: "REFERRED TO THE OFFICE OF INTERGALACTIC ROADMAP COORDINATION.",
+    title: "THE NARRATIVE MULTIVERSE EXPANSIONIST",
+    subtitle: "One ticker. Twelve narratives. Three separate CT accounts. No named owner.",
+    roast: "You are building the everything-memecoin for every chain, including several that only exist in the pinned thread.",
+    disposition: "REFERRED TO THE OFFICE OF INTERGALACTIC CTO COORDINATION.",
   },
   "documentation-empire": {
-    title: "THE DOCUMENTATION EMPIRE",
-    subtitle: "The documentation has a roadmap. The product has a table of contents.",
-    roast: "Your whitepaper has shipped three sequels. The first button is still in development.",
-    disposition: "ARCHIVED UNDER: DOCUMENTATION COMPLETE / PRODUCT TBD.",
+    title: "THE PINNED-THREAD EMPIRE",
+    subtitle: "The takeover thread has a roadmap. The recovery has a table of contents.",
+    roast: "Your CTO has shipped three pinned posts. The first access question is still waiting for an answer.",
+    disposition: "ARCHIVED UNDER: HANDOVER DOCUMENTED / CONTROL NOT VERIFIED.",
   },
   "milestone-matryoshka": {
-    title: "THE MILESTONE MATRYOSHKA",
-    subtitle: "Every milestone unlocks another milestone that unlocks another milestone.",
-    roast: "Your Phase 2 is a roadmap for Phase 2. Phase 2.1 will explain the dependencies.",
-    disposition: "PLACED INSIDE THE ROADMAP FOR FURTHER ROADMAP REVIEW.",
+    title: "THE PHASE TWO MATRYOSHKA",
+    subtitle: "Every recovery phase unlocks another recovery phase that explains the previous phase.",
+    roast: "Your Phase 2 is a roadmap for Phase 2. Phase 2.1 will explain who has the keys.",
+    disposition: "PLACED INSIDE THE TAKEOVER ROADMAP FOR FURTHER REVIEW.",
   },
 };
 
@@ -271,20 +271,20 @@ function chooseProfiles(answers: number[]) {
 }
 
 function getFinding(progress: RoadmapProgress) {
-  if (progress.delivery >= 75 && progress.realism >= 75) return "DELIVERABLES DETECTED. THIS MAY BE A REAL ROADMAP.";
-  if (progress.inflation >= 80) return "PROMISE INFLATION EXCEEDS DEPARTMENTAL LIMITS.";
-  if (progress.realism <= 20) return "TIMELINE CLASSIFIED AS A THEORETICAL CONSTRUCT.";
-  if (progress.delivery <= 25) return "MILESTONES RECEIVED. EVIDENCE OF SHIPPING NOT LOCATED.";
-  if (progress.inflation >= 60) return "ROADMAP CONTAINS A SIGNIFICANT AMOUNT OF SOON.";
-  return "MILESTONE PLAN ACCEPTED PENDING A DATE THAT MEANS SOMETHING.";
+  if (progress.delivery >= 75 && progress.realism >= 75) return "HANDOVER OWNERS AND DELIVERABLES DETECTED. PLEASE REMAIN CALM.";
+  if (progress.inflation >= 80) return "CTO PROMISE INFLATION EXCEEDS DEPARTMENTAL LIMITS.";
+  if (progress.realism <= 20) return "COMMUNITY TAKEOVER CLASSIFIED AS A THEORETICAL CONSTRUCT.";
+  if (progress.delivery <= 25) return "RECOVERY PHASES RECEIVED. EVIDENCE OF ACCESS OR HANDOVER NOT LOCATED.";
+  if (progress.inflation >= 60) return "TAKEOVER PLAN CONTAINS A SIGNIFICANT AMOUNT OF SOON™.";
+  return "COMMUNITY TAKEOVER PLAN ACCEPTED PENDING A NAMED OWNER AND A DATE THAT MEANS SOMETHING.";
 }
 
 function getDisposition(progress: RoadmapProgress) {
-  if (progress.delivery >= 75 && progress.realism >= 75) return "APPROVED FOR A LIMITED PERIOD OF ACTUAL DELIVERY.";
-  if (progress.inflation >= 80) return "ESCALATE TO THE OFFICE OF UNBOUNDED AMBITION.";
-  if (progress.realism <= 20) return "SUSPEND ALL CALENDAR REFERENCES UNTIL FURTHER NOTICE.";
-  if (progress.delivery <= 25) return "REQUEST A DEMO. THEN REQUEST ANOTHER DEMO.";
-  return "RETURN FOR REVIEW AFTER THE NEXT COMMUNITY UPDATE.";
+  if (progress.delivery >= 75 && progress.realism >= 75) return "APPROVED FOR A LIMITED PERIOD OF VERIFIED COMMUNITY DELIVERY.";
+  if (progress.inflation >= 80) return "ESCALATE TO THE OFFICE OF UNBOUNDED CTO AMBITION.";
+  if (progress.realism <= 20) return "SUSPEND ALL HANDOVER TIMELINES UNTIL ACCESS IS EXPLAINED.";
+  if (progress.delivery <= 25) return "REQUEST THE DEPLOYER HANDOVER. THEN REQUEST THE KEYS.";
+  return "RETURN FOR REVIEW AFTER THE NEXT CT / TELEGRAM HANDOVER UPDATE.";
 }
 
 function buildMilestones(answers: number[], projectLabel: string): RoadmapMilestone[] {
@@ -296,104 +296,104 @@ function buildMilestones(answers: number[], projectLabel: string): RoadmapMilest
   const ambition = answers[5];
 
   const schedules = [
-    ["NEXT QUARTER", "THE QUARTER AFTER NEXT", "WHEN THE BETA IS READY", "TBD / PLEASE STOP ASKING"],
-    ["AFTER THE NEXT AMA", "SOON™", "VERY SOON™", "BEFORE THE NEXT LISTING"],
-    ["Q∞ / UNDER DISCUSSION", "AFTER MAINNET", "WHEN THE MARKET IMPROVES", "IN THE NEXT ANNOUNCEMENT"],
-    ["WHEN DEPENDENCIES CLEAR", "AFTER PARTNERSHIP CONFIRMATION", "ONCE THE COMMUNITY IS ALIGNED", "WHEN THE STARS ALIGN"],
+    ["AFTER THE NEXT CT SPACE", "WHEN THE COMMUNITY HAS THE KEYS", "AFTER THE NEXT CURVE MILESTONE", "TBD / PLEASE STOP ASKING"],
+    ["AFTER THE NEXT CTO UPDATE", "SOON™", "VERY SOON™", "BEFORE THE NEXT 100X CALL"],
+    ["AFTER GRADUATION", "WHEN THE NEW MODS ARE ALIGNED", "WHEN THE DEPLOYER REPLIES", "IN THE NEXT PINNED THREAD"],
+    ["WHEN WALLET ACCESS IS EXPLAINED", "AFTER THE COMMUNITY VOTE", "ONCE THE KOL CAMPAIGN IS ALIGNED", "WHEN THE TIMELINE STOPS REFRESHING"],
   ][timeline];
 
   const productStatus = maturity === 0
-    ? "LIVE / ITERATION REQUIRED"
+    ? "LIVE / PROOF OF WORK REQUIRED"
     : maturity === 1
-      ? "BETA OPEN / MAINNET STILL LOADING"
+      ? "COMMUNITY BUILD / HANDOVER STILL LOADING"
       : maturity === 2
-        ? "IN DEVELOPMENT / ANNOUNCEMENT READY"
-        : "DOCUMENTED / NOT YET LOCATED";
+        ? "RELAUNCH ANNOUNCEMENT READY / ACCESS UNCLEAR"
+        : "CA AND PINNED THREAD LOCATED / OPERATORS NOT VERIFIED";
   const partnershipStatus = partnerships === 0
-    ? "SIGNED / SCOPE SUBJECT TO REVIEW"
+    ? "NAMED CONTRIBUTORS / RESPONSIBILITIES PUBLISHED"
     : partnerships === 1
-      ? "PILOT OR MOU / DETAILS PENDING"
+      ? "COMMUNITY HANDOVER / PERMISSIONS PENDING"
       : partnerships === 2
-        ? "IN ACTIVE DISCUSSIONS™"
-        : "STRATEGIC ALIGNMENT DETECTED BY VIBES";
+        ? "KOL / MODERATOR DISCUSSIONS™"
+        : "STRATEGIC CT ALIGNMENT DETECTED BY VIBES";
   const tokenStatus = token === 0
-    ? "TOKEN ROLE DEFINED / REVIEW OPEN"
+    ? "MEME / TOKEN PURPOSE EXPLAINED"
     : token === 1
-      ? "GOVERNANCE / INCENTIVES IN TESTING"
+      ? "COMMUNITY INCENTIVES / SCOPE IN TESTING"
       : token === 2
-        ? "UTILITY EXPECTED IN A FUTURE PHASE"
+        ? "UTILITY EXPECTED AFTER THE NEXT CTO PHASE"
         : "TICKER CONFIRMED / PURPOSE PENDING";
   const communityStatus = community === 0
-    ? "USER FEEDBACK / ACTION REQUIRED"
+    ? "NAMED OPERATORS / ACCESS CHECK REQUIRED"
     : community === 1
-      ? "CONTRIBUTOR EXPANSION / ONGOING"
+      ? "ACTIVE CONTRIBUTORS / ONGOING"
       : community === 2
-        ? "ENGAGEMENT METRICS / VERY POSITIVE"
-        : "GLOBAL MOVEMENT / DEFINITION PENDING";
+        ? "CT REPLIES / VERY POSITIVE"
+        : "GLOBAL ARMY / MEMBER COUNT NOT VERIFIED";
 
   const finalGoal = ambition === 0
-    ? "SHIP THE NEXT VERSION"
+    ? "PUBLISH A VERIFIED CTO HANDOVER"
     : ambition === 1
-      ? "EXPAND THE ECOSYSTEM"
+      ? "SURVIVE THE POST-GRADUATION POOL"
       : ambition === 2
-        ? "ACHIEVE GLOBAL ADOPTION"
-        : "ONBOARD THE MULTIVERSE";
+        ? "BECOME THE NEXT 100X TIMELINE STORY"
+        : "DECLARE A NEW SOLANA MEME ECOSYSTEM";
   const finalDescription = ambition === 0
-    ? "Release, measure, learn and publish what changed. The Department has requested proof."
+    ? "Name the operators, document access, publish responsibilities and show what has actually changed. The Department has requested proof."
     : ambition === 1
-      ? "Connect additional networks, partners and integrations. Scope may expand during the announcement."
+      ? "Move beyond the graduation screenshot. Explain the post-curve pool, holder distribution and the fictional community's next operating steps."
       : ambition === 2
-        ? "Bring the product to every user, institution and jurisdiction currently represented by a slide."
-        : "Extend the ecosystem into AI, gaming, RWA, DePIN and any acronym announced before the deadline.";
+        ? "Build a durable community without confusing KOL impressions, green candles or a trending badge with actual participation."
+        : "Extend the narrative into every new ticker, CTO account and meme format announced before the next candle.";
 
   return [
     {
-      phase: "PHASE 01 / THE BEGINNING",
-      title: "FOUNDATION OF THE FOUNDATION",
-      description: projectLabel + " establishes the core vision, aligns all stakeholders and opens a working document titled FINAL_FINAL_v7.",
+      phase: "PHASE 01 / LAUNCH AFTERMATH",
+      title: "THE DEPLOYER GOES QUIET",
+      description: projectLabel + " begins with a CA, a launch thread and a deployer account that has stopped answering questions. The Department requests a named status update.",
       eta: "ALREADY IN PROGRESS",
-      status: "99% COMPLETE / THE 1% IS PRODUCT",
+      status: "CA LOCATED / HANDOVER NOT VERIFIED",
     },
     {
-      phase: "PHASE 02 / DOCUMENTATION",
-      title: "ROADMAP FOR THE ROADMAP",
-      description: "Publish the whitepaper, revise the whitepaper and create a dedicated roadmap explaining when the roadmap will be final.",
+      phase: "PHASE 02 / COMMUNITY TAKEOVER",
+      title: "THE CTO ACCOUNT APPEARS",
+      description: "Publish the handover thread, name the people taking responsibility and explain which permissions, channels and project assets have actually changed hands.",
       eta: schedules[0],
-      status: "DRAFTING / VERSION NUMBER NOT FINAL",
+      status: "BANNER UPDATED / ACCESS REVIEW OPEN",
     },
     {
-      phase: "PHASE 03 / PRODUCT",
-      title: maturity === 0 ? "PRODUCT ITERATION & SCALE" : "PUBLIC BETA / PRIVATE WAITLIST",
+      phase: "PHASE 03 / LAUNCH & CURVE",
+      title: maturity === 0 ? "CURVE MILESTONE / POST-LAUNCH PLAN" : "GRADUATION SCREEN / NEXT STEPS UNKNOWN",
       description: maturity === 0
-        ? "Ship incremental improvements based on user feedback. The team has agreed not to rename the beta."
-        : "Open a limited test environment, collect feedback and prepare the announcement for a wider beta announcement.",
+        ? "Document the fictional launch sequence, who operated it and what the curve milestone does—and does not—establish."
+        : "The launch screenshot is ready. The post-graduation explanation is still being prepared for an announcement about the explanation.",
       eta: schedules[1],
       status: productStatus,
     },
     {
-      phase: "PHASE 04 / PARTNERSHIPS",
-      title: "STRATEGIC PARTNERSHIPS",
+      phase: "PHASE 04 / CT & KOL COORDINATION",
+      title: "THE TIMELINE DISCOVERS THE SAME CA",
       description: partnerships === 0
-        ? "Activate the named agreements, publish the scope and finally use the word partnership correctly."
-        : "Continue confidential discussions with major ecosystem participants. A logo wall is being prepared as a precaution.",
+        ? "Name the contributors, distinguish paid promotion from independent commentary and publish the scope of every actual collaboration."
+        : "Several KOL-style accounts are repeating the same call. The Department is still looking for the original source and the campaign disclosure.",
       eta: schedules[2],
       status: partnershipStatus,
     },
     {
-      phase: "PHASE 05 / TOKEN UTILITY",
-      title: "TOKEN UTILITY ACTIVATION",
+      phase: "PHASE 05 / TOKEN PURPOSE",
+      title: "A TICKER NEEDS MORE THAN A CHART",
       description: token === 0
-        ? "Connect the defined token role to the product and document its limitations."
-        : "Unlock the utility layer in a future ecosystem phase. The exact phase is itself subject to a future phase.",
+        ? "Explain whether the token is a meme, a community identifier or a functional instrument. Do not imply utility that has not been defined."
+        : "The token purpose will be addressed after the next narrative pivot, the next CTO phase and a future phase explaining the previous future phase.",
       eta: schedules[3],
       status: tokenStatus,
     },
     {
-      phase: "PHASE 06 / COMMUNITY",
-      title: "COMMUNITY-LED EXPANSION",
+      phase: "PHASE 06 / COMMUNITY OPERATIONS",
+      title: "FROM CT REPLIES TO RESPONSIBLE OPERATORS",
       description: community === 0
-        ? "Convert product feedback into a public change log. The community has been asked to read it before posting."
-        : "Expand the global community, increase ecosystem visibility and introduce a new ambassador programme for the existing ambassador programme.",
+        ? "Turn community feedback into a public record with named owners. The community has been asked to read it before posting another CA."
+        : "Grow contributors beyond copy-pasted 'send it' replies, recruit responsible moderators and document who handles the next update.",
       eta: schedules[(timeline + 1) % schedules.length][2] || schedules[0],
       status: communityStatus,
     },
@@ -401,7 +401,7 @@ function buildMilestones(answers: number[], projectLabel: string): RoadmapMilest
       phase: "PHASE 07 / THE DESTINATION",
       title: finalGoal,
       description: finalDescription,
-      eta: "SOON™ / SUBJECT TO ALL PREVIOUS PHASES",
+      eta: "SOON™ / SUBJECT TO ALL PREVIOUS HANDOVERS",
       status: ambition === 0 ? "DELIVERY TARGET / NOT A PROMISE" : "VISIONARY / CALENDAR NOT REQUIRED",
     },
   ];
