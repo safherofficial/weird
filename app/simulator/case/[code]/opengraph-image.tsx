@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildSimulatorResult, decodeSimulatorCode } from "../../simulator-engine";
 
 export const runtime = "edge";
-export const alt = "A fictional DYOR Department Bagholder Simulator result card.";
+export const alt = "A fictional Pump.fun Paper Market Simulator result card from THE DYOR DEPARTMENT.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -46,7 +46,7 @@ export default async function SimulatorCaseImage({
           }}
         >
           <span style={{ color: "#b6ff65", fontSize: 22, fontWeight: 800, letterSpacing: 1 }}>THE DYOR DEPARTMENT</span>
-          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>BAGHOLDER SIMULATOR / CASE FILE</span>
+          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>PUMP.FUN PAPER MARKET / CASE FILE</span>
         </div>
 
         <div style={{ display: "flex", marginTop: 27, color: "#899486", fontSize: 14, letterSpacing: 2 }}>

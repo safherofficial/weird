@@ -16,14 +16,14 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
   const answers = decodeClubCode(code);
   if (!answers) {
     return {
-      title: "Unrecognized Club File",
-      description: "This fictional 99% Club membership file could not be verified.",
+      title: "Unrecognized Solana Trenches Survivor File",
+      description: "This fictional Solana trenches survivor membership file could not be verified.",
       robots: { index: false, follow: false },
     };
   }
 
   const result = buildClubResult(answers);
-  const title = result.profile.title + " | THE 99% CLUB";
+  const title = result.profile.title + " | SOLANA TRENCHES 99% CLUB";
   const description = result.profile.subtitle + " " + result.profile.motto;
   const route = "/club/member/" + encodeURIComponent(encodeClubCode(answers));
   const image = route + "/opengraph-image";
@@ -59,7 +59,7 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
   const caseUrl = "/club/member/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/club?challenge=" + encodeURIComponent(canonicalCode);
   const xText = [
-    "THE DYOR DEPARTMENT has admitted me to THE 99% CLUB.",
+    "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
     "Member No. " + result.memberNumber + ".",
     result.profile.title + ".",
     "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
@@ -69,17 +69,17 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
 
   return (
     <main className="audit-page club-member-page" id="main-content">
-      <DepartmentHeader activeSection="club" statusMessage="PUBLIC MEMBER FILE / FICTIONAL" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
+      <DepartmentHeader activeSection="club" statusMessage="PUBLIC SOLANA TRENCHES MEMBER FILE / FICTIONAL" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
 
       <article className="club-public-member shell" id="content-start" tabIndex={-1}>
         <div className="club-public-member__meta">
           <span>PUBLIC MEMBERSHIP RECORD / {result.memberNumber}</span>
-          <span>THE 99% CLUB / NO BENEFITS</span>
+          <span>SOLANA TRENCHES / 99% CLUB / NO BENEFITS</span>
         </div>
 
         <div className="club-membership-card">
           <div className="club-membership-card__top">
-            <span>THE DYOR DEPARTMENT / MEMBERSHIP OFFICE</span>
+            <span>SOLANA TRENCHES / SURVIVOR REGISTRY</span>
             <span>THE 99% CLUB</span>
           </div>
           <p className="eyebrow">MEMBER No. {result.memberNumber}</p>
@@ -113,7 +113,7 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
 
         <div className="club-public-member__actions">
           <Link className="button button--primary" href={challengeUrl}>NOMINATE ANOTHER DEGEN <span>↗</span></Link>
-          <DepartmentPublicShare title="99% Club membership file" shareText={xText} casePath={caseUrl} />
+          <DepartmentPublicShare title="Solana Trenches survivor file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/club">APPLY FOR YOUR OWN MEMBERSHIP ↗</Link>
         </div>
 

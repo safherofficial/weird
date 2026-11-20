@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: WhitepaperCasePageProps): Pro
 
   if (!decoded) {
     return {
-      title: "Unrecognized Whitepaper File",
-      description: "This fictional Department document could not be verified.",
+      title: "Unrecognized Token Dossier File",
+      description: "This fictional Solana token dossier could not be verified.",
       robots: { index: false, follow: false },
     };
   }
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: WhitepaperCasePageProps): Pro
       description,
       type: "website",
       url: route,
-      images: [{ url: image, width: 1200, height: 630, alt: "Fictional whitepaper case for " + result.projectLabel }],
+      images: [{ url: image, width: 1200, height: 630, alt: "Fictional token dossier for " + result.projectLabel }],
     },
     twitter: {
       card: "summary_large_image",
@@ -61,7 +61,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
   const caseUrl = "/whitepaper-factory/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/whitepaper-factory?challenge=" + encodeURIComponent(canonicalCode);
   const xText = [
-    "THE DYOR DEPARTMENT issued a whitepaper for " + result.projectLabel + ".",
+    "THE DYOR DEPARTMENT issued a fictional token dossier for " + result.projectLabel + ".",
     result.profile.title + ".",
     "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
     result.profile.roast.length > 62 ? result.profile.roast.slice(0, 58) + "…" : result.profile.roast,
@@ -70,7 +70,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
 
   return (
     <main className="audit-page whitepaper-case-page" id="main-content">
-      <DepartmentHeader activeSection="whitepaper" statusMessage="PUBLIC WHITEPAPER FILE / FICTIONAL" ctaHref="/whitepaper-factory" ctaLabel="MAKE A WHITEPAPER" />
+      <DepartmentHeader activeSection="whitepaper" statusMessage="PUBLIC TOKEN DOSSIER FILE / FICTIONAL" ctaHref="/whitepaper-factory" ctaLabel="GENERATE TOKEN DOSSIER" />
 
       <section className="whitepaper-public-case shell" id="content-start" tabIndex={-1}>
         <div className="whitepaper-public-case__meta">
@@ -79,9 +79,9 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
         </div>
 
         <div className="whitepaper-cover">
-          <p className="eyebrow">THE DYOR DEPARTMENT / WHITEPAPER FACTORY</p>
-          <p className="whitepaper-cover__case">CASE No. {result.caseNumber} / TECHNICAL DOCUMENTATION UNIT</p>
-          <h1>{result.projectLabel}<br /><span>WHITEPAPER.</span></h1>
+          <p className="eyebrow">THE DYOR DEPARTMENT / EXIT LIQUIDITY DEPARTMENT</p>
+          <p className="whitepaper-cover__case">CASE No. {result.caseNumber} / FICTIONAL TOKEN DOSSIER</p>
+          <h1>{result.projectLabel}<br /><span>TOKEN DOSSIER.</span></h1>
           <p className="whitepaper-cover__subtitle">{result.profile.subtitle}</p>
           <div className="whitepaper-cover__stamp">FICTIONAL ENTERTAINMENT DOCUMENT</div>
           <div className="whitepaper-cover__scores">
@@ -140,7 +140,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
 
         <div className="whitepaper-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <DepartmentPublicShare title="Fictional Whitepaper case file" shareText={xText} casePath={caseUrl} />
+          <DepartmentPublicShare title="Fictional Token Dossier case file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/whitepaper-factory">MAKE YOUR OWN WHITEPAPER ↗</Link>
         </div>
 

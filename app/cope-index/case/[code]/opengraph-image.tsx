@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildPersonalCopeResult, decodeCopeCode } from "../../cope-engine";
 
 export const runtime = "edge";
-export const alt = "A fictional personal reading from THE DYOR DEPARTMENT Global Cope Index.";
+export const alt = "A fictional Solana Trenches cope profile from THE DYOR DEPARTMENT Copium Administration.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,7 +26,7 @@ export default async function CopeCaseImage({
       <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", padding: "48px 54px", backgroundColor: "#090b09", color: "#f0f0e9", border: "2px solid #34412f", fontFamily: "Arial, sans-serif" }}>
         <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 20, borderBottom: "1px solid #30382f" }}>
           <span style={{ color: "#b6ff65", fontSize: 22, fontWeight: 800, letterSpacing: 1 }}>THE DYOR DEPARTMENT</span>
-          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>GLOBAL COPE INDEX / PERSONAL FILE</span>
+          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>COPIUM ADMINISTRATION / PERSONAL TRENCHES FILE</span>
         </div>
         <div style={{ display: "flex", marginTop: 36, color: "#899486", fontSize: 14, letterSpacing: 2 }}>CASE No. {result?.caseNumber ?? "------"} / SELF-REPORTED READING</div>
         <div style={{ display: "flex", marginTop: 22, fontSize: 48, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{title}</div>

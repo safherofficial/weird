@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: SimulatorCasePageProps): Prom
 
   if (!decisions) {
     return {
-      title: "Unrecognized Simulation File",
-      description: "This fictional Department simulation case could not be verified.",
+      title: "Unrecognized Pump.fun Paper Market File",
+      description: "This fictional Pump.fun paper-market case could not be verified.",
       robots: { index: false, follow: false },
     };
   }
 
   const result = buildSimulatorResult(decisions);
-  const title = result.profile.title + " | THE BAGHOLDER SIMULATOR";
+  const title = result.profile.title + " | THE PUMP.FUN PAPER MARKET SIMULATOR";
   const description = result.profile.subtitle + " " + result.profile.roast;
   const route = "/simulator/case/" + encodeURIComponent(encodeSimulatorCode(decisions));
   const image = route + "/opengraph-image";
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: SimulatorCasePageProps): Prom
       description,
       type: "website",
       url: route,
-      images: [{ url: image, width: 1200, height: 630, alt: "Fictional Bagholder Simulator case file: " + result.profile.title }],
+      images: [{ url: image, width: 1200, height: 630, alt: "Fictional Pump.fun Paper Market case file: " + result.profile.title }],
     },
     twitter: {
       card: "summary_large_image",
@@ -60,7 +60,7 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
   const caseUrl = "/simulator/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/simulator?challenge=" + encodeURIComponent(canonicalCode);
   const xText = [
-    "THE DYOR DEPARTMENT has filed my Bagholder Simulator case.",
+    "THE DYOR DEPARTMENT has filed my Pump.fun Paper Market case.",
     "Classification: " + result.profile.title + ".",
     "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
     result.profile.roast.length > 76 ? result.profile.roast.slice(0, 72) + "…" : result.profile.roast,
@@ -69,7 +69,7 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
 
   return (
     <main className="audit-page simulator-case-page" id="main-content">
-      <DepartmentHeader activeSection="simulator" statusMessage="PUBLIC SIMULATION FILE / FICTIONAL" ctaHref="/simulator" ctaLabel="RUN SIMULATION" />
+      <DepartmentHeader activeSection="simulator" statusMessage="PUBLIC PUMP.FUN PAPER MARKET FILE / FICTIONAL" ctaHref="/simulator" ctaLabel="RUN PAPER MARKET" />
 
       <section className="simulator-public-case shell" id="content-start" tabIndex={-1}>
         <div className="simulator-public-case__meta">
@@ -132,8 +132,8 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
 
         <div className="simulator-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>ACCEPT THE CHALLENGE <span>↗</span></Link>
-          <DepartmentPublicShare title="Bagholder Simulator case file" shareText={xText} casePath={caseUrl} />
-          <Link className="button button--quiet" href="/simulator">RUN YOUR OWN SIMULATION ↗</Link>
+          <DepartmentPublicShare title="Pump.fun Paper Market case file" shareText={xText} casePath={caseUrl} />
+          <Link className="button button--quiet" href="/simulator">RUN YOUR OWN PAPER MARKET ↗</Link>
         </div>
 
         <DepartmentNextSteps currentDepartment="simulator" />
@@ -145,7 +145,7 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
         </p>
       </section>
 
-      <DepartmentFooter message={["A PUBLIC RECORD OF IMAGINARY FINANCIAL REGRET.", "NO TOKEN. NO REAL MONEY. NO FINANCIAL ADVICE."]} />
+      <DepartmentFooter message={["A PUBLIC RECORD OF A FICTIONAL PUMP.FUN LAUNCH.", "NO TOKEN. NO REAL MONEY. NO FINANCIAL ADVICE."]} />
     </main>
   );
 }

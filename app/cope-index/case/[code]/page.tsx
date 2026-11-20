@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: CopeCasePageProps): Promise<M
       description,
       type: "website",
       url: route,
-      images: [{ url: image, width: 1200, height: 630, alt: "Fictional personal Global Cope Index reading: " + result.profile.title }],
+      images: [{ url: image, width: 1200, height: 630, alt: "Fictional Solana Trenches cope reading: " + result.profile.title }],
     },
     twitter: {
       card: "summary_large_image",
@@ -59,7 +59,7 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
   const caseUrl = "/cope-index/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/cope-index?challenge=" + encodeURIComponent(canonicalCode);
   const xText = [
-    "THE DYOR DEPARTMENT issued my personal Global Cope Index reading.",
+    "THE DYOR DEPARTMENT issued my fictional Solana Trenches cope reading.",
     result.profile.title + ".",
     "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
     result.profile.roast.length > 70 ? result.profile.roast.slice(0, 66) + "…" : result.profile.roast,
@@ -68,12 +68,12 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
 
   return (
     <main className="audit-page cope-case-page" id="main-content">
-      <DepartmentHeader activeSection="cope" statusMessage="PUBLIC PERSONAL READING / FICTIONAL" ctaHref="/cope-index" ctaLabel="CHECK THE INDEX" />
+      <DepartmentHeader activeSection="cope" statusMessage="PUBLIC TRENCHES READING / FICTIONAL" ctaHref="/cope-index" ctaLabel="CHECK THE INDEX" />
 
       <article className="cope-public-case shell" id="content-start" tabIndex={-1}>
         <div className="cope-public-case__meta">
           <span>PERSONAL CASE FILE / No. {result.caseNumber}</span>
-          <span>GLOBAL COPE INDEX / SELF-REPORTED ANSWERS</span>
+          <span>COPIUM ADMINISTRATION / SELF-REPORTED TRENCHES ANSWERS</span>
         </div>
 
         <p className="eyebrow">PERSONAL CALIBRATION / FINAL READING</p>
@@ -99,7 +99,7 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
 
         <div className="cope-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <DepartmentPublicShare title="Global Cope Index personal reading" shareText={xText} casePath={caseUrl} />
+          <DepartmentPublicShare title="Solana Trenches cope reading" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/cope-index">CALIBRATE YOUR OWN COPE ↗</Link>
         </div>
 
@@ -108,7 +108,7 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
         <p className="cope-personal-result__disclaimer">
           This reading is fictional and is reconstructed from anonymous answer choices encoded in the URL.
           It is not a measure of mental health, financial behaviour, investment skill, real market sentiment or
-          trader performance. The daily Global Cope Index is a separate synthetic date-seeded joke.
+          trader performance. The daily Global Cope Index is a separate synthetic, date-seeded trenches joke.
         </p>
       </article>
 

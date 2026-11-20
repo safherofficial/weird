@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildUtilityResult, decodeUtilityCode } from "../../utility-engine";
 
 export const runtime = "edge";
-export const alt = "A fictional DYOR Department Utility Inspector result card.";
+export const alt = "A fictional 100X Research Bureau token-purpose inspection card.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -28,7 +28,7 @@ export default async function UtilityCaseImage({
       <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", padding: "45px 52px", backgroundColor: "#090b09", color: "#f0f0e9", border: "2px solid #34412f", fontFamily: "Arial, sans-serif" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 20, borderBottom: "1px solid #30382f" }}>
           <span style={{ color: "#b6ff65", fontSize: 22, fontWeight: 800, letterSpacing: 1 }}>THE DYOR DEPARTMENT</span>
-          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>UTILITY INSPECTOR / CASE FILE</span>
+          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>100X RESEARCH BUREAU / CASE FILE</span>
         </div>
         <div style={{ display: "flex", marginTop: 27, color: "#899486", fontSize: 14, letterSpacing: 2 }}>CASE No. {result?.caseNumber ?? "------"} / FORM UTI-001</div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 47, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{title}</div>

@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: RoadmapCasePageProps): Promis
 
   if (!decoded) {
     return {
-      title: "Unrecognized Roadmap File",
-      description: "This fictional Department roadmap could not be verified.",
+      title: "Unrecognized CTO Takeover Roadmap",
+      description: "This fictional CTO takeover roadmap could not be verified.",
       robots: { index: false, follow: false },
     };
   }
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: RoadmapCasePageProps): Promis
       description,
       type: "website",
       url: route,
-      images: [{ url: image, width: 1200, height: 630, alt: "Fictional roadmap case for " + result.projectLabel }],
+      images: [{ url: image, width: 1200, height: 630, alt: "Fictional CTO takeover case for " + result.projectLabel }],
     },
     twitter: {
       card: "summary_large_image",
@@ -60,7 +60,7 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
   const caseUrl = "/roadmap-generator/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/roadmap-generator?challenge=" + encodeURIComponent(canonicalCode);
   const xText = [
-    "THE DYOR DEPARTMENT generated a roadmap for " + result.projectLabel + ".",
+    "THE DYOR DEPARTMENT generated a fictional CTO recovery plan for " + result.projectLabel + ".",
     "Classification: " + result.profile.title + ".",
     "Delivery: " + result.delivery + "/100. Timeline realism: " + result.realism + "/100. Promise inflation: " + result.inflation + "/100.",
     result.profile.roast.length > 65 ? result.profile.roast.slice(0, 61) + "…" : result.profile.roast,
@@ -69,7 +69,7 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
 
   return (
     <main className="audit-page roadmap-case-page" id="main-content">
-      <DepartmentHeader activeSection="roadmap" statusMessage="PUBLIC ROADMAP FILE / FICTIONAL" ctaHref="/roadmap-generator" ctaLabel="GENERATE ROADMAP" />
+      <DepartmentHeader activeSection="roadmap" statusMessage="PUBLIC CTO TAKEOVER FILE / FICTIONAL" ctaHref="/roadmap-generator" ctaLabel="GENERATE CTO PLAN" />
 
       <section className="roadmap-public-case shell" id="content-start" tabIndex={-1}>
         <div className="roadmap-public-case__meta">
@@ -77,7 +77,7 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
           <span>PROJECT: {result.projectLabel} / FORM RPG-001</span>
         </div>
 
-        <p className="eyebrow">FINAL ROADMAP DETERMINATION / SEVEN PHASES</p>
+        <p className="eyebrow">FINAL CTO TAKEOVER DETERMINATION / SEVEN PHASES</p>
         <h1>{result.profile.title}</h1>
         <p className="roadmap-result__subtitle">{result.profile.subtitle}</p>
 
@@ -101,7 +101,7 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
 
         <div className="roadmap-list">
           <div className="roadmap-list__heading">
-            <span>OFFICIAL ROADMAP / {result.projectLabel}</span>
+            <span>OFFICIAL CTO TAKEOVER PLAN / {result.projectLabel}</span>
             <span>7 PHASES / ETA: SOON™</span>
           </div>
           {result.milestones.map((milestone, index) => (
@@ -130,8 +130,8 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
 
         <div className="roadmap-public-case__actions">
           <Link className="button button--primary" href={challengeUrl}>CHALLENGE A DEGEN <span>↗</span></Link>
-          <DepartmentPublicShare title="Roadmap Generator case file" shareText={xText} casePath={caseUrl} />
-          <Link className="button button--quiet" href="/roadmap-generator">GENERATE YOUR OWN ROADMAP ↗</Link>
+          <DepartmentPublicShare title="CTO Takeover Roadmap case file" shareText={xText} casePath={caseUrl} />
+          <Link className="button button--quiet" href="/roadmap-generator">GENERATE YOUR OWN CTO TAKEOVER PLAN ↗</Link>
         </div>
 
         <DepartmentNextSteps currentDepartment="roadmap" />

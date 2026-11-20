@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildClubResult, decodeClubCode } from "../../club-engine";
 
 export const runtime = "edge";
-export const alt = "A fictional membership card from THE DYOR DEPARTMENT 99% CLUB.";
+export const alt = "A fictional survivor card from the THE DYOR DEPARTMENT Solana Trenches 99% Club.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,7 +20,7 @@ export default async function ClubMemberImage({
       <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", padding: "48px 54px", backgroundColor: "#090b09", color: "#f0f0e9", border: "2px solid #34412f", fontFamily: "Arial, sans-serif" }}>
         <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 20, borderBottom: "1px solid #30382f" }}>
           <span style={{ color: "#b6ff65", fontSize: 23, fontWeight: 800, letterSpacing: 1 }}>THE DYOR DEPARTMENT</span>
-          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>THE 99% CLUB / MEMBERSHIP OFFICE</span>
+          <span style={{ color: "#899486", fontSize: 13, letterSpacing: 2 }}>SOLANA TRENCHES / 99% SURVIVOR REGISTRY</span>
         </div>
         <div style={{ display: "flex", marginTop: 38, color: "#899486", fontSize: 15, letterSpacing: 2 }}>MEMBERSHIP CERTIFICATE / {result?.memberNumber ?? "99-000000"}</div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 48, lineHeight: 1.05, fontWeight: 900, letterSpacing: -2 }}>{result?.profile.title ?? "UNRECOGNIZED MEMBER FILE"}</div>
