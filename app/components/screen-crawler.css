@@ -1,4 +1,4 @@
-/* U18.5 — autonomous armored crawler, mirrored to the pointer and layered behind the site. */
+/* U18.6 — an autonomous screen-dwelling crawler with real page occlusion. */
 .department-scene {
   position: relative;
   z-index: 2;
@@ -15,9 +15,23 @@
   pointer-events: none;
   user-select: none;
   will-change: transform;
-  transition: opacity 320ms ease;
+  transition: opacity 420ms ease, filter 420ms ease;
 }
-.screen-crawler--ready { opacity: 1; }
+.screen-crawler--ready { opacity: .88; }
+.screen-crawler[data-depth="background"] {
+  z-index: 1;
+  opacity: .88;
+}
+.screen-crawler[data-depth="behind"] {
+  z-index: 1;
+  opacity: .66;
+  filter: brightness(.86) saturate(.82);
+}
+.screen-crawler[data-depth="over"] {
+  z-index: 3;
+  opacity: .98;
+  filter: drop-shadow(0 5px 16px rgba(0,0,0,.7)) drop-shadow(0 0 8px rgba(182,255,101,.16));
+}
 .screen-crawler::before {
   position: absolute;
   inset: 22% 12% 8%;
@@ -33,47 +47,28 @@
   width: 100%;
   height: 100%;
   transform-origin: 50% 50%;
-  transition: transform 620ms cubic-bezier(.2,.76,.2,1);
+  transition: transform 480ms cubic-bezier(.2,.76,.2,1);
   will-change: transform;
 }
 .screen-crawler[data-facing="right"] .screen-crawler__orientation { transform: rotate(0deg) scaleX(1); }
 .screen-crawler[data-facing="left"] .screen-crawler__orientation { transform: rotate(0deg) scaleX(-1); }
-.screen-crawler[data-facing="front"] .screen-crawler__orientation { transform: rotate(-90deg) scale(.94); }
-.screen-crawler[data-facing="back"] .screen-crawler__orientation { transform: rotate(90deg) scale(.94); }
+.screen-crawler[data-facing="up"] .screen-crawler__orientation { transform: rotate(-90deg) scale(.94); }
+.screen-crawler[data-facing="down"] .screen-crawler__orientation { transform: rotate(90deg) scale(.94); }
 .screen-crawler__sprite {
   display: block;
   width: 100%;
   height: 100%;
-  background-image: url("/crawler/crawler-spritesheet.webp");
+  background-image: url("/crawler/crawler-walk-strip.webp");
   background-repeat: no-repeat;
-  background-position: 0% 0%;
-  background-size: 400% 300%;
+  background-position: 0% 50%;
+  background-size: 1100% 100%;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,.62)) drop-shadow(0 0 7px rgba(182,255,101,.22));
   transform-origin: 50% 58%;
-  animation: crawler-sprite-cycle 1.08s steps(1, end) infinite, crawler-body-bob 1.7s ease-in-out infinite;
+  animation: crawler-body-bob 1.7s ease-in-out infinite;
   will-change: background-position, transform;
 }
 .screen-crawler[data-motion="idle"] .screen-crawler__sprite {
-  animation-duration: 2.15s, 2.7s;
-}
-.screen-crawler[data-facing="back"] .screen-crawler__sprite {
-  background-position: 100% 100%;
-  animation-name: crawler-body-bob;
-}
-@keyframes crawler-sprite-cycle {
-  0% { background-position: 0% 0%; }
-  8.333% { background-position: 33.333% 0%; }
-  16.666% { background-position: 66.666% 0%; }
-  25% { background-position: 100% 0%; }
-  33.333% { background-position: 0% 50%; }
-  41.666% { background-position: 33.333% 50%; }
-  50% { background-position: 66.666% 50%; }
-  58.333% { background-position: 100% 50%; }
-  66.666% { background-position: 0% 100%; }
-  75% { background-position: 33.333% 100%; }
-  83.333% { background-position: 66.666% 100%; }
-  91.666% { background-position: 100% 100%; }
-  100% { background-position: 0% 0%; }
+  animation-duration: 2.7s;
 }
 @keyframes crawler-body-bob {
   0%, 100% { transform: translateY(0) scale(1); }
