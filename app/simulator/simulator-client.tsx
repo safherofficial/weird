@@ -55,7 +55,7 @@ function makeCaseCard(result: SimulatorResult) {
     '<rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1172M28 570H1172" stroke="#384137"/>' +
     '<text x="64" y="77" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">BAGHOLDER SIMULATOR / CASE FILE</text>' +
+    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">PUMP.FUN PAPER MARKET / CASE FILE</text>' +
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="16">CASE No. ' + result.caseNumber + ' / HYPE-404 INCIDENT REPORT</text>' +
     '<text x="64" y="231" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="49" font-weight="900">' + title + '</text>' +
     '<text x="64" y="280" fill="#b6ff65" font-family="monospace" font-size="20">' + subtitle + '</text>' +
@@ -144,7 +144,7 @@ export default function SimulatorClient() {
     const caseUrl = makeCaseUrl(result.decisions);
     const challengeUrl = makeChallengeUrl(result.decisions);
     const text = [
-      "THE DYOR DEPARTMENT — BAGHOLDER SIMULATOR",
+      "THE DYOR DEPARTMENT — PUMP.FUN PAPER MARKET SIMULATOR",
       "CASE No. " + result.caseNumber,
       result.profile.title,
       result.profile.subtitle,
@@ -169,7 +169,7 @@ export default function SimulatorClient() {
     if (!result) return;
     const caseUrl = makeCaseUrl(result.decisions);
     const text = [
-      "I survived THE DYOR DEPARTMENT Bagholder Simulator.",
+      "I survived THE DYOR DEPARTMENT Pump.fun Paper Market Simulator.",
       "Classification: " + result.profile.title + ".",
       "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
       result.profile.roast,
@@ -177,7 +177,7 @@ export default function SimulatorClient() {
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My Bagholder Simulator case file", text, url: caseUrl });
+        await navigator.share({ title: "My Pump.fun Paper Market case file", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR CASE REMAINS FILED.");
       }
@@ -218,12 +218,12 @@ export default function SimulatorClient() {
           const downloadUrl = URL.createObjectURL(png);
           const anchor = document.createElement("a");
           anchor.href = downloadUrl;
-          anchor.download = "dyor-bagholder-case-" + result.caseNumber + ".png";
+          anchor.download = "dyor-pumpfun-paper-case-" + result.caseNumber + ".png";
           document.body.appendChild(anchor);
           anchor.click();
           anchor.remove();
           window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-          setNotice("YOUR BAGHOLDER CASE CARD HAS BEEN ISSUED.");
+          setNotice("YOUR PUMP.FUN PAPER CASE CARD HAS BEEN ISSUED.");
         }, "image/png");
       };
 
@@ -241,7 +241,7 @@ export default function SimulatorClient() {
   if (result) {
     const caseUrl = makeCaseUrl(result.decisions);
     const xText = [
-      "I survived THE DYOR DEPARTMENT Bagholder Simulator.",
+      "I survived THE DYOR DEPARTMENT Pump.fun Paper Market Simulator.",
       "Classification: " + result.profile.title + ".",
       "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
       result.profile.roast.length > 82 ? result.profile.roast.slice(0, 78) + "…" : result.profile.roast,
@@ -339,10 +339,10 @@ export default function SimulatorClient() {
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
         <div className="simulator-briefing__body">
-          <p className="eyebrow">OFFICE OF IMAGINARY MARKET LOSSES</p>
+          <p className="eyebrow">PUMP.FUN INTELLIGENCE / PAPER MARKET DESK</p>
           <h2>YOUR BAG.<br /><span>YOUR PROBLEM.</span></h2>
           <p className="simulator-briefing__lead">
-            Seven rounds. Four questionable options. One entirely fictional asset.
+            Seven rounds. One fictional Solana launch. From CA drop to graduation, CTO noise and a post-graduation pool.
             Let's see what happens when conviction meets a very rude chart.
           </p>
 
@@ -362,7 +362,7 @@ export default function SimulatorClient() {
           <div className="simulator-rules">
             <span>THE TERMS OF YOUR MISFORTUNE</span>
             <p>75% of your imaginary capital is already in the position. The rest is in paper cash.</p>
-            <p>Each round, choose to hold, trim 20%, average down or ask Telegram. The scripted market event lands immediately after your decision.</p>
+            <p>Each round, choose to hold, trim 20%, average down or ask CT / Telegram. The scripted Pump.fun launch event lands immediately after your decision.</p>
             <p>Every player receives the same fictional market sequence. Your decisions change your paper portfolio, not the market.</p>
           </div>
 
@@ -387,7 +387,7 @@ export default function SimulatorClient() {
   }).join(" ");
 
   return (
-    <section className="simulator-panel simulator-game" aria-label="Bagholder Simulator game">
+    <section className="simulator-panel simulator-game" aria-label="Pump.fun Paper Market Simulator">
       <div className="simulator-panel__header">
         <span>LIVE SIMULATION / ROUND {String(currentRound + 1).padStart(2, "0")} OF {SIMULATOR_ROUNDS}</span>
         <span className="simulator-status"><i /> POSITION OPEN</span>
@@ -444,7 +444,7 @@ export default function SimulatorClient() {
         <h2>{currentEvent.headline}</h2>
         <p>{currentEvent.memo}</p>
         <div className="simulator-telegram">
-          <span>TELEGRAM / LEAKED MESSAGE</span>
+          <span>CT / TELEGRAM / FICTIONAL CHAT LOG</span>
           <strong>{currentEvent.telegram}</strong>
         </div>
       </div>

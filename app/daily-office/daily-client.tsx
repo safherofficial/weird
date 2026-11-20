@@ -63,7 +63,7 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
     '<rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1172M28 615H1172" stroke="#384137"/>' +
     '<text x="64" y="76" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="14">DAILY OFFICE / ' + dispatch.issueDate + "</text>" +
+    '<text x="1136" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="14">TRENCHES DESK / ' + dispatch.issueDate + "</text>" +
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">' + dispatch.reference + " / OFFICIAL DAILY DISPATCH</text>" +
     titleSvg +
     '<rect x="64" y="267" width="1072" height="107" fill="#121713" stroke="#384137"/>' +
@@ -85,7 +85,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
 
   const pagePath = "/daily-office";
   const xText = [
-    "THE DYOR DEPARTMENT / DAILY OFFICE",
+    "THE DYOR DEPARTMENT / TRENCHES DESK",
     dispatch.headline,
     dispatch.bulletin,
     "CONVICTION INDEX: " + dispatch.convictionIndex.score + "/100 — " + dispatch.convictionIndex.classification,
@@ -96,7 +96,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
   async function copyDispatch() {
     const pageUrl = new URL(pagePath, window.location.origin).toString();
     const text = [
-      "THE DYOR DEPARTMENT — DAILY DEPARTMENTAL ABSURDITY",
+      "THE DYOR DEPARTMENT — THE TRENCHES DESK / DAILY CT BRIEFING",
       dispatch.reference,
       dispatch.issueDate + " / UTC",
       dispatch.headline,
@@ -180,12 +180,12 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
   return (
     <section className="daily-office-panel" aria-label="Daily Departmental Absurdity dispatch">
       <div className="daily-office-panel__header">
-        <span>{dispatch.reference} / DAILY OFFICE RECORD</span>
+        <span>{dispatch.reference} / DAILY CT BRIEFING RECORD</span>
         <span>UTC ISSUE / {dispatch.issueDate}</span>
       </div>
 
       <div className="daily-office-headline">
-        <p className="eyebrow">THE DAILY DEPARTMENTAL ABSURDITY</p>
+        <p className="eyebrow">THE TRENCHES DESK / DAILY CT BRIEFING</p>
         <h2>{dispatch.headline}</h2>
         <p>{dispatch.subheading}</p>
       </div>
@@ -261,7 +261,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
           style={{ display: "flex", flexWrap: "wrap", gridColumn: "1 / -1", gap: 8, minWidth: 0 }}
         >
           <DepartmentPublicShare
-            title="THE DYOR DEPARTMENT / Daily Office"
+            title="THE DYOR DEPARTMENT / Trenches Desk"
             shareText={xText}
             casePath={pagePath}
             resourceLabel="DAILY DISPATCH"

@@ -68,7 +68,7 @@ function makeCaseCard(result: UtilityResult) {
     '<rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1172M28 572H1172" stroke="#384137"/>' +
     '<text x="64" y="77" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">UTILITY INSPECTOR / CASE FILE</text>' +
+    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">100X RESEARCH BUREAU / CASE FILE</text>' +
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="16">CASE No. ' + result.caseNumber + ' / FORM UTI-001</text>' +
     '<text x="64" y="226" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="43" font-weight="900">' + title + '</text>' +
     '<text x="64" y="270" fill="#b6ff65" font-family="monospace" font-size="18">' + subtitle + '</text>' +
@@ -145,7 +145,7 @@ export default function UtilityInspectorClient() {
     const caseUrl = makeCaseUrl(result.answers);
     const challengeUrl = makeChallengeUrl(result.answers);
     const text = [
-      "THE DYOR DEPARTMENT — UTILITY INSPECTOR",
+      "THE DYOR DEPARTMENT — 100X RESEARCH BUREAU",
       "CASE No. " + result.caseNumber,
       "CLASSIFICATION: " + result.profile.title,
       "DEPARTMENTAL FINDING: " + result.finding,
@@ -178,7 +178,7 @@ export default function UtilityInspectorClient() {
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My Utility Inspector case file", text, url: caseUrl });
+        await navigator.share({ title: "My 100X Research Bureau case file", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR INSPECTION REMAINS ON FILE.");
       }
@@ -347,7 +347,7 @@ export default function UtilityInspectorClient() {
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
         <div className="utility-briefing__body">
-          <p className="eyebrow">OFFICE OF CLAIMED REVOLUTIONARY SOLUTIONS</p>
+          <p className="eyebrow">100X RESEARCH BUREAU / NARRATIVE & TOKEN PURPOSE DESK</p>
           <h2>SHOW US<br /><span>THE UTILITY.</span></h2>
           <p className="utility-briefing__lead">
             Seven questions. Three departmental scores. One uncomfortable attempt to explain what the product does.
@@ -377,7 +377,7 @@ export default function UtilityInspectorClient() {
   const currentOption = answers[current];
 
   return (
-    <section className="utility-panel utility-game" aria-label="Utility Inspector questionnaire">
+    <section className="utility-panel utility-game" aria-label="100X Research Bureau token-purpose inspection">
       <div className="utility-panel__header">
         <span>INSPECTION IN PROGRESS / {String(current + 1).padStart(2, "0")} OF 07</span>
         <span className="utility-status"><i /> CLAIMS UNDER REVIEW</span>

@@ -18,7 +18,7 @@ export default function MuseumClient() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="TRY: LIQUIDITY, ROADMAP, TELEGRAM..."
+            placeholder="TRY: PUMP.FUN, BUNDLE, KOL, CTO, GRADUATION..."
           />
         </label>
         <div className="museum-filters" aria-label="Filter exhibits by category">
@@ -68,7 +68,7 @@ export default function MuseumClient() {
       ) : (
         <div className="museum-empty">
           <span>NO MATCHING SPECIMEN FOUND.</span>
-          <p>The archive has been searched. The Department suggests trying fewer buzzwords.</p>
+          <p>The relic collection has been searched. Try a launch term, a KOL trope or a post-graduation incident.</p>
           <button type="button" onClick={() => { setQuery(""); setCategory("ALL"); }}>RESET THE SEARCH ↺</button>
         </div>
       )}

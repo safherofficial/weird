@@ -70,10 +70,10 @@ function makeCaseCard(result: RoadmapResult) {
     '<rect x="28" y="28" width="1144" height="619" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1172M28 555H1172" stroke="#384137"/>' +
     '<text x="64" y="77" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">ROADMAP GENERATOR / CASE FILE</text>' +
+    '<text x="1136" y="77" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="15">CTO TAKEOVER ROADMAP / CASE FILE</text>' +
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="15">CASE No. ' + result.caseNumber + ' / PROJECT: ' + project + '</text>' +
     '<text x="64" y="223" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="43" font-weight="900">' + title + '</text>' +
-    '<text x="64" y="267" fill="#b6ff65" font-family="monospace" font-size="17">A SEVEN-PHASE ROADMAP / ETA: SOON™</text>' +
+    '<text x="64" y="267" fill="#b6ff65" font-family="monospace" font-size="17">A SEVEN-PHASE CTO RECOVERY PLAN / ETA: SOON™</text>' +
     '<text x="64" y="297" fill="#ff8580" font-family="monospace" font-size="12" font-weight="bold">DEPARTMENTAL FINDING / ' + finding + '</text>' +
     cards +
     '<text x="64" y="478" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + roast + '</text>' +
@@ -150,7 +150,7 @@ export default function RoadmapGeneratorClient() {
     const caseUrl = makeCaseUrl(result.answers, result.projectSlug);
     const challengeUrl = makeChallengeUrl(result.answers, result.projectSlug);
     const text = [
-      "THE DYOR DEPARTMENT — ROADMAP GENERATOR",
+      "THE DYOR DEPARTMENT — CTO EMERGENCY OFFICE",
       "PROJECT: " + result.projectLabel,
       "CASE No. " + result.caseNumber,
       "CLASSIFICATION: " + result.profile.title,
@@ -185,7 +185,7 @@ export default function RoadmapGeneratorClient() {
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My Department Roadmap", text, url: caseUrl });
+        await navigator.share({ title: "My CTO Takeover Roadmap", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR ROADMAP REMAINS ON FILE.");
       }
@@ -225,12 +225,12 @@ export default function RoadmapGeneratorClient() {
           const downloadUrl = URL.createObjectURL(png);
           const anchor = document.createElement("a");
           anchor.href = downloadUrl;
-          anchor.download = "dyor-roadmap-" + result.caseNumber + ".png";
+          anchor.download = "dyor-cto-takeover-" + result.caseNumber + ".png";
           document.body.appendChild(anchor);
           anchor.click();
           anchor.remove();
           window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-          setNotice("YOUR DEPARTMENT ROADMAP CARD HAS BEEN ISSUED.");
+          setNotice("YOUR CTO TAKEOVER ROADMAP CARD HAS BEEN ISSUED.");
         }, "image/png");
       };
 
@@ -261,7 +261,7 @@ export default function RoadmapGeneratorClient() {
     return (
       <section className="roadmap-panel roadmap-result" aria-live="polite">
         <div className="roadmap-panel__header">
-          <span>ROADMAP GENERATED / 07 MILESTONES FILED</span>
+          <span>CTO RECOVERY PLAN / 07 PHASES FILED</span>
           <span className="roadmap-status roadmap-status--closed">● APPROVED FOR ENTERTAINMENT</span>
         </div>
 
@@ -289,7 +289,7 @@ export default function RoadmapGeneratorClient() {
 
         <div className="roadmap-list">
           <div className="roadmap-list__heading">
-            <span>THE OFFICIAL ROADMAP / {result.projectLabel}</span>
+            <span>THE OFFICIAL TAKEOVER PLAN / {result.projectLabel}</span>
             <span>7 PHASES / ETA: SOON™</span>
           </div>
           {result.milestones.map((milestone, index) => (
@@ -324,14 +324,14 @@ export default function RoadmapGeneratorClient() {
 
         <div className="roadmap-actions">
           <button className="button button--primary" type="button" onClick={downloadCard}>DOWNLOAD CASE CARD <span>↓</span></button>
-          <button className="button button--outline" type="button" onClick={shareReport}>SHARE ROADMAP <span>↗</span></button>
+          <button className="button button--outline" type="button" onClick={shareReport}>SHARE TAKEOVER PLAN <span>↗</span></button>
           <a className="button button--x" href={xIntent} target="_blank" rel="noopener noreferrer">POST CASE TO X <span>↗</span></a>
           <a className="button button--challenge" href={challengeIntent} target="_blank" rel="noopener noreferrer">CHALLENGE A DEGEN <span>↗</span></a>
-          <button className="button button--quiet" type="button" onClick={copyReport}>COPY ROADMAP + LINKS</button>
+          <button className="button button--quiet" type="button" onClick={copyReport}>COPY TAKEOVER PLAN + LINKS</button>
           <button className="button button--quiet" type="button" onClick={restart}>GENERATE ANOTHER ↺</button>
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
-        <p className="roadmap-public-link"><Link href={caseUrl}>OPEN PUBLIC ROADMAP FILE ↗</Link></p>
+        <p className="roadmap-public-link"><Link href={caseUrl}>OPEN PUBLIC CTO FILE ↗</Link></p>
         <DepartmentNextSteps currentDepartment="roadmap" />
       </section>
     );
@@ -348,10 +348,10 @@ export default function RoadmapGeneratorClient() {
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
         <div className="roadmap-briefing__body">
-          <p className="eyebrow">OFFICE OF FUTURE DELIVERABLES</p>
-          <h2>BUILD YOUR<br /><span>OWN ROADMAP.</span></h2>
+          <p className="eyebrow">CTO EMERGENCY OFFICE / COMMUNITY TAKEOVER DESK</p>
+          <h2>BUILD YOUR<br /><span>CTO TAKEOVER PLAN.</span></h2>
           <p className="roadmap-briefing__lead">
-            Six questions. Seven phases. An entirely fictional timeline. Finally, a document that says everything is coming soon.
+            Six questions. Seven fictional recovery phases. Map the deployer silence, community handover, launch milestones and the next promised CTO update.
           </p>
 
           <label className="roadmap-project-field">
@@ -380,7 +380,7 @@ export default function RoadmapGeneratorClient() {
           </div>
 
           <div className="roadmap-briefing__actions">
-            <button className="button button--primary" type="button" onClick={startGenerator}>GENERATE A ROADMAP <span>↗</span></button>
+            <button className="button button--primary" type="button" onClick={startGenerator}>GENERATE A CTO TAKEOVER PLAN <span>↗</span></button>
             <span>NO GANTT CHART. NO DELIVERY GUARANTEE. NO FINANCIAL ADVICE.</span>
           </div>
         </div>
@@ -394,7 +394,7 @@ export default function RoadmapGeneratorClient() {
   return (
     <section className="roadmap-panel roadmap-game" aria-label="Roadmap Generator questionnaire">
       <div className="roadmap-panel__header">
-        <span>ROADMAP INTAKE / {String(current + 1).padStart(2, "0")} OF 06</span>
+        <span>CTO RECOVERY INTAKE / {String(current + 1).padStart(2, "0")} OF 06</span>
         <span className="roadmap-status"><i /> MILESTONES PENDING</span>
       </div>
 
@@ -415,7 +415,7 @@ export default function RoadmapGeneratorClient() {
       </div>
 
       <div className="roadmap-question">
-        <div className="roadmap-question__number">MILESTONE REVIEW // {String(current + 1).padStart(2, "0")}</div>
+        <div className="roadmap-question__number">HANDOVER REVIEW // {String(current + 1).padStart(2, "0")}</div>
         <h2 id="roadmap-current-question" aria-live="polite" aria-atomic="true">{question.prompt}</h2>
         <p>{question.note}</p>
         <div className="roadmap-answer-list" role="group" aria-labelledby="roadmap-current-question">
