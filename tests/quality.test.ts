@@ -1265,6 +1265,11 @@ test("U25.8 Case Atlas presents recurrence calculations with accessible links an
   const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
   const atlasPage = readFileSync("app/daily-office/atlas/page.tsx", "utf8");
   const css = readFileSync("app/globals.css", "utf8");
+  const publicRoutes = [...routePages.map(([, path]) => path), "app/passport/page.tsx"];
+  for (const path of publicRoutes) {
+    const page = readFileSync(path, "utf8");
+    assert.ok(page.includes('id="content-start"'), path + " must provide the navigation skip-link target");
+  }
 
   assert.ok(atlasClient.includes('className="department-case-atlas__recurrence"'));
   assert.ok(atlasClient.includes("AGE OF LATEST FILE"));
@@ -1780,7 +1785,8 @@ test("U26 navigation labels and links match the exact destination pages and dire
     assert.ok(department, section + " division record must exist");
     assert.equal(department.pageTitle, pageTitle);
     const page = readFileSync(path, "utf8");
-    assert.ok(page.includes(pageTitle + "."), path + " heading must match its navigation label");
+    const visibleHeading = page.replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ");
+    assert.ok(visibleHeading.includes(pageTitle + "."), path + " heading must match its navigation label");
     const navItem = divisionNavigationGroups.flatMap((group) => group.items).find((item) => item.section === section);
     assert.ok(navItem);
     assert.equal(navItem.label, pageTitle);
@@ -1794,6 +1800,8 @@ test("U26 navigation labels and links match the exact destination pages and dire
   assert.ok(header.includes('href={"/#" + group.anchorId}'));
   assert.equal(header.split("navigationGroups.map(").length - 1, 2, "Desktop and mobile menus must render the same current route map");
   assert.ok(header.includes('label: "THE DEPARTMENT PASSPORT"'));
+  assert.ok(header.includes("{passportItem.label}"), "Desktop Passport navigation text must match the destination identity");
+  assert.ok(header.includes('aria-label="Passport"'));
   assert.ok(header.includes('href: "/passport"'));
   assert.ok(header.includes('ctaLabel = "START DYOR AUDIT 2.0"'));
   assert.ok(header.includes('ctaHref = "/audit"'));

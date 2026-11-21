@@ -140,7 +140,7 @@ export default function DepartmentHeader({
             aria-current={isCurrent(passportItem, activeSection) ? "page" : undefined}
             onClick={closeMenu}
           >
-            PASSPORT <span aria-hidden="true">↗</span>
+            {passportItem.label} <span aria-hidden="true">↗</span>
           </Link>
           <span className="main-nav__divider" aria-hidden="true" />
           <Link className="main-nav__utility-link" href={departmentsHref} onClick={closeMenu}>DIRECTORY</Link>
@@ -185,7 +185,7 @@ export default function DepartmentHeader({
               </section>
             ))}
 
-            <section className="mobile-nav__section mobile-nav__section--identity" aria-label="Identity">
+            <section className="mobile-nav__section mobile-nav__section--identity" aria-label="Passport">
               <div className="mobile-nav__section-heading">
                 <span>04 / PASSPORT</span>
                 <span>01 UNIT</span>
