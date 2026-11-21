@@ -18,7 +18,7 @@ import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/depa
 import { archiveRecords } from "../app/archives/archive-data";
 import { exhibits } from "../app/museum/museum-data";
 import { departmentGroups, departments, divisionNavigationGroups } from "../app/divisions";
-import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
+import { CLUB_BADGE_IDS, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
 type ResultRecord = Record<string, unknown>;
 type EngineSpec = {
@@ -708,8 +708,9 @@ test("U27.4 Daily Content Quality keeps risk conclusions, post-mortems and Cope 
 
 function makePassport(overrides: Partial<PassportData> = {}): PassportData {
   return {
-    version: 2, enabled: true, createdAt: "2026-11-20T12:00:00.000Z",
+    version: 3, enabled: true, createdAt: "2026-11-20T12:00:00.000Z",
     visitedDepartments: [], dailyOfficeDates: [], bestDailyStreak: 0, completedActivities: [],
+    clubMembershipAnswers: null, clubApplicationCount: 0, clubChallengeAnswers: {}, clubBadgeIds: [],
     ...overrides,
   };
 }
@@ -735,7 +736,8 @@ test("Passport unlocks require their recorded activities and the seven-day strea
   });
   const all = getPassportAchievementStatuses(complete);
   assert.equal(all.length, PASSPORT_ACHIEVEMENTS.length);
-  assert.equal(all.every((item) => item.earned), true);
+  assert.equal(all.filter((item) => !item.id.startsWith("club-") || item.id === "club-admitted").every((item) => item.earned), true);
+  assert.equal(all.filter((item) => item.id.startsWith("club-") && item.id !== "club-admitted").every((item) => !item.earned), true);
 });
 
 test("Passport daily visit streak counts consecutive UTC dates without double-counting duplicates", () => {
@@ -2276,3 +2278,88 @@ test("U26 navigation labels and links match the exact destination pages and dire
   assert.ok(css.includes(".mobile-nav__section-heading a"));
 });
 
+
+
+test("U28.1 Club adds twelve persistent, criteria-based achievements to the existing Passport collection", () => {
+  const expectedClubBadges = [
+    "club-not-my-fault",
+    "club-next-one-is-mine",
+    "club-dyor-certified",
+    "club-diamond-hands",
+    "club-average-downer",
+    "club-cto-believer",
+    "club-exit-liquidity",
+    "club-100x-visionary",
+    "club-still-early",
+    "club-cope-engineer",
+    "club-kol-disciple",
+    "club-certified-bagholder",
+  ];
+  assert.deepEqual(CLUB_BADGE_IDS, expectedClubBadges);
+  assert.deepEqual(
+    PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).map((badge) => badge.id),
+    ["club-admitted", ...expectedClubBadges],
+  );
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 23);
+  assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 13);
+
+  const passport = makePassport({
+    clubMembershipAnswers: [0, 0, 0, 0, 0],
+    clubApplicationCount: 1,
+    clubChallengeAnswers: {
+      "fault-allocation": 2,
+      "next-entry": 0,
+      "research-receipt": 0,
+    },
+    clubBadgeIds: [
+      "club-not-my-fault",
+      "club-next-one-is-mine",
+      "club-dyor-certified",
+      "club-cope-engineer",
+      "club-certified-bagholder",
+    ],
+  });
+  const statuses = new Map(getPassportAchievementStatuses(passport).map((badge) => [badge.id, badge]));
+  assert.equal(statuses.get("club-not-my-fault")?.earned, true);
+  assert.equal(statuses.get("club-next-one-is-mine")?.earned, true);
+  assert.equal(statuses.get("club-dyor-certified")?.earned, true);
+  assert.equal(statuses.get("club-cope-engineer")?.progress, 3);
+  assert.equal(statuses.get("club-cope-engineer")?.target, 3);
+  assert.equal(statuses.get("club-cope-engineer")?.earned, true);
+  assert.equal(statuses.get("club-certified-bagholder")?.earned, true);
+  assert.equal(statuses.get("club-diamond-hands")?.earned, false);
+});
+
+test("U28.1 legacy Passport records migrate to v3 without losing existing visit stamps or completed activities", () => {
+  const store = readFileSync("app/passport/passport-store.ts", "utf8");
+  assert.ok(store.includes("export const PASSPORT_VERSION = 3"));
+  assert.ok(store.includes("candidate.version === 1 || candidate.version === 2"));
+  assert.ok(store.includes("visitedDepartments: candidate.visitedDepartments as DepartmentId[]"));
+  assert.ok(store.includes("completedActivities,"));
+  assert.ok(store.includes("clubMembershipAnswers: null"));
+  assert.ok(store.includes("clubChallengeAnswers: {}"));
+  assert.ok(store.includes("clubBadgeIds: []"));
+});
+
+test("U28.1 Club challenge desk uses only the optional local Passport and exposes all unlock conditions", () => {
+  const challenges = readFileSync("app/club/club-challenges.tsx", "utf8");
+  const clubPage = readFileSync("app/club/page.tsx", "utf8");
+  const badgeAssets = readFileSync("app/passport/badge-assets.ts", "utf8");
+  const passportClient = readFileSync("app/passport/passport-client.tsx", "utf8");
+  const passportPage = readFileSync("app/passport/page.tsx", "utf8");
+
+  assert.equal((challenges.match(/id: "(?:fault-allocation|next-entry|research-receipt)"/g) ?? []).length, 3);
+  assert.ok(challenges.includes("recordClubChallenge"));
+  assert.ok(challenges.includes("PASSPORT_UPDATED_EVENT"));
+  assert.ok(challenges.includes('href="/passport"'));
+  assert.ok(challenges.includes("club-badge-case__grid"));
+  assert.ok(challenges.includes("BADGE CASE."));
+  assert.ok(clubPage.includes("<ClubChallenges />"));
+  assert.ok(clubPage.includes("IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE."));
+  const clubBadgeArt = badgeAssets.split("export const CLUB_BADGE_MARKS")[1] ?? "";
+  assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 12);
+  assert.ok(passportClient.includes("badgeCollectionSvgHeight(statuses)"));
+  assert.ok(passportClient.includes("getBadgeArtworkHref(item.id, assetBaseUrl)"));
+  assert.ok(passportPage.includes("23 ACHIEVEMENT BADGES"));
+  assert.doesNotMatch(challenges, /fetch\(|WebSocket|wallet connect|supabase|prisma/i);
+});

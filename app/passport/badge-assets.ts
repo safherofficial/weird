@@ -12,3 +12,20 @@ export const ACHIEVEMENT_BADGE_ASSETS: Record<string, string> = {
   "seven-day-desk": "/badges/seven-day-desk-duty.webp",
   "complete-circuit": "/badges/complete-circuit.webp",
 };
+
+
+/** Compact vector marks for the Club's locally-unlocked badge artwork. */
+export const CLUB_BADGE_MARKS: Record<string, string> = {
+  "club-not-my-fault": "!",
+  "club-next-one-is-mine": "↗",
+  "club-dyor-certified": "D",
+  "club-diamond-hands": "◆",
+  "club-average-downer": "↓",
+  "club-cto-believer": "CTO",
+  "club-exit-liquidity": "↘",
+  "club-100x-visionary": "100",
+  "club-still-early": "∞",
+  "club-cope-engineer": "∿",
+  "club-kol-disciple": "KOL",
+  "club-certified-bagholder": "99",
+};
