@@ -88,10 +88,12 @@ export default function DepartmentCaseChain({ currentDepartment }: DepartmentCas
 
             <div className="department-case-chain__evidence">
               <div className="department-case-chain__evidence-heading">
-                <span>SOURCE RECORD / {office.evidence.source}</span>
-                <strong>{office.evidence.outputLabel}</strong>
+                <span>INCOMING HANDOFF / {office.evidence.receivedFrom}</span>
+                <strong>RECEIVED FILE / {office.evidence.receivedArtifact}</strong>
               </div>
               <p>{office.evidence.excerpt}</p>
+              <small>PRIMARY RECORD / {office.evidence.source}</small>
+              <strong className="department-case-chain__evidence-output">OUTPUT PRODUCED / {office.evidence.outputLabel}</strong>
               <small>REVIEW QUESTION / {office.evidence.reviewQuestion}</small>
             </div>
 
