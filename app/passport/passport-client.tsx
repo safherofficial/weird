@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AchievementEmblem from "./achievement-emblem";
-import { ACHIEVEMENT_BADGE_ASSETS } from "./badge-assets";
+import { ACHIEVEMENT_BADGE_ASSETS, CLUB_BADGE_MARKS } from "./badge-assets";
 import {
   DEPARTMENT_STAMPS,
   PASSPORT_STORAGE_KEY,
@@ -31,7 +31,32 @@ function rarityColor(rarity: PassportAchievementStatus["rarity"]) {
   return "#b6ff65";
 }
 
+function passportSvgHeight(statuses: PassportAchievementStatus[]) {
+  return Math.max(1130, 635 + Math.ceil(statuses.length / 3) * 105 + 90);
+}
+
+function badgeCollectionSvgHeight(statuses: PassportAchievementStatus[]) {
+  return Math.max(990, 220 + Math.ceil(statuses.length / 3) * 175 + 80);
+}
+
+function getBadgeArtworkHref(id: string, assetBaseUrl: string) {
+  const asset = ACHIEVEMENT_BADGE_ASSETS[id];
+  if (asset) return escapeXml(assetBaseUrl + asset);
+  const mark = CLUB_BADGE_MARKS[id];
+  if (!mark) return "";
+  const fontSize = mark.length > 2 ? 25 : 43;
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">' +
+    '<circle cx="72" cy="72" r="62" fill="#0a0e0a" stroke="#526b43" stroke-width="3"/>' +
+    '<circle cx="72" cy="72" r="53" fill="none" stroke="#b6ff65" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 5"/>' +
+    '<path d="M72 18 85 37 108 36 107 59 126 72 107 85 108 108 85 107 72 126 59 107 36 108 37 85 18 72 37 59 36 36 59 37Z" fill="#182416" stroke="#8ba96d" stroke-width="1.5"/>' +
+    '<text x="72" y="83" text-anchor="middle" fill="#d8efc5" font-family="monospace" font-size="' + fontSize + '" font-weight="900">' + escapeXml(mark) + '</text>' +
+    '<path d="M72 5V14M72 130V139M5 72H14M130 72H139" stroke="#b6ff65" stroke-width="2"/></svg>';
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+
 function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus[], assetBaseUrl: string) {
+  const height = passportSvgHeight(statuses);
+  const footerY = height - 30;
   const visited = new Set(data.visitedDepartments);
   const unlockedCount = statuses.filter((item) => item.earned).length;
   const stampLines = DEPARTMENT_STAMPS.map((stamp, index) => {
@@ -55,7 +80,7 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     const y = 635 + row * 105;
     const color = item.earned ? rarityColor(item.rarity) : "#66705f";
     const label = item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.progress + " OF " + item.target;
-    const imageHref = escapeXml(assetBaseUrl + ACHIEVEMENT_BADGE_ASSETS[item.id]);
+    const imageHref = getBadgeArtworkHref(item.id, assetBaseUrl);
     return (
       '<rect x="' + x + '" y="' + y + '" width="408" height="84" fill="' + (item.earned ? "#172016" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '"/>' +
       '<image href="' + imageHref + '" x="' + (x + 3) + '" y="' + (y + 4) + '" width="76" height="76" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".36") + '"/>' +
@@ -65,8 +90,8 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
   }).join("");
 
   return (
-    '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1130" viewBox="0 0 1400 1130">' +
-    '<rect width="1400" height="1130" fill="#090b09"/><rect x="28" y="28" width="1344" height="1074" fill="none" stroke="#384137" stroke-width="2"/>' +
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="' + height + '" viewBox="0 0 1400 ' + height + '">' +
+    '<rect width="1400" height="' + height + '" fill="#090b09"/><rect x="28" y="28" width="1344" height="' + (height - 56) + '" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1372M28 215H1372M28 590H1372" stroke="#384137"/>' +
     '<text x="72" y="76" fill="#b6ff65" font-family="monospace" font-size="24" font-weight="bold">THE DYOR DEPARTMENT</text>' +
     '<text x="1328" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="13">PERSONAL DEPARTMENT PASSPORT</text>' +
@@ -74,12 +99,14 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     '<text x="72" y="193" fill="#8d968a" font-family="monospace" font-size="12">' + visited.size + ' / 10 DEPARTMENTS VISITED  •  ' + unlockedCount + ' / ' + statuses.length + ' ACHIEVEMENT BADGES UNLOCKED</text>' +
     '<text x="72" y="246" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">01 / DEPARTMENT STAMPS — VISITS</text>' + stampLines +
     '<text x="72" y="620" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">02 / ACHIEVEMENT BADGES — COMPLETED EXPERIENCES &amp; CHALLENGES</text>' + badgeLines +
-    '<text x="1328" y="1080" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">LOCAL RECORD / FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE</text>' +
+    '<text x="1328" y="' + footerY + '" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">LOCAL RECORD / FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE</text>' +
     '</svg>'
   );
 }
 
 function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], assetBaseUrl: string) {
+  const height = badgeCollectionSvgHeight(statuses);
+  const footerY = height - 40;
   const unlocked = statuses.filter((item) => item.earned).length;
   const cards = statuses.map((item, index) => {
     const column = index % 3;
@@ -88,7 +115,7 @@ function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], ass
     const y = 220 + row * 175;
     const color = item.earned ? rarityColor(item.rarity) : "#66705f";
     const progressWidth = Math.round((item.progress / item.target) * 280);
-    const imageHref = escapeXml(assetBaseUrl + ACHIEVEMENT_BADGE_ASSETS[item.id]);
+    const imageHref = getBadgeArtworkHref(item.id, assetBaseUrl);
     return (
       '<rect x="' + x + '" y="' + y + '" width="398" height="150" fill="' + (item.earned ? "#141d12" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '" stroke-width="' + (item.earned ? 2 : 1) + '"/>' +
       '<circle cx="' + (x + 72) + '" cy="' + (y + 75) + '" r="62" fill="#0a0d0a" stroke="' + color + '" stroke-opacity=".32" stroke-width="1"/>' +
@@ -101,15 +128,15 @@ function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], ass
     );
   }).join("");
   return (
-    '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="990" viewBox="0 0 1400 990">' +
-    '<rect width="1400" height="990" fill="#090b09"/><rect x="28" y="28" width="1344" height="934" fill="none" stroke="#384137" stroke-width="2"/>' +
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="' + height + '" viewBox="0 0 1400 ' + height + '">' +
+    '<rect width="1400" height="' + height + '" fill="#090b09"/><rect x="28" y="28" width="1344" height="' + (height - 56) + '" fill="none" stroke="#384137" stroke-width="2"/>' +
     '<path d="M28 110H1372M28 180H1372" stroke="#384137"/>' +
     '<text x="70" y="76" fill="#b6ff65" font-family="monospace" font-size="23" font-weight="bold">THE DYOR DEPARTMENT</text>' +
     '<text x="1330" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ACHIEVEMENT OFFICE / COLLECTION RECORD</text>' +
     '<text x="70" y="151" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="36" font-weight="900">THE BADGE COLLECTION</text>' +
     '<text x="1330" y="151" text-anchor="end" fill="#b6ff65" font-family="monospace" font-size="12">' + unlocked + ' / ' + statuses.length + ' UNLOCKED</text>' +
     cards +
-    '<text x="1330" y="934" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE / LOCAL RECORD</text>' +
+    '<text x="1330" y="' + footerY + '" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE / LOCAL RECORD</text>' +
     '</svg>'
   );
 }
@@ -251,7 +278,7 @@ export default function PassportClient() {
     downloadSvgAsPng(
       makePassportSvg(currentPassport, statuses, window.location.origin),
       1400,
-      1130,
+      passportSvgHeight(statuses),
       "dyor-department-passport.png",
       setNotice
     );
@@ -261,7 +288,7 @@ export default function PassportClient() {
     downloadSvgAsPng(
       makeAchievementCollectionSvg(statuses, window.location.origin),
       1400,
-      990,
+      badgeCollectionSvgHeight(statuses),
       "dyor-department-badge-collection.png",
       setNotice
     );
