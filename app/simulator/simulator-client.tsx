@@ -362,7 +362,7 @@ export default function SimulatorClient() {
           <div className="simulator-rules">
             <span>THE TERMS OF YOUR MISFORTUNE</span>
             <p>75% of your imaginary capital is already in the position. The rest is in paper cash.</p>
-            <p>Each round, choose to hold, trim 20%, average down or ask CT / Telegram. The scripted Pump.fun launch event lands immediately after your decision.</p>
+            <p>Each round, choose to hold, trim 20%, add to your position or ask CT / Telegram. The scripted Pump.fun launch event lands immediately after your decision.</p>
             <p>Every player receives the same fictional market sequence. Your decisions change your paper portfolio, not the market.</p>
           </div>
 

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { questions as auditQuestions } from "../app/audit/audit-data";
@@ -401,4 +402,23 @@ test("Passport daily visit streak counts consecutive UTC dates without double-co
     dailyOfficeDates: ["2026-11-18", "2026-11-16", "2026-11-17", "2026-11-17", "2026-11-20"],
   })), 3);
   assert.equal(getDailyOfficeVisitStreak(makePassport()), 0);
+});
+
+
+test("simulator result distinguishes executed additions from unfunded attempts", () => {
+  const result = buildSimulatorResult([2, 2, 2, 2, 0, 0, 0]);
+
+  assert.deepEqual(
+    result.history.slice(0, 4).map((entry) => entry.actionLabel),
+    ["ADD", "ADD", "ADD SKIPPED", "ADD SKIPPED"],
+  );
+  assert.match(result.decisionSummary, /2 additional buys/);
+  assert.match(result.decisionSummary, /2 add attempts skipped/);
+  assert.notEqual(result.profile.title, "THE POST-GRADUATION ACCUMULATOR");
+});
+
+test("simulator briefing uses the same ADD TO POSITION language as its action", () => {
+  const source = readFileSync("app/simulator/simulator-client.tsx", "utf8");
+  assert.ok(source.includes("trim 20%, add to your position or ask CT / Telegram."));
+  assert.doesNotMatch(source, /average down/i);
 });
