@@ -21,7 +21,7 @@ export default function ArchivesClient() {
             placeholder="TRY: SOON, LIQUIDITY, APPENDIX..."
           />
         </label>
-        <div className="archives-categories" aria-label="Filter archive category">
+        <div className="archives-categories" role="group" aria-label="Filter archive category">
           {archiveCategories.map((item) => (
             <button
               key={item}
