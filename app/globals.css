@@ -14850,3 +14850,13 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (max-width:800px) { .club-campaign-desk { grid-template-columns:1fr; } .club-campaign-desk__intro p { max-width:620px; } }
 @media (max-width:560px) { .club-campaign-desk { gap:19px; margin-block:26px; padding:16px; } .club-campaign-desk__intro h2 { font-size:clamp(34px,10vw,46px); } .club-campaign-desk__statement { padding:18px; } .club-campaign-desk__statement > p { margin-top:23px; margin-right:54px; font-size:clamp(19px,6vw,27px); } .club-campaign-desk__actions { display:grid; grid-template-columns:1fr; } .club-campaign-desk__actions .button { width:100%; justify-content:space-between; } .club-campaign-desk__disclaimer { font-size:5px; } }
 @media (prefers-reduced-motion:reduce) { .club-campaign-desk__actions .button { transition:none; } }
+
+/* U28.6 — Three recurring beats of the 99% Club social identity. */
+
+.club-campaign-desk__pillars { grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:2px; }
+.club-campaign-desk__pillars article { min-width:0; padding:16px; border:1px solid #344331; background:rgb(8 13 9 / 72%); }
+.club-campaign-desk__pillars article > span { color:var(--accent); font:700 7px/1.5 var(--font-mono); letter-spacing:.1em; }
+.club-campaign-desk__pillars h3 { margin:10px 0 7px; color:#e9eee3; font:800 12px/1.2 var(--sans); letter-spacing:-.025em; }
+.club-campaign-desk__pillars p { margin:0; color:#8f9b89; font-size:10px; line-height:1.7; }
+@media (max-width:800px) { .club-campaign-desk__pillars { grid-template-columns:1fr; } }
+@media (prefers-reduced-motion:reduce) { .club-campaign-desk__pillars * { scroll-behavior:auto; } }
