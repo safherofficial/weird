@@ -1277,7 +1277,7 @@ test("U24.3 completed experience activities are recorded only in the final-answe
     ["app/utility-inspector/utility-inspector-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildUtilityResult\(next\)\);\s*recordPassportActivity\("utility"\);/],
     ["app/roadmap-generator/roadmap-generator-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildRoadmapResult\(next, projectSlug\)\);\s*recordPassportActivity\("roadmap"\);/],
     ["app/whitepaper-factory/whitepaper-factory-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildWhitepaperResult\(next, projectSlug\)\);\s*recordPassportActivity\("whitepaper"\);/],
-    ["app/club/club-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildClubResult\(next\)\);\s*recordPassportActivity\("club"\);/],
+    ["app/club/club-client.tsx", /if \(current === questions\.length - 1\) \{\s*const completedResult = buildClubResult\(next\);\s*setResult\(completedResult\);\s*recordPassportActivity\("club"\);/],
     ["app/cope-index/cope-index-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildPersonalCopeResult\(next\)\);\s*recordPassportActivity\("cope"\);/],
   ] as const;
 
@@ -2456,7 +2456,7 @@ test("U28.2 faction identity, weekly challenges and individual badge sharing rem
   const challengeDesk = readFileSync("app/club/club-challenges.tsx", "utf8");
   const weekly = readFileSync("app/club/club-weekly-ritual.tsx", "utf8");
 
-  assert.ok(clubClient.includes("result.faction.id"));
+  assert.ok(clubClient.includes("completedResult.faction.id"));
   assert.ok(clubClient.includes("club-membership-card__faction"));
   assert.ok(clubClient.includes("result.faction.motto"));
   assert.ok(publicMember.includes("result.faction.creed"));
