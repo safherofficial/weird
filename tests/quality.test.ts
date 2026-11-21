@@ -2513,4 +2513,5 @@ test("U28.4 provides one canonical, honest future-token notice without invented 
   assert.ok(clubPage.includes('<ClubTokenNotice placement="club" />'));
   assert.ok(styles.includes(".club-token-notice__details"));
   assert.ok(styles.includes("@media (max-width: 620px)"));
+  assert.ok(styles.includes(".club-token-notice__details > div:nth-child(3n) { border-right: 1px solid #30352b; }"));
 });
