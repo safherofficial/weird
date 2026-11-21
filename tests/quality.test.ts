@@ -2503,7 +2503,7 @@ test("U28.4 provides one canonical, honest future-token notice without invented 
     assert.match(config, new RegExp(field + ": null"));
   }
   assert.ok(notice.includes("isOfficialClubTokenLink"));
-  assert.ok(notice.includes('url.protocol === "https:"'));
+  assert.ok(config.includes('url.protocol === "https:"'));
   assert.ok(notice.includes("NOT ANNOUNCED"));
   assert.ok(notice.includes("NOT ISSUED"));
   assert.ok(notice.includes("NOT CONFIRMED"));
