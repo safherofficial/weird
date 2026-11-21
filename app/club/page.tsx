@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "THE 99% CLUB",
-    description: "Five questions, twelve Club badges and three interactive excuses."
+    description: "Five questions, twelve Club badges and three interactive excuses.",
     images: ["/club/opengraph-image"],
   },
 };
