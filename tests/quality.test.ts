@@ -1773,7 +1773,7 @@ test("U26 navigation uses the current homepage division names in desktop and mob
 
   const header = readFileSync("app/components/department-header.tsx", "utf8");
   assert.equal(
-    (header.match(/navigationGroups\\.map\\(/g) || []).length,
+    header.split("navigationGroups.map(").length - 1,
     2,
     "Desktop and mobile menus must both render from the same current navigation groups",
   );
