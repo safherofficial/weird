@@ -10,6 +10,7 @@ import { classifications as roadmapClassifications, questions as roadmapQuestion
 import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
 import { questions as clubQuestions, CLUB_QUESTIONS, CLUB_FACTION_IDS, buildClubResult, decodeClubCode, encodeClubCode, factions as clubFactions, getClubFactionById, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { buildClubCampaignText, buildClubFactionShareText, buildClubMemberShareText, buildClubNominationText, CLUB_SOCIAL_HASHTAGS } from "../app/club/club-social";
+import { CLUB_CULTURE_CATEGORIES, CLUB_CULTURE_POSTS } from "../app/club/club-culture";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
@@ -2609,4 +2610,29 @@ test("U28.6 Club social identity uses one consistent cross-chain campaign voice 
   assert.ok(memberImage.includes("ALL CHAINS"));
   assert.ok(styles.includes(".club-campaign-desk__statement"));
   assert.ok(styles.includes("@media (max-width: 560px)"));
+});
+
+
+test("U28.7 Community Culture Desk exposes short, reusable cross-chain social drafts without persistence or auto-posting", () => {
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const desk = readFileSync("app/club/club-culture-desk.tsx", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+  assert.equal(CLUB_CULTURE_POSTS.length, 8);
+  assert.equal(new Set(CLUB_CULTURE_POSTS.map((post) => post.id)).size, CLUB_CULTURE_POSTS.length);
+  assert.deepEqual(new Set(CLUB_CULTURE_POSTS.map((post) => post.category)), new Set(CLUB_CULTURE_CATEGORIES));
+  for (const post of CLUB_CULTURE_POSTS) {
+    assert.ok(post.copy.length > 60 && post.copy.length <= 250, post.id + " should fit a concise X draft");
+    assert.ok(post.copy.includes("#The99PercentClub"), post.id + " must carry the campaign identity");
+    assert.ok(post.replyPrompt.length >= 20 && post.replyPrompt.length <= 180, post.id + " should have a usable reply prompt");
+    assert.ok(post.title.length > 0 && post.angle.length > 0);
+  }
+  assert.ok(page.includes("<ClubCultureDesk />"));
+  assert.ok(desk.includes("CLUB_CULTURE_POSTS"));
+  assert.ok(desk.includes("aria-pressed"));
+  assert.ok(desk.includes("navigator.clipboard"));
+  assert.ok(desk.includes("twitter.com/intent/tweet"));
+  assert.ok(desk.includes("COPY REPLY PROMPT"));
+  assert.ok(desk.includes("NOTHING IS AUTO-POSTED, TRACKED OR STORED ON A SERVER"));
+  assert.ok(styles.includes(".club-culture-desk__grid"));
+  assert.ok(styles.includes("@media (max-width:520px)"));
 });

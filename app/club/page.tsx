@@ -7,6 +7,7 @@ import ClubClient from "./club-client";
 import ClubChallenges from "./club-challenges";
 import ClubTokenNotice from "./club-token-notice";
 import ClubCampaignDesk from "./club-campaign-desk";
+import ClubCultureDesk from "./club-culture-desk";
 import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "THE 99% CLUB",
-    description: "Six fictional crypto factions. One shared excuse. Find your archetype across chains in THE 99% CLUB.",
+    description: "It's never our fault when we lose. The next one is mine. Find your fictional crypto faction and use the 99% Club content desk across all chains.",
     images: ["/club/opengraph-image"],
   },
 };
@@ -41,7 +42,7 @@ export default function ClubPage() {
           </p>
           <div className="club-intro__stamp">
             <span>OFFICIAL CLUB MOTTO</span>
-            <strong>IT'S NEVER OUR FAULT WHEN WE LOSE. THE NEXT ONE IS MINE.</strong>
+            <strong>IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.</strong>
             <small>I DID MY OWN RESEARCH. I KNOW EXACTLY WHAT I'M DOING.</small>
           </div>
           <div className="club-intro__fineprint">
@@ -75,6 +76,10 @@ export default function ClubPage() {
 
       <div className="shell">
         <ClubCampaignDesk />
+      </div>
+
+      <div className="shell">
+        <ClubCultureDesk />
       </div>
 
       <div className="shell">

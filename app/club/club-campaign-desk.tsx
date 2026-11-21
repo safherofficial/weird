@@ -27,7 +27,7 @@ export default function ClubCampaignDesk() {
         <small>NOT A STATISTIC. JUST A VERY FAMILIAR STATE OF MIND.</small>
         <div className="club-campaign-desk__actions">
           <DepartmentPublicShare title="THE 99% CLUB / Official invitation" shareText={buildClubCampaignText()} casePath="/club" resourceLabel="INVITE THE NEXT ONE" />
-          <Link className="button button--primary" href="/club#content-start">FIND YOUR FACTION <span>↗</span></Link>
+          <Link className="button button--primary" href="/club#content-start">TAKE THE FIVE-QUESTION INTERVIEW <span>↗</span></Link>
         </div>
       </div>
       <div className="club-campaign-desk__pillars" aria-label="The 99% Club shared mindset">

@@ -14860,3 +14860,34 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 .club-campaign-desk__pillars p { margin:0; color:#8f9b89; font-size:10px; line-height:1.7; }
 @media (max-width:800px) { .club-campaign-desk__pillars { grid-template-columns:1fr; } }
 @media (prefers-reduced-motion:reduce) { .club-campaign-desk__pillars * { scroll-behavior:auto; } }
+
+
+/* U28.7 — Static, copy-ready community culture desk. */
+.club-culture-desk { margin:clamp(30px,5vw,54px) auto; padding:clamp(20px,3.5vw,36px); border:1px solid #526744; background:radial-gradient(ellipse at 100% 0,rgb(182 255 101 / 6%),transparent 40%),linear-gradient(135deg,#101710 0%,#090d0a 75%); }
+.club-culture-desk__header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+.club-culture-desk__header > div:first-child > span { color:var(--accent); font:700 7px/1.6 var(--font-mono); letter-spacing:.12em; }
+.club-culture-desk__header h2 { margin:14px 0 10px; color:#f0f2e9; font:800 clamp(30px,4vw,48px)/.95 var(--sans); letter-spacing:-.065em; }
+.club-culture-desk__header h2 em { color:var(--accent); font-style:normal; }
+.club-culture-desk__header p { max-width:620px; margin:0; color:#9ba895; font-size:11px; line-height:1.8; }
+.club-culture-desk__count { display:grid; flex:0 0 auto; min-width:106px; min-height:84px; place-content:center; gap:5px; border:1px solid #45583a; background:#0a100b; text-align:center; }
+.club-culture-desk__count strong { color:var(--accent); font:800 27px/1 var(--font-mono); }
+.club-culture-desk__count span { color:#8b9984; font:700 6px/1.5 var(--font-mono); letter-spacing:.08em; }
+.club-culture-desk__filters { display:flex; flex-wrap:wrap; gap:7px; margin:24px 0 15px; }
+.club-culture-desk__filters button { min-height:32px; padding:7px 11px; border:1px solid #354431; background:#0a100b; color:#a4b09d; font:700 7px/1.4 var(--font-mono); letter-spacing:.05em; cursor:pointer; }
+.club-culture-desk__filters button.is-active { border-color:var(--accent); background:rgb(182 255 101 / 9%); color:var(--accent); }
+.club-culture-desk__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.club-culture-card { display:flex; min-width:0; flex-direction:column; padding:17px; border:1px solid #344331; background:rgb(7 12 8 / 82%); }
+.club-culture-card__topline { display:flex; justify-content:space-between; gap:10px; color:var(--accent); font:700 7px/1.5 var(--font-mono); letter-spacing:.08em; }
+.club-culture-card h3 { margin:14px 0 5px; color:#edf1e7; font:800 17px/1.15 var(--sans); letter-spacing:-.035em; }
+.club-culture-card__angle { margin:0 0 13px; color:#879582; font-size:9px; line-height:1.6; }
+.club-culture-card blockquote { flex:1; margin:0; padding:13px; border-left:2px solid var(--accent); background:#111910; color:#dce4d5; font-size:11px; line-height:1.8; overflow-wrap:anywhere; }
+.club-culture-card__reply { margin-top:13px; padding-top:11px; border-top:1px solid #293528; }
+.club-culture-card__reply > span,.club-culture-card__meta { color:#83927d; font:700 6px/1.6 var(--font-mono); letter-spacing:.08em; }
+.club-culture-card__reply p { margin:5px 0 0; color:#aeb8a8; font-size:9px; line-height:1.6; }
+.club-culture-card__meta { margin-top:12px; }
+.club-culture-card__actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.club-culture-card__actions .button { min-height:34px; padding:8px 10px; font-size:7px; }
+.club-culture-desk__disclaimer { margin:15px 0 0; color:#778371; font:6px/1.8 var(--font-mono); letter-spacing:.045em; }
+@media (max-width:760px) { .club-culture-desk__grid { grid-template-columns:1fr; } }
+@media (max-width:520px) { .club-culture-desk { padding:16px; } .club-culture-desk__header { gap:12px; } .club-culture-desk__count { min-width:74px; min-height:68px; } .club-culture-desk__count strong { font-size:22px; } .club-culture-desk__filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .club-culture-desk__filters button { text-align:left; } .club-culture-card__actions { display:grid; grid-template-columns:1fr; } .club-culture-card__actions .button { width:100%; justify-content:space-between; } }
+@media (prefers-reduced-motion:reduce) { .club-culture-desk * { scroll-behavior:auto; } }

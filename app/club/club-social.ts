@@ -8,17 +8,14 @@ export const CLUB_SOCIAL_MANIFESTO = [
   "I KNOW EXACTLY WHAT I'M DOING.",
 ] as const;
 
-const CLUB_IDENTITY = "For the crypto investor who trusts their skills, backs their own research and finds a fresh explanation for every red candle.";
-
 export function buildClubCampaignText(): string {
   return [
-    "WELCOME TO THE 99% CLUB.",
-    CLUB_IDENTITY,
-    "Six fictional factions. Every chain. One universal investor instinct:",
-    CLUB_SOCIAL_MANIFESTO.join(" "),
-    "Find your faction. File your excuse. Nominate the friend who is already researching the next one.",
+    "THE 99% CLUB.",
+    "Six fictional crypto factions.",
+    "WHEN WE LOSE, IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.",
+    "I DID MY OWN RESEARCH.",
     CLUB_SOCIAL_HASHTAGS,
-    "Satire, not a statistic or financial advice.",
+    "SATIRE / ALL CHAINS.",
   ].join(" ");
 }
 
@@ -26,8 +23,7 @@ export function buildClubFactionShareText(faction: ClubFaction): string {
   return [
     "THE 99% CLUB / " + faction.code + ": " + faction.title + ".",
     "\"" + faction.motto + "\"",
-    "It's never our fault when we lose. The next one is mine.",
-    "Find your fictional faction across all chains.",
+    "THE NEXT ONE IS MINE.",
     CLUB_SOCIAL_HASHTAGS,
   ].join(" ");
 }
@@ -38,7 +34,7 @@ export function buildClubMemberShareText(result: ClubResult): string {
     result.profile.title + ".",
     "FACTION: " + result.faction.code + ".",
     "\"" + result.faction.motto + "\"",
-    "I did my own research. It's never our fault when we lose. The next one is mine.",
+    "THE NEXT ONE IS MINE.",
     CLUB_SOCIAL_HASHTAGS,
   ].join(" ");
 }
@@ -46,8 +42,8 @@ export function buildClubMemberShareText(result: ClubResult): string {
 export function buildClubNominationText(result: ClubResult): string {
   return [
     result.profile.title + " filed me in THE 99% CLUB.",
-    "I nominate you to prove your research skills and find your fictional crypto faction.",
-    "It's never our fault when we lose. The next one is yours.",
+    "I nominate you to find your fictional crypto faction.",
+    "THE NEXT ONE IS YOURS.",
     CLUB_SOCIAL_HASHTAGS,
   ].join(" ");
 }
