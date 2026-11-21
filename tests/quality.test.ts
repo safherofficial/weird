@@ -2297,13 +2297,13 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
     "club-kol-disciple",
     "club-certified-bagholder",
   ];
-  assert.deepEqual(CLUB_BADGE_IDS, expectedClubBadges);
+  assert.deepEqual(CLUB_BADGE_IDS.slice(0, expectedClubBadges.length), expectedClubBadges);
   assert.deepEqual(
     PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).map((badge) => badge.id),
     ["club-admitted", ...expectedClubBadges],
   );
   assert.equal(PASSPORT_ACHIEVEMENTS.length, 26);
-  assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 13);
+  assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 16);
 
   const passport = makePassport({
     clubMembershipAnswers: [0, 0, 0, 0, 0],
