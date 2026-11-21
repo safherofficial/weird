@@ -85,7 +85,7 @@ export const questions: CopeQuestion[] = [
     prompt: "THE DEPLOYER STOPS POSTING. WHAT DOES THE CTO ANNOUNCEMENT MEAN?",
     note: "The Department recognises that “community takeover” can mean several different things.",
     options: [
-      { label: "A named team, working access and a verifiable handover—not just a new X bio.", cope: 0, patience: 5, chat: 0, tag: "emotionally-liquid" },
+      { label: "A named team, working access and a verifiable handover—not just a new X bio.", cope: 0, patience: 5, chat: 0, tag: "thesis-archivist" },
       { label: "A cautious update with clear limits while access and ownership are checked.", cope: 1, patience: 4, chat: 1, tag: "thesis-archivist" },
       { label: "A fresh pinned post, a new banner and the same unanswered questions.", cope: 4, patience: 2, chat: 2, tag: "soon-believer" },
       { label: "CTO means CTO. The new account has posted three rocket emojis.", cope: 5, patience: 1, chat: 5, tag: "telegram-dependent" },
@@ -126,8 +126,8 @@ export const questions: CopeQuestion[] = [
 export const profiles: Record<CopeArchetypeId, CopeProfile> = {
   "thesis-archivist": {
     title: "THE THESIS ARCHIVIST",
-    subtitle: "You preserve every original assumption, even the ones the market has formally declined.",
-    roast: "Your thesis has version history, footnotes and a small section called 'temporary market misunderstanding'.",
+    subtitle: "You keep the original thesis, source links and unanswered questions in a file that gets updated when the evidence changes.",
+    roast: "Your case file has version history, footnotes and a changelog titled 'what the new evidence changed'.",
     diagnosis: "REFERRED TO THE OFFICE OF DOCUMENTED CONVICTION.",
   },
   "candlelight-watcher": {

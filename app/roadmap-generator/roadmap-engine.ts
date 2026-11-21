@@ -115,7 +115,7 @@ export const questions: RoadmapQuestion[] = [
       { label: "Returning contributors, real product use and useful feedback beyond launch-day replies.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
       { label: "A mix of active holders, builders and contributors—not just copy-pasted “send it” replies.", delivery: 4, realism: 4, inflation: 1, tag: "community-amplifier" },
       { label: "X followers, impressions, Spaces attendance and the occasional trending badge.", delivery: 2, realism: 2, inflation: 3, tag: "community-amplifier" },
-      { label: "Community growth is measured by how many people still post after the chart turns red.", delivery: 0, realism: 0, inflation: 5, tag: "global-adoption-intern" },
+      { label: "Community growth is measured by how many people still post after the chart turns red.", delivery: 0, realism: 0, inflation: 5, tag: "community-amplifier" },
     ],
   },
   {
@@ -133,7 +133,7 @@ export const questions: RoadmapQuestion[] = [
 export const classifications: Record<RoadmapArchetypeId, RoadmapArchetype> = {
   "actually-shipping": {
     title: "THE RARELY SHIPPING CTO",
-    subtitle: "You have named owners, working access and a public handover checklist. The Department is suspicious.",
+    subtitle: "You described a live product, named owners and deliverables with a verifiable release history. The Department is suspicious.",
     roast: "The community takeover contains actual deliverables. CT has asked whether the deployer is feeling alright.",
     disposition: "RELEASED UNDER OBSERVATION FOR EXCESSIVE EXECUTION.",
   },

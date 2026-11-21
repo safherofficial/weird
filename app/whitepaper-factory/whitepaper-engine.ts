@@ -138,8 +138,8 @@ export const questions: WhitepaperQuestion[] = [
     prompt: "WHO IS ACCOUNTABLE WHEN THE DEPLOYER DISAPPEARS?",
     note: "A new CTO handle is not a governance process. Name the people and their responsibilities.",
     options: [
-      { label: "Named roles, documented access controls and transparent decision procedures.", technical: 5, buzzwords: 1, clarity: 5, tag: "dao-diplomat" },
-      { label: "A documented transition from the deployer to a community team with scoped permissions.", technical: 4, buzzwords: 2, clarity: 4, tag: "dao-diplomat" },
+      { label: "Named roles, documented access controls and transparent decision procedures.", technical: 5, buzzwords: 1, clarity: 5, tag: "risk-footnote" },
+      { label: "A documented transition from the deployer to a community team with scoped permissions.", technical: 4, buzzwords: 2, clarity: 4, tag: "risk-footnote" },
       { label: "The community decides, unless the new admin decides something unexpected.", technical: 1, buzzwords: 4, clarity: 1, tag: "dao-diplomat" },
       { label: "A council of KOLs whose responsibilities will be disclosed after the next announcement.", technical: 0, buzzwords: 3, clarity: 0, tag: "appendix-empire" },
     ],

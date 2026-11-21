@@ -69,7 +69,7 @@ export const questions: ClubQuestion[] = [
     options: [
       { label: "A launch transaction, wallet trail and thesis I checked before the ticker trended.", conviction: 4, cope: 2, chatDependency: 1, tag: "conviction-custodian" },
       { label: "A “CA?” reply from an account with a suspiciously large following.", conviction: 3, cope: 4, chatDependency: 5, tag: "telegram-veteran" },
-      { label: "A green candle, a KOL quote-tweet and a feeling I cannot reproduce.", conviction: 5, cope: 5, chatDependency: 2, tag: "average-down-citizen" },
+      { label: "A green candle and a KOL quote-tweet. Since then, every dip has looked like another chance to add.", conviction: 5, cope: 5, chatDependency: 2, tag: "average-down-citizen" },
       { label: "I saw the risk, made a decision and closed the chart before the next candle.", conviction: 2, cope: 1, chatDependency: 0, tag: "paper-hands-survivor" },
     ],
   },
@@ -80,7 +80,7 @@ export const questions: ClubQuestion[] = [
       { label: "Once a week. My notifications are off and my life has other tabs.", conviction: 2, cope: 1, chatDependency: 0, tag: "chart-hermit" },
       { label: "Whenever CT says “volume is waking up”.", conviction: 4, cope: 3, chatDependency: 3, tag: "telegram-veteran" },
       { label: "Every candle. The bonding curve and I share custody of my attention.", conviction: 5, cope: 5, chatDependency: 1, tag: "conviction-custodian" },
-      { label: "I closed the chart. A “CA just sent” notification reopened it.", conviction: 1, cope: 2, chatDependency: 0, tag: "paper-hands-survivor" },
+      { label: "I closed the chart. A “CA just sent” notification tried to reopen it; I ignored it.", conviction: 1, cope: 2, chatDependency: 0, tag: "paper-hands-survivor" },
     ],
   },
   {

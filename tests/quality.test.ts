@@ -6,10 +6,10 @@ import { classifications as auditClassifications, questions as auditQuestions } 
 import { AUDIT_QUESTION_COUNT, buildResult as buildAuditResult, decodeCaseCode, encodeCaseCode, isValidAnswers } from "../app/audit/audit-engine";
 import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode, isValidDecisions, simulateProgress } from "../app/simulator/simulator-engine";
 import { classifications as utilityClassifications, questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
-import { questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
+import { classifications as roadmapClassifications, questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
 import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
-import { questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
+import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
 import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
@@ -575,6 +575,36 @@ test("Token-Purpose Inspector ecosystem-mirage profile matches its source answer
   assert.match(result.profile.title, /ECOSYSTEM EXPANSION MIRAGE/);
   assert.match(result.profile.subtitle, /future holder army/i);
 });
+
+test("U23.3 audited classifications match the exact answer semantics", () => {
+  // These answers explicitly describe accountable controls, not admin override or vague consensus.
+  assert.equal(whitepaperQuestions[5].options[0].tag, "risk-footnote");
+  assert.equal(whitepaperQuestions[5].options[1].tag, "risk-footnote");
+  assert.equal(whitepaperQuestions[5].options[2].tag, "dao-diplomat");
+  assert.equal(whitepaperQuestions[6].options[2].tag, "dao-diplomat");
+  assert.match(whitepaperClassifications["risk-footnote"].title, /RISK FOOTNOTE/);
+  assert.match(whitepaperClassifications["dao-diplomat"].subtitle, /new admin/i);
+
+  // The Club options now state the behavior described by their assigned archetypes.
+  assert.match(clubQuestions[1].options[2].label, /every dip.*chance to add/i);
+  assert.equal(clubQuestions[1].options[2].tag, "average-down-citizen");
+  assert.match(clubQuestions[2].options[3].label, /tried to reopen.*ignored it/i);
+  assert.equal(clubQuestions[2].options[3].tag, "paper-hands-survivor");
+
+  // Evidence-led handover verification belongs with the evidence archivist, not the disengaged profile.
+  assert.equal(copeQuestions[1].options[0].tag, "thesis-archivist");
+  assert.match(copeQuestions[1].options[0].label, /verifiable handover/i);
+  assert.match(copeQuestions[1].options[0].tag, /thesis-archivist/);
+  assert.match(copeClassificationsForTest(), /source links/i);
+  assert.equal(roadmapQuestions[4].options[3].tag, "community-amplifier");
+  assert.match(roadmapClassificationsForTest(), /named owners and deliverables/i);
+});
+  assert.match(copeClassifications["thesis-archivist"].subtitle, /source links/i);
+  assert.match(roadmapClassifications["actually-shipping"].subtitle, /named owners and deliverables/i);
+});
+function awaitNever() {
+  return "never";
+}
 
 test("Fictional Token Dossier archetypes align with technical, community and governance answers", () => {
   assert.equal(whitepaperQuestions[0].options[1].tag, "interoperability-evangelist");
