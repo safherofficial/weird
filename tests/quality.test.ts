@@ -786,6 +786,57 @@ test("U27.1 daily editorial rotation avoids repeating a focus across the previou
   assert.ok(themes.size >= 12, "the rotation must retain broad coverage of the 18 existing case themes");
 });
 
+test("U27.2 daily briefing contains focus-specific operational detail in all six report sections", () => {
+  const focusByTheme = {
+    "CA / LAUNCH CONTEXT": { id: "launch", signal: /mint authority|mint address|deployer|primary announcement/i },
+    "BONDING-CURVE GRADUATION": { id: "graduation", signal: /bonding.curve|post.graduation|pool depth|migration/i },
+    "DEPLOYER / CTO HANDOVER": { id: "handover", signal: /treasury|repository|domain control|access checklist|signing authority/i },
+    "KOL ECHO / COPIED CALLS": { id: "kol", signal: /quote.posts|reposts|source trail|primary source|promotional disclosure/i },
+    "GREEN-CANDLE CONVICTION": { id: "chart", signal: /timeframe|candle|wick|chart interval|invalidation/i },
+    "BUNDLE / WALLET THEORIES": { id: "wallet", signal: /common owner|wallet|addresses|ownership|transaction/i },
+    "POST-GRADUATION LIQUIDITY": { id: "liquidity", signal: /pool depth|slippage|trade size|holder concentration|liquidity/i },
+    "COMMUNITY TAKEOVER": { id: "handover", signal: /treasury|repository|domain control|access checklist|signing authority/i },
+    "DELETED KOL CALL": { id: "kol", signal: /quote.posts|reposts|source trail|primary source|promotional disclosure/i },
+    "100X ENTRY TIMING": { id: "chart", signal: /timeframe|candle|wick|chart interval|invalidation/i },
+    "CA SOURCE VERIFICATION": { id: "launch", signal: /mint authority|mint address|deployer|primary announcement/i },
+    "CTO ACCESS CHECKLIST": { id: "handover", signal: /treasury|repository|domain control|access checklist|signing authority/i },
+    "WALLET-GRAPH INTERPRETATION": { id: "wallet", signal: /common owner|wallet|addresses|ownership|transaction/i },
+    "EXIT-PLAN ABSENCE": { id: "exit", signal: /invalidation condition|exit condition|exit plan|entry rationale|disconfirm/i },
+    "GREEN-CANDLE EVIDENCE": { id: "chart", signal: /timeframe|candle|wick|chart interval|invalidation/i },
+    "SNIPER THEORY": { id: "wallet", signal: /common owner|wallet|addresses|ownership|transaction/i },
+    "MIGRATION CLAIM": { id: "migration", signal: /old and new|destination address|migration|token references|new mint/i },
+    "BAGHOLDER ENTRY HISTORY": { id: "exit", signal: /invalidation condition|exit condition|exit plan|entry rationale|disconfirm/i },
+  } as const;
+  const seenFocuses = new Set<string>();
+  const seenThemes = new Set<string>();
+
+  for (let index = 0; index < 180; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const focus = focusByTheme[dispatch.caseTheme as keyof typeof focusByTheme];
+
+    assert.ok(focus, issueDate + " must map to a recognised editorial focus");
+    assert.equal(dispatch.sections.length, 6);
+    assert.match(dispatch.methodology, /focus-specific operational detail/i);
+
+    const completeCopy = dispatch.sections.map((section) => section.body).join(" ");
+    assert.match(completeCopy, focus.signal, dispatch.caseTheme + " must contain its own domain-specific evidence vocabulary");
+
+    for (const section of dispatch.sections) {
+      const wordCount = section.body.trim().split(/\s+/).length;
+      assert.ok(wordCount >= 38, issueDate + " / " + section.label + " should contain a developed report, not a one-line placeholder");
+      assert.ok(section.heading.length > 0 && section.stamp.length > 0);
+    }
+
+    assert.equal(new Set(dispatch.sections.map((section) => section.body)).size, 6, issueDate + " must not repeat one body across divisions");
+    seenFocuses.add(focus.id);
+    seenThemes.add(dispatch.caseTheme);
+  }
+
+  assert.equal(seenFocuses.size, 9, "all nine editorial focus lanes must receive operational detail");
+  assert.equal(seenThemes.size, 18, "all 18 existing editorial case themes must remain available");
+});
+
 test("Daily CT Briefing retains a healthy range of date-seeded editorial variants", () => {
   const reports = Array.from({ length: 120 }, (_, index) => {
     const date = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
