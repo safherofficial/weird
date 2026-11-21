@@ -101,6 +101,7 @@ export default function ClubClient() {
     if (current === questions.length - 1) {
       setResult(buildClubResult(next));
       recordPassportActivity("club");
+      recordClubMembership(next);
     } else {
       setCurrent(current + 1);
     }
@@ -310,7 +311,7 @@ export default function ClubClient() {
           <p className="eyebrow">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</p>
           <h2>YOU ARE NOT<br /><span>ALONE IN THIS.</span></h2>
           <p className="club-briefing__lead">
-            Five trenches questions. Three fictional indices. One survivor card with absolutely no practical value.
+            Five questions. Three fictional indices. Twelve Club badges. An unlimited supply of explanations.
           </p>
 
           <div className="club-briefing__facts">
