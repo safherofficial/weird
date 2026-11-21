@@ -3,20 +3,21 @@ import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import ClubClient from "./club-client";
+import ClubChallenges from "./club-challenges";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/club" },
   title: "The 99% Club",
-  description: "The Solana Trenches survivor registry: five fictional questions about late entries, missed 100x calls, CTO updates, revenge trades and bagholding. No benefits.",
+  description: "The 99% Club: fictional crypto archetypes, local achievement badges and interactive excuses for why the next entry is still yours."
   openGraph: {
     title: "THE 99% CLUB",
-    description: "You survived the launch thread. The bag survived the graduation. Apply for completely useless trenches survivor status.",
+    description: "Five questions, twelve Club badges and three interactive excuses. The next one is yours."
     images: ["/club/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE 99% CLUB",
-    description: "Five questions. Three fictional indices. No benefits.",
+    description: "Five questions, twelve Club badges and three interactive excuses."
     images: ["/club/opengraph-image"],
   },
 };
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 export default function ClubPage() {
   return (
     <main className="audit-page club-page" id="main-content">
-      <DepartmentHeader activeSection="club" statusMessage="MEMBERSHIP OFFICE / BENEFITS NOT INCLUDED" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
+      <DepartmentHeader activeSection="club" statusMessage="MEMBERSHIP OFFICE / LIABILITY NOT ACCEPTED" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
 
       <div className="club-shell shell" id="content-start" tabIndex={-1}>
         <aside className="club-intro">
@@ -32,19 +33,23 @@ export default function ClubPage() {
           <p className="eyebrow">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</p>
           <h1>THE 99%<br /><span>CLUB.</span></h1>
           <p className="audit-intro__lead">
-            For the people who chased the green candle, missed the first exit, lived through a deployer disappearance and still know the next CA by heart.
+            For the people who trust their research, defend every entry and can turn any red candle into a reason to try again.
           </p>
           <div className="club-intro__stamp">
             <span>OFFICIAL CLUB MOTTO</span>
-            <strong>YOU SURVIVED THE LAUNCH THREAD.</strong>
-            <small>THE TRENCHES KEPT THE RECEIPTS.</small>
+            <strong>IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.</strong>
+            <small>I DID MY OWN RESEARCH. PLEASE FILE NO FURTHER QUESTIONS.</small>
           </div>
           <div className="club-intro__fineprint">
-            “99%” IS A SATIRICAL CLUB NAME. IT IS NOT A REAL MARKET OR COMMUNITY STATISTIC.
+            “99%” IS A SATIRICAL IDENTITY, NOT A MEASURED STATISTIC ABOUT REAL INVESTORS.
           </div>
         </aside>
 
         <ClubClient />
+      </div>
+
+      <div className="shell">
+        <ClubChallenges />
       </div>
 
       <div className="shell">
