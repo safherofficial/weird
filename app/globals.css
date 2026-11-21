@@ -12999,3 +12999,84 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (max-width: 680px) {
   .department-case-atlas__recurrence-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+
+/* U25.9 — evidence ledger for every measured recurrence interval */
+.department-case-atlas__interval-ledger {
+  margin-top: 9px;
+  border: 1px solid #303a30;
+  background: #090d09;
+}
+.department-case-atlas__interval-ledger > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 13px;
+  color: #d8b477;
+  cursor: pointer;
+  list-style: none;
+  font: 700 8px/1.5 var(--mono);
+  letter-spacing: .07em;
+}
+.department-case-atlas__interval-ledger > summary::-webkit-details-marker { display: none; }
+.department-case-atlas__interval-ledger > summary::after {
+  content: "+";
+  color: var(--green);
+  font: 700 16px/1 var(--mono);
+}
+.department-case-atlas__interval-ledger[open] > summary::after { content: "−"; }
+.department-case-atlas__interval-ledger > ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 13px 8px;
+  list-style: none;
+}
+.department-case-atlas__interval-ledger > ol > li {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 11px 0;
+  border-top: 1px solid #283128;
+}
+.department-case-atlas__interval-ledger > ol > li > strong {
+  color: var(--green);
+  font: 700 8px/1.6 var(--mono);
+}
+.department-case-atlas__interval-ledger > ol > li > div {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+.department-case-atlas__interval-ledger > ol > li > div > span {
+  color: #87927f;
+  font: 700 7px/1.5 var(--mono);
+  letter-spacing: .06em;
+}
+.department-case-atlas__interval-ledger a {
+  color: #d4ddcf;
+  font: 8px/1.6 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__interval-ledger a:hover { color: var(--green); }
+.department-case-atlas__interval-ledger > summary:focus-visible,
+.department-case-atlas__interval-ledger a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+.department-case-atlas__interval-empty {
+  margin: 9px 0 0;
+  padding: 12px 13px;
+  border: 1px dashed #344034;
+  color: #87927f;
+  font: 8px/1.6 var(--mono);
+}
+@media (max-width: 680px) {
+  .department-case-atlas__interval-ledger > ol > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+  }
+}

@@ -207,6 +207,39 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   <p>GAPS ARE UTC DAY DIFFERENCES BETWEEN ADJACENT FICTIONAL FILES IN THIS WINDOW. DESCRIPTIVE ONLY; NO FORECAST OR REAL-WORLD INFERENCE.</p>
                 </section>
 
+                {entry.recurrence.intervals.length > 0 ? (
+                  <details className="department-case-atlas__interval-ledger">
+                    <summary>OPEN INTERVAL EVIDENCE / {entry.recurrence.intervals.length} ADJACENT PAIRS</summary>
+                    <ol>
+                      {entry.recurrence.intervals.map((interval, intervalIndex) => {
+                        const newerOccurrence = entry.occurrences[intervalIndex];
+                        const olderOccurrence = entry.occurrences[intervalIndex + 1];
+                        return (
+                          <li key={interval.newerIssueDate + "-" + interval.olderIssueDate}>
+                            <strong>{String(intervalIndex + 1).padStart(2, "0")} / {interval.days} UTC DAYS</strong>
+                            <div>
+                              <span>NEWER DAILY FILE</span>
+                              <Link href={newerOccurrence.href}>
+                                {newerOccurrence.issueDate} / {newerOccurrence.reference} ↗
+                              </Link>
+                            </div>
+                            <div>
+                              <span>PREVIOUS DAILY FILE</span>
+                              <Link href={olderOccurrence.href}>
+                                {olderOccurrence.issueDate} / {olderOccurrence.reference} ↗
+                              </Link>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </details>
+                ) : (
+                  <p className="department-case-atlas__interval-empty">
+                    NO INTERVAL EVIDENCE / AT LEAST TWO APPEARANCES ARE REQUIRED TO MEASURE A GAP.
+                  </p>
+                )}
+
                 {entry.occurrences.length > 0 ? (
                   <details className="department-case-atlas__timeline">
                     <summary>OPEN FULL THREAD HISTORY / {entry.occurrences.length} MATCHING FILES</summary>

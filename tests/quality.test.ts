@@ -1229,6 +1229,14 @@ test("U25.8 Case Atlas recurrence analysis reports exact UTC gaps without invent
     assert.equal(recurrence.longestIntervalDays, gaps.length ? Math.max(...gaps) : null);
     assert.ok(recurrence.daysSinceLatest === null || recurrence.daysSinceLatest >= 0);
     assert.ok(recurrence.intervals.every((interval) => interval.days > 0));
+    recurrence.intervals.forEach((interval, index) => {
+      assert.equal(interval.newerIssueDate, occurrences[index].issueDate);
+      assert.equal(interval.olderIssueDate, occurrences[index + 1].issueDate);
+      assert.equal(utcGap(interval.newerIssueDate, interval.olderIssueDate), interval.days);
+      assert.ok(occurrences[index].href === "/daily-office" || occurrences[index].href === "/daily-office/archive/" + interval.newerIssueDate);
+      assert.ok(occurrences[index + 1].href === "/daily-office" || occurrences[index + 1].href === "/daily-office/archive/" + interval.olderIssueDate);
+    });
+    assert.equal(recurrence.intervals.length, Math.max(0, occurrences.length - 1));
   }
 
   const singleDayAtlas = buildDepartmentCaseAtlas(today, 1);
@@ -1268,9 +1276,17 @@ test("U25.8 Case Atlas presents recurrence calculations with accessible links an
   assert.ok(atlasClient.includes("entry.recurrence.intervals[0]?.days"));
   assert.ok(atlasClient.includes("NO PRIOR FILE IN WINDOW"));
   assert.ok(atlasClient.includes("NO FILE IN WINDOW"));
+  assert.ok(atlasClient.includes('className="department-case-atlas__interval-ledger"'));
+  assert.ok(atlasClient.includes("OPEN INTERVAL EVIDENCE"));
+  assert.ok(atlasClient.includes("newerOccurrence.href"));
+  assert.ok(atlasClient.includes("olderOccurrence.href"));
+  assert.ok(atlasClient.includes("interval.days"));
+  assert.ok(atlasClient.includes("AT LEAST TWO APPEARANCES ARE REQUIRED"));
   assert.ok(atlasClient.includes("NO FORECAST OR REAL-WORLD INFERENCE"));
   assert.ok(atlasPage.includes("recurrence intervals"));
   assert.ok(css.includes(".department-case-atlas__recurrence-grid"));
+  assert.ok(css.includes(".department-case-atlas__interval-ledger"));
+  assert.ok(css.includes("@media (max-width: 680px)"));
   assert.ok(css.includes("@media (max-width: 680px)"));
   assert.doesNotMatch(atlasClient + atlasPage, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });
