@@ -87,6 +87,7 @@ export default function InstitutionalMemoryLedgerPage() {
 
         <div className="institutional-memory-return">
           <Link className="button button--primary" href="/daily-office">RETURN TO TODAY'S TRENCHES DESK ↗</Link>
+          <Link className="button button--quiet" href="/daily-office/atlas">OPEN THE CROSS-DIVISION CASE ATLAS ↗</Link>
           <Link className="button button--quiet" href="/cope-index">OPEN THE GLOBAL COPE INDEX ↗</Link>
         </div>
       </div>

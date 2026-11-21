@@ -11,6 +11,7 @@ import { classifications as whitepaperClassifications, questions as whitepaperQu
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
+import { buildDepartmentCaseAtlas } from "../app/daily-office/case-atlas";
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
 import { archiveRecords } from "../app/archives/archive-data";
 import { exhibits } from "../app/museum/museum-data";
@@ -1018,4 +1019,80 @@ test("U25.4 daily desk exposes linked historical files without adding visitor-da
   assert.doesNotMatch(ledger, /localStorage|sessionStorage|recordPassportActivity/);
   assert.doesNotMatch(archivedPage, /localStorage|sessionStorage|recordPassportActivity/);
   assert.match(ledger, /NO VISITOR DATA IS STORED/);
+});
+
+
+test("U25.5 Case Atlas reconciles all 18 themes against three valid offices and existing archive and Museum records", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const atlas = buildDepartmentCaseAtlas(today, 90);
+  const repeated = buildDepartmentCaseAtlas(today, 90);
+
+  assert.deepEqual(atlas, repeated, "the same as-of UTC date must produce the same Case Atlas");
+  assert.equal(atlas.asOfDate, today);
+  assert.equal(atlas.lookbackDays, 90);
+  assert.equal(atlas.entries.length, 18);
+  assert.deepEqual(
+    atlas.entries.map((entry) => entry.theme).sort(),
+    Object.keys(departmentCaseThreads).sort(),
+    "every existing Department narrative thread must appear exactly once",
+  );
+
+  for (const entry of atlas.entries) {
+    assert.equal(entry.offices.length, 3);
+    assert.equal(new Set(entry.offices.map((office) => office.section)).size, 3);
+    for (const office of entry.offices) {
+      assert.ok(departments.some((department) => department.section === office.section && department.href === office.href && department.title === office.title));
+      assert.ok(office.responsibility.length > 20);
+    }
+    assert.ok(archiveRecords.some((record) => record.accession === entry.precedent.accession && entry.precedent.href === "/archives/records/" + record.slug));
+    assert.ok(exhibits.some((exhibit) => exhibit.accession === entry.relic.accession && entry.relic.href === "/museum/exhibits/" + exhibit.slug));
+    assert.ok(entry.occurrenceCount >= 0 && entry.occurrenceCount <= 90);
+    if (entry.latestOccurrence) {
+      assert.ok(entry.latestOccurrence.issueDate <= today);
+      assert.ok(entry.latestOccurrence.reference.startsWith("DD-"));
+      assert.ok(entry.latestOccurrence.href === "/daily-office" || entry.latestOccurrence.href === "/daily-office/archive/" + entry.latestOccurrence.issueDate);
+      assert.ok(entry.occurrenceCount > 0);
+    } else {
+      assert.equal(entry.occurrenceCount, 0);
+    }
+  }
+
+  assert.equal(atlas.divisions.length, 10);
+  assert.deepEqual(atlas.divisions.map((division) => division.section), departments.map((department) => department.section));
+  for (const division of atlas.divisions) {
+    const expected = atlas.entries.filter((entry) => entry.offices.some((office) => office.section === division.section));
+    assert.ok(expected.length > 0, division.title + " must be connected to at least one case theme");
+    assert.equal(division.themeCount, expected.length);
+    assert.deepEqual(division.themes, expected.map((entry) => entry.theme));
+  }
+  assert.throws(() => buildDepartmentCaseAtlas("not-a-date", 90));
+  assert.throws(() => buildDepartmentCaseAtlas(today, 0));
+  assert.throws(() => buildDepartmentCaseAtlas(today, 121));
+});
+
+test("U25.5 Case Atlas is reachable from every division and provides working topic and office filters", () => {
+  const atlasPage = readFileSync("app/daily-office/atlas/page.tsx", "utf8");
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  const nextSteps = readFileSync("app/components/department-next-steps.tsx", "utf8");
+  const dailyPage = readFileSync("app/daily-office/page.tsx", "utf8");
+  const ledgerPage = readFileSync("app/daily-office/ledger/page.tsx", "utf8");
+
+  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 90)"));
+  assert.ok(atlasPage.includes('canonical: "/daily-office/atlas"'));
+  assert.ok(atlasClient.includes('type="search"'));
+  assert.ok(atlasClient.includes("setQuery"));
+  assert.ok(atlasClient.includes("setOfficeFilter"));
+  assert.ok(atlasClient.includes("entry.offices.some"));
+  assert.ok(atlasClient.includes("entry.precedent.href"));
+  assert.ok(atlasClient.includes("entry.relic.href"));
+  assert.ok(atlasClient.includes("entry.latestOccurrence.href"));
+  assert.ok(atlasEngine.includes("departmentCaseThreads"));
+  assert.ok(atlasEngine.includes("archiveRecords"));
+  assert.ok(atlasEngine.includes("exhibits"));
+  assert.ok(atlasEngine.includes("buildDailyOfficeDispatch"));
+  assert.ok(nextSteps.includes('href="/daily-office/atlas"'));
+  assert.ok(dailyPage.includes('href="/daily-office/atlas"'));
+  assert.ok(ledgerPage.includes('href="/daily-office/atlas"'));
+  assert.doesNotMatch(atlasPage + atlasClient + atlasEngine, /localStorage|sessionStorage|recordPassportActivity/);
 });

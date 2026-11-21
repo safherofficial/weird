@@ -1,0 +1,147 @@
+import { archiveRecords } from "../archives/archive-data";
+import { departments, type DepartmentSection } from "../divisions";
+import { exhibits } from "../museum/museum-data";
+import { departmentCaseThreads } from "../lib/department-narrative";
+import { buildDailyOfficeDispatch } from "./daily-engine";
+import { isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "./institutional-memory";
+
+export type DepartmentCaseAtlasOffice = {
+  section: DepartmentSection;
+  number: string;
+  title: string;
+  href: string;
+  responsibility: string;
+};
+
+export type DepartmentCaseAtlasOccurrence = {
+  issueDate: string;
+  reference: string;
+  headline: string;
+  href: string;
+};
+
+export type DepartmentCaseAtlasEntry = {
+  theme: string;
+  narrative: string;
+  offices: DepartmentCaseAtlasOffice[];
+  precedent: {
+    accession: string;
+    title: string;
+    summary: string;
+    href: string;
+  };
+  relic: {
+    accession: string;
+    title: string;
+    description: string;
+    href: string;
+  };
+  occurrenceCount: number;
+  latestOccurrence: DepartmentCaseAtlasOccurrence | null;
+};
+
+export type DepartmentCaseAtlasData = {
+  asOfDate: string;
+  lookbackDays: number;
+  entries: DepartmentCaseAtlasEntry[];
+  divisions: Array<{
+    section: DepartmentSection;
+    number: string;
+    title: string;
+    href: string;
+    themeCount: number;
+    themes: string[];
+  }>;
+};
+
+function dailyRecordHref(issueDate: string): string {
+  const today = new Date().toISOString().slice(0, 10);
+  return issueDate === today ? "/daily-office" : "/daily-office/archive/" + issueDate;
+}
+
+export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): DepartmentCaseAtlasData {
+  if (!isValidInstitutionalMemoryDate(asOfDate)) {
+    throw new Error("The Case Atlas requires a valid current or past UTC issue date.");
+  }
+  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > 120) {
+    throw new Error("The Case Atlas lookback window must contain between 1 and 120 UTC days.");
+  }
+
+  const appearances = new Map<string, { count: number; latest: DepartmentCaseAtlasOccurrence | null }>();
+  for (let offset = 0; offset < lookbackDays; offset += 1) {
+    const issueDate = shiftInstitutionalMemoryDate(asOfDate, -offset);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const existing = appearances.get(dispatch.caseTheme);
+    const occurrence: DepartmentCaseAtlasOccurrence = {
+      issueDate: dispatch.issueDate,
+      reference: dispatch.reference,
+      headline: dispatch.headline,
+      href: dailyRecordHref(dispatch.issueDate),
+    };
+
+    if (existing) {
+      existing.count += 1;
+    } else {
+      appearances.set(dispatch.caseTheme, { count: 1, latest: occurrence });
+    }
+  }
+
+  const entries: DepartmentCaseAtlasEntry[] = Object.entries(departmentCaseThreads).map(([theme, thread]) => {
+    const precedent = archiveRecords.find((record) => record.slug === thread.archiveSlug);
+    const relic = exhibits.find((exhibit) => exhibit.slug === thread.exhibitSlug);
+    if (!precedent || !relic) {
+      throw new Error("The Case Atlas contains a missing archive precedent or museum exhibit for " + theme + ".");
+    }
+
+    const offices = thread.offices.map((step) => {
+      const department = departments.find((item) => item.section === step.section);
+      if (!department) {
+        throw new Error("The Case Atlas contains an unknown Department office for " + theme + ".");
+      }
+      return {
+        section: department.section,
+        number: department.number,
+        title: department.title,
+        href: department.href,
+        responsibility: step.responsibility,
+      };
+    });
+
+    const appearance = appearances.get(theme);
+    return {
+      theme,
+      narrative: thread.narrative,
+      offices,
+      precedent: {
+        accession: precedent.accession,
+        title: precedent.title,
+        summary: precedent.summary,
+        href: "/archives/records/" + precedent.slug,
+      },
+      relic: {
+        accession: relic.accession,
+        title: relic.title,
+        description: relic.description,
+        href: "/museum/exhibits/" + relic.slug,
+      },
+      occurrenceCount: appearance?.count ?? 0,
+      latestOccurrence: appearance?.latest ?? null,
+    };
+  });
+
+  const divisions = departments.map((department) => {
+    const related = entries.filter((entry) =>
+      entry.offices.some((office) => office.section === department.section),
+    );
+    return {
+      section: department.section,
+      number: department.number,
+      title: department.title,
+      href: department.href,
+      themeCount: related.length,
+      themes: related.map((entry) => entry.theme),
+    };
+  });
+
+  return { asOfDate, lookbackDays, entries, divisions };
+}
