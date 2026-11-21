@@ -1,6 +1,6 @@
 import { archiveRecords } from "../archives/archive-data";
 import { departments, type DepartmentSection } from "../divisions";
-import { getDailyEditorialCase } from "../daily-office/daily-engine";
+import { buildDailyOfficeDispatch, type DailyOfficeDispatch } from "../daily-office/daily-engine";
 import { exhibits } from "../museum/museum-data";
 
 type OfficeStep = {
@@ -14,6 +14,107 @@ type CaseThreadDefinition = {
   archiveSlug: string;
   exhibitSlug: string;
 };
+
+type OfficeSection = Exclude<DepartmentSection, "home" | "passport">;
+
+type OfficeEvidenceProfile = {
+  source: "INCIDENT REPORT" | "KOL INTELLIGENCE" | "ON-CHAIN DIVISION" | "RISK DEPARTMENT" | "INTERNAL CORRESPONDENCE" | "BAGHOLDER POST-MORTEM" | "CONVICTION INDEX";
+  outputLabel: string;
+  reviewQuestion: string;
+};
+
+type DepartmentNarrativeEvidence = {
+  receivedFrom: string;
+  receivedArtifact: string;
+  source: string;
+  outputLabel: string;
+  excerpt: string;
+  reviewQuestion: string;
+};
+
+type DepartmentNarrativeHandoff = {
+  label: string;
+  note: string;
+  destinations: Array<{ title: string; href: string }>;
+};
+
+/**
+ * Defines what each office actually contributes to a shared file.
+ * The source is drawn from the same date-seeded dispatch shown at the Trenches Desk;
+ * this table only changes how an existing fictional record is reviewed and routed.
+ */
+const officeEvidenceProfiles: Record<OfficeSection, OfficeEvidenceProfile> = {
+  simulator: {
+    source: "ON-CHAIN DIVISION",
+    outputLabel: "PAPER-MARKET SEQUENCE",
+    reviewQuestion: "What does the fictional transaction sequence show, and what remains unknown about ownership or execution?",
+  },
+  club: {
+    source: "BAGHOLDER POST-MORTEM",
+    outputLabel: "SURVIVOR AFTERCARE FILE",
+    reviewQuestion: "Which consequences remain after the original thesis has been rewritten as long-term conviction?",
+  },
+  audit: {
+    source: "INCIDENT REPORT",
+    outputLabel: "DECISION-CHAIN RECONSTRUCTION",
+    reviewQuestion: "Which decision relied on an assumption that the incident record does not establish?",
+  },
+  daily: {
+    source: "KOL INTELLIGENCE",
+    outputLabel: "SOURCE-PROVENANCE REPORT",
+    reviewQuestion: "Can the claim be traced to an original source, or is the file counting repeated copies?",
+  },
+  archives: {
+    source: "ON-CHAIN DIVISION",
+    outputLabel: "OBSERVATION / INFERENCE LEDGER",
+    reviewQuestion: "What is directly recorded, and what is only an interpretation of the fictional wallet activity?",
+  },
+  roadmap: {
+    source: "INTERNAL CORRESPONDENCE",
+    outputLabel: "ACCESS / ACCOUNTABILITY CHECKLIST",
+    reviewQuestion: "Who owns the next measurable action, and what would count as an accepted handover?",
+  },
+  whitepaper: {
+    source: "RISK DEPARTMENT",
+    outputLabel: "TOKENOMICS / CONTROL DISCLOSURE",
+    reviewQuestion: "Do the allocation, control and liquidity claims have support inside the fictional file?",
+  },
+  museum: {
+    source: "BAGHOLDER POST-MORTEM",
+    outputLabel: "PRESERVED RELIC / CONTEXT LABEL",
+    reviewQuestion: "What artifact survives, and what does that artifact fail to prove?",
+  },
+  cope: {
+    source: "CONVICTION INDEX",
+    outputLabel: "SYNTHETIC CONFIDENCE READING",
+    reviewQuestion: "How much of the reading is confidence theatre rather than evidence about the fictional case?",
+  },
+  utility: {
+    source: "INCIDENT REPORT",
+    outputLabel: "TOKEN-PURPOSE CLAIM REVIEW",
+    reviewQuestion: "What does the token claim to do beyond its ticker, promotion or launch milestone?",
+  },
+};
+
+function excerptFromDispatch(dispatch: DailyOfficeDispatch, profile: OfficeEvidenceProfile): string {
+  if (profile.source === "CONVICTION INDEX") {
+    const reading = dispatch.convictionIndex.readings.find((item) =>
+      /BUNDLE|KOL|CA RESEARCH/.test(item.label),
+    );
+    if (!reading) throw new Error("The synthetic conviction reading is missing from the daily case.");
+    return reading.label + ": " + reading.score + "/100 — " + reading.assessment + ". " + dispatch.convictionIndex.note;
+  }
+
+  const section = dispatch.sections.find((item) => item.label === profile.source);
+  if (!section) {
+    throw new Error("A Department evidence profile references a missing dispatch section: " + profile.source + ".");
+  }
+
+  return section.body
+    .split(/(?<=[.!?])\s+(?=[A-Z0-9])/)
+    .slice(0, 2)
+    .join(" ");
+}
 
 export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
   "CA / LAUNCH CONTEXT": {
@@ -212,14 +313,16 @@ export type DepartmentNarrative = {
     section: DepartmentSection;
     responsibility: string;
     isCurrent: boolean;
+    evidence: DepartmentNarrativeEvidence;
+    handoff: DepartmentNarrativeHandoff;
   }>;
   precedent: { accession: string; title: string; summary: string; href: string };
   relic: { accession: string; title: string; description: string; href: string };
 };
 
 export function buildDepartmentNarrative(issueDate: string, currentDepartment: DepartmentSection): DepartmentNarrative {
-  const editorialCase = getDailyEditorialCase(issueDate);
-  const thread = departmentCaseThreads[editorialCase.caseTheme];
+  const dispatch = buildDailyOfficeDispatch(issueDate);
+  const thread = departmentCaseThreads[dispatch.caseTheme];
   if (!thread) throw new Error("No Department narrative thread is defined for the daily editorial case.");
 
   const currentOffice = departments.find((department) => department.section === currentDepartment);
@@ -229,10 +332,47 @@ export function buildDepartmentNarrative(issueDate: string, currentDepartment: D
   const relic = exhibits.find((exhibit) => exhibit.slug === thread.exhibitSlug);
   if (!precedent || !relic) throw new Error("A Department narrative thread references a missing precedent or relic.");
 
-  const offices = thread.offices.map((step) => {
+  const offices = thread.offices.map((step, index) => {
     const department = departments.find((item) => item.section === step.section);
     if (!department) throw new Error("A Department narrative thread references an unknown office.");
     const isCurrent = department.section === currentOffice.section;
+    const profile = officeEvidenceProfiles[department.section as OfficeSection];
+    if (!profile) throw new Error("A Department narrative thread references an office without an evidence profile.");
+    const previousStep = thread.offices[index - 1];
+    const previousDepartment = previousStep
+      ? departments.find((item) => item.section === previousStep.section)
+      : null;
+    const previousProfile = previousStep
+      ? officeEvidenceProfiles[previousStep.section as OfficeSection]
+      : null;
+    const evidence: DepartmentNarrativeEvidence = {
+      receivedFrom: previousDepartment?.title ?? "THE TRENCHES DESK / DAILY CASE INTAKE",
+      receivedArtifact: previousProfile?.outputLabel ?? "ORIGINAL DAILY DISPATCH / INTAKE RECORD",
+      source: profile.source,
+      outputLabel: profile.outputLabel,
+      excerpt: excerptFromDispatch(dispatch, profile),
+      reviewQuestion: profile.reviewQuestion,
+    };
+
+    const nextStep = thread.offices[index + 1];
+    const nextDepartment = nextStep
+      ? departments.find((item) => item.section === nextStep.section)
+      : null;
+    const handoff: DepartmentNarrativeHandoff = nextDepartment
+      ? {
+          label: "NEXT HANDOFF / OFFICE " + nextDepartment.number,
+          note: "Forward " + profile.outputLabel.toLowerCase() + " to " + nextDepartment.title + " for its assigned review: " + nextStep.responsibility,
+          destinations: [{ title: nextDepartment.number + " / " + nextDepartment.title, href: nextDepartment.href }],
+        }
+      : {
+          label: "FINAL DEPOSIT / INSTITUTIONAL MEMORY",
+          note: "The three-office review is filed against the archive precedent and preserved beside the Museum relic. Neither record is presented as evidence about a real market event.",
+          destinations: [
+            { title: "ARCHIVE / " + precedent.title, href: "/archives/records/" + precedent.slug },
+            { title: "MUSEUM / " + relic.title, href: "/museum/exhibits/" + relic.slug },
+          ],
+        };
+
     return {
       number: department.number,
       title: department.title,
@@ -240,14 +380,16 @@ export function buildDepartmentNarrative(issueDate: string, currentDepartment: D
       section: department.section,
       responsibility: step.responsibility,
       isCurrent,
+      evidence,
+      handoff,
     };
   });
 
   return {
-    issueDate: editorialCase.issueDate,
-    reference: editorialCase.reference,
-    caseTheme: editorialCase.caseTheme,
-    headline: editorialCase.headline,
+    issueDate: dispatch.issueDate,
+    reference: dispatch.reference,
+    caseTheme: dispatch.caseTheme,
+    headline: dispatch.headline,
     narrative: thread.narrative,
     currentOffice: { number: currentOffice.number, title: currentOffice.title, href: currentOffice.href },
     offices,
