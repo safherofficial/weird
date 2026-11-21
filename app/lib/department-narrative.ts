@@ -124,7 +124,7 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "daily", responsibility: "Checks whether the fictional KOL chorus points back to one copied source." },
       { section: "simulator", responsibility: "Reconstructs the launch sequence without placing a real trade." },
     ],
-    archiveSlug: "the-entry-was-impeccable",
+    archiveSlug: "appendix-m-technical-detail",
     exhibitSlug: "the-screenshot-of-a-screenshot",
   },
   "BONDING-CURVE GRADUATION": {
@@ -174,7 +174,7 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "daily", responsibility: "Checks whether the wallet story is being repeated as independent confirmation." },
       { section: "whitepaper", responsibility: "Reviews whether supply and allocation claims have any supporting context." },
     ],
-    archiveSlug: "liquidity-certificate-context",
+    archiveSlug: "the-wallet-graph-does-not-prove-ownership",
     exhibitSlug: "the-bundle-family-portrait",
   },
   "POST-GRADUATION LIQUIDITY": {
@@ -204,8 +204,8 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "audit", responsibility: "Reconstructs the influence of the call on the fictional entry decision." },
       { section: "museum", responsibility: "Preserves the screenshot as an artifact, not as an authenticated claim." },
     ],
-    archiveSlug: "market-declined-to-comment",
-    exhibitSlug: "the-confidential-partnership",
+    archiveSlug: "seventeenth-rocket-custody",
+    exhibitSlug: "the-screenshot-of-a-screenshot",
   },
   "100X ENTRY TIMING": {
     narrative: "The next 100x is found before the previous post-mortem is closed. The Research Bureau checks the thesis, FOMO Control reviews the timing, and the survivor registry records the familiar aftercare application.",
@@ -215,7 +215,7 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "club", responsibility: "Files the fictional survivor application after the outcome." },
     ],
     archiveSlug: "the-entry-was-impeccable",
-    exhibitSlug: "the-vesting-cliff",
+    exhibitSlug: "the-screenshot-of-a-screenshot",
   },
   "CA SOURCE VERIFICATION": {
     narrative: "Three accounts claim to have found the same CA first. KOL Surveillance follows the copied source, the Research Bureau checks the underlying claim, and the archive records the difference between a repeated address and corroborated evidence.",
@@ -244,7 +244,7 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "whitepaper", responsibility: "Checks whether token distribution claims match the fictional dossier." },
       { section: "cope", responsibility: "Measures synthetic confidence without presenting it as real sentiment." },
     ],
-    archiveSlug: "liquidity-certificate-context",
+    archiveSlug: "the-wallet-graph-does-not-prove-ownership",
     exhibitSlug: "the-bundle-family-portrait",
   },
   "EXIT-PLAN ABSENCE": {
@@ -274,7 +274,7 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "simulator", responsibility: "Reconstructs the fictional launch timeline without identifying real wallets." },
       { section: "audit", responsibility: "Reviews how the sniper narrative influenced the entry decision." },
     ],
-    archiveSlug: "liquidity-certificate-context",
+    archiveSlug: "the-wallet-graph-does-not-prove-ownership",
     exhibitSlug: "the-bundle-family-portrait",
   },
   "MIGRATION CLAIM": {
@@ -294,8 +294,8 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
       { section: "club", responsibility: "Records the fictional survivor status and its complete lack of benefits." },
       { section: "museum", responsibility: "Preserves the evidence after the thesis has become a long-term archive item." },
     ],
-    archiveSlug: "membership-privileges-denied",
-    exhibitSlug: "the-vesting-cliff",
+    archiveSlug: "the-entry-was-impeccable",
+    exhibitSlug: "the-screenshot-of-a-screenshot",
   },
 };
 
