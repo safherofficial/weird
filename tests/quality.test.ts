@@ -481,13 +481,9 @@ test("U27.3 shared case chains hand off dispatch evidence through three offices 
           assert.ok(sourceSection.body.includes(office.evidence.excerpt));
         }
 
-        const isCurrent = office.section === narrative.currentOffice.href.replace("/", "")
-          ? true
-          : office.section === departments.find((department) => department.section === views[0].currentOffice.title)?.section;
         assert.equal(office.isCurrent, office.section === departments.find((department) => department.title === narrative.currentOffice.title)?.section);
         if (office.isCurrent) assert.equal(office.href, null);
         else assert.equal(office.href, departments.find((department) => department.section === office.section)?.href);
-        void isCurrent;
 
         if (stepIndex < narrative.offices.length - 1) {
           const nextOffice = narrative.offices[stepIndex + 1];
