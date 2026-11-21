@@ -242,13 +242,13 @@ export default function ClubWarRoom() {
   function openMemeOnX() {
     const intent = new URL("https://twitter.com/intent/tweet");
     intent.searchParams.set("text", caption);
-    intent.searchParams.set("url", new URL("/club#club-war-room", window.location.origin).toString());
+    intent.searchParams.set("url", new URL("/club#club-meme-studio", window.location.origin).toString());
     window.open(intent.toString(), "_blank", "noopener,noreferrer");
     setNotice("X DRAFT OPENED. ATTACH YOUR DOWNLOADED PNG BEFORE PUBLISHING.");
   }
 
   async function copyChallenge(challenge: ClubPublicChallenge) {
-    const publicUrl = new URL("/club#club-war-room", window.location.origin).toString();
+    const publicUrl = new URL("/club#club-challenge-board", window.location.origin).toString();
     try {
       await copyText(challenge.postText + "\n\n" + publicUrl);
       setNotice("CHALLENGE AND PUBLIC CLUB LINK COPIED.");
@@ -260,7 +260,7 @@ export default function ClubWarRoom() {
   function postChallenge(challenge: ClubPublicChallenge) {
     const intent = new URL("https://twitter.com/intent/tweet");
     intent.searchParams.set("text", challenge.postText);
-    intent.searchParams.set("url", new URL("/club#club-war-room", window.location.origin).toString());
+    intent.searchParams.set("url", new URL("/club#club-challenge-board", window.location.origin).toString());
     window.open(intent.toString(), "_blank", "noopener,noreferrer");
   }
 
@@ -275,7 +275,7 @@ export default function ClubWarRoom() {
         <div className="club-war-room__stamp"><strong>NO UTILITY</strong><span>MAXIMUM<br />CONVICTION</span></div>
       </header>
 
-      <section className="club-meme-studio" aria-labelledby="club-meme-studio-title">
+      <section className="club-meme-studio" id="club-meme-studio" aria-labelledby="club-meme-studio-title">
         <div className="club-meme-studio__intro">
           <span>01 / THE MEME OFFICE</span>
           <h3 id="club-meme-studio-title">YOUR EXCUSE. <em>YOUR MASTERPIECE.</em></h3>
@@ -311,10 +311,10 @@ export default function ClubWarRoom() {
         <p className="club-meme-studio__disclaimer">THE IMAGE IS GENERATED LOCALLY AND IS NOT UPLOADED OR SAVED TO A SERVER. X DRAFTS OPEN WITHOUT ATTACHING THE IMAGE; DOWNLOAD THE PNG AND ADD IT TO YOUR POST.</p>
       </section>
 
-      <section className="club-challenge-board" aria-labelledby="club-challenge-board-title">
+      <section className="club-challenge-board" id="club-challenge-board" aria-labelledby="club-challenge-board-title">
         <header>
-          <div><span>02 / PUBLIC CHALLENGE BOARD</span><h3 id="club-challenge-board-title">THE TIMELINE <em>IS SUMMONED.</em></h3><p>Five open invitations for the trenches. Replies happen publicly on X, not in a hidden website inbox.</p></div>
-          <strong>05 <small>OPEN FILES</small></strong>
+          <div><span>02 / PUBLIC CHALLENGE BOARD</span><h3 id="club-challenge-board-title">THE TIMELINE <em>IS SUMMONED.</em></h3><p>{CLUB_PUBLIC_CHALLENGES.length} open invitations for the trenches. Replies happen publicly on X, not in a hidden website inbox.</p></div>
+          <strong>{String(CLUB_PUBLIC_CHALLENGES.length).padStart(2, "0")} <small>OPEN FILES</small></strong>
         </header>
         <div className="club-challenge-board__grid">
           {CLUB_PUBLIC_CHALLENGES.map((challenge) => (

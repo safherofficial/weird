@@ -2666,6 +2666,13 @@ test("U28.8 Club War Room creates browser-local meme PNGs and shareable public c
   assert.ok(warRoom.includes("DOWNLOAD PNG"));
   assert.ok(warRoom.includes("POST CHALLENGE TO X"));
   assert.ok(warRoom.includes("DO NOT SHARE PRIVATE WALLET DETAILS"));
+  assert.ok(warRoom.includes('id="club-meme-studio"'));
+  assert.ok(warRoom.includes('id="club-challenge-board"'));
+  assert.ok(warRoom.includes('new URL("/club#club-meme-studio"'));
+  assert.ok(warRoom.includes('new URL("/club#club-challenge-board"'));
+  assert.ok(warRoom.includes("{CLUB_PUBLIC_CHALLENGES.length} open invitations"));
+  assert.ok(warRoom.includes('String(CLUB_PUBLIC_CHALLENGES.length).padStart(2, "0")'));
+  assert.doesNotMatch(warRoom, /Five open invitations|<strong>05 <small>OPEN FILES/);
   assert.doesNotMatch(warRoom, /fetch\(|localStorage|recordPassport/);
   assert.ok(styles.includes(".club-meme-studio__preview canvas"));
   assert.ok(styles.includes(".club-challenge-board__grid"));
@@ -2724,7 +2731,9 @@ test("U28.9 weekly campaign engine coordinates real Club assets on a determinist
   assert.ok(desk.includes("COPY FULL CAMPAIGN KIT"));
   assert.ok(desk.includes("OPEN MAIN POST ON X"));
   assert.ok(desk.includes("twitter.com/intent/tweet"));
-  assert.ok(desk.includes("#club-war-room"));
+  assert.ok(desk.includes('href="#club-meme-studio"'));
+  assert.ok(desk.includes('href="#club-challenge-board"'));
+  assert.doesNotMatch(desk, /href="#club-war-room"/);
   assert.ok(desk.includes("NO DATABASE, ACCOUNT, TRACKING, SERVER STORAGE OR AUTO-POSTING"));
   assert.doesNotMatch(desk, /fetch\(|localStorage|recordPassport|navigator\.share/);
   assert.equal((warRoomData.match(/id: "position-reclassification"/g) || []).length, 1);

@@ -117,14 +117,14 @@ export default function ClubCampaignEngineDesk() {
                 <strong>{schedule.current.memeTemplate.bottomText}</strong>
               </div>
               <p>{schedule.current.memeTemplate.caption}</p>
-              <Link className="button button--quiet" href="#club-war-room">OPEN MEME OFFICE ↗</Link>
+              <Link className="button button--quiet" href="#club-meme-studio">OPEN MEME OFFICE ↗</Link>
             </article>
             <article>
               <span>03 / PUBLIC CHALLENGE</span>
               <h4>{schedule.current.challenge.title}</h4>
               <p>{schedule.current.challenge.brief}</p>
               <blockquote>{schedule.current.challenge.prompt}</blockquote>
-              <Link className="button button--quiet" href="#club-war-room">OPEN CHALLENGE BOARD ↗</Link>
+              <Link className="button button--quiet" href="#club-challenge-board">OPEN CHALLENGE BOARD ↗</Link>
             </article>
           </div>
 
