@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:quality": "tsc -p tsconfig.quality.json && node --test .quality-tests/tests/quality.test.js"
+    "test:quality": "tsc -p tsconfig.quality.json && node --test .quality-tests/tests/*.test.js"
   },
   "dependencies": {
     "next": "16.4.6",
