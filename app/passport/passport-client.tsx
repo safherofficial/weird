@@ -5,6 +5,7 @@ import AchievementEmblem from "./achievement-emblem";
 import { ACHIEVEMENT_BADGE_ASSETS } from "./badge-assets";
 import {
   DEPARTMENT_STAMPS,
+  PASSPORT_STORAGE_KEY,
   PASSPORT_ACHIEVEMENTS,
   getPassportAchievementStatuses,
   readPassport,
@@ -168,7 +169,7 @@ export default function PassportClient() {
     setReady(true);
 
     function handleStorage(event: StorageEvent) {
-      if (event.key === null || event.key === "dyor-department:passport:v1") setPassport(readPassport());
+      if (event.key === null || event.key === PASSPORT_STORAGE_KEY) setPassport(readPassport());
     }
 
     window.addEventListener("storage", handleStorage);

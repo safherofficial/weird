@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { readPassport, type PassportActivityId } from "../passport/passport-store";
+import { PASSPORT_STORAGE_KEY, readPassport, type PassportActivityId } from "../passport/passport-store";
 
 type ReceiptStatus = "checking" | "saved" | "missing";
 
@@ -10,8 +10,18 @@ export default function PassportResultReceipt({ activity }: { activity: Passport
   const [status, setStatus] = useState<ReceiptStatus>("checking");
 
   useEffect(() => {
-    const passport = readPassport();
-    setStatus(passport?.completedActivities.includes(activity) ? "saved" : "missing");
+    function syncStatus() {
+      const passport = readPassport();
+      setStatus(passport?.completedActivities.includes(activity) ? "saved" : "missing");
+    }
+
+    function handleStorage(event: StorageEvent) {
+      if (event.key === null || event.key === PASSPORT_STORAGE_KEY) syncStatus();
+    }
+
+    syncStatus();
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, [activity]);
 
   const saved = status === "saved";

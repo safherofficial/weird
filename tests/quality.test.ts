@@ -11,6 +11,7 @@ import { classifications as whitepaperClassifications, questions as whitepaperQu
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
+import { departments } from "../app/divisions";
 import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
 type ResultRecord = Record<string, unknown>;
@@ -771,4 +772,101 @@ test("U24.2 journey Passport messaging describes both visit stamps and completed
   const journey = readFileSync("app/components/department-next-steps.tsx", "utf8");
   assert.ok(journey.includes("department visits and completed-experience badges are saved locally"));
   assert.ok(journey.includes("OPEN / ENABLE PASSPORT"));
+});
+
+
+test("U24.3 all ten Department Stamps map to reachable division pages and direct public records", () => {
+  assert.equal(DEPARTMENT_STAMPS.length, 10);
+  assert.equal(departments.length, 10);
+  assert.deepEqual(
+    DEPARTMENT_STAMPS.map((stamp) => stamp.id),
+    departments.map((department) => department.section),
+    "Every listed division must have one matching Passport visit stamp in directory order",
+  );
+
+  const divisionPages = [
+    ["simulator", "app/simulator/page.tsx"],
+    ["club", "app/club/page.tsx"],
+    ["audit", "app/audit/page.tsx"],
+    ["daily", "app/daily-office/page.tsx"],
+    ["archives", "app/archives/page.tsx"],
+    ["roadmap", "app/roadmap-generator/page.tsx"],
+    ["whitepaper", "app/whitepaper-factory/page.tsx"],
+    ["utility", "app/utility-inspector/page.tsx"],
+    ["museum", "app/museum/page.tsx"],
+    ["cope", "app/cope-index/page.tsx"],
+  ];
+
+  for (const [section, path] of divisionPages) {
+    const source = readFileSync(path, "utf8");
+    assert.ok(source.includes('DepartmentHeader activeSection="' + section + '"'), path + " must record the matching division visit");
+  }
+
+  const directPublicPages = [
+    ["audit", "app/audit/case/[code]/page.tsx"],
+    ["simulator", "app/simulator/case/[code]/page.tsx"],
+    ["utility", "app/utility-inspector/case/[code]/page.tsx"],
+    ["roadmap", "app/roadmap-generator/case/[code]/page.tsx"],
+    ["whitepaper", "app/whitepaper-factory/case/[code]/page.tsx"],
+    ["club", "app/club/member/[code]/page.tsx"],
+    ["cope", "app/cope-index/case/[code]/page.tsx"],
+    ["archives", "app/archives/records/[slug]/page.tsx"],
+    ["museum", "app/museum/exhibits/[slug]/page.tsx"],
+  ];
+
+  for (const [section, path] of directPublicPages) {
+    const source = readFileSync(path, "utf8");
+    assert.ok(source.includes('DepartmentHeader activeSection="' + section + '"'), path + " must count a direct public-record visit");
+  }
+
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+  assert.match(header, /recordDepartmentVisit\(activeSection\)/);
+  const layout = readFileSync("app/layout.tsx", "utf8");
+  assert.match(layout, /<AchievementToastHost \/>/);
+});
+
+test("U24.3 special Culture Curator activities are recorded only on their matching detail pages", () => {
+  const archive = readFileSync("app/archives/records/[slug]/page.tsx", "utf8");
+  const museum = readFileSync("app/museum/exhibits/[slug]/page.tsx", "utf8");
+  assert.match(archive, /<RecordPassportActivity activity="archive-record" \/>/);
+  assert.match(archive, /DepartmentHeader activeSection="archives"/);
+  assert.match(museum, /<RecordPassportActivity activity="museum-exhibit" \/>/);
+  assert.match(museum, /DepartmentHeader activeSection="museum"/);
+
+  const archiveIndex = readFileSync("app/archives/page.tsx", "utf8");
+  const museumIndex = readFileSync("app/museum/page.tsx", "utf8");
+  assert.doesNotMatch(archiveIndex, /RecordPassportActivity/);
+  assert.doesNotMatch(museumIndex, /RecordPassportActivity/);
+
+  const store = readFileSync("app/passport/passport-store.ts", "utf8");
+  assert.match(store, /"culture-curator":\s*\{\s*progress:\s*Number\(completed\.has\("museum-exhibit"\)\)\s*\+\s*Number\(completed\.has\("archive-record"\)\),\s*target:\s*2/s);
+});
+
+test("U24.3 completed experience activities are recorded only in the final-answer branch", () => {
+  const cases = [
+    ["app/audit/audit-client.tsx", /if \(current === AUDIT_QUESTION_COUNT - 1\) \{\s*setResult\(buildResult\(next\)\);\s*recordPassportActivity\("audit"\);/],
+    ["app/simulator/simulator-client.tsx", /if \(nextDecisions\.length === SIMULATOR_ROUNDS\) \{\s*setResult\(buildSimulatorResult\(nextDecisions\)\);\s*recordPassportActivity\("simulator"\);/],
+    ["app/utility-inspector/utility-inspector-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildUtilityResult\(next\)\);\s*recordPassportActivity\("utility"\);/],
+    ["app/roadmap-generator/roadmap-generator-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildRoadmapResult\(next, projectSlug\)\);\s*recordPassportActivity\("roadmap"\);/],
+    ["app/whitepaper-factory/whitepaper-factory-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildWhitepaperResult\(next, projectSlug\)\);\s*recordPassportActivity\("whitepaper"\);/],
+    ["app/club/club-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildClubResult\(next\)\);\s*recordPassportActivity\("club"\);/],
+    ["app/cope-index/cope-index-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildPersonalCopeResult\(next\)\);\s*recordPassportActivity\("cope"\);/],
+  ] as const;
+
+  for (const [path, pattern] of cases) {
+    const source = readFileSync(path, "utf8");
+    assert.match(source, pattern, path + " must award Passport progress only after the complete experience");
+  }
+});
+
+test("U24.3 local Passport status receipts refresh when the same register changes in another tab", () => {
+  const receipt = readFileSync("app/components/passport-result-receipt.tsx", "utf8");
+  assert.match(receipt, /PASSPORT_STORAGE_KEY/);
+  assert.match(receipt, /window\.addEventListener\("storage", handleStorage\)/);
+  assert.match(receipt, /window\.removeEventListener\("storage", handleStorage\)/);
+  assert.match(receipt, /event\.key === null \|\| event\.key === PASSPORT_STORAGE_KEY/);
+
+  const client = readFileSync("app/passport/passport-client.tsx", "utf8");
+  assert.match(client, /PASSPORT_STORAGE_KEY/);
+  assert.doesNotMatch(client, /dyor-department:passport:v1/);
 });
