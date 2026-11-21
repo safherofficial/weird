@@ -47,6 +47,7 @@ function makeCaseCard(result: SimulatorResult) {
   const title = escapeXml(result.profile.title);
   const subtitle = escapeXml(result.profile.subtitle);
   const roast = escapeXml(result.profile.roast);
+  const crossRead = escapeXml(result.crossRead.headline);
   const pnl = (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC";
   const pnlColor = result.paperPnl >= 0 ? "#b6ff65" : "#ff7777";
 
@@ -69,7 +70,8 @@ function makeCaseCard(result: SimulatorResult) {
     '<text x="438" y="423" fill="' + pnlColor + '" font-family="monospace" font-size="34" font-weight="bold">' + escapeXml(pnl) + '</text>' +
     '<text x="788" y="369" fill="#8d968a" font-family="monospace" font-size="14">FICTIONAL RETURN</text>' +
     '<text x="788" y="423" fill="' + pnlColor + '" font-family="monospace" font-size="34" font-weight="bold">' + (result.paperReturn > 0 ? "+" : "") + result.paperReturn.toFixed(1) + '%</text>' +
-    '<text x="64" y="505" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="21">' + roast + '</text>' +
+    '<text x="64" y="478" fill="#b6ff65" font-family="monospace" font-size="13" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
+    '<text x="64" y="511" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="21">' + roast + '</text>' +
     '<text x="64" y="612" fill="#b6ff65" font-family="monospace" font-size="16" font-weight="bold">NO TOKEN. NO REAL MONEY. JUST A VERY REALISTIC AMOUNT OF COPE.</text>' +
     '<text x="1136" y="612" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="13">ENTERTAINMENT ONLY</text>' +
     '</svg>'

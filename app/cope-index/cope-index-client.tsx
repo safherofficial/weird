@@ -42,6 +42,7 @@ function makePersonalCard(result: PersonalCopeResult) {
   const title = escapeXml(result.profile.title);
   const motto = escapeXml(result.profile.subtitle);
   const number = escapeXml(result.caseNumber);
+  const crossRead = escapeXml(result.crossRead.headline);
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">' +
     '<rect width="1200" height="675" fill="#090b09"/>' +
@@ -61,7 +62,8 @@ function makePersonalCard(result: PersonalCopeResult) {
     '<text x="452" y="430" fill="#b6ff65" font-family="monospace" font-size="36" font-weight="bold">' + result.patienceScore + '/100</text>' +
     '<text x="818" y="375" fill="#8d9a83" font-family="monospace" font-size="13">CHAT DEPENDENCY</text>' +
     '<text x="818" y="430" fill="#c8b5ff" font-family="monospace" font-size="36" font-weight="bold">' + result.chatDependency + '/100</text>' +
-    '<text x="64" y="514" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + escapeXml(result.profile.roast) + '</text>' +
+    '<text x="64" y="482" fill="#b6ff65" font-family="monospace" font-size="13" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
+    '<text x="64" y="517" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + escapeXml(result.profile.roast) + '</text>' +
     '<text x="64" y="598" fill="#b6ff65" font-family="monospace" font-size="14" font-weight="bold">FICTIONAL SELF-REPORTED READING / NOT MARKET OR SENTIMENT DATA</text>' +
     '<text x="1136" y="598" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
     '</svg>'
@@ -206,7 +208,6 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
       "THE DYOR DEPARTMENT completed my fictional Solana Trenches cope reading.",
       result.profile.title + ".",
       "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
-      "Cross-read: " + result.crossRead.headline + ".",
       "Cross-read: " + result.crossRead.headline + ".",
       result.profile.roast,
     ].join(" ");

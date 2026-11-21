@@ -49,6 +49,7 @@ function makeCaseCard(result: UtilityResult) {
   const subtitle = escapeXml(result.profile.subtitle);
   const roast = escapeXml(result.profile.roast);
   const finding = escapeXml(result.finding);
+  const crossRead = escapeXml(result.crossRead.headline);
   const scores = [
     { label: "UTILITY EVIDENCE", value: result.evidence, color: "#b6ff65" },
     { label: "NARRATIVE FOG", value: result.fog, color: "#ff7777" },
@@ -75,7 +76,8 @@ function makeCaseCard(result: UtilityResult) {
     '<text x="64" y="270" fill="#b6ff65" font-family="monospace" font-size="18">' + subtitle + '</text>' +
     '<text x="64" y="310" fill="#ff8580" font-family="monospace" font-size="13" font-weight="bold">DEPARTMENTAL FINDING / ' + finding + '</text>' +
     scoreCards +
-    '<text x="64" y="502" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + roast + '</text>' +
+    '<text x="64" y="475" fill="#b6ff65" font-family="monospace" font-size="12" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
+    '<text x="64" y="504" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + roast + '</text>' +
     '<text x="64" y="612" fill="#b6ff65" font-family="monospace" font-size="15" font-weight="bold">UTILITY CLAIMS HAVE BEEN RECEIVED. PROOF IS A SEPARATE DEPARTMENT.</text>' +
     '<text x="1136" y="612" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
     '</svg>'

@@ -551,6 +551,24 @@ test("six interactive departments produce deterministic answer-linked cross-read
   assert.doesNotMatch(cope.crossRead.interpretation, /mental-health diagnosis|clinical assessment/i);
 });
 
+test("all six downloadable case cards include their answer-linked cross-read", () => {
+  const cardSources = [
+    ["app/audit/audit-client.tsx", "function makeCardSvg"],
+    ["app/simulator/simulator-client.tsx", "function makeCaseCard"],
+    ["app/utility-inspector/utility-inspector-client.tsx", "function makeCaseCard"],
+    ["app/roadmap-generator/roadmap-generator-client.tsx", "function makeCaseCard"],
+    ["app/club/club-client.tsx", "function makeMembershipSvg"],
+    ["app/cope-index/cope-index-client.tsx", "function makePersonalCard"],
+  ];
+  cardSources.forEach(([path, marker]) => {
+    const source = readFileSync(path, "utf8");
+    const start = source.indexOf(marker);
+    const end = source.indexOf("\n}\n", start);
+    assert.ok(start >= 0 && end > start, path + " must expose its card renderer");
+    assert.match(source.slice(start, end), /result\.crossRead\.headline/, path + " card must include the cross-read");
+  });
+});
+
 test("all six public social-preview images render their engine cross-read headline", () => {
   const previewPaths = [
     "app/simulator/case/[code]/opengraph-image.tsx",

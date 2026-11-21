@@ -52,6 +52,7 @@ function makeCaseCard(result: RoadmapResult) {
   const project = escapeXml(result.projectLabel);
   const finding = escapeXml(result.finding);
   const roast = escapeXml(result.profile.roast);
+  const crossRead = escapeXml(result.crossRead.headline);
   const cards = [
     { label: "DELIVERY CLARITY", value: result.delivery, color: "#b6ff65" },
     { label: "TIMELINE REALISM", value: result.realism, color: "#c8b5ff" },
@@ -77,7 +78,8 @@ function makeCaseCard(result: RoadmapResult) {
     '<text x="64" y="267" fill="#b6ff65" font-family="monospace" font-size="17">A SEVEN-PHASE CTO RECOVERY PLAN / ETA: SOON™</text>' +
     '<text x="64" y="297" fill="#ff8580" font-family="monospace" font-size="12" font-weight="bold">DEPARTMENTAL FINDING / ' + finding + '</text>' +
     cards +
-    '<text x="64" y="478" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + roast + '</text>' +
+    '<text x="64" y="451" fill="#b6ff65" font-family="monospace" font-size="12" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
+    '<text x="64" y="481" fill="#e1e5dc" font-family="Arial,sans-serif" font-size="19">' + roast + '</text>' +
     '<text x="64" y="596" fill="#b6ff65" font-family="monospace" font-size="15" font-weight="bold">EVERY MILESTONE IS ACHIEVABLE. EVENTUALLY. PROBABLY. SOON.</text>' +
     '<text x="1136" y="596" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">FICTIONAL ENTERTAINMENT ONLY</text>' +
     '</svg>'

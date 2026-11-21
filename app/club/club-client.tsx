@@ -38,6 +38,7 @@ function makeMembershipSvg(result: ClubResult) {
   const title = escapeXml(result.profile.title);
   const motto = escapeXml(result.profile.motto);
   const member = escapeXml(result.memberNumber);
+  const crossRead = escapeXml(result.crossRead.headline);
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">' +
     '<rect width="1200" height="675" fill="#090b09"/>' +
@@ -49,6 +50,7 @@ function makeMembershipSvg(result: ClubResult) {
     '<text x="68" y="178" fill="#879481" font-family="monospace" font-size="16" letter-spacing="3">MEMBERSHIP CERTIFICATE / FICTIONAL ISSUE</text>' +
     '<text x="68" y="269" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="57" font-weight="900">' + title + '</text>' +
     '<text x="68" y="321" fill="#b6ff65" font-family="monospace" font-size="23">' + motto + '</text>' +
+    '<text x="68" y="352" fill="#a6c88f" font-family="monospace" font-size="12" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
     '<rect x="68" y="371" width="470" height="112" fill="#151e12" stroke="#46573a"/>' +
     '<text x="92" y="409" fill="#8d9a83" font-family="monospace" font-size="14">MEMBER NUMBER</text>' +
     '<text x="92" y="457" fill="#b6ff65" font-family="monospace" font-size="37" font-weight="bold">' + member + '</text>' +
