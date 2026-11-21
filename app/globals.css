@@ -14940,3 +14940,41 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (max-width:820px) { .club-meme-studio__editor { grid-template-columns:1fr; } .club-meme-studio__preview { max-width:660px; margin-inline:auto; } }
 @media (max-width:640px) { .club-war-room { padding:16px; } .club-war-room__header { gap:12px; } .club-war-room__stamp { min-width:76px; min-height:66px; } .club-war-room__stamp strong { font-size:9px; } .club-meme-studio__templates { grid-template-columns:repeat(2,minmax(0,1fr)); } .club-challenge-board__grid { grid-template-columns:1fr; } .club-meme-studio__actions { grid-template-columns:1fr; } .club-meme-studio__actions .button { justify-content:space-between; } }
 @media (prefers-reduced-motion:reduce) { .club-war-room * { scroll-behavior:auto; } }
+/* U28.9 — coordinated weekly campaign engine for The 99% Club. */
+.club-campaign-engine { margin:clamp(30px,5vw,58px) auto; padding:clamp(20px,3.5vw,36px); border:1px solid #687d50; background:radial-gradient(ellipse at 0 0,rgb(182 255 101 / 8%),transparent 42%),linear-gradient(135deg,#111910 0%,#090d0a 74%); }
+.club-campaign-engine__header { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
+.club-campaign-engine__header > div:first-child { min-width:0; }
+.club-campaign-engine__header > div:first-child > span { color:var(--accent); font:700 7px/1.6 var(--font-mono); letter-spacing:.12em; }
+.club-campaign-engine__header h2 { margin:14px 0 10px; color:#f0f2e9; font:800 clamp(32px,4.5vw,54px)/.94 var(--sans); letter-spacing:-.07em; }
+.club-campaign-engine__header h2 em { color:var(--accent); font-style:normal; }
+.club-campaign-engine__header p { max-width:700px; margin:0; color:#9ba895; font-size:11px; line-height:1.8; }
+.club-campaign-engine__seal { display:grid; flex:0 0 auto; min-width:104px; min-height:84px; place-content:center; gap:6px; border:1px solid #536944; background:#0a100b; text-align:center; transform:rotate(2deg); }
+.club-campaign-engine__seal strong { color:var(--accent); font:800 11px/1 var(--font-mono); }
+.club-campaign-engine__seal span { color:#83917d; font:700 6px/1.5 var(--font-mono); letter-spacing:.09em; }
+.club-campaign-engine__current { margin-top:27px; padding:clamp(18px,3vw,27px); border:1px solid #526744; background:linear-gradient(110deg,rgb(182 255 101 / 7%),rgb(8 13 9 / 88%) 58%); }
+.club-campaign-engine__current-topline { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 16px; color:var(--accent); font:700 7px/1.6 var(--font-mono); letter-spacing:.09em; }
+.club-campaign-engine__current h3 { margin:18px 0 8px; color:#f0f2e9; font:800 clamp(22px,3.4vw,38px)/1.05 var(--sans); letter-spacing:-.05em; }
+.club-campaign-engine__current > p { margin:0; color:#a6b19f; font-size:11px; line-height:1.7; }
+.club-campaign-engine__assets { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; margin-top:12px; }
+.club-campaign-engine__assets article { display:flex; min-width:0; flex-direction:column; padding:17px; border:1px solid #354431; background:rgb(7 12 8 / 88%); }
+.club-campaign-engine__assets article > span { color:var(--accent); font:700 7px/1.5 var(--font-mono); letter-spacing:.09em; }
+.club-campaign-engine__assets h4 { margin:13px 0 10px; color:#edf1e7; font:800 15px/1.2 var(--sans); letter-spacing:-.03em; }
+.club-campaign-engine__assets blockquote { flex:1; margin:0 0 13px; padding:12px; border-left:2px solid var(--accent); background:#111910; color:#cbd5c3; font-size:10px; line-height:1.75; overflow-wrap:anywhere; }
+.club-campaign-engine__assets article > small { margin:0 0 11px; color:#83927d; font:700 6px/1.5 var(--font-mono); letter-spacing:.07em; }
+.club-campaign-engine__assets article > p { flex:1; margin:0 0 14px; color:#98a591; font-size:9px; line-height:1.7; }
+.club-campaign-engine__assets .button { align-self:flex-start; min-height:34px; margin-top:5px; padding:8px 10px; font-size:7px; }
+.club-campaign-engine__meme-copy { display:grid; gap:8px; margin:0 0 13px; padding:13px; border:1px solid #384735; background:linear-gradient(145deg,#172018,#0b100c); text-align:center; }
+.club-campaign-engine__meme-copy strong { color:#e6eddf; font:800 11px/1.45 var(--sans); overflow-wrap:anywhere; }
+.club-campaign-engine__meme-copy strong:last-child { color:var(--accent); }
+.club-campaign-engine__meme-copy i { color:#6f865c; font:normal 12px var(--font-mono); }
+.club-campaign-engine__actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.club-campaign-engine__actions .button { min-height:40px; font-size:7px; }
+.club-campaign-engine__next { display:grid; grid-template-columns:minmax(130px,.35fr) minmax(0,1fr); gap:5px 18px; margin-top:18px; padding:15px 17px; border:1px dashed #394833; background:rgb(7 12 8 / 65%); }
+.club-campaign-engine__next > span { grid-row:span 2; align-self:center; color:#8d9b83; font:700 7px/1.6 var(--font-mono); letter-spacing:.08em; }
+.club-campaign-engine__next strong { color:#dce6d4; font:800 11px/1.4 var(--sans); }
+.club-campaign-engine__next p { margin:0; color:#85927e; font-size:9px; line-height:1.6; }
+.club-campaign-engine__loading { min-height:100px; display:grid; place-items:center; color:var(--accent); font:700 8px var(--font-mono); letter-spacing:.1em; }
+.club-campaign-engine__disclaimer { margin:15px 0 0; color:#778371; font:6px/1.8 var(--font-mono); letter-spacing:.045em; }
+@media (max-width:900px) { .club-campaign-engine__assets { grid-template-columns:1fr 1fr; } .club-campaign-engine__assets article:last-child { grid-column:1 / -1; } }
+@media (max-width:620px) { .club-campaign-engine { padding:16px; } .club-campaign-engine__header { gap:12px; } .club-campaign-engine__seal { min-width:76px; min-height:66px; } .club-campaign-engine__seal strong { font-size:9px; } .club-campaign-engine__assets { grid-template-columns:1fr; } .club-campaign-engine__assets article:last-child { grid-column:auto; } .club-campaign-engine__assets .button { width:100%; justify-content:space-between; } .club-campaign-engine__actions { display:grid; grid-template-columns:1fr; } .club-campaign-engine__actions .button { width:100%; justify-content:space-between; } .club-campaign-engine__next { grid-template-columns:1fr; gap:7px; } .club-campaign-engine__next > span { grid-row:auto; } }
+@media (prefers-reduced-motion:reduce) { .club-campaign-engine * { scroll-behavior:auto; transition:none !important; } }

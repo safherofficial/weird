@@ -108,4 +108,12 @@ export const CLUB_PUBLIC_CHALLENGES: readonly ClubPublicChallenge[] = [
     prompt: "CHALLENGE: Name your 99% Club faction and nominate a friend to file their own fictional membership.",
     postText: "THE 99% CLUB CHALLENGE / FACTION ROLL CALL. Name your fictional faction, post your motto and nominate the next degen. #The99PercentClub #ItsNeverOurFault",
   },
+  {
+    id: "position-reclassification",
+    code: "WAR / 06",
+    title: "THE POSITION RECLASSIFICATION",
+    brief: "Rename a fictional average-down into a strategic portfolio decision. Evidence is optional; confidence is compulsory.",
+    prompt: "CHALLENGE: Reclassify a fictional average-down as a strategic position expansion. Keep it humorous; no real tickers, wallet details or PnL screenshots.",
+    postText: "THE 99% CLUB CHALLENGE / POSITION RECLASSIFICATION. Rename a fictional average-down as a strategic expansion. The paperwork must sound convincing. #The99PercentClub #ItsNeverOurFault",
+  },
 ];

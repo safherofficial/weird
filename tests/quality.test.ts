@@ -2670,3 +2670,63 @@ test("U28.8 Club War Room creates browser-local meme PNGs and shareable public c
   assert.ok(styles.includes(".club-challenge-board__grid"));
   assert.ok(styles.includes("@media (max-width:640px)"));
 });
+
+test("U28.9 weekly campaign engine coordinates real Club assets on a deterministic UTC rotation", () => {
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const desk = readFileSync("app/club/club-campaign-engine-desk.tsx", "utf8");
+  const warRoomData = readFileSync("app/club/club-war-room-data.ts", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+
+  assert.equal(CLUB_CAMPAIGN_ROTATION_LENGTH, 6);
+  assert.equal(CLUB_CAMPAIGN_THEMES.length, 6);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.id)).size, 6);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.memeTemplateId)).size, 6);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.culturePostId)).size, 6);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.challengeId)).size, 6);
+
+  for (const theme of CLUB_CAMPAIGN_THEMES) {
+    assert.ok(CLUB_MEME_TEMPLATES.some((item) => item.id === theme.memeTemplateId), theme.id + " must reference an existing meme template");
+    assert.ok(CLUB_CULTURE_POSTS.some((item) => item.id === theme.culturePostId), theme.id + " must reference an existing editorial post");
+    assert.ok(CLUB_PUBLIC_CHALLENGES.some((item) => item.id === theme.challengeId), theme.id + " must reference an existing public challenge");
+  }
+
+  const sunday = getClubCampaignDrop(new Date("2026-11-22T23:59:59.000Z"));
+  const monday = getClubCampaignDrop(new Date("2026-11-23T00:00:00.000Z"));
+  const sameWeek = getClubCampaignDrop(new Date("2026-11-18T13:40:00.000Z"));
+  assert.equal(sunday.weekKey, "2026-W47");
+  assert.equal(monday.weekKey, "2026-W48");
+  assert.equal(sunday.theme.id, "loss-classification");
+  assert.equal(sameWeek.theme.id, sunday.theme.id);
+  assert.equal(monday.weekIndex, (sunday.weekIndex + 1) % CLUB_CAMPAIGN_ROTATION_LENGTH);
+  assert.equal(sunday.weekStarts, "2026-11-16");
+  assert.equal(sunday.weekEnds, "2026-11-22");
+
+  const yearBoundaryBefore = getClubCampaignDrop(new Date("2026-12-28T12:00:00.000Z"));
+  const yearBoundaryAfter = getClubCampaignDrop(new Date("2027-01-04T12:00:00.000Z"));
+  assert.equal(yearBoundaryAfter.weekIndex, (yearBoundaryBefore.weekIndex + 1) % CLUB_CAMPAIGN_ROTATION_LENGTH);
+
+  const schedule = getClubCampaignSchedule(new Date("2026-11-22T12:00:00.000Z"));
+  assert.equal(schedule.current.theme.id, "loss-classification");
+  assert.equal(schedule.next.theme.id, "dyor-receipt");
+  assert.equal(schedule.next.weekStarts, "2026-11-23");
+  assert.ok(schedule.current.xPost.length > 60 && schedule.current.xPost.length <= 280);
+  assert.ok(schedule.current.memeCaption.includes("#The99PercentClub"));
+  assert.ok(schedule.current.challenge.postText.includes("#The99PercentClub"));
+
+  const pack = buildClubCampaignPack(schedule.current);
+  for (const marker of ["MAIN X POST", "MEME OFFICE", "TOP LINE:", "BOTTOM LINE:", "PUBLIC CHALLENGE", "REPLY PROMPT:", "#The99PercentClub"]) {
+    assert.ok(pack.includes(marker), "Campaign pack must include " + marker);
+  }
+  assert.ok(page.includes("<ClubCampaignEngineDesk />"));
+  assert.ok(page.indexOf("<ClubCampaignEngineDesk />") < page.indexOf("<ClubCultureDesk />"));
+  assert.ok(desk.includes("getClubCampaignSchedule(new Date())"));
+  assert.ok(desk.includes("COPY FULL CAMPAIGN KIT"));
+  assert.ok(desk.includes("OPEN MAIN POST ON X"));
+  assert.ok(desk.includes("twitter.com/intent/tweet"));
+  assert.ok(desk.includes("#club-war-room"));
+  assert.ok(desk.includes("NO DATABASE, ACCOUNT, TRACKING, SERVER STORAGE OR AUTO-POSTING"));
+  assert.doesNotMatch(desk, /fetch\(|localStorage|recordPassport|navigator\.share/);
+  assert.equal((warRoomData.match(/id: "position-reclassification"/g) || []).length, 1);
+  assert.ok(styles.includes(".club-campaign-engine__assets"));
+  assert.ok(styles.includes("@media (max-width:620px)"));
+});
