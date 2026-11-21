@@ -706,7 +706,7 @@ test("U24 journey routing is mapped once across all ten divisions without self-l
     const page = readFileSync("app/" + route.page + "/page.tsx", "utf8");
     const pageInstance = 'DepartmentNextSteps currentDepartment="' + department + '"';
     assert.equal(page.split(pageInstance).length - 1, 1, department + " must render exactly one page-level journey section");
-    assert.ok(page.includes('<div className="shell">\n        ' + pageInstance + '\n      </div>'), department + " journey panel must respect the shared content-width shell");
+    assert.ok(page.includes('<div className="shell">\n        <' + pageInstance + ' />\n      </div>'), department + " journey panel must respect the shared content-width shell");
 
     const routeStart = component.indexOf("  " + department + ": [");
     assert.ok(routeStart >= 0, department + " must have an explicit routing block");
