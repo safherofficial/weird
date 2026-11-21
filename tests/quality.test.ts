@@ -1265,11 +1265,6 @@ test("U25.8 Case Atlas presents recurrence calculations with accessible links an
   const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
   const atlasPage = readFileSync("app/daily-office/atlas/page.tsx", "utf8");
   const css = readFileSync("app/globals.css", "utf8");
-  const publicRoutes = [...routePages.map(([, path]) => path), "app/passport/page.tsx"];
-  for (const path of publicRoutes) {
-    const page = readFileSync(path, "utf8");
-    assert.ok(page.includes('id="content-start"'), path + " must provide the navigation skip-link target");
-  }
 
   assert.ok(atlasClient.includes('className="department-case-atlas__recurrence"'));
   assert.ok(atlasClient.includes("AGE OF LATEST FILE"));
@@ -1796,6 +1791,11 @@ test("U26 navigation labels and links match the exact destination pages and dire
   const home = readFileSync("app/page.tsx", "utf8");
   const header = readFileSync("app/components/department-header.tsx", "utf8");
   const css = readFileSync("app/globals.css", "utf8");
+  const publicRoutes = [...routePages.map(([, path]) => path), "app/passport/page.tsx"];
+  for (const path of publicRoutes) {
+    const page = readFileSync(path, "utf8");
+    assert.ok(page.includes('id="content-start"'), path + " must provide the navigation skip-link target");
+  }
   assert.ok(home.includes('id={"department-group-" + group.number}'));
   assert.ok(header.includes('href={"/#" + group.anchorId}'));
   assert.equal(header.split("navigationGroups.map(").length - 1, 2, "Desktop and mobile menus must render the same current route map");
