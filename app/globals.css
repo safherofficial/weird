@@ -14570,6 +14570,8 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   .club-token-notice__details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .club-token-notice__details > div { min-height: 67px; padding: 10px; }
   .club-token-notice__details > div:nth-child(2n) { border-right: 0; }
+  .club-token-notice__details > div:nth-child(3n) { border-right: 1px solid #30352b; }
+  .club-token-notice__details > div:nth-child(6n) { border-right: 0; }
   .club-token-notice__details > div:nth-child(n + 3) { border-top: 1px solid #30352b; }
   .club-token-notice__lead { font-size: 10px; }
   .club-token-notice__warning p { font-size: 9px; }
