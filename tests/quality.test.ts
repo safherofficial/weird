@@ -436,6 +436,43 @@ test("DYOR Audit archetype copy describes the selected behavior", () => {
   assert.match(auditClassifications["tokenomics-poet"].title, /TOKEN-MECHANICS/);
 });
 
+test("DYOR Audit cross-read stays evidence-linked, deterministic and non-clinical", () => {
+  const researchLed = buildAuditResult(Array(AUDIT_QUESTION_COUNT).fill(0));
+  assert.equal(researchLed.crossRead.headline, "THE INDEPENDENT CHECKLIST");
+  assert.equal(researchLed.crossRead.strongestEvidence.score, 5);
+  assert.ok(researchLed.crossRead.strongestEvidence.prompt.length > 0);
+  assert.ok(researchLed.crossRead.strongestEvidence.answer.length > 0);
+
+  const crowdLedAnswers = [3, 3, 3, 3, 3, 3, 3, 3, 2, 2];
+  const crowdLed = buildAuditResult(crowdLedAnswers);
+  assert.equal(crowdLed.crossRead.headline, "THE TIMELINE HAS A VOTE");
+  assert.deepEqual(buildAuditResult(crowdLedAnswers).crossRead, crowdLed.crossRead);
+
+  const selected = crowdLedAnswers.map((answer, index) => auditQuestions[index].options[answer]);
+  const evidenceIndex = selected.reduce((best, item, index) =>
+    item.research > selected[best].research ? index : best, 0);
+  let pressureIndex = 0;
+  for (let index = 1; index < selected.length; index += 1) {
+    const pressure = selected[index].cope + selected[index].crowd;
+    const bestPressure = selected[pressureIndex].cope + selected[pressureIndex].crowd;
+    if (
+      pressure > bestPressure ||
+      (pressure === bestPressure && selected[index].crowd > selected[pressureIndex].crowd) ||
+      (pressure === bestPressure && selected[index].crowd === selected[pressureIndex].crowd &&
+        selected[index].cope > selected[pressureIndex].cope)
+    ) pressureIndex = index;
+  }
+
+  assert.equal(crowdLed.crossRead.strongestEvidence.prompt, auditQuestions[evidenceIndex].prompt);
+  assert.equal(crowdLed.crossRead.strongestEvidence.answer, selected[evidenceIndex].label);
+  assert.equal(crowdLed.crossRead.strongestEvidence.score, selected[evidenceIndex].research);
+  assert.equal(crowdLed.crossRead.strongestPressure.prompt, auditQuestions[pressureIndex].prompt);
+  assert.equal(crowdLed.crossRead.strongestPressure.answer, selected[pressureIndex].label);
+  assert.equal(crowdLed.crossRead.strongestPressure.cope, selected[pressureIndex].cope);
+  assert.equal(crowdLed.crossRead.strongestPressure.crowd, selected[pressureIndex].crowd);
+  assert.doesNotMatch(crowdLed.crossRead.interpretation, /diagnos(?:is|e)|mental health/i);
+});
+
 test("Token-Purpose Inspector ecosystem-mirage profile matches its source answers", () => {
   assert.equal(utilityQuestions[0].options[3].tag, "institutional-mirage");
   assert.equal(utilityQuestions[2].options[3].tag, "institutional-mirage");

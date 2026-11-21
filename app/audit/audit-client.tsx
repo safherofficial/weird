@@ -90,7 +90,7 @@ function makeCardSvg(result: AuditResult, reportUrl: string) {
     '<text x="64" y="151" fill="#8d968a" font-family="monospace" font-size="16">CASE No. ' + result.caseNumber + " / PERSONAL AUDIT REPORT</text>" +
     titleSvg + subtitleSvg +
     '<text x="64" y="337" fill="#ff7777" font-family="monospace" font-size="14" font-weight="bold">DEPARTMENTAL FINDING / ' + escapeXml(result.finding) + "</text>" +
-    '<text x="64" y="359" fill="#75816f" font-family="monospace" font-size="12">SECONDARY PATTERN / ' + escapeXml(result.secondaryProfile.title) + "</text>" +
+    '<text x="64" y="359" fill="#75816f" font-family="monospace" font-size="12">CROSS-READ / ' + escapeXml(result.crossRead.headline) + "</text>" +
     '<rect x="64" y="382" width="337" height="112" fill="#121713" stroke="#384137"/>' +
     '<rect x="431" y="382" width="337" height="112" fill="#121713" stroke="#384137"/>' +
     '<rect x="798" y="382" width="338" height="112" fill="#121713" stroke="#384137"/>' +
@@ -257,6 +257,10 @@ export default function AuditClient() {
       "COPE INDEX: " + result.cope + "/100",
       "CROWD DEPENDENCY: " + result.crowd + "/100",
       "DEPARTMENTAL FINDING: " + result.finding,
+      "BEHAVIOURAL CROSS-READ: " + result.crossRead.headline,
+      result.crossRead.interpretation,
+      "STRONGEST RESEARCH SIGNAL: " + result.crossRead.strongestEvidence.answer + " (" + result.crossRead.strongestEvidence.score + "/5)",
+      "STRONGEST COPE / CROWD SIGNAL: " + result.crossRead.strongestPressure.answer + " (cope " + result.crossRead.strongestPressure.cope + "/5, crowd " + result.crossRead.strongestPressure.crowd + "/5)",
       result.profile.roast,
       "This is a fictional entertainment result. It is not an assessment of investment skill or financial performance.",
       "PUBLIC CASE FILE: " + reportUrl,
@@ -398,6 +402,24 @@ export default function AuditClient() {
             <span>CROWD DEPENDENCY</span>
             <strong className="crowd-score">{result.crowd}<small>/100</small></strong>
             <i>HOW MUCH THE CHAT DECIDES</i>
+          </div>
+        </div>
+
+        <div className="result-secondary result-cross-read">
+          <span>BEHAVIOURAL CROSS-READ / FICTIONAL ANSWER PATTERN</span>
+          <strong>{result.crossRead.headline}</strong>
+          <small>{result.crossRead.interpretation}</small>
+          <div className="result-cross-read__signals">
+            <div>
+              <span>STRONGEST RESEARCH SIGNAL / {result.crossRead.strongestEvidence.score}/5</span>
+              <p>{result.crossRead.strongestEvidence.prompt}</p>
+              <small>{result.crossRead.strongestEvidence.answer}</small>
+            </div>
+            <div>
+              <span>HIGHEST COPE / CROWD SIGNAL</span>
+              <p>{result.crossRead.strongestPressure.prompt}</p>
+              <small>{result.crossRead.strongestPressure.answer} · COPE {result.crossRead.strongestPressure.cope}/5 · CROWD {result.crossRead.strongestPressure.crowd}/5</small>
+            </div>
           </div>
         </div>
 
