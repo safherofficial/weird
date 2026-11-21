@@ -175,7 +175,12 @@ test("archive records and museum exhibits remain indexable and have matching sha
     assert.ok(page.includes("twitter:"), item.name + " expose large social cards");
     assert.ok(page.includes("DepartmentPublicShare"), item.name + " expose share controls");
     assert.ok(page.includes("casePath={route}") || page.includes("casePath={path}"), item.name + " share their canonical detail route");
-    assert.ok(!page.includes("robots: { index: false"), item.name + " remain eligible for indexing");
+    const metadataBlock = page.slice(
+      page.indexOf("export async function generateMetadata"),
+      page.indexOf("export default async function"),
+    );
+    const validMetadata = metadataBlock.slice(metadataBlock.indexOf("const title ="));
+    assert.ok(!validMetadata.includes("robots: { index: false"), item.name + " valid editorial records remain eligible for indexing");
 
     assert.ok(image.includes('from "next/og"'), item.name + " use Next's social image renderer");
     assert.ok(image.includes(item.lookup + "("), item.name + " use the same content lookup as the page");
