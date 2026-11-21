@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildPersonalCopeResult,
@@ -136,6 +137,9 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
       "COPE INDEX: " + result.copeScore + "/100",
       "PATIENCE INDEX: " + result.patienceScore + "/100",
       "CHAT DEPENDENCY: " + result.chatDependency + "/100",
+      "BEHAVIOURAL CROSS-READ: " + result.crossRead.headline,
+      result.crossRead.interpretation,
+      ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.roast,
       "This personal score is fictional and based only on selected answers. The daily Global Cope Index is a synthetic date-seeded joke, not a measure of real CT users, wallets, markets or sentiment.",
       "PUBLIC CASE FILE: " + caseUrl,
@@ -202,6 +206,8 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
       "THE DYOR DEPARTMENT completed my fictional Solana Trenches cope reading.",
       result.profile.title + ".",
       "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
+      "Cross-read: " + result.crossRead.headline + ".",
       result.profile.roast,
     ].join(" ");
     if (navigator.share) {
@@ -328,6 +334,8 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
               <div><span>PATIENCE INDEX</span><strong>{result.patienceScore}<small>/100</small></strong></div>
               <div><span>CHAT DEPENDENCY</span><strong>{result.chatDependency}<small>/100</small></strong></div>
             </div>
+            <DepartmentCrossRead read={result.crossRead} />
+
             <div className="cope-personal-result__roast">
               <span>THE DEPARTMENT HAS A COMMENT</span>
               <p>“{result.profile.roast}”</p>

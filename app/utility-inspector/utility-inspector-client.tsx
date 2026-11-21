@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildUtilityResult,
@@ -152,6 +153,9 @@ export default function UtilityInspectorClient() {
       "UTILITY EVIDENCE: " + result.evidence + "/100",
       "NARRATIVE FOG: " + result.fog + "/100",
       "TOKEN JUSTIFICATION: " + result.tokenFit + "/100",
+      "BEHAVIOURAL CROSS-READ: " + result.crossRead.headline,
+      result.crossRead.interpretation,
+      ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.roast,
       "This is a fictional entertainment inspection based only on selected answers. It does not assess a real project, token or investment.",
       "PUBLIC CASE FILE: " + caseUrl,
@@ -173,6 +177,7 @@ export default function UtilityInspectorClient() {
       "THE DYOR DEPARTMENT inspected my utility claims.",
       "Verdict: " + result.profile.title + ".",
       "Evidence: " + result.evidence + "/100 | Narrative fog: " + result.fog + "/100 | Token justification: " + result.tokenFit + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       safeXCopy(result.profile.roast),
     ].join(" ");
 
@@ -286,6 +291,8 @@ export default function UtilityInspectorClient() {
             <i>HOW WELL THE TOKEN ROLE IS EXPLAINED</i>
           </div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="utility-secondary">
           <span>SECONDARY PATTERN DETECTED</span>

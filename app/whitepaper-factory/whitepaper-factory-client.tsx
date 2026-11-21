@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildWhitepaperResult,
@@ -152,6 +153,7 @@ export default function WhitepaperFactoryClient() {
       "THE DYOR DEPARTMENT generated a fictional Solana token dossier for " + result.projectLabel + ".",
       "Classification: " + result.profile.title + ".",
       "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       safeXCopy(result.profile.roast),
     ].join(" ");
     if (navigator.share) {
@@ -171,6 +173,7 @@ export default function WhitepaperFactoryClient() {
       "THE DYOR DEPARTMENT issued a fictional token dossier for " + result.projectLabel + ".",
       result.profile.title + ".",
       "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       safeXCopy(result.profile.roast),
       "Your turn. Submit your token narrative.",
     ].join(" ");
@@ -242,6 +245,8 @@ export default function WhitepaperFactoryClient() {
             <p>No real project, token, company, contract, team, market, security or legal position has been inspected or verified.</p>
           </div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="whitepaper-result__profile">
           <span>THE DEPARTMENT HAS A COMMENT</span>

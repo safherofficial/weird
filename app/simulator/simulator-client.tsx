@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   actions,
@@ -151,6 +152,9 @@ export default function SimulatorClient() {
       "FINAL PAPER NET WORTH: " + result.netWorth.toFixed(2) + " DPC",
       "PAPER P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC",
       "FICTIONAL RETURN: " + (result.paperReturn > 0 ? "+" : "") + result.paperReturn.toFixed(1) + "%",
+      "BEHAVIOURAL CROSS-READ: " + result.crossRead.headline,
+      result.crossRead.interpretation,
+      ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.roast,
       "All prices, events, credits and outcomes are fictional. No real asset or money is involved.",
       "PUBLIC CASE FILE: " + caseUrl,
@@ -172,6 +176,7 @@ export default function SimulatorClient() {
       "I survived THE DYOR DEPARTMENT Pump.fun Intelligence paper-market simulator.",
       "Classification: " + result.profile.title + ".",
       "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
+      "Cross-read: " + result.crossRead.headline + ".",
       result.profile.roast,
     ].join(" ");
 
@@ -244,6 +249,7 @@ export default function SimulatorClient() {
       "I survived THE DYOR DEPARTMENT Pump.fun Intelligence paper-market simulator.",
       "Classification: " + result.profile.title + ".",
       "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
+      "Cross-read: " + result.crossRead.headline + ".",
       result.profile.roast.length > 82 ? result.profile.roast.slice(0, 78) + "…" : result.profile.roast,
       "Your turn. Hold the imaginary bag.",
     ].join(" ");
@@ -265,6 +271,8 @@ export default function SimulatorClient() {
           <span>DEPARTMENTAL DISPOSITION</span>
           <strong>{result.profile.ending}</strong>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="simulator-result__metrics">
           <div>

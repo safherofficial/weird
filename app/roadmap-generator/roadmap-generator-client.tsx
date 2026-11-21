@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildRoadmapResult,
@@ -158,6 +159,9 @@ export default function RoadmapGeneratorClient() {
       "DELIVERY CLARITY: " + result.delivery + "/100",
       "TIMELINE REALISM: " + result.realism + "/100",
       "PROMISE INFLATION: " + result.inflation + "/100",
+      "BEHAVIOURAL CROSS-READ: " + result.crossRead.headline,
+      result.crossRead.interpretation,
+      ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.roast,
       ...result.milestones.map((milestone) => milestone.phase + " / " + milestone.title + " / " + milestone.eta),
       "This roadmap is fictional entertainment generated from selected answers. It is not a real project plan or forecast.",
@@ -180,6 +184,7 @@ export default function RoadmapGeneratorClient() {
       "THE DYOR DEPARTMENT generated a roadmap for " + result.projectLabel + ".",
       "Classification: " + result.profile.title + ".",
       "Delivery: " + result.delivery + "/100. Timeline realism: " + result.realism + "/100. Promise inflation: " + result.inflation + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       safeXCopy(result.profile.roast),
     ].join(" ");
 
@@ -251,6 +256,7 @@ export default function RoadmapGeneratorClient() {
       "THE DYOR DEPARTMENT has generated a roadmap for " + result.projectLabel + ".",
       "Classification: " + result.profile.title + ".",
       "Delivery: " + result.delivery + "/100. Timeline: " + result.realism + "/100. Promise inflation: " + result.inflation + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       safeXCopy(result.profile.roast),
       "Your turn. Put your milestones on paper.",
     ].join(" ");
@@ -280,6 +286,8 @@ export default function RoadmapGeneratorClient() {
           <div><span>TIMELINE REALISM</span><strong className="roadmap-realism">{result.realism}<small>/100</small></strong><i>HOW CLOSE THE CALENDAR IS TO REALITY</i></div>
           <div><span>PROMISE INFLATION</span><strong className="roadmap-inflation">{result.inflation}<small>/100</small></strong><i>HOW MUCH SOON IS IN THE SYSTEM</i></div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="roadmap-secondary">
           <span>SECONDARY PATTERN DETECTED</span>

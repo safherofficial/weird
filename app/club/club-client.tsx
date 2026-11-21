@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildClubResult,
@@ -131,6 +132,9 @@ export default function ClubClient() {
       "CONVICTION: " + result.conviction + "/100",
       "COPE INDEX: " + result.cope + "/100",
       "CHAT DEPENDENCY: " + result.chatDependency + "/100",
+      "BEHAVIOURAL CROSS-READ: " + result.crossRead.headline,
+      result.crossRead.interpretation,
+      ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.motto,
       "This is a fictional entertainment membership. '99%' is a satirical club name, not a statistic about real investors or markets. No benefits, token or financial product are provided.",
       "PUBLIC MEMBER FILE: " + caseUrl,
@@ -197,6 +201,7 @@ export default function ClubClient() {
       "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
       "Classification: " + result.profile.title + ".",
       "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       result.profile.motto,
     ].join(" ");
     if (navigator.share) {
@@ -217,6 +222,7 @@ export default function ClubClient() {
       "Member No. " + result.memberNumber + ".",
       result.profile.title + ".",
       "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       result.profile.motto,
       "Your application is pending.",
     ].join(" ");
@@ -258,6 +264,8 @@ export default function ClubClient() {
           <div><span>COPE INDEX</span><strong className="club-cope">{result.cope}<small>/100</small></strong><i>HOW MUCH NARRATIVE SUPPORT IS REQUIRED</i></div>
           <div><span>CHAT DEPENDENCY</span><strong className="club-chat">{result.chatDependency}<small>/100</small></strong><i>HOW OFTEN THE GROUP CHAT DECIDES</i></div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="club-profile">
           <span>THE DEPARTMENT HAS A COMMENT</span>
