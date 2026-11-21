@@ -312,8 +312,11 @@ test("fictional token dossier HTML and Markdown exports retain the case record a
   assert.ok(html.includes(result.secondaryProfile.title));
   assert.ok(html.includes("FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION"));
   assert.ok(html.includes("PRINT / SAVE AS PDF"));
-  result.sections.forEach((section) => assert.ok(html.includes(section.title)));
-  result.allocations.forEach((allocation) => assert.ok(html.includes(allocation.label)));
+  const escapeHtmlForAssertion = (value: string) => value.replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;",
+  })[char] ?? char);
+  result.sections.forEach((section) => assert.ok(html.includes(escapeHtmlForAssertion(section.title))));
+  result.allocations.forEach((allocation) => assert.ok(html.includes(escapeHtmlForAssertion(allocation.label))));
 });
 
 test("fictional token dossier HTML export escapes injected markup in display content", () => {
