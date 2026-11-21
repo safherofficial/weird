@@ -154,7 +154,7 @@ function round(value: number) {
 export function isValidClubAnswers(value: unknown): value is number[] {
   return Array.isArray(value) &&
     value.length === CLUB_QUESTIONS &&
-    value.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4);
+    Array.from(value).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4);
 }
 
 export function encodeClubCode(answers: number[]): string {
@@ -172,7 +172,7 @@ export function decodeClubCode(value: unknown): number[] | null {
 
 export function inspectClubProgress(answers: number[]): ClubProgress {
   if (!Array.isArray(answers) || answers.length > CLUB_QUESTIONS ||
-      !answers.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)) {
+      !Array.from(answers).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)) {
     throw new Error("Club answers are invalid.");
   }
   const selected = answers.map((answer, index) => questions[index].options[answer]);

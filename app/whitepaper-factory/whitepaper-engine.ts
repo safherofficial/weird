@@ -278,7 +278,7 @@ export function slugifyProjectName(value: string): string {
 export function isValidWhitepaperAnswers(value: unknown): value is number[] {
   return Array.isArray(value) &&
     value.length === WHITEPAPER_QUESTIONS &&
-    value.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4);
+    Array.from(value).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4);
 }
 
 export function encodeWhitepaperCode(answers: number[], projectName: string): string {
@@ -297,7 +297,7 @@ export function decodeWhitepaperCode(value: unknown): { answers: number[]; proje
 
 export function inspectWhitepaperProgress(answers: number[]): WhitepaperProgress {
   if (!Array.isArray(answers) || answers.length > WHITEPAPER_QUESTIONS ||
-      !answers.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)) {
+      !Array.from(answers).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)) {
     throw new Error("Whitepaper answers are invalid.");
   }
   const selected = answers.map((answer, index) => questions[index].options[answer]);

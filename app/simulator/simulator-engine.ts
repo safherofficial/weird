@@ -212,7 +212,7 @@ export function isValidDecisions(value: unknown): value is number[] {
   return (
     Array.isArray(value) &&
     value.length === SIMULATOR_ROUNDS &&
-    value.every((decision) => Number.isInteger(decision) && decision >= 0 && decision < actions.length)
+    Array.from(value).every((decision) => Number.isInteger(decision) && decision >= 0 && decision < actions.length)
   );
 }
 
@@ -235,7 +235,7 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
   if (
     !Array.isArray(decisions) ||
     decisions.length > SIMULATOR_ROUNDS ||
-    !decisions.every((decision) => Number.isInteger(decision) && decision >= 0 && decision < actions.length)
+    !Array.from(decisions).every((decision) => Number.isInteger(decision) && decision >= 0 && decision < actions.length)
   ) {
     throw new Error("Simulation decisions are invalid.");
   }

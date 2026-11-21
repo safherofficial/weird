@@ -1,0 +1,245 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+
+import { questions as auditQuestions } from "../app/audit/audit-data";
+import { AUDIT_QUESTION_COUNT, buildResult as buildAuditResult, decodeCaseCode, encodeCaseCode, isValidAnswers } from "../app/audit/audit-engine";
+import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode, isValidDecisions, simulateProgress } from "../app/simulator/simulator-engine";
+import { questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
+import { questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
+import { questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
+import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
+import { questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
+import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
+import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
+
+type ResultRecord = Record<string, unknown>;
+type EngineSpec = {
+  name: string;
+  questionCount: number;
+  questions?: Array<{ options: unknown[] }>;
+  isValid: (value: unknown) => boolean;
+  encode: (answers: number[]) => string;
+  decode: (code: unknown) => unknown;
+  decodedAnswers: (decoded: unknown) => number[] | null;
+  build: (answers: number[]) => ResultRecord;
+  answerKey: "answers" | "decisions";
+  inspectPartial?: (answers: number[]) => unknown;
+  assertResult: (result: ResultRecord) => void;
+  assertDecodedExtra?: (decoded: unknown) => void;
+};
+
+function assertPercent(value: unknown, label: string) {
+  assert.equal(typeof value, "number", label + " must be numeric");
+  assert.ok(Number.isFinite(value), label + " must be finite");
+  assert.ok((value as number) >= 0 && (value as number) <= 100, label + " must stay in the 0–100 range");
+}
+
+function decodedAnswerArray(value: unknown): number[] | null {
+  if (Array.isArray(value)) return value as number[];
+  if (value && typeof value === "object" && Array.isArray((value as { answers?: unknown }).answers)) {
+    return (value as { answers: number[] }).answers;
+  }
+  return null;
+}
+
+const engines: EngineSpec[] = [
+  {
+    name: "DYOR Audit", questionCount: AUDIT_QUESTION_COUNT, questions: auditQuestions,
+    isValid: isValidAnswers, encode: encodeCaseCode, decode: decodeCaseCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildAuditResult(a) as unknown as ResultRecord, answerKey: "answers",
+    assertResult: (r) => {
+      assertPercent(r.research, "Audit research"); assertPercent(r.cope, "Audit cope"); assertPercent(r.crowd, "Audit crowd");
+      assert.ok(typeof r.finding === "string" && r.finding.length > 0);
+      assert.ok(typeof r.disposition === "string" && r.disposition.length > 0);
+    },
+  },
+  {
+    name: "Paper Market Simulator", questionCount: SIMULATOR_ROUNDS,
+    isValid: isValidDecisions, encode: encodeSimulatorCode, decode: decodeSimulatorCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildSimulatorResult(a) as unknown as ResultRecord, answerKey: "decisions", inspectPartial: simulateProgress,
+    assertResult: (r) => {
+      assert.equal(r.completedRounds, SIMULATOR_ROUNDS); assert.equal((r.history as unknown[]).length, SIMULATOR_ROUNDS);
+      for (const key of ["price", "cash", "units", "positionValue", "netWorth", "paperPnl", "paperReturn"]) {
+        assert.ok(Number.isFinite(r[key] as number), "Simulator " + key + " must be finite");
+      }
+      assert.ok(typeof r.decisionSummary === "string" && r.decisionSummary.length > 0);
+    },
+  },
+  {
+    name: "Token-Purpose Inspector", questionCount: INSPECTOR_QUESTIONS, questions: utilityQuestions,
+    isValid: isValidUtilityAnswers, encode: encodeUtilityCode, decode: decodeUtilityCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildUtilityResult(a) as unknown as ResultRecord, answerKey: "answers", inspectPartial: inspectProgress,
+    assertResult: (r) => {
+      assert.equal(r.completedQuestions, INSPECTOR_QUESTIONS); assert.equal((r.history as unknown[]).length, INSPECTOR_QUESTIONS);
+      assertPercent(r.evidence, "Utility evidence"); assertPercent(r.fog, "Utility fog"); assertPercent(r.tokenFit, "Utility token fit");
+    },
+  },
+  {
+    name: "CTO Takeover Roadmap", questionCount: ROADMAP_QUESTIONS, questions: roadmapQuestions,
+    isValid: isValidRoadmapAnswers, encode: (a) => encodeRoadmapCode(a, "CTO 404 / Launch"),
+    decode: decodeRoadmapCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildRoadmapResult(a, "CTO 404 / Launch") as unknown as ResultRecord,
+    answerKey: "answers", inspectPartial: inspectRoadmapProgress,
+    assertResult: (r) => {
+      assert.equal(r.completedQuestions, ROADMAP_QUESTIONS);
+      assert.ok(Array.isArray(r.milestones) && r.milestones.length > 0);
+      assert.ok(typeof r.projectSlug === "string" && r.projectSlug.length > 0);
+    },
+    assertDecodedExtra: (d) => assert.equal((d as { projectSlug: string }).projectSlug, slugifyProjectName("CTO 404 / Launch")),
+  },
+  {
+    name: "Fictional Token Dossier", questionCount: WHITEPAPER_QUESTIONS, questions: whitepaperQuestions,
+    isValid: isValidWhitepaperAnswers, encode: (a) => encodeWhitepaperCode(a, "Fictional Token / 404"),
+    decode: decodeWhitepaperCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildWhitepaperResult(a, "Fictional Token / 404") as unknown as ResultRecord,
+    answerKey: "answers", inspectPartial: inspectWhitepaperProgress,
+    assertResult: (r) => {
+      assert.equal(r.completedQuestions, WHITEPAPER_QUESTIONS); assert.equal(r.supply, FICTIONAL_SUPPLY);
+      assert.ok(Array.isArray(r.sections) && r.sections.length > 0);
+      const allocations = r.allocations as Array<{ percentage: number }>;
+      assert.ok(allocations.length > 0); assert.equal(allocations.reduce((sum, item) => sum + item.percentage, 0), 100);
+      assertPercent(r.technicalDensity, "Dossier technical density");
+      assertPercent(r.buzzwordDensity, "Dossier buzzword density");
+      assertPercent(r.productClarity, "Dossier product clarity");
+    },
+    assertDecodedExtra: (d) => assert.equal((d as { projectSlug: string }).projectSlug, slugifyWhitepaperProjectName("Fictional Token / 404")),
+  },
+  {
+    name: "99% Club", questionCount: CLUB_QUESTIONS, questions: clubQuestions,
+    isValid: isValidClubAnswers, encode: encodeClubCode, decode: decodeClubCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildClubResult(a) as unknown as ResultRecord, answerKey: "answers", inspectPartial: inspectClubProgress,
+    assertResult: (r) => {
+      assert.equal(r.completedQuestions, CLUB_QUESTIONS);
+      assertPercent(r.conviction, "Club conviction"); assertPercent(r.cope, "Club cope"); assertPercent(r.chatDependency, "Club chat dependency");
+    },
+  },
+  {
+    name: "Personal Cope Calibration", questionCount: COPE_QUESTIONS, questions: copeQuestions,
+    isValid: isValidCopeAnswers, encode: encodeCopeCode, decode: decodeCopeCode, decodedAnswers: decodedAnswerArray,
+    build: (a) => buildPersonalCopeResult(a) as unknown as ResultRecord, answerKey: "answers",
+    assertResult: (r) => {
+      assertPercent(r.copeScore, "Personal cope score"); assertPercent(r.patienceScore, "Personal patience score");
+      assertPercent(r.chatDependency, "Personal chat dependency");
+    },
+  },
+];
+
+test("questionnaires expose exactly four choices per question", () => {
+  for (const engine of engines) {
+    if (!engine.questions) continue;
+    assert.equal(engine.questions.length, engine.questionCount, engine.name + " question count");
+    engine.questions.forEach((question, index) => assert.equal(question.options.length, 4, engine.name + " question " + (index + 1)));
+  }
+  assert.equal(simulatorActions.length, 4);
+  assert.equal(marketEvents.length, SIMULATOR_ROUNDS);
+  assert.deepEqual(marketEvents.map((event) => event.day), Array.from({ length: SIMULATOR_ROUNDS }, (_, i) => i + 1));
+});
+
+for (const engine of engines) {
+  test(engine.name + ": input validation, share-code round trips and deterministic results", () => {
+    const vectors = [
+      Array(engine.questionCount).fill(0), Array(engine.questionCount).fill(1),
+      Array(engine.questionCount).fill(2), Array(engine.questionCount).fill(3),
+      Array.from({ length: engine.questionCount }, (_, i) => i % 4),
+      Array.from({ length: engine.questionCount }, (_, i) => 3 - (i % 4)),
+    ];
+    for (const answers of vectors) {
+      assert.equal(engine.isValid(answers), true);
+      const code = engine.encode(answers);
+      const decoded = engine.decode(code);
+      assert.deepEqual(engine.decodedAnswers(decoded), answers);
+      engine.assertDecodedExtra?.(decoded);
+      const first = engine.build(answers);
+      assert.deepEqual(engine.build(answers), first, engine.name + " result must be deterministic");
+      assert.deepEqual(first[engine.answerKey], answers, engine.name + " result must preserve answer order");
+      engine.assertResult(first);
+      const inputCopy = [...answers];
+      const builtFromCopy = engine.build(inputCopy);
+      inputCopy[0] = (inputCopy[0] + 1) % 4;
+      assert.deepEqual(builtFromCopy[engine.answerKey], answers, engine.name + " must copy submitted answers");
+    }
+
+    const invalidInputs: unknown[] = [
+      null, undefined, 42, "0123", {}, [], Array(engine.questionCount - 1).fill(0),
+      Array(engine.questionCount + 1).fill(0), Array(engine.questionCount).fill(-1),
+      Array(engine.questionCount).fill(4), Array(engine.questionCount).fill(1.5),
+      Array(engine.questionCount).fill(Number.NaN),
+    ];
+    for (const invalid of invalidInputs) assert.equal(engine.isValid(invalid), false);
+    const sparse = Array(engine.questionCount).fill(0);
+    delete sparse[Math.floor(engine.questionCount / 2)];
+    assert.equal(engine.isValid(sparse), false, engine.name + " must reject sparse arrays");
+    assert.throws(() => engine.encode(sparse));
+    assert.throws(() => engine.build(sparse));
+    for (const invalidCode of [null, undefined, 42, {}, "", "not-a-case-code", engine.encode(vectors[0]) + "x"]) {
+      assert.equal(engine.decode(invalidCode), null);
+    }
+    if (engine.inspectPartial) {
+      const overlong = Array(engine.questionCount + 1).fill(0);
+      assert.throws(() => engine.inspectPartial!(overlong));
+      const sparsePartial = [0, 1, 2];
+      delete sparsePartial[1];
+      assert.throws(() => engine.inspectPartial!(sparsePartial));
+    }
+  });
+}
+
+test("Daily CT Briefing is deterministic for a UTC issue date and rejects invalid dates", () => {
+  const first = buildDailyOfficeDispatch("2026-11-20");
+  assert.deepEqual(buildDailyOfficeDispatch("2026-11-20"), first);
+  assert.equal(first.issueDate, "2026-11-20");
+  assert.equal(first.sections.length, 6);
+  assert.ok(first.sections.every((section) => section.heading.length > 0 && section.body.length > 0));
+  assert.throws(() => buildDailyOfficeDispatch("2026-02-30"));
+  assert.throws(() => buildDailyOfficeDispatch("not-a-date"));
+});
+
+test("Global Cope Index is deterministic and exposes five bounded synthetic dimensions", () => {
+  const first = buildDailyCopeIndex("2026-11-20");
+  assert.deepEqual(buildDailyCopeIndex("2026-11-20"), first);
+  assert.equal(first.issueDate, "2026-11-20");
+  assert.equal(first.dimensions.length, 5);
+  assertPercent(first.overall, "Global Cope overall");
+  first.dimensions.forEach((item) => assertPercent(item.value, "Global Cope " + item.id));
+  assert.throws(() => buildDailyCopeIndex("2026-02-30"));
+  assert.throws(() => buildDailyCopeIndex("not-a-date"));
+});
+
+function makePassport(overrides: Partial<PassportData> = {}): PassportData {
+  return {
+    version: 2, enabled: true, createdAt: "2026-11-20T12:00:00.000Z",
+    visitedDepartments: [], dailyOfficeDates: [], bestDailyStreak: 0, completedActivities: [],
+    ...overrides,
+  };
+}
+
+test("Passport does not award interactive achievements for visits alone", () => {
+  const visitedOnly = makePassport({ visitedDepartments: DEPARTMENT_STAMPS.map((stamp) => stamp.id) });
+  const statuses = getPassportAchievementStatuses(visitedOnly);
+  assert.equal(statuses.length, PASSPORT_ACHIEVEMENTS.length);
+  assert.equal(statuses.some((item) => item.earned), false);
+});
+
+test("Passport unlocks require their recorded activities and the seven-day streak", () => {
+  const partial = getPassportAchievementStatuses(makePassport({ completedActivities: ["museum-exhibit"] }))
+    .find((item) => item.id === "culture-curator");
+  assert.ok(partial);
+  assert.equal(partial.progress, 1);
+  assert.equal(partial.target, 2);
+  assert.equal(partial.earned, false);
+
+  const complete = makePassport({
+    completedActivities: ["audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "museum-exhibit", "archive-record"],
+    bestDailyStreak: 7,
+  });
+  const all = getPassportAchievementStatuses(complete);
+  assert.equal(all.length, PASSPORT_ACHIEVEMENTS.length);
+  assert.equal(all.every((item) => item.earned), true);
+});
+
+test("Passport daily visit streak counts consecutive UTC dates without double-counting duplicates", () => {
+  assert.equal(getDailyOfficeVisitStreak(makePassport({
+    dailyOfficeDates: ["2026-11-18", "2026-11-16", "2026-11-17", "2026-11-17", "2026-11-20"],
+  })), 3);
+  assert.equal(getDailyOfficeVisitStreak(makePassport()), 0);
+});

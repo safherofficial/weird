@@ -205,7 +205,7 @@ export function isValidUtilityAnswers(value: unknown): value is number[] {
   return (
     Array.isArray(value) &&
     value.length === INSPECTOR_QUESTIONS &&
-    value.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
+    Array.from(value).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
   );
 }
 
@@ -228,7 +228,7 @@ export function inspectProgress(answers: number[]): UtilityProgress {
   if (
     !Array.isArray(answers) ||
     answers.length > INSPECTOR_QUESTIONS ||
-    !answers.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
+    !Array.from(answers).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
   ) {
     throw new Error("Utility inspection answers are invalid.");
   }

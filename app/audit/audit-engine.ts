@@ -21,7 +21,7 @@ export function isValidAnswers(value: unknown): value is number[] {
   return (
     Array.isArray(value) &&
     value.length === questions.length &&
-    value.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
+    Array.from(value).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
   );
 }
 

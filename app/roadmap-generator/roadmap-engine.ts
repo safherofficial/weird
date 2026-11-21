@@ -210,7 +210,7 @@ export function isValidRoadmapAnswers(value: unknown): value is number[] {
   return (
     Array.isArray(value) &&
     value.length === ROADMAP_QUESTIONS &&
-    value.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
+    Array.from(value).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
   );
 }
 
@@ -235,7 +235,7 @@ export function inspectRoadmapProgress(answers: number[]): RoadmapProgress {
   if (
     !Array.isArray(answers) ||
     answers.length > ROADMAP_QUESTIONS ||
-    !answers.every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
+    !Array.from(answers).every((answer) => Number.isInteger(answer) && answer >= 0 && answer < 4)
   ) {
     throw new Error("Roadmap answers are invalid.");
   }
