@@ -8,10 +8,10 @@ import ClubChallenges from "./club-challenges";
 export const metadata: Metadata = {
   alternates: { canonical: "/club" },
   title: "The 99% Club",
-  description: "The 99% Club: fictional crypto archetypes, local achievement badges and interactive excuses for why the next entry is still yours."
+  description: "The 99% Club: fictional crypto archetypes, local achievement badges and interactive excuses for why the next entry is still yours.",
   openGraph: {
     title: "THE 99% CLUB",
-    description: "Five questions, twelve Club badges and three interactive excuses. The next one is yours."
+    description: "Five questions, twelve Club badges and three interactive excuses. The next one is yours.",
     images: ["/club/opengraph-image"],
   },
   twitter: {
