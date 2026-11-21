@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import AuditClient from "./audit-client";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function AuditPage() {
         </div>
         <AuditClient />
       </div>
+      <DepartmentNextSteps currentDepartment="audit" />
       <DepartmentFooter message={["YOUR RESEARCH HAS BEEN ACKNOWLEDGED.", "YOUR LOSSES REMAIN YOURS."]} />
     </main>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import UtilityInspectorClient from "./utility-inspector-client";
 
 export const metadata: Metadata = {
@@ -45,6 +46,8 @@ export default function UtilityInspectorPage() {
 
         <UtilityInspectorClient />
       </div>
+
+      <DepartmentNextSteps currentDepartment="utility" />
 
       <DepartmentFooter message={["THE NARRATIVE HAS BEEN RECEIVED.", "THE ACTUAL USE CASE IS STILL UNDER REVIEW."]} />
     </main>

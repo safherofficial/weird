@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import SimulatorClient from "./simulator-client";
 
 export const metadata: Metadata = {
@@ -41,6 +42,8 @@ export default function SimulatorPage() {
         </div>
         <SimulatorClient />
       </div>
+
+      <DepartmentNextSteps currentDepartment="simulator" />
 
       <DepartmentFooter message={["YOUR FICTIONAL LAUNCH HAS BEEN FILED.", "YOUR EXIT PLAN IS STILL MISSING."]} />
     </main>

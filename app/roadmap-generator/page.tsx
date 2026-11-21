@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import RoadmapGeneratorClient from "./roadmap-generator-client";
 
 export const metadata: Metadata = {
@@ -45,6 +46,8 @@ export default function RoadmapGeneratorPage() {
 
         <RoadmapGeneratorClient />
       </div>
+
+      <DepartmentNextSteps currentDepartment="roadmap" />
 
       <DepartmentFooter message={["YOUR CTO PLAN HAS BEEN FILED.", "THE DEPLOYER STILL HAS NOT REPLIED."]} />
     </main>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import WhitepaperFactoryClient from "./whitepaper-factory-client";
 
 export const metadata: Metadata = {
@@ -45,6 +46,8 @@ export default function WhitepaperFactoryPage() {
 
         <WhitepaperFactoryClient />
       </div>
+
+      <DepartmentNextSteps currentDepartment="whitepaper" />
 
       <DepartmentFooter message={["YOUR TOKEN NARRATIVE HAS BEEN DOCUMENTED.", "YOUR COMMUNITY STILL NEEDS A REASON TO STAY."]} />
     </main>
