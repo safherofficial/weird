@@ -2490,3 +2490,27 @@ test("U28.3 homepage gives the 99% Club a prominent and truthful public identity
   assert.ok(styles.includes(".hq-club__factions"));
   assert.ok(styles.includes("@media (max-width: 640px)"));
 });
+
+
+test("U28.4 provides one canonical, honest future-token notice without invented launch details", () => {
+  const config = readFileSync("app/club/club-token-config.ts", "utf8");
+  const notice = readFileSync("app/club/club-token-notice.tsx", "utf8");
+  const home = readFileSync("app/page.tsx", "utf8");
+  const clubPage = readFileSync("app/club/page.tsx", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+
+  for (const field of ["ticker", "network", "contractAddress", "explorerUrl", "marketUrl"]) {
+    assert.match(config, new RegExp(field + ": null"));
+  }
+  assert.ok(notice.includes("isOfficialClubTokenLink"));
+  assert.ok(notice.includes('url.protocol === "https:"'));
+  assert.ok(notice.includes("NOT ANNOUNCED"));
+  assert.ok(notice.includes("NOT ISSUED"));
+  assert.ok(notice.includes("NOT CONFIRMED"));
+  assert.ok(notice.includes("Unrelated tokens, copied tickers"));
+  assert.ok(notice.includes("no wallet connection, presale, purchase or claim function"));
+  assert.ok(home.includes('<ClubTokenNotice placement="home" />'));
+  assert.ok(clubPage.includes('<ClubTokenNotice placement="club" />'));
+  assert.ok(styles.includes(".club-token-notice__details"));
+  assert.ok(styles.includes("@media (max-width: 620px)"));
+});
