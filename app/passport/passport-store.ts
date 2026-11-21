@@ -42,6 +42,7 @@ function isValidClubChallengeAnswers(value: unknown): value is Partial<Record<Cl
 // Keep the v1 storage key so existing opted-in Passports can be migrated in place.
 export const PASSPORT_STORAGE_KEY = "dyor-department:passport:v1";
 export const ACHIEVEMENT_UNLOCK_EVENT = "dyor:achievement-unlocked";
+export const PASSPORT_UPDATED_EVENT = "dyor:passport-updated";
 
 export type DepartmentId =
   | "audit"
@@ -435,6 +436,10 @@ function longestConsecutiveUtcStreak(dates: string[]) {
   return best;
 }
 
+function announcePassportUpdate() {
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(PASSPORT_UPDATED_EVENT));
+}
+
 function announceNewAchievements(previous: PassportData, updated: PassportData) {
   if (typeof window === "undefined") return;
   const previousIds = new Set(getPassportAchievements(previous).map((achievement) => achievement.id));
@@ -483,6 +488,7 @@ export function enablePassport(now = new Date()): PassportData | null {
 
   try {
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(record));
+    announcePassportUpdate();
     return record;
   } catch {
     return null;
@@ -523,6 +529,7 @@ export function recordDepartmentVisit(section: string | undefined, now = new Dat
 
     const updated: PassportData = { ...previous, visitedDepartments, dailyOfficeDates, bestDailyStreak };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
+    announcePassportUpdate();
     announceNewAchievements(previous, updated);
     return updated;
   } catch {
@@ -543,6 +550,7 @@ export function recordPassportActivity(activity: PassportActivityId): PassportDa
       completedActivities: [...previous.completedActivities, activity],
     };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
+    announcePassportUpdate();
     announceNewAchievements(previous, updated);
     return updated;
   } catch {
@@ -557,9 +565,12 @@ function getMembershipBadgeUnlocks(answers: number[]): ClubBadgeId[] {
   if (source === 0) unlocked.add("club-dyor-certified");
   if (bag === 0 || plaque === 0) unlocked.add("club-diamond-hands");
   if (bag === 1 || source === 2 || dev === 1 || plaque === 1) unlocked.add("club-average-downer");
-  if ([2, 1, 1, 2, 2].some((expected, index) =>
-    answers[index] === expected &&
-    [0, 1, 2, 3, 4].some((questionIndex) => questionIndex === index),
+  if (answers.some((answer, index) =>
+    (index === 0 && answer === 2) ||
+    (index === 1 && answer === 1) ||
+    (index === 2 && answer === 1) ||
+    (index === 3 && answer === 2) ||
+    (index === 4 && answer === 2),
   )) unlocked.add("club-cto-believer");
   if (bag === 3) unlocked.add("club-exit-liquidity");
   if (source === 2) unlocked.add("club-100x-visionary");
@@ -634,6 +645,7 @@ export function deletePassport() {
   if (!storage) return false;
   try {
     storage.removeItem(PASSPORT_STORAGE_KEY);
+    announcePassportUpdate();
     return true;
   } catch {
     return false;
@@ -667,7 +679,7 @@ export function getPassportAchievementStatuses(data: PassportData): PassportAchi
     "club-exit-liquidity": { progress: Number(data.clubBadgeIds.includes("club-exit-liquidity")), target: 1 },
     "club-100x-visionary": { progress: Number(data.clubBadgeIds.includes("club-100x-visionary")), target: 1 },
     "club-still-early": { progress: Number(data.clubBadgeIds.includes("club-still-early")), target: 1 },
-    "club-cope-engineer": { progress: Number(data.clubBadgeIds.includes("club-cope-engineer")), target: 3 },
+    "club-cope-engineer": { progress: data.clubBadgeIds.includes("club-cope-engineer") ? 3 : Object.keys(data.clubChallengeAnswers).length, target: 3 },
     "club-kol-disciple": { progress: Number(data.clubBadgeIds.includes("club-kol-disciple")), target: 1 },
     "club-certified-bagholder": { progress: Number(data.clubBadgeIds.includes("club-certified-bagholder")), target: 1 },
   };
