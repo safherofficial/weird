@@ -17,7 +17,7 @@ import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anc
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
 import { archiveRecords } from "../app/archives/archive-data";
 import { exhibits } from "../app/museum/museum-data";
-import { departments } from "../app/divisions";
+import { departmentGroups, departments, divisionNavigationGroups } from "../app/divisions";
 import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
 type ResultRecord = Record<string, unknown>;
@@ -1746,3 +1746,36 @@ test("Case Atlas labels thread chronology as the selected date window rather tha
   assert.ok(atlasClient.includes("{windowDays} UTC-DAY WINDOW"));
   assert.ok(atlasClient.includes("{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES"));
 });
+
+test("U26 navigation uses the current homepage division names in desktop and mobile menus", () => {
+  assert.equal(divisionNavigationGroups.length, departmentGroups.length);
+  for (const [index, directoryGroup] of departmentGroups.entries()) {
+    const navigationGroup = divisionNavigationGroups[index];
+    assert.equal(navigationGroup.number, directoryGroup.number);
+    assert.equal(navigationGroup.label, directoryGroup.title);
+    assert.equal(navigationGroup.descriptor, directoryGroup.code);
+    assert.deepEqual(
+      navigationGroup.items.map((item) => ({
+        number: item.number,
+        label: item.label,
+        href: item.href,
+        section: item.section,
+      })),
+      directoryGroup.items.map((item) => ({
+        number: item.number,
+        label: item.title,
+        href: item.href,
+        section: item.section,
+      })),
+      "Navigation destinations and public division identities must match the homepage directory",
+    );
+  }
+
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+  assert.equal(
+    (header.match(/navigationGroups\\.map\\(/g) || []).length,
+    2,
+    "Desktop and mobile menus must both render from the same current navigation groups",
+  );
+});
+

@@ -24,10 +24,12 @@ export const departmentGroups = [
   { number: "03", code: "REHABILITATION & COPE / DIVISIONS 09—10", title: "REHABILITATION & COPE", description: "The artifacts, emotional paperwork and official coping mechanisms left after the market has finished its business.", items: departments.slice(8, 10) },
 ];
 
-export const divisionNavigationGroups = [
-  { number: "01", label: "ENTRY & SURVIVAL", descriptor: "DIVISIONS / 01—03", items: departments.slice(0, 3).map((d) => ({ number: d.number, label: d.title, href: d.href, section: d.section })) },
-  { number: "02", label: "INTELLIGENCE", descriptor: "DIVISIONS / 04—08", items: departments.slice(3, 8).map((d) => ({ number: d.number, label: d.title, href: d.href, section: d.section })) },
-  { number: "03", label: "AFTERCARE", descriptor: "DIVISIONS / 09—10", items: departments.slice(8, 10).map((d) => ({ number: d.number, label: d.title, href: d.href, section: d.section })) },
-];
+// Keep desktop and mobile navigation taxonomy identical to the homepage directory.
+export const divisionNavigationGroups = departmentGroups.map((group) => ({
+  number: group.number,
+  label: group.title,
+  descriptor: group.code,
+  items: group.items.map((d) => ({ number: d.number, label: d.title, href: d.href, section: d.section })),
+}));
 
 export const divisionIdentityBySection: Partial<Record<DepartmentSection, DepartmentDivision>> = Object.fromEntries(departments.map((d) => [d.section, d]));
