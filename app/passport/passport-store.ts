@@ -596,6 +596,7 @@ export function recordClubMembership(answers: number[]): PassportData | null {
       clubBadgeIds: nextBadgeIds,
     };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
+    announcePassportUpdate();
     announceNewAchievements(previous, updated);
     return updated;
   } catch {
@@ -633,6 +634,7 @@ export function recordClubChallenge(id: ClubChallengeId, answerIndex: number): P
       clubBadgeIds: [...unlocks],
     };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
+    announcePassportUpdate();
     announceNewAchievements(previous, updated);
     return updated;
   } catch {
