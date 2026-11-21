@@ -39,6 +39,9 @@ function makeMembershipSvg(result: ClubResult) {
   const motto = escapeXml(result.profile.motto);
   const member = escapeXml(result.memberNumber);
   const crossRead = escapeXml(result.crossRead.headline);
+  const factionTitle = escapeXml(result.faction.title);
+  const factionMotto = escapeXml(result.faction.motto);
+  const factionCode = escapeXml(result.faction.code);
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">' +
     '<rect width="1200" height="675" fill="#090b09"/>' +
@@ -54,9 +57,11 @@ function makeMembershipSvg(result: ClubResult) {
     '<rect x="68" y="371" width="470" height="112" fill="#151e12" stroke="#46573a"/>' +
     '<text x="92" y="409" fill="#8d9a83" font-family="monospace" font-size="14">MEMBER NUMBER</text>' +
     '<text x="92" y="457" fill="#b6ff65" font-family="monospace" font-size="37" font-weight="bold">' + member + '</text>' +
-    '<text x="580" y="407" fill="#8d9a83" font-family="monospace" font-size="14">MEMBERSHIP CLASS</text>' +
-    '<text x="580" y="445" fill="#e4ebdf" font-family="monospace" font-size="18">' + escapeXml(result.membershipClass) + '</text>' +
-    '<text x="580" y="477" fill="#ff8580" font-family="monospace" font-size="14">BENEFITS: NONE / EXPECTATIONS: MANAGED</text>' +
+    '<text x="580" y="389" fill="#8d9a83" font-family="monospace" font-size="12">FACTION / ' + factionCode + '</text>' +
+    '<text x="580" y="415" fill="#b6ff65" font-family="monospace" font-size="16" font-weight="bold">' + factionTitle + '</text>' +
+    '<text x="580" y="439" fill="#a5b49b" font-family="monospace" font-size="10">' + factionMotto + '</text>' +
+    '<text x="580" y="467" fill="#8d9a83" font-family="monospace" font-size="11">MEMBERSHIP / ' + escapeXml(result.membershipClass) + '</text>' +
+    '<text x="580" y="490" fill="#ff8580" font-family="monospace" font-size="11">BENEFITS: NONE / EXPECTATIONS: MANAGED</text>' +
     '<text x="68" y="600" fill="#b6ff65" font-family="monospace" font-size="15" font-weight="bold">NOT A REAL MEMBERSHIP / NO FINANCIAL BENEFITS / NO TOKEN / NO REAL 99% STATISTIC</text>' +
     '<text x="1132" y="600" text-anchor="end" fill="#82907b" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
     '</svg>'
@@ -99,9 +104,10 @@ export default function ClubClient() {
     setAnswers(next);
     setNotice("");
     if (current === questions.length - 1) {
-      setResult(buildClubResult(next));
+      const completedResult = buildClubResult(next);
+      setResult(completedResult);
       recordPassportActivity("club");
-      recordClubMembership(next);
+      recordClubMembership(next, completedResult.faction.id);
     } else {
       setCurrent(current + 1);
     }
@@ -131,6 +137,8 @@ export default function ClubClient() {
       "THE DYOR DEPARTMENT — SOLANA TRENCHES SURVIVOR REGISTRY",
       "MEMBER No. " + result.memberNumber,
       "CLASSIFICATION: " + result.profile.title,
+      "FACTION: " + result.faction.title + " / " + result.faction.code,
+      result.faction.motto,
       "MEMBERSHIP CLASS: " + result.membershipClass,
       "CONVICTION: " + result.conviction + "/100",
       "COPE INDEX: " + result.cope + "/100",
@@ -224,6 +232,8 @@ export default function ClubClient() {
       "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
       "Member No. " + result.memberNumber + ".",
       result.profile.title + ".",
+      "Faction: " + result.faction.title + " (" + result.faction.code + ").",
+      result.faction.motto,
       "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
       "Cross-read: " + result.crossRead.headline + ".",
       result.profile.motto,
@@ -249,6 +259,11 @@ export default function ClubClient() {
           <h2>{result.profile.title}</h2>
           <p className="club-membership-card__subtitle">{result.profile.subtitle}</p>
           <div className="club-membership-card__motto">“{result.profile.motto}”</div>
+          <div className="club-membership-card__faction">
+            <span>FACTION / {result.faction.code}</span>
+            <strong>{result.faction.title}</strong>
+            <small>{result.faction.motto}</small>
+          </div>
           <div className="club-membership-card__bottom">
             <div><span>MEMBERSHIP CLASS</span><strong>{result.membershipClass}</strong></div>
             <div><span>BENEFITS</span><strong>NONE / EXPECTATIONS: MANAGED</strong></div>
@@ -269,6 +284,12 @@ export default function ClubClient() {
         </div>
 
         <DepartmentCrossRead read={result.crossRead} />
+
+        <div className="club-faction-dossier">
+          <div><span>YOUR FACTION / {result.faction.code}</span><h3>{result.faction.title}</h3><strong>{result.faction.designation}</strong></div>
+          <p>{result.faction.creed}</p>
+          <small>WEEKLY RITUAL / {result.faction.ritual}</small>
+        </div>
 
         <div className="club-profile">
           <span>THE DEPARTMENT HAS A COMMENT</span>
