@@ -54,6 +54,22 @@ function getBadgeArtworkHref(id: string, assetBaseUrl: string) {
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
+function badgeDisplayTitle(item: PassportAchievementStatus) {
+  return item.secret && !item.earned ? "CLASSIFIED ACHIEVEMENT" : item.title;
+}
+
+function badgeDisplayDescription(item: PassportAchievementStatus) {
+  return item.secret && !item.earned
+    ? "The Department has sealed this achievement file. Continue completing Club rituals to declassify it."
+    : item.description;
+}
+
+function badgeDisplayRequirement(item: PassportAchievementStatus) {
+  return item.secret && !item.earned
+    ? "REDACTED / COMPLETE THE CLASSIFIED DEPARTMENTAL REQUIREMENT."
+    : item.requirement;
+}
+
 function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus[], assetBaseUrl: string) {
   const height = passportSvgHeight(statuses);
   const footerY = height - 30;
@@ -84,7 +100,7 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     return (
       '<rect x="' + x + '" y="' + y + '" width="408" height="84" fill="' + (item.earned ? "#172016" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '"/>' +
       '<image href="' + imageHref + '" x="' + (x + 3) + '" y="' + (y + 4) + '" width="76" height="76" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".36") + '"/>' +
-      '<text x="' + (x + 86) + '" y="' + (y + 35) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="11">' + escapeXml(item.title) + '</text>' +
+      '<text x="' + (x + 86) + '" y="' + (y + 35) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="11">' + escapeXml(badgeDisplayTitle(item)) + '</text>' +
       '<text x="' + (x + 86) + '" y="' + (y + 56) + '" fill="' + color + '" font-family="monospace" font-size="8">' + label + '</text>'
     );
   }).join("");
@@ -120,7 +136,7 @@ function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], ass
       '<rect x="' + x + '" y="' + y + '" width="398" height="150" fill="' + (item.earned ? "#141d12" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '" stroke-width="' + (item.earned ? 2 : 1) + '"/>' +
       '<circle cx="' + (x + 72) + '" cy="' + (y + 75) + '" r="62" fill="#0a0d0a" stroke="' + color + '" stroke-opacity=".32" stroke-width="1"/>' +
       '<image href="' + imageHref + '" x="' + (x + 7) + '" y="' + (y + 10) + '" width="130" height="130" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".34") + '"/>' +
-      '<text x="' + (x + 150) + '" y="' + (y + 38) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="12">' + escapeXml(item.title) + '</text>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 38) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="12">' + escapeXml(badgeDisplayTitle(item)) + '</text>' +
       '<text x="' + (x + 150) + '" y="' + (y + 61) + '" fill="' + color + '" font-family="monospace" font-size="9">' + (item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.rarity) + '</text>' +
       '<text x="' + (x + 150) + '" y="' + (y + 82) + '" fill="#899486" font-family="monospace" font-size="8">' + item.progress + ' / ' + item.target + ' REQUIREMENT UNITS</text>' +
       '<rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="218" height="5" fill="#30382f"/><rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="' + Math.round(progressWidth * .78) + '" height="5" fill="' + color + '"/>' +
@@ -350,10 +366,10 @@ export default function PassportClient() {
                   <AchievementEmblem id={achievement.id} rarity={achievement.rarity} earned={achievement.earned} />
                   <div className="passport-achievement__identity"><span>{achievement.rarity}</span><strong>{achievement.earned ? "✓ UNLOCKED" : achievement.progress ? "IN PROGRESS" : "LOCKED"}</strong></div>
                 </div>
-                <h3>{achievement.title}</h3>
-                <p>{achievement.description}</p>
-                <small className="passport-achievement__requirement"><strong>HOW TO UNLOCK</strong>{achievement.requirement}</small>
-                <div className="passport-achievement__progress" role="progressbar" aria-label={`${achievement.title} progress`} aria-valuemin={0} aria-valuemax={achievement.target} aria-valuenow={achievement.progress}>
+                <h3>{badgeDisplayTitle(achievement)}</h3>
+                <p>{badgeDisplayDescription(achievement)}</p>
+                <small className="passport-achievement__requirement"><strong>HOW TO UNLOCK</strong>{badgeDisplayRequirement(achievement)}</small>
+                <div className="passport-achievement__progress" role="progressbar" aria-label={`${badgeDisplayTitle(achievement)} progress`} aria-valuemin={0} aria-valuemax={achievement.target} aria-valuenow={achievement.progress}>
                   <span style={{ width: badgeProgress + "%" }} />
                 </div>
                 <div className="passport-achievement__foot"><span>{achievement.earned ? "DEPARTMENTAL RECORD VERIFIED" : "REQUIREMENT PROGRESS"}</span><b>{achievement.progress}/{achievement.target}</b></div>
