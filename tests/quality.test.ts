@@ -400,8 +400,8 @@ test("Global Cope Index is deterministic and exposes five bounded synthetic dime
   assert.equal(first.dimensions.length, 5);
   assertPercent(first.overall, "Global Cope overall");
   first.dimensions.forEach((item) => assertPercent(item.value, "Global Cope " + item.id));
-  assert.throws(() => buildDailyCopeIndex("2026-02-30"));
-  assert.throws(() => buildDailyCopeIndex("not-a-date"));
+  assert.throws(() => buildDailyCopeIndex("2026-02-30", editorialCase));
+  assert.throws(() => buildDailyCopeIndex("not-a-date", editorialCase));
 });
 
 function makePassport(overrides: Partial<PassportData> = {}): PassportData {
