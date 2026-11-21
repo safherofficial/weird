@@ -62,7 +62,7 @@ const challenges: readonly Challenge[] = [
 ];
 
 const EMPTY_PASSPORT: PassportData = {
-  version: 3,
+  version: 4,
   enabled: true,
   createdAt: "2026-01-01T00:00:00.000Z",
   visitedDepartments: [],
