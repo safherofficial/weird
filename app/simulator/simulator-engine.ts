@@ -1,3 +1,5 @@
+import type { DepartmentCrossRead } from "../lib/department-cross-read";
+
 export const SIMULATOR_VERSION = 1;
 export const SIMULATOR_ROUNDS = 7;
 export const STARTING_CREDITS = 1000;
@@ -57,6 +59,7 @@ export type SimulatorProfile = {
 };
 
 export type SimulatorResult = SimulatorProgress & {
+  crossRead: DepartmentCrossRead;
   decisions: number[];
   caseNumber: string;
   profile: SimulatorProfile;
@@ -339,9 +342,53 @@ export function buildSimulatorResult(decisions: number[]): SimulatorResult {
 
   const seed = decisions.reduce((sum, decision, index) => ((sum * 29) + (decision + 1) * (index + 13)) % 900000, 404404);
   const caseNumber = String(seed + 100000).slice(-6);
+  const dominantAction = actions.reduce((best, action) =>
+    counts[action.id] > counts[best.id] ? action : best, actions[0]);
+  const largestSwing = progress.history.reduce((best, entry, index, history) => {
+    const previousWorth = index === 0 ? STARTING_CREDITS : history[index - 1].netWorthAfter;
+    const change = round(entry.netWorthAfter - previousWorth);
+    return Math.abs(change) > Math.abs(best.change) ? { entry, change } : best;
+  }, {
+    entry: progress.history[0],
+    change: round(progress.history[0].netWorthAfter - STARTING_CREDITS),
+  });
+  const crossRead: DepartmentCrossRead = {
+    headline: counts.telegram >= 3
+      ? "THE CHAT HAS A SEAT AT THE TRADING DESK"
+      : executedAdds >= 3
+        ? "POSITION EXPANSION BECAME THE MAIN EVENT"
+        : counts.trim >= 4
+          ? "REPEATED TRIMS SHAPED THE EXIT"
+          : counts.hold >= 5
+            ? "HOLD WAS THE DEFAULT RESPONSE"
+            : skippedAddAttempts > 0
+              ? "THE ADD BUTTON OUTRAN THE CASH RESERVE"
+              : "A MIXED SEVEN-ROUND DECISION SEQUENCE",
+    interpretation:
+      "Across the seven fictional rounds you selected " + counts.hold + " HOLD, " + counts.trim + " TRIM, " +
+      executedAdds + " executed ADD TO POSITION and " + skippedAddAttempts + " skipped add attempts, plus " +
+      counts.telegram + " CT / Telegram consultations. The largest change in marked paper net worth arrived on Day " +
+      largestSwing.entry.day + " (" + (largestSwing.change >= 0 ? "+" : "") + largestSwing.change.toFixed(2) +
+      " DPC versus the prior round close). This describes the simulator path only; it is not a prediction or a real trading profile.",
+    signals: [
+      {
+        label: "DECISION MIX",
+        context: "ALL SEVEN SCRIPTED ROUNDS",
+        answer: dominantAction.label + " / " + counts[dominantAction.id] + " selections",
+        detail: decisionSummary,
+      },
+      {
+        label: "LARGEST PAPER-NET-WORTH SWING",
+        context: "DAY " + String(largestSwing.entry.day).padStart(2, "0") + " / " + largestSwing.entry.headline,
+        answer: largestSwing.entry.actionLabel,
+        detail: (largestSwing.change >= 0 ? "+" : "") + largestSwing.change.toFixed(2) + " DPC versus the prior round close.",
+      },
+    ],
+  };
 
   return {
     ...progress,
+    crossRead,
     decisions: [...decisions],
     caseNumber,
     profile,

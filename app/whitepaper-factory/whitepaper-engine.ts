@@ -1,3 +1,5 @@
+import type { DepartmentCrossRead } from "../lib/department-cross-read";
+
 export const WHITEPAPER_VERSION = 1;
 export const WHITEPAPER_QUESTIONS = 7;
 export const FICTIONAL_SUPPLY = 1_000_000_000;
@@ -57,6 +59,7 @@ export type WhitepaperProgress = {
 };
 
 export type WhitepaperResult = WhitepaperProgress & {
+  crossRead: DepartmentCrossRead;
   answers: number[];
   projectSlug: string;
   projectLabel: string;
@@ -519,6 +522,41 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
   const governanceModel = governanceModels[answers[5]];
   const adoptionModel = adoptionModels[answers[0]];
   const riskPosture = riskPostures[answers[6]];
+  const selected = answers.map((answer, index) => questions[index].options[answer]);
+  const strongestClarity = selected.reduce((best, item, index) =>
+    item.clarity > selected[best].clarity ? index : best, 0);
+  const highestBuzzwords = selected.reduce((best, item, index) =>
+    item.buzzwords > selected[best].buzzwords ? index : best, 0);
+  const clarityItem = selected[strongestClarity];
+  const buzzwordItem = selected[highestBuzzwords];
+  const crossRead: DepartmentCrossRead = {
+    headline: progress.productClarity <= 35 && progress.buzzwordDensity >= 65
+      ? "THE ABSTRACT HAS A PRODUCT-SHAPED HOLE"
+      : progress.productClarity >= 65 && progress.buzzwordDensity >= 65
+        ? "CLEAR PRODUCT CLAIM / HEAVY NARRATIVE PACKAGING"
+        : progress.productClarity >= 65 && progress.technicalDensity >= 65
+          ? "THE DOSSIER CONTAINS A DEFINABLE CORE"
+          : progress.buzzwordDensity >= 65
+            ? "BUZZWORD DENSITY IS LEADING THE DOCUMENT"
+            : "TECHNICAL / PRODUCT SIGNALS REMAIN MIXED",
+    interpretation:
+      "This fictional dossier scores " + progress.technicalDensity + "/100 technical density, " + progress.buzzwordDensity +
+      "/100 buzzword density and " + progress.productClarity + "/100 product clarity. The comparison below pairs the clearest product answer with the most buzzword-heavy answer. Technical-sounding language is not treated as proof of implementation.",
+    signals: [
+      {
+        label: "CLEAREST PRODUCT-CLARITY ANSWER",
+        context: questions[strongestClarity].prompt,
+        answer: clarityItem.label,
+        detail: "Clarity " + clarityItem.clarity + "/5 · Technical " + clarityItem.technical + "/5 · Buzzwords " + clarityItem.buzzwords + "/5.",
+      },
+      {
+        label: "HIGHEST BUZZWORD-DENSITY ANSWER",
+        context: questions[highestBuzzwords].prompt,
+        answer: buzzwordItem.label,
+        detail: "Buzzwords " + buzzwordItem.buzzwords + "/5 · Technical " + buzzwordItem.technical + "/5 · Clarity " + buzzwordItem.clarity + "/5.",
+      },
+    ],
+  };
   const profile = classifications[primaryTag];
   const secondaryProfile = classifications[secondaryTag];
   const finding = progress.productClarity >= 75 && progress.technicalDensity >= 70
@@ -533,6 +571,7 @@ export function buildWhitepaperResult(answers: number[], projectName: string): W
 
   return {
     ...progress,
+    crossRead,
     answers: [...answers],
     projectSlug,
     projectLabel,
@@ -579,6 +618,19 @@ export function formatWhitepaperMarkdown(result: WhitepaperResult): string {
     "",
     result.profile.roast,
     "",
+    "## BEHAVIOURAL CROSS-READ / SELECTED-ANSWER PATTERN",
+    "",
+    "**" + result.crossRead.headline + "**",
+    "",
+    result.crossRead.interpretation,
+    "",
+    ...result.crossRead.signals.flatMap((signal) => [
+      "**" + signal.label + "**",
+      signal.context,
+      signal.answer,
+      signal.detail,
+      "",
+    ]),
   ];
   result.sections.forEach((section) => {
     lines.push("## " + section.number + ". " + section.title, "", "*" + section.eyebrow + "*", "");
@@ -611,6 +663,10 @@ export function formatWhitepaperHtml(result: WhitepaperResult): string {
     "</section>"
   ).join("");
   const tableRows = result.allocations.map((item) => "<tr><td>" + escape(item.label) + "</td><td>" + item.percentage + "%</td><td>" + escape(item.explanation) + "</td></tr>").join("");
+  const crossReadHtml = "<section><p class=\"eyebrow\">BEHAVIOURAL CROSS-READ / SELECTED-ANSWER PATTERN</p><h2>" + escape(result.crossRead.headline) + "</h2>" +
+    "<p>" + escape(result.crossRead.interpretation) + "</p>" +
+    result.crossRead.signals.map((signal) => "<article><p class=\"eyebrow\">" + escape(signal.label) + "</p><p>" + escape(signal.context) + "</p><p><strong>" + escape(signal.answer) + "</strong><br>" + escape(signal.detail) + "</p></article>").join("") +
+    "</section>";
   const summaryHtml = "<section><p class=\"eyebrow\">DEPARTMENTAL FINDING</p><h2>" + escape(result.finding) + "</h2>" +
     "<p><strong>Primary classification:</strong> " + escape(result.profile.title) + "<br><strong>Secondary classification:</strong> " + escape(result.secondaryProfile.title) + "<br><strong>Departmental disposition:</strong> " + escape(result.profile.disposition) + "</p>" +
     "<p><strong>Claimed core problem:</strong> " + escape(result.problemStatement) + "</p>" +
@@ -618,7 +674,7 @@ export function formatWhitepaperHtml(result: WhitepaperResult): string {
     "<p>Notional supply: 1,000,000,000 fictional units. All scores and token allocations are invented.</p></section>";
   return "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>" + escape(result.projectLabel + " — Fictional Token Dossier") + "</title><style>" +
     "body{margin:0;background:#eceee9;color:#20251f;font:16px/1.7 Georgia,serif}main{max-width:850px;margin:40px auto;padding:60px 72px;background:#fff;box-shadow:0 10px 40px #0001}header{border-bottom:3px solid #b6ff65;padding-bottom:28px;margin-bottom:36px}header small,.eyebrow{font:11px/1.5 monospace;letter-spacing:.12em;color:#687264}h1{font:800 42px/1.08 Arial,sans-serif;letter-spacing:-.04em}h2{font:700 25px/1.2 Arial,sans-serif;margin:8px 0 18px}h3{font:700 16px Arial,sans-serif}p{margin:0 0 16px}section{padding:24px 0;border-bottom:1px solid #dfe3dc}li{margin:6px 0}table{width:100%;border-collapse:collapse;margin:20px 0;font:13px Arial,sans-serif}td,th{padding:10px;border-bottom:1px solid #dfe3dc;text-align:left}th{background:#f2f4ee}.disclaimer{padding:18px;background:#f2f4ee;border-left:4px solid #b6ff65;font:12px/1.7 monospace}.toolbar{display:flex;justify-content:flex-end;gap:10px;margin:0 auto 16px;max-width:990px}.toolbar button{padding:12px 18px;border:0;background:#172016;color:#b6ff65;font:12px monospace;cursor:pointer}@media print{body{background:#fff}main{margin:0;padding:22mm 18mm;max-width:none;box-shadow:none}.toolbar{display:none}section{break-inside:avoid}h2{break-after:avoid}}@media(max-width:700px){main{margin:0;padding:28px 22px}h1{font-size:32px}}"+
-    "</style></head><body><div class=\"toolbar\"><button onclick=\"window.print()\">PRINT / SAVE AS PDF</button></div><main><header><small>THE DYOR DEPARTMENT / EXIT LIQUIDITY DEPARTMENT / CASE " + escape(result.caseNumber) + "</small><h1>" + escape(result.projectLabel) + "<br>FICTIONAL TOKEN DOSSIER</h1><p>" + escape(result.profile.subtitle) + "</p><p class=\"disclaimer\">FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION, TOKEN OFFER, INVESTMENT DOCUMENT OR REAL PROJECT DISCLOSURE.</p></header>" + summaryHtml + sectionHtml +
+    "</style></head><body><div class=\"toolbar\"><button onclick=\"window.print()\">PRINT / SAVE AS PDF</button></div><main><header><small>THE DYOR DEPARTMENT / EXIT LIQUIDITY DEPARTMENT / CASE " + escape(result.caseNumber) + "</small><h1>" + escape(result.projectLabel) + "<br>FICTIONAL TOKEN DOSSIER</h1><p>" + escape(result.profile.subtitle) + "</p><p class=\"disclaimer\">FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION, TOKEN OFFER, INVESTMENT DOCUMENT OR REAL PROJECT DISCLOSURE.</p></header>" + summaryHtml + crossReadHtml + sectionHtml +
     "<section><p class=\"eyebrow\">TOKENOMICS / NOTIONAL MODEL</p><h2>FICTIONAL TOKEN ALLOCATION</h2><p>Notional supply: 1,000,000,000 fictional units. No real token or allocation is being described.</p><table><thead><tr><th>Category</th><th>Share</th><th>Departmental explanation</th></tr></thead><tbody>" + tableRows + "</tbody></table></section>" +
     "<p class=\"disclaimer\">This document is generated from selected answers for satire. No real project, token, contract, team, company, market, security or legal position has been inspected or verified. Do not present this output as an actual project whitepaper.</p></main></body></html>";
 }

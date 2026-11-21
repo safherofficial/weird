@@ -1,3 +1,5 @@
+import type { DepartmentCrossRead } from "../lib/department-cross-read";
+
 export const COPE_VERSION = 1;
 export const COPE_QUESTIONS = 5;
 
@@ -55,6 +57,7 @@ export type CopeProfile = {
 };
 
 export type PersonalCopeResult = {
+  crossRead: DepartmentCrossRead;
   answers: number[];
   caseNumber: string;
   copeScore: number;
@@ -298,8 +301,41 @@ export function buildPersonalCopeResult(answers: number[]): PersonalCopeResult {
       : patienceScore >= 75
         ? "UNEXPECTED CALM DETECTED. INVESTIGATION CONTINUES."
         : "PERSONAL READING FILED / THE THESIS REMAINS OPEN.";
+  const strongestPatience = selected.reduce((best, option, index) =>
+    option.patience > selected[best].patience ? index : best, 0);
+  const highestPressure = selected.reduce((best, option, index) =>
+    option.cope + option.chat > selected[best].cope + selected[best].chat ? index : best, 0);
+  const patienceItem = selected[strongestPatience];
+  const pressureItem = selected[highestPressure];
+  const crossRead: DepartmentCrossRead = {
+    headline: copeScore >= 60 && chatDependency >= 60
+      ? "REASSURANCE IS COMING FROM THE GROUP CHAT"
+      : copeScore >= 65
+        ? "THE EXPLANATION KEEPS MOVING"
+        : patienceScore >= 65
+          ? "THE CALM ANSWER SURVIVED"
+          : "THE PERSONAL READING IS SPLIT",
+    interpretation:
+      "Your selected answers average " + copeScore + "/100 cope, " + patienceScore + "/100 patience and " +
+      chatDependency + "/100 chat dependency. The reading below pairs your highest patience-scored answer with the answer carrying the strongest combined cope and chat score. This is a fictional self-report exercise, not a mental-health or real-world behaviour assessment.",
+    signals: [
+      {
+        label: "STRONGEST PATIENCE SIGNAL",
+        context: questions[strongestPatience].prompt,
+        answer: patienceItem.label,
+        detail: "Patience " + patienceItem.patience + "/5 · Cope " + patienceItem.cope + "/5 · Chat " + patienceItem.chat + "/5.",
+      },
+      {
+        label: "HIGHEST COPE / CHAT-PRESSURE SIGNAL",
+        context: questions[highestPressure].prompt,
+        answer: pressureItem.label,
+        detail: "Cope " + pressureItem.cope + "/5 · Chat " + pressureItem.chat + "/5 · Patience " + pressureItem.patience + "/5.",
+      },
+    ],
+  };
 
   return {
+    crossRead,
     answers: [...answers],
     caseNumber,
     copeScore,

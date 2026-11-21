@@ -1,3 +1,5 @@
+import type { DepartmentCrossRead } from "../lib/department-cross-read";
+
 export const INSPECTOR_VERSION = 1;
 export const INSPECTOR_QUESTIONS = 7;
 
@@ -51,6 +53,7 @@ export type UtilityProgress = {
 };
 
 export type UtilityResult = UtilityProgress & {
+  crossRead: DepartmentCrossRead;
   answers: number[];
   primaryTag: UtilityArchetypeId;
   secondaryTag: UtilityArchetypeId;
@@ -297,9 +300,44 @@ export function buildUtilityResult(answers: number[]): UtilityResult {
   const seed = answers.reduce((sum, answer, index) => ((sum * 31) + (answer + 1) * (index + 17)) % 900000, 606060);
   const caseNumber = String(seed + 100000).slice(-6);
   const decisionSummary = answers.map((answer, index) => "0" + (index + 1) + " / " + ["A", "B", "C", "D"][answer]).join("  •  ");
+  const strongestEvidence = progress.history.reduce((best, item, index, history) =>
+    item.evidence > history[best].evidence ? index : best, 0);
+  const highestFog = progress.history.reduce((best, item, index, history) =>
+    item.fog > history[best].fog ? index : best, 0);
+  const evidenceItem = progress.history[strongestEvidence];
+  const fogItem = progress.history[highestFog];
+  const crossRead: DepartmentCrossRead = {
+    headline: progress.evidence >= 60 && progress.fog >= 60
+      ? "THE PROOF / PITCH COLLISION"
+      : progress.fog >= 65
+        ? "NARRATIVE VOLUME EXCEEDS THE SIGNAL"
+        : progress.evidence >= 65 && progress.tokenFit >= 60
+          ? "A USE CASE WITH A PLACE FOR THE TOKEN"
+          : progress.tokenFit <= 30
+            ? "THE TOKEN'S JOB IS STILL UNASSIGNED"
+            : "CLAIMS FILED / EVIDENCE STILL MIXED",
+    interpretation:
+      "Your selected answers average " + progress.evidence + "/100 for evidence, " + progress.fog +
+      "/100 for narrative fog and " + progress.tokenFit + "/100 for token justification. The two signals below identify the answers that contributed the most evidence and the most narrative fog in this fictional inspection. No external project data was checked.",
+    signals: [
+      {
+        label: "STRONGEST EVIDENCE ANSWER",
+        context: evidenceItem.question,
+        answer: evidenceItem.answer,
+        detail: "Evidence " + evidenceItem.evidence + "/5 · Fog " + evidenceItem.fog + "/5 · Token fit " + evidenceItem.tokenFit + "/5.",
+      },
+      {
+        label: "HIGHEST NARRATIVE-FOG ANSWER",
+        context: fogItem.question,
+        answer: fogItem.answer,
+        detail: "Evidence " + fogItem.evidence + "/5 · Fog " + fogItem.fog + "/5 · Token fit " + fogItem.tokenFit + "/5.",
+      },
+    ],
+  };
 
   return {
     ...progress,
+    crossRead,
     answers: [...answers],
     primaryTag,
     secondaryTag,

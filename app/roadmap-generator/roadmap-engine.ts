@@ -1,3 +1,5 @@
+import type { DepartmentCrossRead } from "../lib/department-cross-read";
+
 export const ROADMAP_VERSION = 1;
 export const ROADMAP_QUESTIONS = 6;
 
@@ -50,6 +52,7 @@ export type RoadmapProgress = {
 };
 
 export type RoadmapResult = RoadmapProgress & {
+  crossRead: DepartmentCrossRead;
   answers: number[];
   projectSlug: string;
   projectLabel: string;
@@ -482,9 +485,45 @@ export function buildRoadmapResult(answers: number[], projectName: string): Road
     progress.realism + "/100 TIMELINE REALISM",
     progress.inflation + "/100 PROMISE INFLATION",
   ].join(" / ");
+  const selected = answers.map((answer, index) => questions[index].options[answer]);
+  const strongestDelivery = selected.reduce((best, item, index) =>
+    item.delivery > selected[best].delivery ? index : best, 0);
+  const highestInflation = selected.reduce((best, item, index) =>
+    item.inflation > selected[best].inflation ? index : best, 0);
+  const deliveryItem = selected[strongestDelivery];
+  const inflationItem = selected[highestInflation];
+  const crossRead: DepartmentCrossRead = {
+    headline: progress.delivery <= 35 && progress.inflation >= 65
+      ? "THE ROADMAP HAS OUTRUN DELIVERY"
+      : progress.delivery >= 65 && progress.inflation >= 55
+        ? "REAL DELIVERABLES / EXPANDING PROMISES"
+        : progress.delivery >= 65 && progress.realism >= 65
+          ? "A CALENDAR WITH CHECKPOINTS"
+          : progress.inflation >= 65
+            ? "SOON™ IS DOING THE HEAVY LIFTING"
+            : "RECOVERY PLAN / MIXED DELIVERY SIGNALS",
+    interpretation:
+      "The selected roadmap answers produce " + progress.delivery + "/100 delivery clarity, " + progress.realism +
+      "/100 timeline realism and " + progress.inflation + "/100 promise inflation. The comparison below puts the clearest delivery claim beside the answer that carried the most promise inflation. It describes this fictional questionnaire, not a real project's execution.",
+    signals: [
+      {
+        label: "CLEAREST DELIVERY SIGNAL",
+        context: questions[strongestDelivery].prompt,
+        answer: deliveryItem.label,
+        detail: "Delivery " + deliveryItem.delivery + "/5 · Realism " + deliveryItem.realism + "/5 · Inflation " + deliveryItem.inflation + "/5.",
+      },
+      {
+        label: "HIGHEST PROMISE-INFLATION SIGNAL",
+        context: questions[highestInflation].prompt,
+        answer: inflationItem.label,
+        detail: "Delivery " + inflationItem.delivery + "/5 · Realism " + inflationItem.realism + "/5 · Inflation " + inflationItem.inflation + "/5.",
+      },
+    ],
+  };
 
   return {
     ...progress,
+    crossRead,
     answers: [...answers],
     projectSlug,
     projectLabel,

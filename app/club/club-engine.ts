@@ -1,3 +1,5 @@
+import type { DepartmentCrossRead } from "../lib/department-cross-read";
+
 export const CLUB_VERSION = 1;
 export const CLUB_QUESTIONS = 5;
 
@@ -39,6 +41,7 @@ export type ClubProgress = {
 };
 
 export type ClubResult = ClubProgress & {
+  crossRead: DepartmentCrossRead;
   answers: number[];
   memberNumber: string;
   primaryTag: ClubArchetypeId;
@@ -228,9 +231,45 @@ export function buildClubResult(answers: number[]): ClubResult {
       : progress.cope >= 65
         ? "COPE RESERVES ARE BEING USED AT AN ELEVATED RATE."
         : "MEMBERSHIP APPROVED / BENEFITS NOT INCLUDED.";
+  const selected = answers.map((answer, index) => questions[index].options[answer]);
+  const strongestConviction = selected.reduce((best, item, index) =>
+    item.conviction > selected[best].conviction ? index : best, 0);
+  const strongestChat = selected.reduce((best, item, index) =>
+    item.chatDependency > selected[best].chatDependency ? index : best, 0);
+  const convictionItem = selected[strongestConviction];
+  const chatItem = selected[strongestChat];
+  const crossRead: DepartmentCrossRead = {
+    headline: progress.conviction >= 65 && progress.chatDependency >= 60
+      ? "CONVICTION MEETS A LIVE CHAT FEED"
+      : progress.chatDependency >= 60
+        ? "THE GROUP CHAT IS IN THE OPERATING MODEL"
+        : progress.cope >= 65
+          ? "THE BAG HAS ITS OWN NARRATIVE"
+          : progress.conviction >= 65
+            ? "THE THESIS REMAINS PINNED"
+            : "THE MEMBER FILE IS MIXED",
+    interpretation:
+      "Your fictional membership answers average " + progress.conviction + "/100 conviction, " + progress.cope +
+      "/100 cope and " + progress.chatDependency + "/100 chat dependency. The two examples below show where conviction peaked and where the selected answer leaned most heavily on the group chat. They are answer scores, not a reading of your real life or holdings.",
+    signals: [
+      {
+        label: "STRONGEST CONVICTION ANSWER",
+        context: questions[strongestConviction].prompt,
+        answer: convictionItem.label,
+        detail: "Conviction " + convictionItem.conviction + "/5 · Cope " + convictionItem.cope + "/5 · Chat " + convictionItem.chatDependency + "/5.",
+      },
+      {
+        label: "HIGHEST CHAT-DEPENDENCY ANSWER",
+        context: questions[strongestChat].prompt,
+        answer: chatItem.label,
+        detail: "Chat " + chatItem.chatDependency + "/5 · Conviction " + chatItem.conviction + "/5 · Cope " + chatItem.cope + "/5.",
+      },
+    ],
+  };
 
   return {
     ...progress,
+    crossRead,
     answers: [...answers],
     memberNumber,
     primaryTag,
