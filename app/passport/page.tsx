@@ -10,13 +10,13 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     title: "THE DEPARTMENT PASSPORT",
-    description: "Ten visit stamps. Eleven achievement badges. Local progress. Absolutely no practical value.",
+    description: "Ten visit stamps. Twenty-three achievement badges. Local progress. Absolutely no practical value.",
     images: ["/passport/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DEPARTMENT PASSPORT",
-    description: "Ten visit stamps. Eleven achievement badges. Local progress. Absolutely no practical value.",
+    description: "Ten visit stamps. Twenty-three achievement badges. Local progress. Absolutely no practical value.",
     images: ["/passport/opengraph-image"],
   },
 };
@@ -30,7 +30,7 @@ export default function DepartmentPassportPage() {
         <header className="passport-intro">
           <div className="audit-intro__meta">
             <span>REGISTER DPP-001</span>
-            <span>10 VISIT STAMPS / 11 ACHIEVEMENT BADGES</span>
+            <span>10 VISIT STAMPS / 23 ACHIEVEMENT BADGES</span>
           </div>
           <p className="eyebrow">OFFICE OF DEPARTMENTAL VISITS & ACHIEVEMENTS</p>
           <h1>THE DEPARTMENT<br /><span>PASSPORT.</span></h1>
