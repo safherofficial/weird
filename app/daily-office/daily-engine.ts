@@ -250,28 +250,6 @@ const riskFlags = [
   "an exit strategy that currently exists as an intention",
 ];
 
-const riskReframes = [
-  "a long-term resilience opportunity",
-  "a temporary post-graduation education event",
-  "an advanced patience requirement",
-  "a decentralised lesson in market structure",
-  "a non-critical narrative fluctuation",
-  "a community-led holding exercise",
-  "a strategic waiting room",
-  "a future-proofing challenge for the conviction framework",
-];
-
-const riskMitigations = [
-  "rename the exposure as a community allocation and revisit the wording next quarter",
-  "add a footnote and retain the original confidence level",
-  "request an update from the channel that announced the previous update",
-  "monitor the situation until monitoring itself becomes a milestone",
-  "ask the committee to produce a chart with a less alarming colour",
-  "move the unresolved item into a future phase and mark the phase as active",
-  "keep the exit plan in draft until the pool becomes more cooperative",
-  "issue a reminder that the Department does not provide financial advice",
-];
-
 const postMortemHeadings = [
   "THE THESIS PRESERVATION REPORT",
   "THE BAGHOLDER INCIDENT REVIEW",
@@ -294,28 +272,6 @@ const postMortemEvents = [
   "the launch catalyst arrived, but it was not the catalyst described in the KOL thread",
   "early fictional wallets distributed while the community celebrated the milestone",
   "the chart stopped validating the original CA thesis",
-];
-
-const postMortemReframes = [
-  "moving the original thesis into a longer time horizon",
-  "reclassifying the loss as an involuntary holding period",
-  "recording the event as a post-graduation liquidity lesson",
-  "marking the outcome as a strategic delay rather than a failed call",
-  "changing the reference point to the highest hypothetical candle",
-  "finding that conviction remained stable after the wallet labels changed",
-  "renaming the missed exit 'community support'",
-  "declaring the narrative structurally intact",
-];
-
-const postMortemLessons = [
-  "No team member has been authorized to use the word mistake.",
-  "The post-mortem has recommended better charts on the next KOL thread.",
-  "The original research remains archived; the conclusion has been moved to a private appendix.",
-  "A future review will determine whether the future review is necessary.",
-  "The exit button has been added to the interface for observational purposes only.",
-  "The case remains open until CT apologizes.",
-  "All evidence contradicting the thesis has been filed under 'post-graduation context'.",
-  "The Department has renewed its subscription to patience.",
 ];
 
 const quotes = [
@@ -829,6 +785,184 @@ const editorialDepthPools: Record<EditorialFocus, EditorialDepthPool> = {
   },
 };
 
+type EditorialClosurePool = {
+  riskReframe: string[];
+  riskMitigation: string[];
+  postMortemReframe: string[];
+  postMortemLesson: string[];
+};
+
+/**
+ * The risk disposition and retrospective conclusion must stay inside the
+ * same case lane as the incident. This prevents a launch-source failure,
+ * wallet-label dispute or CTO handover from receiving an unrelated generic
+ * post-mortem selected from a shared phrase bucket.
+ */
+const editorialClosurePools: Record<EditorialFocus, EditorialClosurePool> = {
+  launch: {
+    riskReframe: [
+      "an unresolved source-verification gap around the original mint announcement",
+      "a token-purpose claim that has not yet reached primary documentation",
+    ],
+    riskMitigation: [
+      "preserve the earliest announcement and label every uncorroborated repost as an amplification, not a second source",
+      "keep mint identification, authority controls and deployer identity in separate fields until each has its own supporting record",
+    ],
+    postMortemReframe: [
+      "reducing a five-account consensus to the single source that can actually be traced",
+      "filing the CA as an address announcement rather than treating it as a completed project thesis",
+    ],
+    postMortemLesson: [
+      "A mint address identifies the token; it does not authenticate the story attached to it.",
+      "The source count has been corrected. The confidence count has declined to participate.",
+    ],
+  },
+  graduation: {
+    riskReframe: [
+      "an unfinished post-graduation pool review rather than a demand assessment",
+      "a protocol milestone whose distribution and exit implications remain unexamined",
+    ],
+    riskMitigation: [
+      "record the post-graduation pool, available depth and assumed trade size separately from the graduation milestone",
+      "keep headline valuation, holder concentration and executable liquidity in different evidence fields",
+    ],
+    postMortemReframe: [
+      "filing graduation as a completed protocol milestone, not proof of durable demand",
+      "moving the celebration out of the findings section and placing the unanswered pool review back in it",
+    ],
+    postMortemLesson: [
+      "The curve completed. The evidence required for the next conclusion did not.",
+      "A graduation badge is an event marker, not a certificate for the pool that follows.",
+    ],
+  },
+  handover: {
+    riskReframe: [
+      "an access-and-ownership gap rather than a completed community takeover",
+      "an operational continuity claim with no accepted custody or responsibility record",
+    ],
+    riskMitigation: [
+      "name an accountable operator and record acceptance for treasury, repository, domain and deployer permissions separately",
+      "keep social-account continuity distinct from signing authority and access to operational assets",
+    ],
+    postMortemReframe: [
+      "recording that the community transferred the narrative before it documented who held the keys",
+      "reclassifying the new banner as an announcement while leaving the handover status unresolved",
+    ],
+    postMortemLesson: [
+      "A new account can publish an update. It cannot, by itself, prove that operational control changed hands.",
+      "The takeover has a new banner, three new admins and the same blank access checklist.",
+    ],
+  },
+  kol: {
+    riskReframe: [
+      "an amplification chain with one originating claim and no independent corroboration",
+      "a source-provenance failure concealed by repeated reach and verification badges",
+    ],
+    riskMitigation: [
+      "preserve the earliest available post, timestamp, edits and any stated promotional disclosure before counting later copies",
+      "describe repeated posts as amplification and reserve independent confirmation for evidence with a separate origin",
+    ],
+    postMortemReframe: [
+      "counting the relay as one originating claim with several increasingly confident amplifiers",
+      "moving repost volume out of the corroboration column and back into the distribution column",
+    ],
+    postMortemLesson: [
+      "Ten copies of one claim still leave the file with one source.",
+      "The reach report remains impressive. The evidence report remains one page long.",
+    ],
+  },
+  chart: {
+    riskReframe: [
+      "a chart-context gap caused by the missing timeframe and surrounding price sequence",
+      "an entry narrative that cannot be checked against the original chart interval and capture time",
+    ],
+    riskMitigation: [
+      "retain the chart interval, capture timestamp and surrounding candles whenever a crop is used as an exhibit",
+      "keep screenshot time, candle close and wallet transaction time in separate fields",
+    ],
+    postMortemReframe: [
+      "restoring the omitted candles before deciding what the highlighted arrow was supposed to prove",
+      "reclassifying the screenshot as a cropped exhibit rather than a complete price-history record",
+    ],
+    postMortemLesson: [
+      "A green candle is a visible price event, not a substitute for the missing timeframe.",
+      "The arrow survived the review. The original context did not.",
+    ],
+  },
+  wallet: {
+    riskReframe: [
+      "an ownership-attribution gap in a wallet diagram with unverified labels",
+      "an observed transaction cluster whose common control and motive remain unknown",
+    ],
+    riskMitigation: [
+      "separate observed transfers, inferred clusters and verified ownership, and leave unknown owners explicitly unknown",
+      "retain the source and method behind each wallet label without converting timing or proximity into an allegation",
+    ],
+    postMortemReframe: [
+      "downgrading the family portrait from an ownership map to a sketch of observed address relationships",
+      "replacing the word coordinated with the narrower description supported by the fictional transaction record",
+    ],
+    postMortemLesson: [
+      "An arrow can connect two addresses. It cannot establish who controls them or why they moved.",
+      "The diagram still has every arrow. The conclusion has lost its unverified owners.",
+    ],
+  },
+  liquidity: {
+    riskReframe: [
+      "an unmeasured pool-depth question hidden behind a headline valuation",
+      "an exit-capacity claim with no stated trade size or execution assumptions",
+    ],
+    riskMitigation: [
+      "state the pool and assumed trade size before describing depth or slippage",
+      "separate headline valuation, pool reserves, holder concentration and execution impact in the report",
+    ],
+    postMortemReframe: [
+      "reclassifying the displayed valuation as a price reference rather than evidence of executable exit capacity",
+      "moving the pool-depth question from the appendix into the main findings where it belonged",
+    ],
+    postMortemLesson: [
+      "The slide deck contained twelve valuation screenshots and no answer to the assumed order size.",
+      "Liquidity was mentioned in every presentation and measured in none of them.",
+    ],
+  },
+  exit: {
+    riskReframe: [
+      "a missing invalidation condition in an otherwise extensive entry narrative",
+      "an exit decision that has a target price but no recorded test for a broken thesis",
+    ],
+    riskMitigation: [
+      "record the entry rationale, invalidation condition and execution assumptions as separate parts of the fictional case",
+      "identify what evidence would disconfirm the thesis instead of adding another upside target to the file",
+    ],
+    postMortemReframe: [
+      "moving the missing exit condition from a future phase into the actual findings",
+      "reclassifying the price target as an aspiration rather than a documented exit process",
+    ],
+    postMortemLesson: [
+      "A target price describes a hoped-for outcome. It does not say what would change the decision.",
+      "The entry file had forty-six pages. The invalidation field remained one blank line.",
+    ],
+  },
+  migration: {
+    riskReframe: [
+      "an unresolved documentary link between the old token reference and the claimed destination",
+      "a migration-continuity question supported by screenshots but not by an attributable source chain",
+    ],
+    riskMitigation: [
+      "retain the original announcement, both token references and the verifiable record connecting them",
+      "label screenshots as screenshots and do not treat a ticker match or diagram arrow as a migration receipt",
+    ],
+    postMortemReframe: [
+      "separating the destination screenshot from the missing evidence that should connect it to the previous token",
+      "filing the new CA as a circulated reference while leaving migration continuity unverified",
+    ],
+    postMortemLesson: [
+      "The community migrated its confidence before the documentary link arrived.",
+      "A new token page proves that a page exists. It does not prove the history written beneath it.",
+    ],
+  },
+};
+
 const editorialRoutes: Array<{
   label: string;
   headline: number;
@@ -972,6 +1106,7 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
     memo: pick(depth.memo, seed, 331),
     postMortem: pick(depth.postMortem, seed, 337),
   };
+  const closure = editorialClosurePools[route.focus];
 
   const kol = {
     heading: pickFrom(kolHeadings, focus.kolHeading, seed, 109),
@@ -1015,9 +1150,9 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
       "The fictional review flagged " +
       pickFrom(riskFlags, focus.riskFlag, seed, 181) +
       ". The committee has reclassified the exposure as " +
-      pick(riskReframes, seed, 191) +
+      pick(closure.riskReframe, seed, 191) +
       ". Mitigation: " +
-      pick(riskMitigations, seed, 193) +
+      pick(closure.riskMitigation, seed, 193) +
       ".",
     stamp: pick(
       ["RISK / ACKNOWLEDGED IN A FOOTNOTE", "MITIGATION / MOSTLY LINGUISTIC", "EXIT READINESS / NOT DETECTED", "SEVERITY / RECLASSIFIED"],
@@ -1032,9 +1167,9 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
       "The fictional event under review: " +
       pickFrom(postMortemEvents, focus.postMortemEvent, seed, 211) +
       ". The original thesis has been preserved by " +
-      pick(postMortemReframes, seed, 223) +
+      pick(closure.postMortemReframe, seed, 223) +
       ". " +
-      pick(postMortemLessons, seed, 227),
+      pick(closure.postMortemLesson, seed, 227),
     stamp: pick(
       ["LESSON / DEFERRED", "THESIS / STILL INTACT", "ACCOUNTABILITY / UNDER REVIEW", "CASE / REMAINS OPEN"],
       seed,
