@@ -17,25 +17,26 @@ export default function ClubWeeklyRitual() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    const current = getCurrentClubWeeklyChallenge();
-    setChallenge(current);
-
-    function syncPassport() {
+    function refresh() {
+      const current = getCurrentClubWeeklyChallenge();
+      setChallenge(current);
       const record = readPassport();
       setPassport(record);
       const saved = record?.clubWeeklyChallengeAnswers[current.weekKey];
-      if (saved !== undefined) {
-        setSelected(saved);
-        setSessionFiled(false);
-      }
+      setSelected(saved === undefined ? null : saved);
+      setSessionFiled(false);
     }
 
-    syncPassport();
-    window.addEventListener("storage", syncPassport);
-    window.addEventListener(PASSPORT_UPDATED_EVENT, syncPassport);
+    refresh();
+    window.addEventListener("storage", refresh);
+    window.addEventListener(PASSPORT_UPDATED_EVENT, refresh);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
     return () => {
-      window.removeEventListener("storage", syncPassport);
-      window.removeEventListener(PASSPORT_UPDATED_EVENT, syncPassport);
+      window.removeEventListener("storage", refresh);
+      window.removeEventListener(PASSPORT_UPDATED_EVENT, refresh);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
     };
   }, []);
 
