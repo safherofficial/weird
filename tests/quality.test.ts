@@ -8,7 +8,8 @@ import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimul
 import { classifications as utilityClassifications, questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
 import { classifications as roadmapClassifications, questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
 import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
-import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
+import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, factions as clubFactions, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
+import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -708,9 +709,10 @@ test("U27.4 Daily Content Quality keeps risk conclusions, post-mortems and Cope 
 
 function makePassport(overrides: Partial<PassportData> = {}): PassportData {
   return {
-    version: 3, enabled: true, createdAt: "2026-11-20T12:00:00.000Z",
+    version: 4, enabled: true, createdAt: "2026-11-20T12:00:00.000Z",
     visitedDepartments: [], dailyOfficeDates: [], bestDailyStreak: 0, completedActivities: [],
     clubMembershipAnswers: null, clubApplicationCount: 0, clubChallengeAnswers: {}, clubBadgeIds: [],
+    clubFactionId: null, clubWeeklyChallengeAnswers: {},
     ...overrides,
   };
 }
@@ -2300,7 +2302,7 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
     PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).map((badge) => badge.id),
     ["club-admitted", ...expectedClubBadges],
   );
-  assert.equal(PASSPORT_ACHIEVEMENTS.length, 23);
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 26);
   assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 13);
 
   const passport = makePassport({
@@ -2330,15 +2332,16 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
   assert.equal(statuses.get("club-diamond-hands")?.earned, false);
 });
 
-test("U28.1 legacy Passport records migrate to v3 without losing existing visit stamps or completed activities", () => {
+test("U28.1 legacy Passport records migrate forward without losing visit stamps, streaks or completed activities", () => {
   const store = readFileSync("app/passport/passport-store.ts", "utf8");
-  assert.ok(store.includes("export const PASSPORT_VERSION = 3"));
-  assert.ok(store.includes("candidate.version === 1 || candidate.version === 2"));
+  assert.ok(store.includes("export const PASSPORT_VERSION = 4"));
+  assert.ok(store.includes("candidate.version === 1 || candidate.version === 2 || candidate.version === 3"));
   assert.ok(store.includes("visitedDepartments: candidate.visitedDepartments as DepartmentId[]"));
+  assert.ok(store.includes("bestDailyStreak: candidate.bestDailyStreak as number"));
   assert.ok(store.includes("completedActivities,"));
-  assert.ok(store.includes("clubMembershipAnswers: null"));
-  assert.ok(store.includes("clubChallengeAnswers: {}"));
-  assert.ok(store.includes("clubBadgeIds: []"));
+  assert.ok(store.includes("clubMembershipAnswers: hasV3ClubFields ?"));
+  assert.ok(store.includes("clubFactionId: null"));
+  assert.ok(store.includes("clubWeeklyChallengeAnswers: {}"));
 });
 
 test("U28.1 Club challenge desk uses only the optional local Passport and exposes all unlock conditions", () => {
@@ -2360,6 +2363,110 @@ test("U28.1 Club challenge desk uses only the optional local Passport and expose
   assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 12);
   assert.ok(passportClient.includes("badgeCollectionSvgHeight(statuses)"));
   assert.ok(passportClient.includes("getBadgeArtworkHref(item.id, assetBaseUrl)"));
-  assert.ok(passportPage.includes("23 ACHIEVEMENT BADGES"));
+  assert.ok(passportPage.includes("26 ACHIEVEMENT BADGES"));
   assert.doesNotMatch(challenges, /fetch\(|WebSocket|wallet connect|supabase|prisma/i);
+});
+
+
+test("U28.2 six Club factions map one-to-one to existing archetypes and appear in deterministic membership results", () => {
+  const archetypes = Object.keys(clubFactions);
+  assert.equal(archetypes.length, 6);
+  assert.equal(new Set(Object.values(clubFactions).map((faction) => faction.id)).size, 6);
+  for (const [archetype, faction] of Object.entries(clubFactions)) {
+    assert.equal(faction.archetype, archetype);
+    assert.ok(faction.code.length >= 2 && faction.code.length <= 4);
+    assert.ok(faction.motto.length > 10);
+    assert.ok(faction.creed.length > 10);
+    assert.ok(faction.ritual.length > 10);
+  }
+
+  const result = buildClubResult([0, 0, 0, 0, 0]);
+  assert.equal(result.faction.id, "thesis-preservation-society");
+  assert.equal(result.faction, clubFactions[result.primaryTag]);
+  assert.equal(result.secondaryFaction, clubFactions[result.secondaryTag]);
+  assert.ok(result.faction.title.includes("THESIS"));
+});
+
+test("U28.2 weekly Club rotation uses ISO UTC weeks and rotates on Monday without local timezone dependence", () => {
+  const sunday = getIsoClubWeekKey(new Date("2026-11-22T23:59:59.000Z"));
+  const monday = getIsoClubWeekKey(new Date("2026-11-23T00:00:00.000Z"));
+  assert.equal(sunday.weekKey, "2026-W47");
+  assert.equal(monday.weekKey, "2026-W48");
+  assert.equal(CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, 8);
+
+  const beforeBoundary = getCurrentClubWeeklyChallenge(new Date("2026-11-22T23:59:59.000Z"));
+  const afterBoundary = getCurrentClubWeeklyChallenge(new Date("2026-11-23T00:00:00.000Z"));
+  assert.equal(beforeBoundary.weekKey, "2026-W47");
+  assert.equal(afterBoundary.weekKey, "2026-W48");
+  assert.notEqual(beforeBoundary.title, afterBoundary.title);
+  assert.equal(afterBoundary.options.length, 3);
+});
+
+test("U28.2 Passport v4 adds faction affiliation, hidden achievements and three-week attendance without changing legacy counts", () => {
+  const store = readFileSync("app/passport/passport-store.ts", "utf8");
+  const passportClient = readFileSync("app/passport/passport-client.tsx", "utf8");
+  const badgeAssets = readFileSync("app/passport/badge-assets.ts", "utf8");
+  assert.ok(store.includes("export const PASSPORT_VERSION = 4"));
+  assert.equal(CLUB_BADGE_IDS.length, 15);
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 26);
+  assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 16);
+  assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "club-departmental-echo" && badge.secret));
+  assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "club-weekly-regular" && badge.secret));
+  assert.ok(store.includes("recordClubWeeklyChallenge"));
+  assert.ok(store.includes("club-faction-aligned"));
+  assert.ok(store.includes("club-departmental-echo"));
+  assert.ok(store.includes("club-weekly-regular"));
+  assert.ok(passportClient.includes("badgeDisplayTitle(achievement)"));
+  assert.ok(passportClient.includes("badgeDisplayDescription(achievement)"));
+  const clubMarks = badgeAssets.split("export const CLUB_BADGE_MARKS")[1] ?? "";
+  assert.equal((clubMarks.match(/"club-[^"]+":/g) ?? []).length, 15);
+
+  const passport = makePassport({
+    clubFactionId: "thesis-preservation-society",
+    clubBadgeIds: ["club-faction-aligned"],
+    clubWeeklyChallengeAnswers: {
+      "2026-W45": 0,
+      "2026-W46": 2,
+    },
+  });
+  const statuses = new Map(getPassportAchievementStatuses(passport).map((badge) => [badge.id, badge]));
+  assert.equal(statuses.get("club-faction-aligned")?.earned, true);
+  assert.equal(statuses.get("club-weekly-regular")?.progress, 2);
+  assert.equal(statuses.get("club-weekly-regular")?.earned, false);
+  assert.equal(statuses.get("club-departmental-echo")?.earned, false);
+
+  const threeWeeks = makePassport({
+    clubWeeklyChallengeAnswers: {
+      "2026-W44": 0,
+      "2026-W45": 2,
+      "2026-W46": 1,
+    },
+    clubBadgeIds: ["club-weekly-regular"],
+  });
+  const weekly = getPassportAchievementStatuses(threeWeeks).find((badge) => badge.id === "club-weekly-regular");
+  assert.equal(weekly?.progress, 3);
+  assert.equal(weekly?.earned, true);
+});
+
+test("U28.2 faction identity, weekly challenges and individual badge sharing remain local-only", () => {
+  const clubClient = readFileSync("app/club/club-client.tsx", "utf8");
+  const publicMember = readFileSync("app/club/member/[code]/page.tsx", "utf8");
+  const memberImage = readFileSync("app/club/member/[code]/opengraph-image.tsx", "utf8");
+  const clubPage = readFileSync("app/club/page.tsx", "utf8");
+  const challengeDesk = readFileSync("app/club/club-challenges.tsx", "utf8");
+  const weekly = readFileSync("app/club/club-weekly-ritual.tsx", "utf8");
+
+  assert.ok(clubClient.includes("result.faction.id"));
+  assert.ok(clubClient.includes("club-membership-card__faction"));
+  assert.ok(clubClient.includes("result.faction.motto"));
+  assert.ok(publicMember.includes("result.faction.creed"));
+  assert.ok(memberImage.includes("result?.faction.title"));
+  assert.ok(clubPage.includes("Object.values(factions)"));
+  assert.ok(challengeDesk.includes("<ClubWeeklyRitual />"));
+  assert.ok(challengeDesk.includes("POST BADGE TO X"));
+  assert.ok(challengeDesk.includes("COPY BADGE LINK"));
+  assert.ok(challengeDesk.includes("CLASSIFIED ACHIEVEMENT"));
+  assert.ok(weekly.includes("getCurrentClubWeeklyChallenge"));
+  assert.ok(weekly.includes("recordClubWeeklyChallenge"));
+  assert.doesNotMatch(weekly + challengeDesk, /fetch\(|WebSocket|supabase|prisma|wallet connect/i);
 });
