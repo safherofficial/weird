@@ -14829,3 +14829,24 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (prefers-reduced-motion: reduce) {
   .club-faction-page__related-card { transition: none; }
 }
+
+
+/* U28.6 — Establish a consistent 99% Club campaign identity and share desk. */
+.club-campaign-desk { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:24px clamp(20px,4vw,46px); align-items:center; margin:clamp(30px,5vw,54px) auto; padding:clamp(20px,3.5vw,36px); border:1px solid #526744; background:radial-gradient(ellipse at 0 0,rgb(182 255 101 / 7%),transparent 45%),linear-gradient(120deg,#121a11 0%,#0b100c 68%); }
+.club-campaign-desk__intro > span,.club-campaign-desk__statement > span { color:var(--accent); font:700 7px/1.6 var(--font-mono); letter-spacing:.12em; }
+.club-campaign-desk__intro h2 { margin:17px 0 12px; color:#f0f2e9; font:800 clamp(33px,4.6vw,57px)/.93 var(--sans); letter-spacing:-.07em; }
+.club-campaign-desk__intro h2 em { color:var(--accent); font-style:normal; }
+.club-campaign-desk__intro p { max-width:440px; margin:0; color:#9ba895; font-size:11px; line-height:1.8; }
+.club-campaign-desk__tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
+.club-campaign-desk__tags span { padding:7px 9px; border:1px solid #47583b; background:rgb(182 255 101 / 5%); color:#bfd7a7; font:700 7px/1.4 var(--font-mono); }
+.club-campaign-desk__statement { position:relative; min-width:0; padding:clamp(20px,3vw,29px); border:1px solid #384635; background:#090e0a; }
+.club-campaign-desk__stamp { position:absolute; top:16px; right:17px; display:grid; width:58px; height:48px; place-content:center; border:1px solid rgb(182 255 101 / 45%); color:var(--accent); font:700 7px/1.35 var(--font-mono); letter-spacing:.08em; text-align:center; transform:rotate(7deg); }
+.club-campaign-desk__statement > p { display:grid; gap:6px; margin:24px 70px 16px 0; color:#f0f2e9; font:800 clamp(19px,2.6vw,31px)/1.05 var(--sans); letter-spacing:-.045em; }
+.club-campaign-desk__statement > p strong:first-child,.club-campaign-desk__statement > p strong:nth-child(2) { color:var(--accent); }
+.club-campaign-desk__statement > small { color:#85917e; font:700 6px/1.6 var(--font-mono); letter-spacing:.09em; }
+.club-campaign-desk__actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:23px; }
+.club-campaign-desk__actions .button { min-height:40px; font-size:7px; }
+.club-campaign-desk__disclaimer { grid-column:1 / -1; margin:-4px 0 0; color:#778371; font:6px/1.8 var(--font-mono); letter-spacing:.04em; }
+@media (max-width:800px) { .club-campaign-desk { grid-template-columns:1fr; } .club-campaign-desk__intro p { max-width:620px; } }
+@media (max-width:560px) { .club-campaign-desk { gap:19px; margin-block:26px; padding:16px; } .club-campaign-desk__intro h2 { font-size:clamp(34px,10vw,46px); } .club-campaign-desk__statement { padding:18px; } .club-campaign-desk__statement > p { margin-top:23px; margin-right:54px; font-size:clamp(19px,6vw,27px); } .club-campaign-desk__actions { display:grid; grid-template-columns:1fr; } .club-campaign-desk__actions .button { width:100%; justify-content:space-between; } .club-campaign-desk__disclaimer { font-size:5px; } }
+@media (prefers-reduced-motion:reduce) { .club-campaign-desk__actions .button { transition:none; } }
