@@ -569,6 +569,61 @@ const editorialRoutes: Array<{
   { label: "BAGHOLDER ENTRY HISTORY", headline: 17, bulletin: 16, incident: 13, focus: "exit" },
 ];
 
+type EditorialRoute = (typeof editorialRoutes)[number];
+
+const EDITORIAL_FOCUS_COOLDOWN_DAYS = 4;
+const EDITORIAL_ROUTE_EPOCH_DAY = Math.floor(Date.UTC(2000, 0, 1) / 86_400_000);
+const editorialRouteCache = new Map<number, EditorialRoute>();
+let editorialRouteCacheThrough = EDITORIAL_ROUTE_EPOCH_DAY - 1;
+
+/**
+ * Keeps the daily briefing in one coherent editorial lane while preventing
+ * that same lane from appearing again in the following four UTC issues.
+ * The date-indexed cache makes the schedule stable regardless of which
+ * archive date is requested first in a server process.
+ */
+function selectEditorialRoute(issueDate: string, seed: number): EditorialRoute {
+  const issueDay = Math.floor(Date.parse(issueDate + "T00:00:00.000Z") / 86_400_000);
+  if (issueDay < EDITORIAL_ROUTE_EPOCH_DAY) {
+    return editorialRoutes[mixSeed(seed, 7) % editorialRoutes.length];
+  }
+
+  while (editorialRouteCacheThrough < issueDay) {
+    const day = editorialRouteCacheThrough + 1;
+    const dayDate = new Date(day * 86_400_000).toISOString().slice(0, 10);
+    const daySeed = hashText("THE-DYOR-DEPARTMENT/DAILY-OFFICE/V3/" + dayDate);
+    const preferredIndex = mixSeed(daySeed, 7) % editorialRoutes.length;
+    const recentFocuses = new Set<EditorialFocus>();
+
+    for (let offset = 1; offset <= EDITORIAL_FOCUS_COOLDOWN_DAYS; offset += 1) {
+      const recentRoute = editorialRouteCache.get(day - offset);
+      if (recentRoute) recentFocuses.add(recentRoute.focus);
+    }
+
+    let selectedRoute: EditorialRoute | undefined;
+    for (let offset = 0; offset < editorialRoutes.length; offset += 1) {
+      const candidate = editorialRoutes[(preferredIndex + offset) % editorialRoutes.length];
+      if (!recentFocuses.has(candidate.focus)) {
+        selectedRoute = candidate;
+        break;
+      }
+    }
+
+    if (!selectedRoute) {
+      throw new Error("The daily editorial rotation could not find a route outside its recent focus window.");
+    }
+
+    editorialRouteCache.set(day, selectedRoute);
+    editorialRouteCacheThrough = day;
+  }
+
+  const selected = editorialRouteCache.get(issueDay);
+  if (!selected) {
+    throw new Error("The daily editorial route is missing from its date-indexed schedule.");
+  }
+  return selected;
+}
+
 function pickFrom<T>(items: T[], indexes: number[], seed: number, salt: number): T {
   const candidates = indexes
     .map((index) => items[index])
@@ -611,7 +666,7 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   }
 
   const seed = hashText("THE-DYOR-DEPARTMENT/DAILY-OFFICE/V3/" + issueDate);
-  const route = editorialRoutes[mixSeed(seed, 7) % editorialRoutes.length];
+  const route = selectEditorialRoute(issueDate, seed);
   const focus = editorialFocusPools[route.focus];
   const incident = incidents[route.incident];
   const headline = headlines[route.headline];
