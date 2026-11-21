@@ -128,6 +128,11 @@ export function getClubFaction(archetype: ClubArchetypeId): ClubFaction {
   return factions[archetype];
 }
 
+export function getClubFactionById(value: unknown): ClubFaction | null {
+  if (typeof value !== "string") return null;
+  return Object.values(factions).find((faction) => faction.id === value) ?? null;
+}
+
 export type ClubProgress = {
   completedQuestions: number;
   conviction: number;
