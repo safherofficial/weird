@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
@@ -50,6 +51,9 @@ export default function DailyOfficePage() {
           </div>
         </header>
         <DailyOfficeClient dispatch={dispatch} />
+        <div style={{ display: "flex", justifyContent: "center", margin: "24px 0" }}>
+          <Link className="button button--quiet" href="/cope-index">READ THE MATCHING GLOBAL COPE INDEX ↗</Link>
+        </div>
       </div>
 
       <div className="shell">

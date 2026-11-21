@@ -238,7 +238,13 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
           <div className="cope-daily-board__seal">NO LIVE FEED<br />NO REAL USERS<br />NO MARKET DATA</div>
         </div>
         <div className="cope-daily-board__bulletin">
-          <span>OFFICIAL DAILY BULLETIN</span>
+          <span>SHARED DAILY CASE / {dailyIndex.caseReference} / {dailyIndex.caseTheme}</span>
+          <strong>{dailyIndex.caseHeadline}</strong>
+          <p className="cope-daily-board__case-copy">{dailyIndex.caseBulletin}</p>
+          <Link className="button button--quiet" href="/daily-office">READ THE MATCHING TRENCHES DESK FILE ↗</Link>
+        </div>
+        <div className="cope-daily-board__bulletin">
+          <span>COPIUM ADMINISTRATION / DAILY SIDE NOTE</span>
           <strong>{dailyIndex.bulletin}</strong>
         </div>
         <div className="cope-dimensions">

@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import CopeIndexClient from "./cope-index-client";
 import { buildDailyCopeIndex } from "./cope-engine";
+import { getDailyEditorialCase } from "../daily-office/daily-engine";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function CopeIndexPage() {
   const issueDate = new Date().toISOString().slice(0, 10);
-  const dailyIndex = buildDailyCopeIndex(issueDate);
+  const dailyIndex = buildDailyCopeIndex(issueDate, getDailyEditorialCase(issueDate));
 
   return (
     <main className="audit-page cope-index-page" id="main-content">

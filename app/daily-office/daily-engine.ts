@@ -728,3 +728,23 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
     methodology,
   };
 }
+
+
+export type DailyEditorialCaseContext = {
+  issueDate: string;
+  reference: string;
+  caseTheme: string;
+  headline: string;
+  bulletin: string;
+};
+
+export function getDailyEditorialCase(issueDate: string): DailyEditorialCaseContext {
+  const dispatch = buildDailyOfficeDispatch(issueDate);
+  return {
+    issueDate: dispatch.issueDate,
+    reference: dispatch.reference,
+    caseTheme: dispatch.caseTheme,
+    headline: dispatch.headline,
+    bulletin: dispatch.bulletin,
+  };
+}

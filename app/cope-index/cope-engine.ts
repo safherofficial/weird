@@ -1,4 +1,5 @@
 import type { DepartmentCrossRead } from "../lib/department-cross-read";
+import type { DailyEditorialCaseContext } from "../daily-office/daily-engine";
 
 export const COPE_VERSION = 1;
 export const COPE_QUESTIONS = 5;
@@ -20,6 +21,10 @@ export type CopeDimension = {
 
 export type DailyCopeIndex = {
   issueDate: string;
+  caseTheme: string;
+  caseHeadline: string;
+  caseBulletin: string;
+  caseReference: string;
   overall: number;
   status: string;
   bulletin: string;
@@ -177,7 +182,7 @@ const bulletinTemplates = [
 ];
 
 const methodology =
-  "This is a deterministic fictional dashboard generated from the UTC date. Its values are synthetic, not sampled from visitors, traders, exchanges, tokens, wallets, markets or any external source. They are not sentiment data, investment signals or market indicators.";
+  "This is a deterministic fictional dashboard generated from the UTC date. Its shared case theme, headline, bulletin and reference come from the same Trenches Desk dispatch for this UTC date. The five index dimensions remain synthetic and are not sampled from visitors, traders, exchanges, tokens, wallets, markets or any external source. They are not sentiment data, investment signals or market indicators.";
 
 function hashText(value: string) {
   let hash = 2166136261;
@@ -193,7 +198,7 @@ function makeValue(seed: number, salt: number, min = 18, max = 94) {
   return min + (mixed % (max - min + 1));
 }
 
-export function buildDailyCopeIndex(issueDate: string): DailyCopeIndex {
+export function buildDailyCopeIndex(issueDate: string, editorialCase: DailyEditorialCaseContext): DailyCopeIndex {
   const parsedDate = new Date(issueDate + "T00:00:00Z");
   if (
     !/^\d{4}-\d{2}-\d{2}$/.test(issueDate) ||
@@ -201,6 +206,9 @@ export function buildDailyCopeIndex(issueDate: string): DailyCopeIndex {
     parsedDate.toISOString().slice(0, 10) !== issueDate
   ) {
     throw new Error("A valid UTC issue date is required.");
+  }
+  if (editorialCase.issueDate !== issueDate) {
+    throw new Error("The Global Cope Index and Trenches Desk must use the same UTC issue date.");
   }
   const seed = hashText("DYOR-DEPARTMENT/" + issueDate);
   const dimensions: CopeDimension[] = [
@@ -249,7 +257,18 @@ export function buildDailyCopeIndex(issueDate: string): DailyCopeIndex {
     "CALM / SUSPICIOUSLY WELL-ADJUSTED";
   const bulletin = bulletinTemplates[seed % bulletinTemplates.length];
 
-  return { issueDate, overall, status, bulletin, dimensions, methodology };
+  return {
+    issueDate,
+    caseTheme: editorialCase.caseTheme,
+    caseHeadline: editorialCase.headline,
+    caseBulletin: editorialCase.bulletin,
+    caseReference: editorialCase.reference,
+    overall,
+    status,
+    bulletin,
+    dimensions,
+    methodology,
+  };
 }
 
 export function isValidCopeAnswers(value: unknown): value is number[] {

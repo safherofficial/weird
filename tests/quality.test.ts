@@ -10,7 +10,7 @@ import { classifications as roadmapClassifications, questions as roadmapQuestion
 import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
-import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
+import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { departments } from "../app/divisions";
 import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
@@ -374,10 +374,29 @@ test("Daily CT Briefing is deterministic for a UTC issue date and rejects invali
   assert.throws(() => buildDailyOfficeDispatch("not-a-date"));
 });
 
+test("Global Cope Index and Trenches Desk share the same UTC editorial case across dates", () => {
+  for (let index = 0; index < 60; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const editorialCase = getDailyEditorialCase(issueDate);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const copeIndex = buildDailyCopeIndex(issueDate, editorialCase);
+
+    assert.equal(copeIndex.caseTheme, dispatch.caseTheme, "Global Cope Index must share the daily theme");
+    assert.equal(copeIndex.caseHeadline, dispatch.headline, "Global Cope Index must share the daily headline");
+    assert.equal(copeIndex.caseBulletin, dispatch.bulletin, "Global Cope Index must share the daily bulletin");
+    assert.equal(copeIndex.caseReference, dispatch.reference, "Global Cope Index must share the daily case reference");
+  }
+});
+
 test("Global Cope Index is deterministic and exposes five bounded synthetic dimensions", () => {
-  const first = buildDailyCopeIndex("2026-11-20");
-  assert.deepEqual(buildDailyCopeIndex("2026-11-20"), first);
+  const editorialCase = getDailyEditorialCase("2026-11-20");
+  const first = buildDailyCopeIndex("2026-11-20", editorialCase);
+  assert.deepEqual(buildDailyCopeIndex("2026-11-20", editorialCase), first);
   assert.equal(first.issueDate, "2026-11-20");
+  assert.equal(first.caseTheme, editorialCase.caseTheme);
+  assert.equal(first.caseHeadline, editorialCase.headline);
+  assert.equal(first.caseBulletin, editorialCase.bulletin);
+  assert.equal(first.caseReference, editorialCase.reference);
   assert.equal(first.dimensions.length, 5);
   assertPercent(first.overall, "Global Cope overall");
   first.dimensions.forEach((item) => assertPercent(item.value, "Global Cope " + item.id));
