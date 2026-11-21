@@ -43,7 +43,9 @@ export default function SimulatorPage() {
         <SimulatorClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="simulator" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="simulator" />
+      </div>
 
       <DepartmentFooter message={["YOUR FICTIONAL LAUNCH HAS BEEN FILED.", "YOUR EXIT PLAN IS STILL MISSING."]} />
     </main>

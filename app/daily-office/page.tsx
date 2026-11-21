@@ -52,7 +52,9 @@ export default function DailyOfficePage() {
         <DailyOfficeClient dispatch={dispatch} />
       </div>
 
-      <DepartmentNextSteps currentDepartment="daily" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="daily" />
+      </div>
 
       <DepartmentFooter message={["TODAY'S TRENCHES REPORT HAS BEEN FILED.", "TOMORROW'S PROBLEMS ARE ALREADY IN REVIEW."]} />
     </main>

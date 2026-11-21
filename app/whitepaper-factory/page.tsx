@@ -47,7 +47,9 @@ export default function WhitepaperFactoryPage() {
         <WhitepaperFactoryClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="whitepaper" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="whitepaper" />
+      </div>
 
       <DepartmentFooter message={["YOUR TOKEN NARRATIVE HAS BEEN DOCUMENTED.", "YOUR COMMUNITY STILL NEEDS A REASON TO STAY."]} />
     </main>

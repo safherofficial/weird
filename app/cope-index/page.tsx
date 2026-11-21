@@ -49,7 +49,9 @@ export default function CopeIndexPage() {
         <CopeIndexClient dailyIndex={dailyIndex} />
       </div>
 
-      <DepartmentNextSteps currentDepartment="cope" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="cope" />
+      </div>
 
       <DepartmentFooter message={["THE INDEX HAS BEEN CALCULATED.", "THE MARKET HAS NOT BEEN CONSULTED."]} />
     </main>

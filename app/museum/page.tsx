@@ -50,7 +50,9 @@ export default function MuseumPage() {
         <MuseumClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="museum" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="museum" />
+      </div>
 
       <DepartmentFooter message={["PLEASE DO NOT TOUCH THE EXHIBITS.", "THEY ARE ALREADY FRAGILE ENOUGH."]} />
     </main>

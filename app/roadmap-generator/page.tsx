@@ -47,7 +47,9 @@ export default function RoadmapGeneratorPage() {
         <RoadmapGeneratorClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="roadmap" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="roadmap" />
+      </div>
 
       <DepartmentFooter message={["YOUR CTO PLAN HAS BEEN FILED.", "THE DEPLOYER STILL HAS NOT REPLIED."]} />
     </main>

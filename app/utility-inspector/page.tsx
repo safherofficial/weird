@@ -47,7 +47,9 @@ export default function UtilityInspectorPage() {
         <UtilityInspectorClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="utility" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="utility" />
+      </div>
 
       <DepartmentFooter message={["THE NARRATIVE HAS BEEN RECEIVED.", "THE ACTUAL USE CASE IS STILL UNDER REVIEW."]} />
     </main>

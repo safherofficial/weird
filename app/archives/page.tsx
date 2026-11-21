@@ -45,7 +45,9 @@ export default function ArchivesPage() {
         <ArchivesClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="archives" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="archives" />
+      </div>
 
       <DepartmentFooter message={["THE RECORDS HAVE BEEN FILED.", "THE LESSONS REMAIN UNCLAIMED."]} />
     </main>

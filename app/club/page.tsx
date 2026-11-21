@@ -47,7 +47,9 @@ export default function ClubPage() {
         <ClubClient />
       </div>
 
-      <DepartmentNextSteps currentDepartment="club" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="club" />
+      </div>
 
       <DepartmentFooter message={["WELCOME BACK TO THE TRENCHES.", "YOUR BENEFITS HAVE BEEN DECLINED IN ADVANCE."]} />
     </main>

@@ -36,7 +36,9 @@ export default function AuditPage() {
         </div>
         <AuditClient />
       </div>
-      <DepartmentNextSteps currentDepartment="audit" />
+      <div className="shell">
+        <DepartmentNextSteps currentDepartment="audit" />
+      </div>
       <DepartmentFooter message={["YOUR RESEARCH HAS BEEN ACKNOWLEDGED.", "YOUR LOSSES REMAIN YOURS."]} />
     </main>
   );
