@@ -736,7 +736,8 @@ test("Passport unlocks require their recorded activities and the seven-day strea
   });
   const all = getPassportAchievementStatuses(complete);
   assert.equal(all.length, PASSPORT_ACHIEVEMENTS.length);
-  assert.equal(all.every((item) => item.earned), true);
+  assert.equal(all.filter((item) => !item.id.startsWith("club-") || item.id === "club-admitted").every((item) => item.earned), true);
+  assert.equal(all.filter((item) => item.id.startsWith("club-") && item.id !== "club-admitted").every((item) => !item.earned), true);
 });
 
 test("Passport daily visit streak counts consecutive UTC dates without double-counting duplicates", () => {
@@ -2297,9 +2298,10 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
   assert.deepEqual(CLUB_BADGE_IDS, expectedClubBadges);
   assert.deepEqual(
     PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).map((badge) => badge.id),
-    expectedClubBadges,
+    ["club-admitted", ...expectedClubBadges],
   );
   assert.equal(PASSPORT_ACHIEVEMENTS.length, 23);
+  assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 13);
 
   const passport = makePassport({
     clubMembershipAnswers: [0, 0, 0, 0, 0],
