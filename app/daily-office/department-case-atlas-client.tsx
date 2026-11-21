@@ -151,13 +151,9 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   )}
                 </div>
 
-                <details className="department-case-atlas__timeline" disabled={entry.occurrences.length === 0}>
-                  <summary>
-                    {entry.occurrences.length > 0
-                      ? "OPEN FULL THREAD HISTORY / " + entry.occurrences.length + " MATCHING FILES"
-                      : "NO HISTORICAL APPEARANCES TO OPEN"}
-                  </summary>
-                  {entry.occurrences.length > 0 && (
+                {entry.occurrences.length > 0 ? (
+                  <details className="department-case-atlas__timeline">
+                    <summary>OPEN FULL THREAD HISTORY / {entry.occurrences.length} MATCHING FILES</summary>
                     <ol>
                       {entry.occurrences.map((occurrence, occurrenceIndex) => (
                         <li key={occurrence.issueDate}>
@@ -169,8 +165,12 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                         </li>
                       ))}
                     </ol>
-                  )}
-                </details>
+                  </details>
+                ) : (
+                  <p className="department-case-atlas__timeline-empty">
+                    NO HISTORICAL APPEARANCES TO OPEN / REFERENCE THREAD REMAINS IN THE REGISTER.
+                  </p>
+                )}
               </article>
             ))}
           </div>

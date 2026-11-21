@@ -955,8 +955,6 @@ test("U24.3 local Passport status receipts refresh when the same register change
 });
 
 
-import { buildInstitutionalMemory, isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
-
 test("U25.4 institutional memory accepts only real UTC dates through the current issue date", () => {
   assert.equal(isValidInstitutionalMemoryDate("2024-02-29", "2024-03-01"), true);
   assert.equal(isValidInstitutionalMemoryDate("2025-02-29", "2025-03-01"), false);
