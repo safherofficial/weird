@@ -85,6 +85,27 @@ export default function DepartmentCaseChain({ currentDepartment }: DepartmentCas
             ) : (
               <Link href={office.href ?? "/"}>OPEN OFFICE ↗</Link>
             )}
+
+            <div className="department-case-chain__evidence">
+              <div className="department-case-chain__evidence-heading">
+                <span>SOURCE RECORD / {office.evidence.source}</span>
+                <strong>{office.evidence.outputLabel}</strong>
+              </div>
+              <p>{office.evidence.excerpt}</p>
+              <small>REVIEW QUESTION / {office.evidence.reviewQuestion}</small>
+            </div>
+
+            <div className="department-case-chain__handoff">
+              <span>{office.handoff.label}</span>
+              <p>{office.handoff.note}</p>
+              <div>
+                {office.handoff.destinations.map((destination) => (
+                  <Link href={destination.href} key={destination.href}>
+                    {destination.title} ↗
+                  </Link>
+                ))}
+              </div>
+            </div>
           </article>
         ))}
       </div>
