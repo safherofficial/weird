@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode } from "../../simulator-engine";
 
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: SimulatorCasePageProps): Prom
 
   const result = buildSimulatorResult(decisions);
   const title = result.profile.title + " | PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR";
-  const description = result.profile.subtitle + " " + result.profile.roast;
+  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.roast;
   const route = "/simulator/case/" + encodeURIComponent(encodeSimulatorCode(decisions));
   const image = route + "/opengraph-image";
 
@@ -63,6 +64,7 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
     "THE DYOR DEPARTMENT has filed my Pump.fun Paper Market case.",
     "Classification: " + result.profile.title + ".",
     "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.roast.length > 76 ? result.profile.roast.slice(0, 72) + "…" : result.profile.roast,
     "Your turn. Hold the imaginary bag.",
   ].join(" ");
@@ -101,6 +103,8 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
             </strong>
           </div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="simulator-roast">
           <span>THE DEPARTMENT HAS A COMMENT</span>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode } from "../../whitepaper-engine";
 import WhitepaperPublicActions from "../../whitepaper-public-actions";
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: WhitepaperCasePageProps): Pro
 
   const result = buildWhitepaperResult(decoded.answers, decoded.projectSlug);
   const title = result.projectLabel + " — " + result.profile.title;
-  const description = result.profile.subtitle + " " + result.profile.roast;
+  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.roast;
   const route = "/whitepaper-factory/case/" + encodeURIComponent(encodeWhitepaperCode(decoded.answers, decoded.projectSlug));
   const image = route + "/opengraph-image";
 
@@ -64,6 +65,7 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
     "THE DYOR DEPARTMENT issued a fictional token dossier for " + result.projectLabel + ".",
     result.profile.title + ".",
     "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.roast.length > 62 ? result.profile.roast.slice(0, 58) + "…" : result.profile.roast,
     "Your turn. Submit your token narrative.",
   ].join(" ");
@@ -124,6 +126,8 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
             </div>
           </article>
         ))}
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="whitepaper-result__profile">
           <span>THE DEPARTMENT HAS A COMMENT</span>

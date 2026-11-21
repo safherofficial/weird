@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildUtilityResult, decodeUtilityCode, encodeUtilityCode } from "../../utility-engine";
 
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: UtilityCasePageProps): Promis
 
   const result = buildUtilityResult(answers);
   const title = result.profile.title + " | THE 100X RESEARCH BUREAU";
-  const description = result.profile.subtitle + " " + result.profile.roast;
+  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.roast;
   const route = "/utility-inspector/case/" + encodeURIComponent(code);
   const image = route + "/opengraph-image";
 
@@ -63,6 +64,7 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
     "THE DYOR DEPARTMENT reviewed my fictional Solana token-purpose claims.",
     "Verdict: " + result.profile.title + ".",
     "Utility: " + result.evidence + "/100. Fog: " + result.fog + "/100. Token fit: " + result.tokenFit + "/100.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.roast.length > 60 ? result.profile.roast.slice(0, 56) + "…" : result.profile.roast,
     "Inspect yours.",
   ].join(" ");
@@ -92,6 +94,8 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
           <div><span>NARRATIVE FOG</span><strong className="utility-fog">{result.fog}<small>/100</small></strong><i>SELECTED ANSWERS ONLY</i></div>
           <div><span>TOKEN JUSTIFICATION</span><strong className="utility-token">{result.tokenFit}<small>/100</small></strong><i>SELECTED ANSWERS ONLY</i></div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="utility-secondary">
           <span>SECONDARY PATTERN DETECTED</span>

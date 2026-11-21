@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildClubResult, decodeClubCode, encodeClubCode } from "../../club-engine";
 
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
 
   const result = buildClubResult(answers);
   const title = result.profile.title + " | SOLANA TRENCHES 99% CLUB";
-  const description = result.profile.subtitle + " " + result.profile.motto;
+  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.motto;
   const route = "/club/member/" + encodeURIComponent(encodeClubCode(answers));
   const image = route + "/opengraph-image";
 
@@ -63,6 +64,7 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
     "Member No. " + result.memberNumber + ".",
     result.profile.title + ".",
     "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.motto,
     "Your application is pending.",
   ].join(" ");
@@ -104,6 +106,8 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
           <div><span>COPE INDEX</span><strong className="club-cope">{result.cope}<small>/100</small></strong><i>FICTIONAL ANSWER SCORE</i></div>
           <div><span>CHAT DEPENDENCY</span><strong className="club-chat">{result.chatDependency}<small>/100</small></strong><i>FICTIONAL ANSWER SCORE</i></div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="club-profile">
           <span>THE DEPARTMENT HAS A COMMENT</span>

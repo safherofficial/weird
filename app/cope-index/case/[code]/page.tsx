@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildPersonalCopeResult, decodeCopeCode, encodeCopeCode } from "../../cope-engine";
 
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: CopeCasePageProps): Promise<M
 
   const result = buildPersonalCopeResult(answers);
   const title = result.profile.title + " | COPIUM ADMINISTRATION / TRENCHES READING";
-  const description = result.profile.subtitle + " " + result.profile.roast;
+  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.roast;
   const route = "/cope-index/case/" + encodeURIComponent(encodeCopeCode(answers));
   const image = route + "/opengraph-image";
 
@@ -62,6 +63,7 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
     "THE DYOR DEPARTMENT issued my fictional Solana Trenches cope reading.",
     result.profile.title + ".",
     "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.roast.length > 70 ? result.profile.roast.slice(0, 66) + "…" : result.profile.roast,
     "Your turn.",
   ].join(" ");
@@ -90,6 +92,8 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
           <div><span>PATIENCE INDEX</span><strong>{result.patienceScore}<small>/100</small></strong></div>
           <div><span>CHAT DEPENDENCY</span><strong>{result.chatDependency}<small>/100</small></strong></div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="cope-personal-result__roast">
           <span>THE DEPARTMENT HAS A COMMENT</span>

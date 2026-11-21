@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode } from "../../roadmap-engine";
 
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: RoadmapCasePageProps): Promis
 
   const result = buildRoadmapResult(decoded.answers, decoded.projectSlug);
   const title = result.projectLabel + " — " + result.profile.title;
-  const description = result.profile.subtitle + " " + result.profile.roast;
+  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.roast;
   const route = "/roadmap-generator/case/" + encodeURIComponent(encodeRoadmapCode(decoded.answers, decoded.projectSlug));
   const image = route + "/opengraph-image";
 
@@ -63,6 +64,7 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
     "THE DYOR DEPARTMENT generated a fictional CTO recovery plan for " + result.projectLabel + ".",
     "Classification: " + result.profile.title + ".",
     "Delivery: " + result.delivery + "/100. Timeline realism: " + result.realism + "/100. Promise inflation: " + result.inflation + "/100.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.roast.length > 65 ? result.profile.roast.slice(0, 61) + "…" : result.profile.roast,
     "Your turn. Put your milestones on paper.",
   ].join(" ");
@@ -92,6 +94,8 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
           <div><span>TIMELINE REALISM</span><strong className="roadmap-realism">{result.realism}<small>/100</small></strong><i>SELECTED ANSWERS ONLY</i></div>
           <div><span>PROMISE INFLATION</span><strong className="roadmap-inflation">{result.inflation}<small>/100</small></strong><i>SELECTED ANSWERS ONLY</i></div>
         </div>
+
+        <DepartmentCrossRead read={result.crossRead} />
 
         <div className="roadmap-secondary">
           <span>SECONDARY PATTERN DETECTED</span>
