@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AchievementEmblem from "../passport/achievement-emblem";
+import ClubWeeklyRitual from "./club-weekly-ritual";
 import {
   PASSPORT_UPDATED_EVENT,
   getPassportAchievementStatuses,
@@ -72,6 +73,8 @@ const EMPTY_PASSPORT: PassportData = {
   clubApplicationCount: 0,
   clubChallengeAnswers: {},
   clubBadgeIds: [],
+  clubFactionId: null,
+  clubWeeklyChallengeAnswers: {},
 };
 
 export default function ClubChallenges() {
@@ -153,7 +156,7 @@ export default function ClubChallenges() {
           <p>Three short case exercises. Three chances to explain why the next one is still yours.</p>
         </div>
         <div className="club-challenges__counter">
-          <strong>{unlockedCount}<small>/13</small></strong>
+          <strong>{unlockedCount}<small>/{clubBadges.length}</small></strong>
           <span>CLUB BADGES<br />UNLOCKED</span>
         </div>
       </header>
@@ -214,26 +217,50 @@ export default function ClubChallenges() {
         })}
       </div>
 
-      <div className="club-badge-case" aria-labelledby="club-badge-case-title">
+      <ClubWeeklyRitual />
+
+      <div className="club-badge-case" id="club-badge-case" aria-labelledby="club-badge-case-title">
         <div className="club-badge-case__heading">
           <div>
-            <span>COLLECTION / 13 CLUB ACHIEVEMENTS</span>
+            <span>COLLECTION / {clubBadges.length} CLUB ACHIEVEMENTS</span>
             <h3 id="club-badge-case-title">THE CLUB <em>BADGE CASE.</em></h3>
           </div>
-          <strong>{unlockedCount} / 13 UNLOCKED</strong>
+          <strong>{unlockedCount} / {clubBadges.length} UNLOCKED</strong>
         </div>
         <p className="club-badge-case__intro">
           Membership answers and completed challenges unlock these badges automatically. Enable the Passport before filing to save your collection on this device.
         </p>
         <div className="club-badge-case__grid">
           {clubBadges.map((badge) => (
-            <article className={"club-badge" + (badge.earned ? " is-earned" : "")} key={badge.id}>
+            <article className={"club-badge" + (badge.earned ? " is-earned" : "") + (badge.secret ? " is-secret" : "")} key={badge.id}>
               <AchievementEmblem id={badge.id} rarity={badge.rarity} earned={badge.earned} />
               <div>
-                <span>{badge.rarity} / {badge.earned ? "UNLOCKED" : badge.progress ? "IN PROGRESS" : "LOCKED"}</span>
-                <h4>{badge.title}</h4>
-                <p>{badge.description}</p>
-                <small>{badge.requirement}</small>
+                <span>{badge.secret && !badge.earned ? "CLASSIFIED / SECRET" : badge.rarity + " / " + (badge.earned ? "UNLOCKED" : badge.progress ? "IN PROGRESS" : "LOCKED")}</span>
+                <h4>{badge.secret && !badge.earned ? "CLASSIFIED ACHIEVEMENT" : badge.title}</h4>
+                <p>{badge.secret && !badge.earned ? "The Department has sealed this achievement file. Continue participating in Club rituals." : badge.description}</p>
+                <small>{badge.secret && !badge.earned ? "REDACTED / COMPLETE FUTURE CLUB CHALLENGES." : badge.requirement}</small>
+                {badge.earned && (
+                  <div className="club-badge__share">
+                    <button type="button" onClick={() => {
+                      const url = new URL("/club#club-badge-case", window.location.origin).toString();
+                      const text = "I UNLOCKED " + badge.title + " in THE 99% CLUB. IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.";
+                      const intent = new URL("https://twitter.com/intent/tweet");
+                      intent.searchParams.set("text", text);
+                      intent.searchParams.set("url", url);
+                      window.open(intent.toString(), "_blank", "noopener,noreferrer");
+                    }}>POST BADGE TO X ↗</button>
+                    <button type="button" onClick={async () => {
+                      const url = new URL("/club#club-badge-case", window.location.origin).toString();
+                      const text = "I UNLOCKED " + badge.title + " in THE 99% CLUB.\\n" + url;
+                      try {
+                        await navigator.clipboard.writeText(text);
+                        setNotice(badge.title + " BADGE LINK COPIED.");
+                      } catch {
+                        setNotice("CLIPBOARD UNAVAILABLE. THE BADGE REMAINS IN YOUR LOCAL COLLECTION.");
+                      }
+                    }}>COPY BADGE LINK</button>
+                  </div>
+                )}
               </div>
             </article>
           ))}
