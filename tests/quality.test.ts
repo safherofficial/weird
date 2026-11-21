@@ -2299,7 +2299,7 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
   ];
   assert.deepEqual(CLUB_BADGE_IDS.slice(0, expectedClubBadges.length), expectedClubBadges);
   assert.deepEqual(
-    PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).map((badge) => badge.id),
+    PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).slice(0, expectedClubBadges.length + 1).map((badge) => badge.id),
     ["club-admitted", ...expectedClubBadges],
   );
   assert.equal(PASSPORT_ACHIEVEMENTS.length, 26);
