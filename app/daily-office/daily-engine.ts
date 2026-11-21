@@ -24,6 +24,7 @@ export type DailyOfficeConvictionIndex = {
 export type DailyOfficeDispatch = {
   issueDate: string;
   reference: string;
+  caseTheme: string;
   headline: string;
   subheading: string;
   bulletin: string;
@@ -363,7 +364,220 @@ const dispositions = [
 ];
 
 const methodology =
-  "This dispatch is assembled deterministically from date-seeded combinations of original satirical editorial templates. Its reports, wallet scenarios, KOL signals, scores and post-mortems are entirely fictional. No AI factual research, external feed, live market data, real token, wallet, project, person or visitor activity is used.";
+  "This dispatch follows one coherent, date-selected editorial case route. Its headline, bulletin, incident, KOL note, wallet interpretation, risk review, internal memo and post-mortem are selected from compatible topic pools. All reports, wallet scenarios, KOL signals, scores and post-mortems are fictional. No AI factual research, external feed, live market data, real token, wallet, project, person or visitor activity is used.";
+
+
+type EditorialFocus =
+  | "launch"
+  | "graduation"
+  | "handover"
+  | "kol"
+  | "chart"
+  | "wallet"
+  | "liquidity"
+  | "exit"
+  | "migration";
+
+type EditorialFocusPool = {
+  kolHeading: number[];
+  kolClaim: number[];
+  kolCaveat: number[];
+  walletHeading: number[];
+  walletEvent: number[];
+  walletCaveat: number[];
+  riskHeading: number[];
+  riskFlag: number[];
+  memo: number[];
+  postMortemHeading: number[];
+  postMortemEvent: number[];
+  department: number[];
+  disposition: number[];
+  quote: number[];
+};
+
+const editorialFocusPools: Record<EditorialFocus, EditorialFocusPool> = {
+  launch: {
+    kolHeading: [1, 5],
+    kolClaim: [0, 6, 10],
+    kolCaveat: [0, 5, 7],
+    walletHeading: [3, 7],
+    walletEvent: [0, 5, 6, 13],
+    walletCaveat: [1, 2, 4],
+    riskHeading: [2, 6],
+    riskFlag: [5, 7, 11, 12],
+    memo: [4, 9],
+    postMortemHeading: [0, 6],
+    postMortemEvent: [7, 9],
+    department: [0, 6],
+    disposition: [0, 4, 7],
+    quote: [6, 11],
+  },
+  graduation: {
+    kolHeading: [3, 6],
+    kolClaim: [3, 11],
+    kolCaveat: [4, 5, 6],
+    walletHeading: [4, 7],
+    walletEvent: [2, 4, 8],
+    walletCaveat: [2, 4, 6],
+    riskHeading: [0, 5],
+    riskFlag: [1, 9, 10],
+    memo: [0, 6],
+    postMortemHeading: [2, 3],
+    postMortemEvent: [2, 8, 9],
+    department: [2, 10],
+    disposition: [2, 8],
+    quote: [1, 8],
+  },
+  handover: {
+    kolHeading: [5, 7],
+    kolClaim: [6, 7],
+    kolCaveat: [2, 5, 6],
+    walletHeading: [3, 6],
+    walletEvent: [0, 6, 7],
+    walletCaveat: [0, 1, 4],
+    riskHeading: [2, 6],
+    riskFlag: [3, 7, 11],
+    memo: [2, 3],
+    postMortemHeading: [5, 6],
+    postMortemEvent: [1, 5],
+    department: [3, 7],
+    disposition: [1, 5, 9],
+    quote: [3, 5, 13],
+  },
+  kol: {
+    kolHeading: [0, 1, 2, 4, 5, 6, 7],
+    kolClaim: [0, 5, 9, 13],
+    kolCaveat: [0, 1, 3, 4, 7],
+    walletHeading: [1, 7],
+    walletEvent: [3, 9, 13],
+    walletCaveat: [1, 3, 6],
+    riskHeading: [4, 5],
+    riskFlag: [7, 8, 12],
+    memo: [1, 7],
+    postMortemHeading: [4, 6],
+    postMortemEvent: [4, 7],
+    department: [1, 8],
+    disposition: [4, 6],
+    quote: [2, 9, 11],
+  },
+  chart: {
+    kolHeading: [4, 7],
+    kolClaim: [4, 8, 9],
+    kolCaveat: [0, 3, 4, 7],
+    walletHeading: [2, 6],
+    walletEvent: [9, 14],
+    walletCaveat: [2, 3, 7],
+    riskHeading: [4, 7],
+    riskFlag: [6, 13, 14],
+    memo: [8],
+    postMortemHeading: [0, 3, 7],
+    postMortemEvent: [0, 9],
+    department: [6, 11],
+    disposition: [0, 8],
+    quote: [4, 12],
+  },
+  wallet: {
+    kolHeading: [1, 3, 7],
+    kolClaim: [10, 11, 12],
+    kolCaveat: [2, 5, 7],
+    walletHeading: [0, 1, 5, 6, 7],
+    walletEvent: [1, 3, 4, 5, 7, 8, 13],
+    walletCaveat: [0, 1, 3, 5, 6],
+    riskHeading: [1, 5],
+    riskFlag: [2, 4, 9, 10],
+    memo: [5, 9],
+    postMortemHeading: [1, 2],
+    postMortemEvent: [3, 8, 9],
+    department: [4, 9],
+    disposition: [6, 7],
+    quote: [10, 11],
+  },
+  liquidity: {
+    kolHeading: [3, 6],
+    kolClaim: [1, 3, 11],
+    kolCaveat: [1, 4, 5],
+    walletHeading: [4, 7],
+    walletEvent: [2, 4, 8],
+    walletCaveat: [2, 4, 7],
+    riskHeading: [0, 5, 7],
+    riskFlag: [0, 1, 9, 14],
+    memo: [0, 6],
+    postMortemHeading: [2, 7],
+    postMortemEvent: [2, 8],
+    department: [2, 10],
+    disposition: [2, 8],
+    quote: [1, 8],
+  },
+  exit: {
+    kolHeading: [4, 7],
+    kolClaim: [4, 8, 9],
+    kolCaveat: [0, 3, 7],
+    walletHeading: [1, 4],
+    walletEvent: [4, 9, 14],
+    walletCaveat: [0, 2, 6],
+    riskHeading: [0, 3, 5],
+    riskFlag: [0, 1, 6, 14],
+    memo: [6, 8],
+    postMortemHeading: [3, 7],
+    postMortemEvent: [0, 5, 6],
+    department: [10, 11],
+    disposition: [0, 8, 9],
+    quote: [1, 4, 12],
+  },
+  migration: {
+    kolHeading: [3, 5],
+    kolClaim: [6, 7, 11],
+    kolCaveat: [1, 4, 6],
+    walletHeading: [4, 6],
+    walletEvent: [2, 4, 6, 13],
+    walletCaveat: [0, 1, 2, 4],
+    riskHeading: [2, 6],
+    riskFlag: [3, 9, 11],
+    memo: [0, 2],
+    postMortemHeading: [2, 5],
+    postMortemEvent: [1, 2, 7],
+    department: [3, 7],
+    disposition: [1, 5, 9],
+    quote: [3, 5, 8],
+  },
+};
+
+const editorialRoutes: Array<{
+  label: string;
+  headline: number;
+  bulletin: number;
+  incident: number;
+  focus: EditorialFocus;
+}> = [
+  { label: "CA / LAUNCH CONTEXT", headline: 0, bulletin: 0, incident: 0, focus: "launch" },
+  { label: "BONDING-CURVE GRADUATION", headline: 1, bulletin: 1, incident: 2, focus: "graduation" },
+  { label: "DEPLOYER / CTO HANDOVER", headline: 2, bulletin: 3, incident: 3, focus: "handover" },
+  { label: "KOL ECHO / COPIED CALLS", headline: 3, bulletin: 2, incident: 4, focus: "kol" },
+  { label: "GREEN-CANDLE CONVICTION", headline: 4, bulletin: 8, incident: 10, focus: "chart" },
+  { label: "BUNDLE / WALLET THEORIES", headline: 5, bulletin: 4, incident: 1, focus: "wallet" },
+  { label: "POST-GRADUATION LIQUIDITY", headline: 6, bulletin: 5, incident: 5, focus: "liquidity" },
+  { label: "COMMUNITY TAKEOVER", headline: 7, bulletin: 9, incident: 3, focus: "handover" },
+  { label: "DELETED KOL CALL", headline: 8, bulletin: 10, incident: 7, focus: "kol" },
+  { label: "100X ENTRY TIMING", headline: 9, bulletin: 13, incident: 8, focus: "chart" },
+  { label: "CA SOURCE VERIFICATION", headline: 10, bulletin: 7, incident: 4, focus: "launch" },
+  { label: "CTO ACCESS CHECKLIST", headline: 11, bulletin: 15, incident: 3, focus: "handover" },
+  { label: "WALLET-GRAPH INTERPRETATION", headline: 12, bulletin: 12, incident: 6, focus: "wallet" },
+  { label: "EXIT-PLAN ABSENCE", headline: 13, bulletin: 16, incident: 13, focus: "exit" },
+  { label: "GREEN-CANDLE EVIDENCE", headline: 14, bulletin: 14, incident: 10, focus: "chart" },
+  { label: "SNIPER THEORY", headline: 15, bulletin: 12, incident: 6, focus: "wallet" },
+  { label: "MIGRATION CLAIM", headline: 16, bulletin: 1, incident: 11, focus: "migration" },
+  { label: "BAGHOLDER ENTRY HISTORY", headline: 17, bulletin: 16, incident: 13, focus: "exit" },
+];
+
+function pickFrom<T>(items: T[], indexes: number[], seed: number, salt: number): T {
+  const candidates = indexes
+    .map((index) => items[index])
+    .filter((item): item is T => item !== undefined);
+  if (candidates.length === 0) {
+    throw new Error("An editorial focus pool must include at least one valid item.");
+  }
+  return pick(candidates, seed, salt);
+}
 
 function hashText(value: string) {
   let hash = 2166136261;
@@ -397,28 +611,30 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   }
 
   const seed = hashText("THE-DYOR-DEPARTMENT/DAILY-OFFICE/V3/" + issueDate);
-  const incident = pick(incidents, seed, 13);
-  const memo = pick(memos, seed, 29);
-  const headline = pick(headlines, seed, 43);
-  const bulletin = pick(bulletins, seed, 59);
-  const quote = pick(quotes, seed, 71);
-  const assignedDepartment = pick(departments, seed, 83);
-  const disposition = pick(dispositions, seed, 97);
+  const route = editorialRoutes[mixSeed(seed, 7) % editorialRoutes.length];
+  const focus = editorialFocusPools[route.focus];
+  const incident = incidents[route.incident];
+  const headline = headlines[route.headline];
+  const bulletin = bulletins[route.bulletin];
+  const memo = pickFrom(memos, focus.memo, seed, 29);
+  const quote = pickFrom(quotes, focus.quote, seed, 71);
+  const assignedDepartment = pickFrom(departments, focus.department, seed, 83);
+  const disposition = pickFrom(dispositions, focus.disposition, seed, 97);
   const referenceNumber = String((seed % 9000) + 1000);
 
   const kol = {
-    heading: pick(kolHeadings, seed, 109),
+    heading: pickFrom(kolHeadings, focus.kolHeading, seed, 109),
     body:
       "A fictional cluster of " +
       pick(["three", "four", "six", "nine", "eleven"], seed, 113) +
       " verification badges amplified " +
-      pick(kolClaims, seed, 127) +
+      pickFrom(kolClaims, focus.kolClaim, seed, 127) +
       " " +
       pick(kolTimings, seed, 131) +
       ". The desk has classified the overlap as " +
       pick(kolInterpretations, seed, 137) +
       ". " +
-      pick(kolCaveats, seed, 139),
+      pickFrom(kolCaveats, focus.kolCaveat, seed, 139),
     stamp: pick(
       ["CONSENSUS / SELF-REFERENTIAL", "SOURCE / NOT LOCATED", "BADGES / VISUALLY REASSURING", "INDEPENDENCE / ASSUMED"],
       seed,
@@ -427,14 +643,14 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   };
 
   const onChain = {
-    heading: pick(onChainHeadings, seed, 151),
+    heading: pickFrom(onChainHeadings, focus.walletHeading, seed, 151),
     body:
       "A fictional wallet map records " +
-      pick(walletEvents, seed, 157) +
+      pickFrom(walletEvents, focus.walletEvent, seed, 157) +
       ". Analysts interpret the movement as " +
       pick(walletInterpretations, seed, 163) +
       ". " +
-      pick(walletCaveats, seed, 167),
+      pickFrom(walletCaveats, focus.walletCaveat, seed, 167),
     stamp: pick(
       ["WALLET OWNER / UNCONFIRMED", "TRANSACTION / FICTIONAL", "MOTIVE / ASSIGNED BY ANALYSTS", "GRAPH / HIGHLY PERSUASIVE"],
       seed,
@@ -443,10 +659,10 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   };
 
   const risk = {
-    heading: pick(riskHeadings, seed, 179),
+    heading: pickFrom(riskHeadings, focus.riskHeading, seed, 179),
     body:
       "The fictional review flagged " +
-      pick(riskFlags, seed, 181) +
+      pickFrom(riskFlags, focus.riskFlag, seed, 181) +
       ". The committee has reclassified the exposure as " +
       pick(riskReframes, seed, 191) +
       ". Mitigation: " +
@@ -460,10 +676,10 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   };
 
   const postMortem = {
-    heading: pick(postMortemHeadings, seed, 199),
+    heading: pickFrom(postMortemHeadings, focus.postMortemHeading, seed, 199),
     body:
       "The fictional event under review: " +
-      pick(postMortemEvents, seed, 211) +
+      pickFrom(postMortemEvents, focus.postMortemEvent, seed, 211) +
       ". The original thesis has been preserved by " +
       pick(postMortemReframes, seed, 223) +
       ". " +
@@ -492,8 +708,9 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   return {
     issueDate,
     reference: "DD-" + issueDate.replace(/-/g, "") + "-" + referenceNumber,
+    caseTheme: route.label,
     headline,
-    subheading: "THE TRENCHES DESK / DAILY CT BRIEFING / ISSUE " + referenceNumber,
+    subheading: "THE TRENCHES DESK / " + route.label + " / DAILY CT BRIEFING / ISSUE " + referenceNumber,
     bulletin,
     sections: [
       { label: "INCIDENT REPORT", heading: incident.heading, body: incident.body, stamp: incident.stamp },

@@ -365,6 +365,9 @@ test("Daily CT Briefing is deterministic for a UTC issue date and rejects invali
   const first = buildDailyOfficeDispatch("2026-11-20");
   assert.deepEqual(buildDailyOfficeDispatch("2026-11-20"), first);
   assert.equal(first.issueDate, "2026-11-20");
+  assert.ok(first.caseTheme.length > 0);
+  assert.ok(first.subheading.includes(first.caseTheme));
+  assert.match(first.methodology, /one coherent, date-selected editorial case route/i);
   assert.equal(first.sections.length, 6);
   assert.ok(first.sections.every((section) => section.heading.length > 0 && section.body.length > 0));
   assert.throws(() => buildDailyOfficeDispatch("2026-02-30"));
@@ -676,6 +679,7 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
   const uniqueHeadlines = new Set(reports.map((report) => report.headline));
   const uniqueBulletins = new Set(reports.map((report) => report.bulletin));
   const uniqueIncidentHeadings = new Set(reports.map((report) => report.sections[0].heading));
+  const uniqueCaseThemes = new Set(reports.map((report) => report.caseTheme));
   const uniqueBriefings = new Set(reports.map((report) =>
     [report.headline, report.bulletin, ...report.sections.map((section) => section.heading + "|" + section.body)].join("||")
   ));
@@ -683,6 +687,7 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
   assert.ok(uniqueHeadlines.size >= 12, "Daily headlines should not collapse into a small repeating subset");
   assert.ok(uniqueBulletins.size >= 12, "Daily bulletins should retain meaningful variation");
   assert.ok(uniqueIncidentHeadings.size >= 9, "Incident reports should draw from a broad portion of the editorial library");
+  assert.ok(uniqueCaseThemes.size >= 12, "Daily reports should rotate through a broad set of coherent editorial themes");
   assert.ok(uniqueBriefings.size >= 115, "Complete daily briefing combinations should remain distinct across the sample");
 });
 
