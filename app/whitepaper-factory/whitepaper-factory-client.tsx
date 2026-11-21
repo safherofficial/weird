@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import DepartmentNextSteps from "../components/department-next-steps";
 import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
@@ -272,7 +271,6 @@ export default function WhitepaperFactoryClient() {
         </div>
 
         <p className="whitepaper-public-link"><Link href={caseUrl}>OPEN PUBLIC TOKEN DOSSIER FILE ↗</Link></p>
-        <DepartmentNextSteps currentDepartment="whitepaper" />
         {notice && <p className="audit-notice" role="status">{notice}</p>}
       </section>
     );

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import DepartmentNextSteps from "../components/department-next-steps";
 import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
@@ -340,7 +339,6 @@ export default function UtilityInspectorClient() {
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
         <p className="utility-public-link"><Link href={caseUrl}>OPEN PUBLIC CASE FILE ↗</Link></p>
-        <DepartmentNextSteps currentDepartment="utility" />
       </section>
     );
   }

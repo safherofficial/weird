@@ -686,7 +686,7 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
 });
 
 
-test("U24 journey routing is present on all ten divisions and points to relevant destinations", () => {
+test("U24 journey routing is mapped once across all ten divisions without self-links or duplicate result panels", () => {
   const routes: Record<string, { page: string; destinations: string[] }> = {
     audit: { page: "audit", destinations: ["/simulator", "/cope-index"] },
     simulator: { page: "simulator", destinations: ["/audit", "/club"] },
@@ -700,12 +700,32 @@ test("U24 journey routing is present on all ten divisions and points to relevant
     museum: { page: "museum", destinations: ["/archives", "/club"] },
   };
   const component = readFileSync("app/components/department-next-steps.tsx", "utf8");
+  assert.equal(Object.keys(routes).length, 10);
+
   for (const [department, route] of Object.entries(routes)) {
     const page = readFileSync("app/" + route.page + "/page.tsx", "utf8");
-    assert.ok(page.includes('DepartmentNextSteps currentDepartment="' + department + '"'), department + " must render its journey routes");
-    for (const destination of route.destinations) {
-      assert.ok(component.includes('href: "' + destination + '"'), department + " destination " + destination + " must remain available");
-    }
+    const pageInstance = 'DepartmentNextSteps currentDepartment="' + department + '"';
+    assert.equal(page.split(pageInstance).length - 1, 1, department + " must render exactly one page-level journey section");
+
+    const routeBlock = component.match(new RegExp("\\\\b" + department + ":\\\\s*\\\\[([\\\\s\\\\S]*?)\\\\n  \\\\],"));
+    assert.ok(routeBlock, department + " must have an explicit routing block");
+    const actualDestinations = Array.from(routeBlock[1].matchAll(/href: "([^"]+)"/g), (match) => match[1]);
+    assert.deepEqual(actualDestinations, route.destinations, department + " must retain its two curated destinations");
+    assert.equal(new Set(actualDestinations).size, 2, department + " destinations must be unique");
+    assert.ok(!actualDestinations.includes("/" + route.page), department + " must not route to itself");
   }
-  assert.match(component, /"daily"[\s\S]*"archives"[\s\S]*"museum"/);
+
+  const interactiveClients = [
+    "app/audit/audit-client.tsx",
+    "app/simulator/simulator-client.tsx",
+    "app/utility-inspector/utility-inspector-client.tsx",
+    "app/roadmap-generator/roadmap-generator-client.tsx",
+    "app/whitepaper-factory/whitepaper-factory-client.tsx",
+    "app/club/club-client.tsx",
+    "app/cope-index/cope-index-client.tsx",
+  ];
+  interactiveClients.forEach((path) => {
+    const source = readFileSync(path, "utf8");
+    assert.doesNotMatch(source, /DepartmentNextSteps/, path + " must not duplicate the page-level journey panel inside its result state");
+  });
 });

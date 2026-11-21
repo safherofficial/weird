@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import DepartmentNextSteps from "../components/department-next-steps";
 import DepartmentCrossRead from "../components/department-cross-read";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
@@ -355,7 +354,6 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
               <button className="button button--quiet" type="button" onClick={restart}>CALIBRATE AGAIN ↺</button>
             </div>
             <p className="cope-personal-result__public-link"><Link href={makeCaseUrl(result.answers)}>OPEN PUBLIC PERSONAL FILE ↗</Link></p>
-            <DepartmentNextSteps currentDepartment="cope" />
           </div>
         )}
 
