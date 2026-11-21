@@ -839,7 +839,12 @@ test("U24.3 special Culture Curator activities are recorded only on their matchi
   assert.doesNotMatch(museumIndex, /RecordPassportActivity/);
 
   const store = readFileSync("app/passport/passport-store.ts", "utf8");
-  assert.match(store, /"culture-curator":[\\s\\S]*?progress:\\s*Number\\(completed\\.has\\("museum-exhibit"\\)\\)\\s*\\+\\s*Number\\(completed\\.has\\("archive-record"\\)\\),[\\s\\S]*?target:\\s*2/);
+  const cultureStart = store.indexOf('"culture-curator": {');
+  const cultureEnd = store.indexOf("\n    },", cultureStart);
+  assert.ok(cultureStart >= 0 && cultureEnd > cultureStart, "Culture Curator rule must exist");
+  const cultureRule = store.slice(cultureStart, cultureEnd);
+  assert.ok(cultureRule.includes('progress: Number(completed.has("museum-exhibit")) + Number(completed.has("archive-record"))'));
+  assert.ok(cultureRule.includes("target: 2"));
 });
 
 test("U24.3 completed experience activities are recorded only in the final-answer branch", () => {
