@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
 import PassportResultReceipt from "../components/passport-result-receipt";
-import { recordPassportActivity } from "../passport/passport-store";
+import { recordClubMembership, recordPassportActivity } from "../passport/passport-store";
 import {
   buildClubResult,
   decodeClubCode,
@@ -327,7 +327,8 @@ export default function ClubClient() {
 
           <div className="club-briefing__actions">
             <button className="button button--primary" type="button" onClick={startApplication}>APPLY FOR MEMBERSHIP <span>↗</span></button>
-            <span>NO ACCOUNT. NO TOKEN. NO BENEFITS. NO FINANCIAL ADVICE.</span>
+            <Link className="button button--outline" href="/passport">ENABLE BADGE COLLECTION <span>↗</span></Link>
+            <span>ENABLE THE OPTIONAL LOCAL PASSPORT BEFORE APPLYING TO SAVE YOUR CLUB BADGES. NO ACCOUNT OR SERVER PROFILE.</span>
           </div>
         </div>
       </section>
