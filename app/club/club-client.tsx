@@ -311,7 +311,7 @@ export default function ClubClient() {
           <p className="eyebrow">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</p>
           <h2>YOU ARE NOT<br /><span>ALONE IN THIS.</span></h2>
           <p className="club-briefing__lead">
-            Five questions. Three fictional indices. Twelve Club badges. An unlimited supply of explanations.
+            Five questions. Three fictional indices. Thirteen Club badges. An unlimited supply of explanations.
           </p>
 
           <div className="club-briefing__facts">
