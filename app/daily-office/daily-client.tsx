@@ -6,6 +6,7 @@ import type { DailyOfficeDispatch } from "./daily-engine";
 
 type DailyOfficeClientProps = {
   dispatch: DailyOfficeDispatch;
+  pagePath?: string;
 };
 
 function escapeXml(value: string) {
@@ -80,10 +81,9 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
   );
 }
 
-export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) {
+export default function DailyOfficeClient({ dispatch, pagePath = "/daily-office" }: DailyOfficeClientProps) {
   const [notice, setNotice] = useState("");
-
-  const pagePath = "/daily-office";
+  const dispatchLabel = pagePath === "/daily-office" ? "TODAY'S" : "ARCHIVED";
   const xText = [
     "THE DYOR DEPARTMENT / TRENCHES DESK",
     dispatch.headline,
@@ -121,7 +121,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
 
     try {
       await navigator.clipboard.writeText(text);
-      setNotice("TODAY'S TRENCHES BRIEFING AND SOURCE LINK COPIED.");
+      setNotice(dispatchLabel + " TRENCHES BRIEFING AND SOURCE LINK COPIED.");
     } catch {
       setNotice("CLIPBOARD UNAVAILABLE. THE DISPATCH CAN STILL BE SHARED ON X.");
     }
@@ -162,7 +162,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
           anchor.click();
           anchor.remove();
           window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-          setNotice("TODAY'S TRENCHES BRIEFING CARD HAS BEEN ISSUED.");
+          setNotice(dispatchLabel + " TRENCHES BRIEFING CARD HAS BEEN ISSUED.");
         }, "image/png");
       };
 
@@ -255,7 +255,7 @@ export default function DailyOfficeClient({ dispatch }: DailyOfficeClientProps) 
       </div>
 
       <div className="daily-office-actions">
-        <button className="button button--primary" type="button" onClick={downloadCard}>DOWNLOAD DAILY CARD <span>↓</span></button>
+        <button className="button button--primary" type="button" onClick={downloadCard}>{pagePath === "/daily-office" ? "DOWNLOAD DAILY CARD" : "DOWNLOAD ARCHIVE CARD"} <span>↓</span></button>
         <div
           className="daily-office-share"
           style={{ display: "flex", flexWrap: "wrap", gridColumn: "1 / -1", gap: 8, minWidth: 0 }}

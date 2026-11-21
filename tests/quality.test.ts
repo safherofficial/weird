@@ -950,3 +950,72 @@ test("U24.3 local Passport status receipts refresh when the same register change
   assert.match(client, /PASSPORT_STORAGE_KEY/);
   assert.doesNotMatch(client, /dyor-department:passport:v1/);
 });
+
+
+import { buildInstitutionalMemory, isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
+
+test("U25.4 institutional memory accepts only real UTC dates through the current issue date", () => {
+  assert.equal(isValidInstitutionalMemoryDate("2024-02-29", "2024-03-01"), true);
+  assert.equal(isValidInstitutionalMemoryDate("2025-02-29", "2025-03-01"), false);
+  assert.equal(isValidInstitutionalMemoryDate("2026-11-22", "2026-11-21"), false);
+  assert.equal(isValidInstitutionalMemoryDate("2026-11-21", "2026-11-21"), true);
+  assert.equal(isValidInstitutionalMemoryDate("2026-1-02", "2026-11-21"), false);
+  assert.equal(isValidInstitutionalMemoryDate("not-a-date", "2026-11-21"), false);
+  assert.equal(shiftInstitutionalMemoryDate("2024-03-01", -1), "2024-02-29");
+  assert.equal(shiftInstitutionalMemoryDate("2024-02-29", 1), "2024-03-01");
+  assert.throws(() => shiftInstitutionalMemoryDate("2024-02-30", 1));
+  assert.throws(() => shiftInstitutionalMemoryDate("2024-02-29", 1.5));
+});
+
+test("U25.4 fourteen-day register is chronological, reproducible and cross-links every adjacent file", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const records = buildInstitutionalMemory(today, 14);
+  const duplicate = buildInstitutionalMemory(today, 14);
+
+  assert.equal(records.length, 14);
+  assert.deepEqual(records, duplicate, "the same UTC date must reproduce the same institutional record sequence");
+  assert.equal(records[13].issueDate, today);
+  assert.equal(records[13].href, "/daily-office");
+  assert.equal(records[0].predecessor, null);
+  assert.equal(records[13].successor, null);
+
+  for (let index = 0; index < records.length; index += 1) {
+    const record = records[index];
+    assert.equal(record.issueDate, shiftInstitutionalMemoryDate(records[0].issueDate, index));
+    assert.ok(record.reference.startsWith("DD-"), "every daily record must retain its source reference");
+    assert.ok(record.caseTheme.length > 0 && record.headline.length > 0);
+    assert.ok(record.bulletin.length > 0 && record.postMortem.length > 0);
+    assert.ok(record.assignedDepartment.length > 0 && record.disposition.length > 0);
+    assert.ok(record.handoffNote.length > 0);
+    if (index > 0) {
+      assert.equal(record.predecessor?.issueDate, records[index - 1].issueDate);
+      assert.equal(record.predecessor?.reference, records[index - 1].reference);
+      assert.equal(records[index - 1].successor?.issueDate, record.issueDate);
+      assert.match(record.handoffNote, new RegExp(records[index - 1].disposition.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    }
+    if (index < records.length - 1) {
+      assert.equal(record.successor?.issueDate, records[index + 1].issueDate);
+    }
+    assert.ok(record.href === "/daily-office" || record.href === "/daily-office/archive/" + record.issueDate);
+  }
+});
+
+test("U25.4 daily desk exposes linked historical files without adding visitor-data persistence", () => {
+  const dailyPage = readFileSync("app/daily-office/page.tsx", "utf8");
+  const client = readFileSync("app/daily-office/daily-client.tsx", "utf8");
+  const ledger = readFileSync("app/daily-office/ledger/page.tsx", "utf8");
+  const archivedPage = readFileSync("app/daily-office/archive/[date]/page.tsx", "utf8");
+
+  assert.ok(dailyPage.includes('href="/daily-office/ledger"'));
+  assert.ok(client.includes('pagePath = "/daily-office"'));
+  assert.ok(client.includes("casePath={pagePath}"));
+  assert.ok(ledger.includes("buildInstitutionalMemory(issueDate, 14)"));
+  assert.ok(ledger.includes("record.predecessor.href"));
+  assert.ok(ledger.includes("record.successor.href"));
+  assert.ok(archivedPage.includes("isValidInstitutionalMemoryDate(date)"));
+  assert.ok(archivedPage.includes('pagePath={route}'));
+  assert.ok(archivedPage.includes("robots: { index: false, follow: true }"));
+  assert.doesNotMatch(ledger, /localStorage|sessionStorage|recordPassportActivity/);
+  assert.doesNotMatch(archivedPage, /localStorage|sessionStorage|recordPassportActivity/);
+  assert.match(ledger, /NO VISITOR DATA IS STORED/);
+});
