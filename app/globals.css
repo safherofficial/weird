@@ -14439,3 +14439,141 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (prefers-reduced-motion: reduce) {
   .hq-club__actions .button { transition: none; }
 }
+
+
+/* U28.4 — A single, transparent pre-launch notice for the future 99% Club token. */
+.club-token-notice {
+  position: relative;
+  margin: 34px auto;
+  padding: clamp(18px, 3vw, 29px);
+  border: 1px solid #665a36;
+  border-left: 2px solid #d2aa5b;
+  background:
+    radial-gradient(ellipse at 100% 0, rgb(210 170 91 / 8%), transparent 38%),
+    linear-gradient(110deg, #17170f 0%, #0c100c 72%);
+}
+.club-token-notice--home { max-width: 1320px; }
+.club-token-notice--club { margin-top: 0; margin-bottom: 34px; }
+.club-token-notice__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #3b3a2b;
+}
+.club-token-notice__header > div > span {
+  color: #c9a85f;
+  font: 700 7px/1.5 var(--mono);
+  letter-spacing: .12em;
+}
+.club-token-notice__header h2 {
+  margin: 8px 0 0;
+  color: #f0f0e9;
+  font: 700 clamp(26px, 4vw, 39px)/.98 var(--sans);
+  letter-spacing: -.055em;
+}
+.club-token-notice__header h2 em { color: #d2aa5b; font-style: normal; }
+.club-token-notice__status {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 7px 10px;
+  border: 1px solid #665a36;
+  background: rgb(210 170 91 / 6%);
+  color: #d9ba7c;
+  font: 700 7px/1.5 var(--mono);
+  letter-spacing: .06em;
+}
+.club-token-notice__status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d2aa5b;
+  box-shadow: 0 0 9px rgb(210 170 91 / 60%);
+}
+.club-token-notice__status.is-published {
+  border-color: #526744;
+  color: var(--green);
+}
+.club-token-notice__status.is-published i {
+  background: var(--green);
+  box-shadow: 0 0 9px rgb(182 255 101 / 60%);
+}
+.club-token-notice__lead {
+  max-width: 900px;
+  margin: 16px 0 18px;
+  color: #b8b9a8;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.club-token-notice__details {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border: 1px solid #383a2d;
+  background: #0a0e0b;
+}
+.club-token-notice__details > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 9px;
+  min-height: 75px;
+  padding: 12px;
+  border-right: 1px solid #30352b;
+}
+.club-token-notice__details > div:last-child { border-right: 0; }
+.club-token-notice__details span {
+  color: #858a76;
+  font: 7px/1.5 var(--mono);
+  letter-spacing: .07em;
+}
+.club-token-notice__details strong {
+  color: #e0d7c1;
+  font: 700 8px/1.6 var(--mono);
+  overflow-wrap: anywhere;
+}
+.club-token-notice__details a {
+  color: #d2aa5b;
+  font: 700 8px/1.6 var(--mono);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.club-token-notice__details a:hover { color: #f2d18d; }
+.club-token-notice__warning {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid #4c4330;
+  background: rgb(210 170 91 / 4%);
+}
+.club-token-notice__warning > strong {
+  color: #d2aa5b;
+  font: 700 7px/1.6 var(--mono);
+  letter-spacing: .08em;
+}
+.club-token-notice__warning p {
+  margin: 6px 0 0;
+  color: #a29e89;
+  font-size: 10px;
+  line-height: 1.7;
+}
+@media (max-width: 900px) {
+  .club-token-notice__details { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .club-token-notice__details > div:nth-child(3n) { border-right: 0; }
+  .club-token-notice__details > div:nth-child(n + 4) { border-top: 1px solid #30352b; }
+}
+@media (max-width: 620px) {
+  .club-token-notice { margin-block: 23px; padding: 16px; }
+  .club-token-notice__header { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .club-token-notice__details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .club-token-notice__details > div { min-height: 67px; padding: 10px; }
+  .club-token-notice__details > div:nth-child(2n) { border-right: 0; }
+  .club-token-notice__details > div:nth-child(n + 3) { border-top: 1px solid #30352b; }
+  .club-token-notice__lead { font-size: 10px; }
+  .club-token-notice__warning p { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .club-token-notice__details a { transition: none; }
+}
