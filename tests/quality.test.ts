@@ -11,6 +11,7 @@ import { classifications as whitepaperClassifications, questions as whitepaperQu
 import { questions as clubQuestions, CLUB_QUESTIONS, CLUB_FACTION_IDS, buildClubResult, decodeClubCode, encodeClubCode, factions as clubFactions, getClubFactionById, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { buildClubCampaignText, buildClubFactionShareText, buildClubMemberShareText, buildClubNominationText, CLUB_SOCIAL_HASHTAGS } from "../app/club/club-social";
 import { CLUB_CULTURE_CATEGORIES, CLUB_CULTURE_POSTS } from "../app/club/club-culture";
+import { CLUB_MEME_TEMPLATES, CLUB_PUBLIC_CHALLENGES } from "../app/club/club-war-room-data";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
@@ -2635,4 +2636,37 @@ test("U28.7 Community Culture Desk exposes short, reusable cross-chain social dr
   assert.ok(desk.includes("NOTHING IS AUTO-POSTED, TRACKED OR STORED ON A SERVER"));
   assert.ok(styles.includes(".club-culture-desk__grid"));
   assert.ok(styles.includes("@media (max-width:520px)"));
+});
+
+
+test("U28.8 Club War Room creates browser-local meme PNGs and shareable public challenges", () => {
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const warRoom = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+  assert.ok(CLUB_MEME_TEMPLATES.length >= 6);
+  assert.equal(new Set(CLUB_MEME_TEMPLATES.map((template) => template.id)).size, CLUB_MEME_TEMPLATES.length);
+  for (const template of CLUB_MEME_TEMPLATES) {
+    assert.ok(template.topText.length > 0 && template.topText.length <= 100);
+    assert.ok(template.bottomText.length > 0 && template.bottomText.length <= 100);
+    assert.ok(template.caption.length > 0);
+  }
+  assert.ok(CLUB_PUBLIC_CHALLENGES.length >= 5);
+  assert.equal(new Set(CLUB_PUBLIC_CHALLENGES.map((challenge) => challenge.id)).size, CLUB_PUBLIC_CHALLENGES.length);
+  for (const challenge of CLUB_PUBLIC_CHALLENGES) {
+    assert.ok(challenge.prompt.length > 40);
+    assert.ok(challenge.postText.length > 60 && challenge.postText.length <= 280, challenge.id + " should fit an X post before its URL");
+    assert.ok(challenge.postText.includes("#The99PercentClub"));
+  }
+  assert.ok(page.includes("<ClubWarRoom />"));
+  assert.ok(warRoom.includes("canvas.toBlob"));
+  assert.ok(warRoom.includes("navigator.canShare"));
+  assert.ok(warRoom.includes("navigator.share"));
+  assert.ok(warRoom.includes("twitter.com/intent/tweet"));
+  assert.ok(warRoom.includes("DOWNLOAD PNG"));
+  assert.ok(warRoom.includes("POST CHALLENGE TO X"));
+  assert.ok(warRoom.includes("DO NOT SHARE PRIVATE WALLET DETAILS"));
+  assert.doesNotMatch(warRoom, /fetch\(|localStorage|recordPassport/);
+  assert.ok(styles.includes(".club-meme-studio__preview canvas"));
+  assert.ok(styles.includes(".club-challenge-board__grid"));
+  assert.ok(styles.includes("@media (max-width:640px)"));
 });

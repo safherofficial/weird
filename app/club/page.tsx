@@ -8,6 +8,7 @@ import ClubChallenges from "./club-challenges";
 import ClubTokenNotice from "./club-token-notice";
 import ClubCampaignDesk from "./club-campaign-desk";
 import ClubCultureDesk from "./club-culture-desk";
+import ClubWarRoom from "./club-war-room";
 import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
@@ -80,6 +81,10 @@ export default function ClubPage() {
 
       <div className="shell">
         <ClubCultureDesk />
+      </div>
+
+      <div className="shell">
+        <ClubWarRoom />
       </div>
 
       <div className="shell">
