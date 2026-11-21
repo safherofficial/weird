@@ -560,6 +560,130 @@ test("Global Cope Index is deterministic and exposes five bounded synthetic dime
   assert.throws(() => buildDailyCopeIndex("2026-02-30", editorialCase));
   assert.throws(() => buildDailyCopeIndex("not-a-date", editorialCase));
 });
+test("U27.4 Daily Content Quality keeps risk conclusions, post-mortems and Cope bulletins inside the same case theme", () => {
+  const caseSignals: Record<string, { cope: RegExp; closure: RegExp }> = {
+    "CA / LAUNCH CONTEXT": {
+      cope: /CA|source|token purpose|ticker/i,
+      closure: /source-verification|mint announcement|token-purpose|deployer|source/i,
+    },
+    "BONDING-CURVE GRADUATION": {
+      cope: /curve|graduat|pool|demand/i,
+      closure: /post-graduation|pool|graduation|demand|slippage/i,
+    },
+    "DEPLOYER / CTO HANDOVER": {
+      cope: /deployer|CTO|banner|custody|key/i,
+      closure: /access|ownership|handover|custody|operational control/i,
+    },
+    "KOL ECHO / COPIED CALLS": {
+      cope: /KOL|accounts|claim|source|screenshot/i,
+      closure: /originating claim|corroboration|repost|source|amplification/i,
+    },
+    "GREEN-CANDLE CONVICTION": {
+      cope: /candle|chart|timeframe|green/i,
+      closure: /timeframe|chart|candles|candle|screenshot/i,
+    },
+    "BUNDLE / WALLET THEORIES": {
+      cope: /wallet|cluster|ownership|arrows/i,
+      closure: /ownership|wallet|cluster|address|transaction/i,
+    },
+    "POST-GRADUATION LIQUIDITY": {
+      cope: /pool|liquidity|slippage|depth|valuation/i,
+      closure: /pool.depth|pool depth|trade size|liquidity|valuation/i,
+    },
+    "COMMUNITY TAKEOVER": {
+      cope: /community|admins|takeover|access/i,
+      closure: /access|ownership|handover|custody|operational control/i,
+    },
+    "DELETED KOL CALL": {
+      cope: /KOL|call|screenshots|source|post/i,
+      closure: /originating claim|corroboration|repost|source|amplification/i,
+    },
+    "100X ENTRY TIMING": {
+      cope: /100X|entry|candle|target|post-mortem/i,
+      closure: /timeframe|chart|candles|candle|screenshot|entry/i,
+    },
+    "CA SOURCE VERIFICATION": {
+      cope: /CA|source|accounts|original post/i,
+      closure: /source-verification|mint announcement|token-purpose|deployer|source/i,
+    },
+    "CTO ACCESS CHECKLIST": {
+      cope: /CTO|access|repository|domain|treasury|signing/i,
+      closure: /access|ownership|handover|custody|operational control/i,
+    },
+    "WALLET-GRAPH INTERPRETATION": {
+      cope: /wallet|ownership|arrows|diagram|movement/i,
+      closure: /ownership|wallet|cluster|address|transaction/i,
+    },
+    "EXIT-PLAN ABSENCE": {
+      cope: /exit|invalidation|entry|price target/i,
+      closure: /invalidation|exit|price target|thesis/i,
+    },
+    "GREEN-CANDLE EVIDENCE": {
+      cope: /chart|candle|timeframe|wick/i,
+      closure: /timeframe|chart|candles|candle|screenshot/i,
+    },
+    "SNIPER THEORY": {
+      cope: /wallet|cluster|owner|early buys/i,
+      closure: /ownership|wallet|cluster|address|transaction/i,
+    },
+    "MIGRATION CLAIM": {
+      cope: /migration|CA|token|reference|destination/i,
+      closure: /migration|token reference|CA|destination/i,
+    },
+    "BAGHOLDER ENTRY HISTORY": {
+      cope: /entry|price|invalidation|thesis/i,
+      closure: /invalidation|exit|price target|thesis|entry/i,
+    },
+  };
+  const observedThemes = new Set<string>();
+  const observedCopeBulletins = new Set<string>();
+
+  for (let index = 0; index < 180; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const editorialCase = getDailyEditorialCase(issueDate);
+    const copeIndex = buildDailyCopeIndex(issueDate, editorialCase);
+    const repeatedCopeIndex = buildDailyCopeIndex(issueDate, editorialCase);
+    const expected = caseSignals[dispatch.caseTheme];
+
+    assert.ok(expected, issueDate + " must use a registered editorial case theme");
+    assert.deepEqual(copeIndex, repeatedCopeIndex, "the case-specific Cope bulletin and its readings must remain deterministic");
+    assert.equal(copeIndex.caseTheme, dispatch.caseTheme);
+    assert.equal(copeIndex.caseHeadline, dispatch.headline);
+    assert.equal(copeIndex.caseBulletin, dispatch.bulletin);
+    assert.equal(copeIndex.caseReference, dispatch.reference);
+    assert.match(copeIndex.bulletin, expected.cope, dispatch.caseTheme + " Cope bulletin must describe the same editorial case");
+    assert.match(copeIndex.methodology, /selected only from variants written for that case theme/i);
+
+    const riskSection = dispatch.sections.find((section) => section.label === "RISK DEPARTMENT");
+    const postMortemSection = dispatch.sections.find((section) => section.label === "BAGHOLDER POST-MORTEM");
+    assert.ok(riskSection && postMortemSection);
+    assert.match(riskSection.body, expected.closure, dispatch.caseTheme + " risk reframe must remain case-specific");
+    assert.match(postMortemSection.body, expected.closure, dispatch.caseTheme + " post-mortem conclusion must remain case-specific");
+
+    assert.equal(copeIndex.dimensions.length, 5);
+    assert.ok(copeIndex.dimensions.every((dimension) =>
+      Number.isInteger(dimension.value) && dimension.value >= 0 && dimension.value <= 100,
+    ));
+    const expectedOverall = Math.round(
+      copeIndex.dimensions.reduce((sum, dimension) => sum + dimension.value, 0) / copeIndex.dimensions.length,
+    );
+    assert.equal(copeIndex.overall, expectedOverall, "the displayed overall reading must reconcile to its five dimensions");
+    const expectedStatus = expectedOverall >= 75 ? "SEVERE / PAPERWORK ADVISED" :
+      expectedOverall >= 55 ? "ELEVATED / CHAT ECHO PERSISTENT" :
+      expectedOverall >= 35 ? "MODERATE / THESIS STILL OPEN" :
+      "CALM / SUSPICIOUSLY WELL-ADJUSTED";
+    assert.equal(copeIndex.status, expectedStatus, "the status label must match the displayed score");
+
+    observedThemes.add(dispatch.caseTheme);
+    observedCopeBulletins.add(copeIndex.bulletin);
+  }
+
+  assert.equal(observedThemes.size, 18, "all existing editorial case themes must appear in the quality sample");
+  assert.ok(observedCopeBulletins.size >= 18, "case-specific Cope bulletins must preserve variety across the sampled period");
+});
+
+
 
 function makePassport(overrides: Partial<PassportData> = {}): PassportData {
   return {
