@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { archiveRecords } from "./archives/archive-data";
 import { exhibits } from "./museum/museum-data";
 import { SITE_URL } from "./site-config";
+import { CLUB_FACTION_IDS } from "./club/club-engine";
 
 const publicRoutes = [
   "/",
@@ -27,6 +28,7 @@ const publicRoutes = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     ...publicRoutes,
+    ...CLUB_FACTION_IDS.map((id) => "/club/factions/" + id),
     ...exhibits.map((exhibit) => "/museum/exhibits/" + exhibit.slug),
     ...archiveRecords.map((record) => "/archives/records/" + record.slug),
   ];
