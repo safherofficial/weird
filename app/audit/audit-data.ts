@@ -177,9 +177,9 @@ export const classifications: Record<ArchetypeId, Archetype> = {
     roast: "The early holders appreciate your contribution to the ecosystem. They would like to thank you privately.",
   },
   planned: {
-    title: "THE EXIT-PLAN-ADJACENT PROFESSIONAL",
-    subtitle: "There was an entry thesis. The exit plan was expected to arrive after the next 100x.",
-    roast: "Your CA research had fourteen tabs. Your exit condition was one line: 'we will see'.",
+    title: "THE PLAN-FIRST OPERATOR",
+    subtitle: "You wrote the thesis, know what would invalidate it and set an exit condition before the next candle.",
+    roast: "Fourteen tabs of CA research and an exit plan written before the timeline could rename the drawdown. CT has requested your browser history.",
   },
   "infinite-accumulator": {
     title: "THE INFINITE ACCUMULATOR",
@@ -207,14 +207,14 @@ export const classifications: Record<ArchetypeId, Archetype> = {
     roast: "You drew lines between seventeen wallets and still could not establish common ownership or find the exit.",
   },
   "utility-optimist": {
-    title: "THE FUTURE-UTILITY OPTIMIST",
-    subtitle: "The meme is live, the ticker is trading and the utility is planned for a future phase that keeps moving.",
-    roast: "The product-market fit is in the room. It may be the room next door.",
+    title: "THE MEME-IS-THE-PRODUCT REALIST",
+    subtitle: "The memes, group chat and shared lore are the product. You are not pretending a future app is already shipping.",
+    roast: "The Department asked where the utility roadmap was. You pointed at the frog and said, 'That is the roadmap.'",
   },
   "tokenomics-poet": {
-    title: "THE SUPPLY-CHART POET",
-    subtitle: "You found poetry in the fictional allocation chart while the launch thread forgot to explain the holder distribution.",
-    roast: "You can explain the emissions curve. You cannot explain the chart.",
+    title: "THE TOKEN-MECHANICS AUDITOR",
+    subtitle: "You want a defined token role, mechanics that can be checked and limits written in plain sight.",
+    roast: "You asked what the token actually does. The launch thread responded with a pie chart and a rocket.",
   },
   "narrative-engineer": {
     title: "THE CT NARRATIVE ENGINEER",

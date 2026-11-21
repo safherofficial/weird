@@ -87,7 +87,7 @@ export const questions: WhitepaperQuestion[] = [
     options: [
       { label: "AI-powered meme infrastructure. The agents are already drafting the KOL thread.", technical: 4, buzzwords: 5, clarity: 2, tag: "abstract-maximalist" },
       { label: "Community-powered culture. We are decentralizing the act of posting a ticker.", technical: 4, buzzwords: 4, clarity: 3, tag: "interoperability-evangelist" },
-      { label: "A frog-themed financial revolution. The frog has not reviewed the terms.", technical: 4, buzzwords: 3, clarity: 4, tag: "tokenomics-cartographer" },
+      { label: "A frog-themed financial revolution. The frog has not reviewed the terms.", technical: 4, buzzwords: 3, clarity: 4, tag: "abstract-maximalist" },
       { label: "A memecoin with a lore-based roadmap. The lore is longer than the product brief.", technical: 2, buzzwords: 4, clarity: 2, tag: "product-not-found" },
     ],
   },
@@ -137,7 +137,7 @@ export const questions: WhitepaperQuestion[] = [
     options: [
       { label: "Named roles, documented access controls and transparent decision procedures.", technical: 5, buzzwords: 1, clarity: 5, tag: "dao-diplomat" },
       { label: "A documented transition from the deployer to a community team with scoped permissions.", technical: 4, buzzwords: 2, clarity: 4, tag: "dao-diplomat" },
-      { label: "The community decides, unless the new admin decides something unexpected.", technical: 1, buzzwords: 4, clarity: 1, tag: "abstract-maximalist" },
+      { label: "The community decides, unless the new admin decides something unexpected.", technical: 1, buzzwords: 4, clarity: 1, tag: "dao-diplomat" },
       { label: "A council of KOLs whose responsibilities will be disclosed after the next announcement.", technical: 0, buzzwords: 3, clarity: 0, tag: "appendix-empire" },
     ],
   },
@@ -147,7 +147,7 @@ export const questions: WhitepaperQuestion[] = [
     options: [
       { label: "Documented risks, access controls, an incident process and clear residual limitations.", technical: 5, buzzwords: 0, clarity: 5, tag: "risk-footnote" },
       { label: "A public review process with named owners, verifiable findings and staged remediation.", technical: 4, buzzwords: 1, clarity: 4, tag: "risk-footnote" },
-      { label: "The community is decentralised, so nobody is responsible for anything.", technical: 1, buzzwords: 4, clarity: 1, tag: "zero-knowledge-enthusiast" },
+      { label: "The community is decentralised, so nobody is responsible for anything.", technical: 1, buzzwords: 4, clarity: 1, tag: "dao-diplomat" },
       { label: "All risks are covered by the strength of the community and a pinned rocket emoji.", technical: 0, buzzwords: 5, clarity: 0, tag: "product-not-found" },
     ],
   },
@@ -161,10 +161,10 @@ export const classifications: Record<WhitepaperArchetypeId, WhitepaperArchetype>
     disposition: "REFERRED TO THE OFFICE OF UNBOUNDED NARRATIVE.",
   },
   "consensus-poet": {
-    title: "THE BONDING-CURVE POET",
-    subtitle: "You have turned a launch curve and a graduation screenshot into a literary genre.",
-    roast: "The Department found a curve, a milestone and something that almost resembles an exit plan. Suspicious.",
-    disposition: "GRANTED A PROVISIONAL CERTIFICATE OF CURVE AWARENESS.",
+    title: "THE SOURCE-LINKED TECHNICAL AUTHOR",
+    subtitle: "The chain, program, token standard and launch mechanics are documented with references. The Department found something it can actually check.",
+    roast: "Your technical appendix contains primary links. The CT desk has requested that you replace them with a screenshot.",
+    disposition: "RELEASED FOR INDEPENDENT TECHNICAL REVIEW.",
   },
   "tokenomics-cartographer": {
     title: "THE SUPPLY-CHART CARTOGRAPHER",
@@ -179,16 +179,16 @@ export const classifications: Record<WhitepaperArchetypeId, WhitepaperArchetype>
     disposition: "PLACED ON THE AGENDA FOR A FUTURE COMMUNITY SPACE.",
   },
   "interoperability-evangelist": {
-    title: "THE MULTI-CHAIN MEME EVANGELIST",
-    subtitle: "Every chain is connected. The CA is still waiting for an explanation.",
-    roast: "You have solved narrative fragmentation by introducing six more tickers and a bridge nobody asked for.",
-    disposition: "REFERRED TO THE OFFICE OF CROSS-CHAIN SHILLING.",
+    title: "THE COMMUNITY-COORDINATION MAXIMALIST",
+    subtitle: "The community is described as the operating layer. The responsibilities, decision process and post-launch purpose remain to be written.",
+    roast: "You have decentralised the act of posting. The Department is still waiting for someone to own the deliverables.",
+    disposition: "REFERRED TO THE OFFICE OF COMMUNITY OPERATING MODELS.",
   },
   "zero-knowledge-enthusiast": {
-    title: "THE BUNDLE-EXPLANATION ENTHUSIAST",
-    subtitle: "The launch proves everything, including the fact that nobody can identify who funded the early wallets.",
-    roast: "You have provided a wallet graph without revealing the source. The Department respects the commitment.",
-    disposition: "REQUESTED TO DISCLOSE AT LEAST ONE PRIMARY SOURCE.",
+    title: "THE PROPRIETARY-PROOF ARCHITECT",
+    subtitle: "The launch architecture is described as proprietary. Its technical proof will be discussed in a future Spaces session.",
+    roast: "The proof is classified until the next Spaces. The Department has filed a request for an explanation that can survive daylight.",
+    disposition: "REQUESTED TO PRODUCE THE TECHNICAL DETAILS.",
   },
   "utility-archaeologist": {
     title: "THE TOKEN-PURPOSE ARCHAEOLOGIST",

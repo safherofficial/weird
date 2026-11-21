@@ -184,10 +184,10 @@ export const classifications: Record<UtilityArchetypeId, UtilityArchetype> = {
     disposition: "PLACED ON THE WAITLIST FOR THE WAITLIST.",
   },
   "institutional-mirage": {
-    title: "THE SMART-MONEY MIRAGE",
-    subtitle: "Smart money is supposedly accumulating, according to a screenshot with no source or wallet context.",
-    roast: "You are already backed by whales, according to a label supplied by an account that follows the same KOLs.",
-    disposition: "REFERRED TO THE OFFICE OF HYPOTHETICAL PARTNERSHIPS.",
+    title: "THE ECOSYSTEM EXPANSION MIRAGE",
+    subtitle: "The token is a movement, an ecosystem and the future of everything. The future holder army has not found the CA yet.",
+    roast: "You have promised the entire Solana timeline a place in the ecosystem. No one has been assigned to build the welcome desk.",
+    disposition: "REFERRED TO THE OFFICE OF HYPOTHETICAL SCALE.",
   },
   "actually-useful": {
     title: "THE ACTUALLY USEFUL SOLANA PROJECT",

@@ -2,12 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
-import { questions as auditQuestions } from "../app/audit/audit-data";
+import { classifications as auditClassifications, questions as auditQuestions } from "../app/audit/audit-data";
 import { AUDIT_QUESTION_COUNT, buildResult as buildAuditResult, decodeCaseCode, encodeCaseCode, isValidAnswers } from "../app/audit/audit-engine";
 import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode, isValidDecisions, simulateProgress } from "../app/simulator/simulator-engine";
-import { questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
+import { classifications as utilityClassifications, questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
 import { questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
-import { questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
+import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
@@ -421,4 +421,51 @@ test("simulator briefing uses the same ADD TO POSITION language as its action", 
   const source = readFileSync("app/simulator/simulator-client.tsx", "utf8");
   assert.ok(source.includes("trim 20%, add to your position or ask CT / Telegram."));
   assert.doesNotMatch(source, /average down/i);
+});
+
+
+test("DYOR Audit archetype copy describes the selected behavior", () => {
+  assert.equal(auditQuestions[8].options[0].tag, "planned");
+  assert.match(auditClassifications.planned.title, /PLAN-FIRST/);
+  assert.match(auditClassifications.planned.subtitle, /exit condition before the next candle/i);
+
+  assert.equal(auditQuestions[6].options[2].tag, "utility-optimist");
+  assert.match(auditClassifications["utility-optimist"].subtitle, /memes, group chat and shared lore are the product/i);
+
+  assert.equal(auditQuestions[6].options[1].tag, "tokenomics-poet");
+  assert.match(auditClassifications["tokenomics-poet"].title, /TOKEN-MECHANICS/);
+});
+
+test("Token-Purpose Inspector ecosystem-mirage profile matches its source answers", () => {
+  assert.equal(utilityQuestions[0].options[3].tag, "institutional-mirage");
+  assert.equal(utilityQuestions[2].options[3].tag, "institutional-mirage");
+
+  const result = buildUtilityResult([3, 0, 3, 0, 0, 0, 0]);
+  assert.equal(result.primaryTag, "institutional-mirage");
+  assert.match(result.profile.title, /ECOSYSTEM EXPANSION MIRAGE/);
+  assert.match(result.profile.subtitle, /future holder army/i);
+});
+
+test("Fictional Token Dossier archetypes align with technical, community and governance answers", () => {
+  assert.equal(whitepaperQuestions[0].options[1].tag, "interoperability-evangelist");
+  assert.match(whitepaperClassifications["interoperability-evangelist"].title, /COMMUNITY-COORDINATION/);
+
+  assert.equal(whitepaperQuestions[2].options[0].tag, "consensus-poet");
+  assert.equal(whitepaperQuestions[3].options[0].tag, "consensus-poet");
+  assert.match(whitepaperClassifications["consensus-poet"].title, /SOURCE-LINKED TECHNICAL AUTHOR/);
+
+  assert.equal(whitepaperQuestions[2].options[1].tag, "zero-knowledge-enthusiast");
+  assert.match(whitepaperClassifications["zero-knowledge-enthusiast"].title, /PROPRIETARY-PROOF/);
+
+  assert.equal(whitepaperQuestions[0].options[2].tag, "abstract-maximalist");
+  assert.equal(whitepaperQuestions[5].options[2].tag, "dao-diplomat");
+  assert.equal(whitepaperQuestions[6].options[2].tag, "dao-diplomat");
+
+  const technical = buildWhitepaperResult([0, 0, 0, 0, 0, 0, 0], "Source Linked");
+  assert.equal(technical.primaryTag, "consensus-poet");
+  assert.match(technical.profile.title, /SOURCE-LINKED TECHNICAL AUTHOR/);
+
+  const community = buildWhitepaperResult([1, 1, 0, 0, 0, 0, 0], "Community Coordination");
+  assert.equal(community.primaryTag, "interoperability-evangelist");
+  assert.match(community.profile.title, /COMMUNITY-COORDINATION/);
 });

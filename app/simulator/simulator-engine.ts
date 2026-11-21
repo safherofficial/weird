@@ -250,20 +250,15 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
     const action = actions[decisionIndex];
     const event = marketEvents[index];
     const priceBefore = price;
-    let actionLabel = action.shortLabel;
 
     if (action.id === "trim") {
       const unitsToSell = units * 0.2;
       units -= unitsToSell;
       cash += unitsToSell * price;
-    } else if (action.id === "average") {
-      if (cash >= 25) {
-        const amount = Math.min(125, cash);
-        units += amount / price;
-        cash -= amount;
-      } else {
-        actionLabel = "ADD SKIPPED";
-      }
+    } else if (action.id === "average" && cash >= 25) {
+      const amount = Math.min(125, cash);
+      units += amount / price;
+      cash -= amount;
     }
 
     counts[action.id] += 1;
@@ -275,7 +270,7 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
       day: event.day,
       headline: event.headline,
       action: action.id,
-      actionLabel,
+      actionLabel: action.shortLabel,
       priceBefore: round(priceBefore),
       priceAfter: round(price),
       movement: event.movement,
@@ -304,13 +299,10 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
 }
 
 function selectProfile(progress: SimulatorProgress): SimulatorProfile {
-  const { hold, trim, telegram } = progress.counts;
-  const executedAdds = progress.history.filter(
-    (entry) => entry.action === "average" && entry.actionLabel === "ADD"
-  ).length;
+  const { hold, trim, average, telegram } = progress.counts;
 
   if (telegram >= 3) return profiles.telegram;
-  if (executedAdds >= 3) return profiles.accumulator;
+  if (average >= 3) return profiles.accumulator;
   if (trim >= 4) return progress.netWorth >= STARTING_CREDITS ? profiles.defector : profiles.consultant;
   if (hold >= 5) return profiles.diamond;
   if (progress.netWorth >= STARTING_CREDITS) return profiles.survivor;
@@ -326,14 +318,10 @@ export function buildSimulatorResult(decisions: number[]): SimulatorResult {
   const progress = simulateProgress(decisions);
   const profile = selectProfile(progress);
   const counts = progress.counts;
-  const executedAdds = progress.history.filter(
-    (entry) => entry.action === "average" && entry.actionLabel === "ADD"
-  ).length;
-  const skippedAddAttempts = counts.average - executedAdds;
   const decisionSummary = [
     counts.hold + " holds",
     counts.trim + " trims",
-    executedAdds + " additional buys" + (skippedAddAttempts ? " / " + skippedAddAttempts + " add attempts skipped" : ""),
+    counts.average + " additional buys",
     counts.telegram + " CT / Telegram consultations",
   ].join(" / ");
 
