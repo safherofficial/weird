@@ -3,6 +3,7 @@ import DepartmentHeader from "./components/department-header";
 import DepartmentFooter from "./components/department-footer";
 import SectionLabel from "./components/section-label";
 import { departmentGroups } from "./divisions";
+import { factions } from "./club/club-engine";
 
 const conditions = [
   { label: "BONDING CURVE", value: "GRADUATED / TOO LATE", tone: "green" },
@@ -104,6 +105,42 @@ export default function Home() {
             </span>
           ))}
         </div>
+      </section>
+
+      <section className="hq-club shell" aria-labelledby="hq-club-title">
+        <div className="hq-club__identity">
+          <span className="hq-club__eyebrow">THE DEPARTMENT'S UNOFFICIAL OFFICIAL COMMUNITY</span>
+          <h2 id="hq-club-title">THE 99%<br /><em>CLUB.</em></h2>
+          <p>
+            Six factions. One shared excuse. Find your fictional Solana trenches archetype,
+            receive your membership file and nominate the next degen who insists they are still early.
+          </p>
+          <div className="hq-club__actions">
+            <Link className="button button--primary" href="/club">APPLY FOR MEMBERSHIP <span>↗</span></Link>
+            <Link className="hq-club__text-link" href="/club#club-factions-title">MEET THE SIX FACTIONS ↗</Link>
+          </div>
+        </div>
+
+        <aside className="hq-club__membership" aria-label="The 99% Club identity">
+          <div className="hq-club__membership-top"><span>FORM 99C-001</span><span>FICTIONAL ISSUE</span></div>
+          <div className="hq-club__seal">99<span>%</span></div>
+          <strong>IT'S NEVER OUR FAULT.</strong>
+          <strong>THE NEXT ONE IS MINE.</strong>
+          <div className="hq-club__membership-bottom">
+            <span>MEMBER BENEFITS / NONE</span>
+            <span>EXPECTATIONS / MANAGED</span>
+          </div>
+        </aside>
+
+        <div className="hq-club__factions" aria-label="The six fictional 99% Club factions">
+          <div><span>THE SIX FACTIONS</span><strong>ONE VERY FLEXIBLE THESIS</strong></div>
+          {Object.values(factions).map((faction) => (
+            <span className="hq-club__faction" key={faction.id}>
+              <b>{faction.code}</b>{faction.title}
+            </span>
+          ))}
+        </div>
+        <p className="hq-club__disclaimer">“99%” IS A SATIRICAL CLUB IDENTITY, NOT A MEASURED STATISTIC. MEMBERSHIP IS FICTIONAL; THERE IS NO VERIFIED ROSTER, TOKEN OR FINANCIAL BENEFIT.</p>
       </section>
 
       <section className="hq-status shell" aria-labelledby="hq-status-title">
