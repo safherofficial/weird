@@ -321,6 +321,25 @@ export const archiveRecords: ArchiveRecord[] = [
     relatedHref: "/daily-office",
     keywords: ["KOL", "Crypto Twitter", "CT", "CA", "screenshot", "social proof"],
   },
+  {
+    slug: "the-wallet-graph-does-not-prove-ownership",
+    accession: "DDA-016",
+    title: "THE WALLET GRAPH DOES NOT PROVE OWNERSHIP",
+    category: "INCIDENT REPORTS",
+    department: "WHALE & WALLET INVESTIGATION / OBSERVATION & INFERENCE DESK",
+    clearance: "PUBLIC / FICTIONAL ON-CHAIN CASE REVIEW",
+    summary: "A fictional cluster of early buys and transfers was arranged into a wallet graph, then presented as proof of common ownership and coordinated intent without a verified attribution trail.",
+    finding: "TRANSACTION LINKS OBSERVED / COMMON OWNERSHIP NOT ESTABLISHED.",
+    stamp: "AN ARROW IS NOT AN OWNER.",
+    sections: [
+      { heading: "OBSERVED MATERIAL", paragraphs: ["The fictional exhibit contains a set of early transfers, several fresh addresses and a graph connecting movements that occurred near the same launch window. The diagram records the relationships its author chose to draw; it does not authenticate who controlled each address.", "No real wallet, token, address, transaction or market participant is represented or monitored by this Department."] },
+      { heading: "OBSERVATION / INFERENCE REVIEW", paragraphs: ["Transaction proximity can justify a question about funding relationships. It cannot, without additional evidence, establish common ownership, coordinated control or motive. Address labels supplied by an anonymous chart-maker remain claims, not verified identities.", "The case file separates directly depicted transfers, inferred clusters and confirmed ownership. The final category remains unknown unless an independent attribution record supports it."] },
+      { heading: "FINAL DISPOSITION", paragraphs: ["The wallet graph is preserved as a fictional example of overconfident on-chain storytelling. The arrows remain in the exhibit; the unsupported ownership verdict has been withdrawn."] },
+    ],
+    relatedLabel: "VIEW THE BUNDLE FAMILY PORTRAIT",
+    relatedHref: "/museum/exhibits/the-bundle-family-portrait",
+    keywords: ["wallet graph", "bundle", "sniper", "ownership", "wallet cluster", "transactions", "on-chain", "observation", "inference"],
+  },
 ];
 
 export function getArchiveRecord(slug: string): ArchiveRecord | undefined {
