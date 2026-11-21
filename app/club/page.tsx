@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import ClubClient from "./club-client";
 import ClubChallenges from "./club-challenges";
+import ClubTokenNotice from "./club-token-notice";
 import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
@@ -47,6 +48,10 @@ export default function ClubPage() {
         </aside>
 
         <ClubClient />
+      </div>
+
+      <div className="shell">
+        <ClubTokenNotice placement="club" />
       </div>
 
       <div className="shell">
