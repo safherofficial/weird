@@ -707,9 +707,12 @@ test("U24 journey routing is mapped once across all ten divisions without self-l
     const pageInstance = 'DepartmentNextSteps currentDepartment="' + department + '"';
     assert.equal(page.split(pageInstance).length - 1, 1, department + " must render exactly one page-level journey section");
 
-    const routeBlock = component.match(new RegExp("\\\\b" + department + ":\\\\s*\\\\[([\\\\s\\\\S]*?)\\\\n  \\\\],"));
-    assert.ok(routeBlock, department + " must have an explicit routing block");
-    const actualDestinations = Array.from(routeBlock[1].matchAll(/href: "([^"]+)"/g), (match) => match[1]);
+    const routeStart = component.indexOf("  " + department + ": [");
+    assert.ok(routeStart >= 0, department + " must have an explicit routing block");
+    const routeEnd = component.indexOf("\\n  ],", routeStart);
+    assert.ok(routeEnd >= 0, department + " routing block must close cleanly");
+    const routeBlock = component.slice(routeStart, routeEnd);
+    const actualDestinations = Array.from(routeBlock.matchAll(/href: "([^"]+)"/g), (match) => match[1]);
     assert.deepEqual(actualDestinations, route.destinations, department + " must retain its two curated destinations");
     assert.equal(new Set(actualDestinations).size, 2, department + " destinations must be unique");
     assert.ok(!actualDestinations.includes("/" + route.page), department + " must not route to itself");
