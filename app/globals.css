@@ -12158,6 +12158,12 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   font: 700 9px/1.5 var(--mono);
 }
 
+.department-case-chain__evidence-output {
+  color: #d8dfd3;
+  font: 700 8px/1.6 var(--mono);
+  overflow-wrap: anywhere;
+}
+
 .department-case-chain__evidence > p,
 .department-case-chain__handoff > p {
   margin: 0;
@@ -12201,11 +12207,19 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 .department-case-chain__step > a,
 .department-case-chain__step > small,
 .department-case-chain__precedents article > a {
-  margin-top: auto;
   color: var(--green);
   font: 8px/1.5 var(--mono);
   letter-spacing: .05em;
   text-decoration: none;
+}
+
+.department-case-chain__step > a,
+.department-case-chain__step > small {
+  margin-top: 0;
+}
+
+.department-case-chain__precedents article > a {
+  margin-top: auto;
 }
 
 .department-case-chain__step > small {
