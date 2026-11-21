@@ -2170,6 +2170,46 @@ test("Case Atlas labels thread chronology as the selected date window rather tha
   assert.ok(atlasClient.includes("{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES"));
 });
 
+test("U27.6 production experience keeps collection counts, filter semantics and responsive navigation accurate", () => {
+  const archivePage = readFileSync("app/archives/page.tsx", "utf8");
+  const archivesClient = readFileSync("app/archives/archives-client.tsx", "utf8");
+  const museumClient = readFileSync("app/museum/museum-client.tsx", "utf8");
+  const homePage = readFileSync("app/page.tsx", "utf8");
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(archivePage.includes('description: archiveRecords.length + " fictional case records'));
+  assert.doesNotMatch(archivePage, /Fifteen fictional case records|DDA-015/);
+  assert.ok(archivePage.includes("archiveRecords[archiveRecords.length - 1]?.accession"));
+  assert.equal(archiveRecords.length, 16);
+  assert.equal(archiveRecords[archiveRecords.length - 1].accession, "DDA-016");
+
+  assert.ok(archivesClient.includes('role="group" aria-label="Filter archive category"'));
+  assert.ok(museumClient.includes('role="group" aria-label="Filter exhibits by category"'));
+  assert.ok(archivesClient.includes('aria-pressed={category === item}'));
+  assert.ok(museumClient.includes('aria-pressed={category === item}'));
+  assert.ok(archivesClient.includes('aria-live="polite"'));
+  assert.ok(museumClient.includes('aria-live="polite"'));
+
+  assert.ok(homePage.includes("Ten numbered divisions. Three routing groups."));
+  assert.equal(departments.length, 10);
+  assert.equal(departmentGroups.length, 3);
+
+  assert.ok(header.includes('aria-controls={menuId}'));
+  assert.ok(header.includes('aria-expanded={menuOpen}'));
+  assert.ok(header.includes('hidden={!menuOpen}'));
+  assert.ok(header.includes('event.key === "Escape"'));
+  assert.ok(header.includes('aria-label="Main navigation"'));
+  assert.ok(header.includes('aria-label="Department directory"'));
+
+  assert.ok(css.includes("@media (max-width: 1120px)"));
+  assert.ok(css.includes("max-height: calc(100dvh - 112px)"));
+  assert.ok(css.includes(".mobile-nav__scroll"));
+  assert.ok(css.includes("overflow-y: auto"));
+  assert.ok(css.includes(":where(a, button, input, textarea, select):focus-visible"));
+  assert.ok(css.includes("@media (prefers-reduced-motion: reduce)"));
+});
+
 test("U26 navigation labels and links match the exact destination pages and directory sections", () => {
   const routePages = [
     ["simulator", "app/simulator/page.tsx", "THE BAGHOLDER SIMULATOR"],
