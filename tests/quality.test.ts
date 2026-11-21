@@ -709,7 +709,7 @@ test("U24 journey routing is mapped once across all ten divisions without self-l
 
     const routeStart = component.indexOf("  " + department + ": [");
     assert.ok(routeStart >= 0, department + " must have an explicit routing block");
-    const routeEnd = component.indexOf("\\n  ],", routeStart);
+    const routeEnd = component.indexOf("\n  ],", routeStart);
     assert.ok(routeEnd >= 0, department + " routing block must close cleanly");
     const routeBlock = component.slice(routeStart, routeEnd);
     const actualDestinations = Array.from(routeBlock.matchAll(/href: "([^"]+)"/g), (match) => match[1]);
