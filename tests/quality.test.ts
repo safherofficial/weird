@@ -2470,3 +2470,23 @@ test("U28.2 faction identity, weekly challenges and individual badge sharing rem
   assert.ok(weekly.includes("recordClubWeeklyChallenge"));
   assert.doesNotMatch(weekly + challengeDesk, /fetch\(|WebSocket|supabase|prisma|wallet connect/i);
 });
+
+
+test("U28.3 homepage gives the 99% Club a prominent and truthful public identity", () => {
+  const home = readFileSync("app/page.tsx", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+  const tickerPosition = home.indexOf('<section className="hq-ticker"');
+  const clubPosition = home.indexOf('<section className="hq-club shell"');
+  const statusPosition = home.indexOf('<section className="hq-status shell"');
+
+  assert.ok(tickerPosition >= 0 && clubPosition > tickerPosition && statusPosition > clubPosition,
+    "The Club front door must sit directly after the hero ticker and before the status board");
+  assert.ok(home.includes('href="/club">APPLY FOR MEMBERSHIP'));
+  assert.ok(home.includes('href="/club#club-factions-title">MEET THE SIX FACTIONS'));
+  assert.ok(home.includes("Object.values(factions).map"));
+  assert.ok(home.includes("faction.code") && home.includes("faction.title"));
+  assert.ok(home.includes("NOT A MEASURED STATISTIC"));
+  assert.ok(home.includes("THERE IS NO VERIFIED ROSTER, TOKEN OR FINANCIAL BENEFIT"));
+  assert.ok(styles.includes(".hq-club__factions"));
+  assert.ok(styles.includes("@media (max-width: 640px)"));
+});
