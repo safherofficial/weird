@@ -12,7 +12,7 @@ import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClub
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences } from "../app/daily-office/case-atlas";
-import { shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
+import { buildInstitutionalMemory, isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
 import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anchor";
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
 import { archiveRecords } from "../app/archives/archive-data";
