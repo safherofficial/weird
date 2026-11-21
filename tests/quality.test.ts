@@ -2360,7 +2360,7 @@ test("U28.1 Club challenge desk uses only the optional local Passport and expose
   assert.ok(clubPage.includes("<ClubChallenges />"));
   assert.ok(clubPage.includes("IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE."));
   const clubBadgeArt = badgeAssets.split("export const CLUB_BADGE_MARKS")[1] ?? "";
-  assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 12);
+  assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 15);
   assert.ok(passportClient.includes("badgeCollectionSvgHeight(statuses)"));
   assert.ok(passportClient.includes("getBadgeArtworkHref(item.id, assetBaseUrl)"));
   assert.ok(passportPage.includes("26 ACHIEVEMENT BADGES"));
