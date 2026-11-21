@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AchievementEmblem from "../passport/achievement-emblem";
 import {
-  PASSPORT_ACHIEVEMENTS,
-  PASSPORT_STORAGE_KEY,
   PASSPORT_UPDATED_EVENT,
   getPassportAchievementStatuses,
   readPassport,
