@@ -29,6 +29,19 @@ type EngineSpec = {
   assertDecodedExtra?: (decoded: unknown) => void;
 };
 
+function assertCrossRead(value: unknown, label: string) {
+  assert.ok(value && typeof value === "object", label + " must return a cross-read");
+  const read = value as { headline?: unknown; interpretation?: unknown; signals?: unknown };
+  assert.ok(typeof read.headline === "string" && read.headline.length > 0, label + " headline must exist");
+  assert.ok(typeof read.interpretation === "string" && read.interpretation.length > 0, label + " interpretation must exist");
+  assert.ok(Array.isArray(read.signals) && read.signals.length === 2, label + " must include two answer-linked signals");
+  for (const signal of read.signals as Array<Record<string, unknown>>) {
+    for (const field of ["label", "context", "answer", "detail"]) {
+      assert.ok(typeof signal[field] === "string" && signal[field].length > 0, label + " signal " + field + " must exist");
+    }
+  }
+}
+
 function assertPercent(value: unknown, label: string) {
   assert.equal(typeof value, "number", label + " must be numeric");
   assert.ok(Number.isFinite(value), label + " must be finite");
@@ -304,6 +317,8 @@ test("fictional token dossier HTML and Markdown exports retain the case record a
   assert.ok(markdown.includes("FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION"));
   assert.ok(markdown.includes(result.profile.title));
   assert.ok(markdown.includes(result.secondaryProfile.title));
+  assert.ok(markdown.includes(result.crossRead.headline));
+  assert.ok(markdown.includes(result.crossRead.signals[0].answer));
   assert.ok(markdown.includes(result.problemStatement));
   result.sections.forEach((section) => assert.ok(markdown.includes(section.title)));
   result.allocations.forEach((allocation) => assert.ok(markdown.includes(allocation.label)));
@@ -311,6 +326,7 @@ test("fictional token dossier HTML and Markdown exports retain the case record a
   assert.ok(html.startsWith("<!doctype html><html lang=\"en\">"));
   assert.ok(html.includes(result.profile.title));
   assert.ok(html.includes(result.secondaryProfile.title));
+  assert.ok(html.includes(result.crossRead.headline));
   assert.ok(html.includes("FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION"));
   assert.ok(html.includes("PRINT / SAVE AS PDF"));
   const escapeHtmlForAssertion = (value: string) => value.replace(/[&<>"']/g, (char) => ({
@@ -480,6 +496,59 @@ test("DYOR Audit cross-read is consistent across the public case and social prev
   assert.match(publicPage, /result\.crossRead\.strongestEvidence\.answer/);
   assert.match(publicPage, /result\.crossRead\.strongestPressure\.answer/);
   assert.match(socialPreview, /result\?\.crossRead\.headline/);
+});
+
+test("six interactive departments produce deterministic answer-linked cross-reads", () => {
+  const simulatorAnswers = [3, 3, 1, 0, 2, 1, 0];
+  const utilityAnswers = [0, 3, 0, 3, 0, 0, 0];
+  const roadmapAnswers = [0, 3, 3, 3, 2, 3];
+  const whitepaperAnswers = [0, 2, 2, 3, 3, 2, 3];
+  const clubAnswers = [0, 1, 2, 3, 2];
+  const copeAnswers = [0, 1, 2, 3, 2];
+
+  const simulator = buildSimulatorResult(simulatorAnswers);
+  const utility = buildUtilityResult(utilityAnswers);
+  const roadmap = buildRoadmapResult(roadmapAnswers, "Cross Read");
+  const whitepaper = buildWhitepaperResult(whitepaperAnswers, "Cross Read");
+  const club = buildClubResult(clubAnswers);
+  const cope = buildPersonalCopeResult(copeAnswers);
+
+  const cases = [
+    ["Paper Market Simulator", simulator, buildSimulatorResult(simulatorAnswers)],
+    ["Token-Purpose Inspector", utility, buildUtilityResult(utilityAnswers)],
+    ["CTO Takeover Roadmap", roadmap, buildRoadmapResult(roadmapAnswers, "Cross Read")],
+    ["Fictional Token Dossier", whitepaper, buildWhitepaperResult(whitepaperAnswers, "Cross Read")],
+    ["99% Club", club, buildClubResult(clubAnswers)],
+    ["Personal Cope Calibration", cope, buildPersonalCopeResult(copeAnswers)],
+  ] as const;
+
+  for (const [label, result, repeated] of cases) {
+    assertCrossRead(result.crossRead, label);
+    assert.deepEqual(result.crossRead, repeated.crossRead, label + " cross-read must be deterministic");
+  }
+
+  const verifyAnswerSignals = (
+    label: string,
+    signals: Array<{ context: string; answer: string }>,
+    questions: Array<{ prompt: string; options: Array<{ label: string }> }>,
+    answers: number[],
+  ) => {
+    signals.forEach((signal) => {
+      const index = questions.findIndex((question) => question.prompt === signal.context);
+      assert.ok(index >= 0, label + " signal must reference a real question");
+      assert.equal(signal.answer, questions[index].options[answers[index]].label, label + " signal must quote the selected answer");
+    });
+  };
+
+  assert.match(simulator.crossRead.interpretation, /seven fictional rounds/i);
+  assert.match(simulator.crossRead.signals[0].detail, /holds|trims|additional buys/i);
+  assert.match(simulator.crossRead.signals[1].context, /DAY 0[1-7]/);
+  verifyAnswerSignals("Utility Inspector", utility.crossRead.signals, utilityQuestions, utilityAnswers);
+  verifyAnswerSignals("Roadmap Generator", roadmap.crossRead.signals, roadmapQuestions, roadmapAnswers);
+  verifyAnswerSignals("Whitepaper Factory", whitepaper.crossRead.signals, whitepaperQuestions, whitepaperAnswers);
+  verifyAnswerSignals("99% Club", club.crossRead.signals, clubQuestions, clubAnswers);
+  verifyAnswerSignals("Cope Index", cope.crossRead.signals, copeQuestions, copeAnswers);
+  assert.doesNotMatch(cope.crossRead.interpretation, /mental-health diagnosis|clinical assessment/i);
 });
 
 test("Token-Purpose Inspector ecosystem-mirage profile matches its source answers", () => {

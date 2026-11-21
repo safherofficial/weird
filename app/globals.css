@@ -11867,3 +11867,88 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   .division-idbar__identity span, .division-idbar__index, .division-idbar > p { font-size:5px; }
   .division-idbar > p { grid-column:1; }
 }
+
+
+/* U23 — answer-linked behavioural cross-reads shared across the interactive departments */
+.department-cross-read {
+  display: grid;
+  gap: 13px;
+  margin: 17px 0;
+  padding: 18px;
+  border: 1px solid #46583d;
+  border-left: 3px solid #b6ff65;
+  background: linear-gradient(110deg, #141d11, #0e130e 72%);
+}
+
+.department-cross-read__heading > span {
+  display: block;
+  color: #92a184;
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .09em;
+}
+
+.department-cross-read__heading > strong {
+  display: block;
+  margin-top: 7px;
+  color: #c6e8a4;
+  font: 700 13px/1.45 var(--mono);
+  letter-spacing: .025em;
+}
+
+.department-cross-read__heading > p {
+  margin: 8px 0 0;
+  color: #b8c2b0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.department-cross-read__signals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.department-cross-read__signal {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #293528;
+  background: rgba(5, 9, 5, .48);
+}
+
+.department-cross-read__signal > span {
+  display: block;
+  color: #82927b;
+  font: 7px/1.5 var(--mono);
+  letter-spacing: .07em;
+}
+
+.department-cross-read__signal > p {
+  margin: 7px 0 5px;
+  color: #aeb8a8;
+  font: 8px/1.5 var(--mono);
+}
+
+.department-cross-read__signal > strong {
+  display: block;
+  color: #e1e8dc;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.department-cross-read__signal > small {
+  display: block;
+  margin-top: 7px;
+  color: #84917e;
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+@media (max-width: 650px) {
+  .department-cross-read {
+    padding: 14px;
+  }
+  .department-cross-read__signals {
+    grid-template-columns: 1fr;
+  }
+}
