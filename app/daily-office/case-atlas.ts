@@ -52,6 +52,7 @@ export type DepartmentCaseAtlasComparisonWindow = {
 };
 
 export type DepartmentCaseAtlasThemeRoutingComparison = DepartmentCaseAtlasPeriodComparison & {
+  theme: string;
   currentWindowCount: number;
 };
 
