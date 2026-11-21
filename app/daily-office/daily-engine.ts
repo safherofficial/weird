@@ -364,7 +364,7 @@ const dispositions = [
 ];
 
 const methodology =
-  "This dispatch follows one coherent, date-selected editorial case route. Its headline, bulletin, incident, KOL note, wallet interpretation, risk review, internal memo and post-mortem are selected from compatible topic pools. All reports, wallet scenarios, KOL signals, scores and post-mortems are fictional. No AI factual research, external feed, live market data, real token, wallet, project, person or visitor activity is used.";
+  "This dispatch follows one coherent, date-selected editorial case route. Its headline, bulletin, incident, KOL note, wallet interpretation, risk review, internal memo and post-mortem are selected from compatible topic pools and reinforced with focus-specific operational detail. All reports, wallet scenarios, KOL signals, scores and post-mortems are fictional. No AI factual research, external feed, live market data, real token, wallet, project, person or visitor activity is used.";
 
 
 type EditorialFocus =
@@ -542,6 +542,293 @@ const editorialFocusPools: Record<EditorialFocus, EditorialFocusPool> = {
   },
 };
 
+type EditorialDepthPool = {
+  incident: string[];
+  kol: string[];
+  wallet: string[];
+  risk: string[];
+  memo: string[];
+  postMortem: string[];
+};
+
+/**
+ * Focus-specific operational details make each fictional dispatch read like
+ * a recognisable trenches incident rather than a generic crypto paragraph.
+ * Every item is illustrative copy, not a claim about a real token or actor.
+ */
+const editorialDepthPools: Record<EditorialFocus, EditorialDepthPool> = {
+  launch: {
+    incident: [
+      "The intake record contains a mint address and a posting time, but no traceable path from the original announcement to the accounts repeating it.",
+      "The fictional launch thread supplied a ticker before it supplied a named use case, a deployer explanation or a link to primary project material.",
+      "The first screenshot showed a CA. The follow-up record still could not establish who controlled the deployer or who had verified the address.",
+    ],
+    kol: [
+      "The source trail runs from one anonymous call to three quote-posts that cite one another; the file therefore records one claim with three amplifiers, not three confirmations.",
+      "The earliest visible post contains the same cropped CA card later described as independent discovery by several fictional accounts.",
+      "The desk found no primary announcement behind the repeated call. Each repost added confidence language, but none added a source.",
+    ],
+    wallet: [
+      "Where applicable, mint authority, freeze authority and metadata-update control are separate questions; the fictional thread bundled them into one reassuring word: verified.",
+      "The wallet graphic labels early buyers as a coordinated launch group, but the file contains no established common owner or funding relationship.",
+      "A first-buyer list was treated as proof of deployer alignment. The record establishes only that the illustrated addresses appeared early in the fictional scenario.",
+    ],
+    risk: [
+      "The review separates token identification, authority controls and deployer identity. A CA by itself answers none of the other questions.",
+      "The main exposure is a source gap: the launch narrative depends on claims that cannot be traced beyond reposts and an unattributed screenshot.",
+      "No conclusion about ownership or coordination is supported by the fictional launch graphic; the committee has been instructed to stop turning arrows into evidence.",
+    ],
+    memo: [
+      "Required intake fields remain the original announcement, the exact mint, the stated token purpose and any applicable authority disclosures; a ticker and a CA are not a completed due-diligence record.",
+      "The launch register must distinguish what the fictional source actually shows from what the group chat inferred after reading it.",
+    ],
+    postMortem: [
+      "The final file contains one traceable launch post and several copies. The committee has reduced its source count from five to one without reducing its confidence.",
+      "The CA survived every screenshot crop. The original explanation did not survive the first request for a source link.",
+    ],
+  },
+  graduation: {
+    incident: [
+      "The fictional bonding-curve completion was treated as the finish line. The post-graduation pool, migration record and available depth were left for a future committee.",
+      "The celebration began when the progress indicator reached its milestone; the incident review began when the group asked what the milestone actually established.",
+      "A migration screenshot circulated as proof of durable demand, although the file contained no separate review of the resulting pool or its trading depth.",
+    ],
+    kol: [
+      "The KOL thread uses the graduation badge as its central proof point, then cites other posts using the same badge as independent confirmation.",
+      "Several fictional calls describe graduation as adoption. None defines a user action, repeat activity or other evidence behind that word.",
+      "The original call stops at the milestone. Every later repost adds a larger target but no new information about the post-graduation pool.",
+    ],
+    wallet: [
+      "The fictional migration diagram shows a destination pool, but it does not establish the depth available at a particular trade size or the distribution of holders.",
+      "Early-wallet movement after graduation is presented as coordinated distribution; the file has no verified ownership map or evidence of motive.",
+      "The screenshot records a migration event. The bullish caption quietly upgrades that event into a claim about future demand.",
+    ],
+    risk: [
+      "Graduation, pool depth, slippage and holder concentration are separate questions. The report marks the first as an event, not an answer to the other three.",
+      "A displayed market-cap figure cannot substitute for an assessment of executable liquidity in the fictional post-graduation pool.",
+      "The risk committee found that the celebratory language describes a milestone while the unanswered questions concern what happened after it.",
+    ],
+    memo: [
+      "Every graduation report must keep the milestone, migration and post-graduation pool review in separate fields; completing one does not complete the others.",
+      "The word liquidity may not be used as a synonym for a graduation badge, a market-cap screenshot or a crowded celebration thread.",
+    ],
+    postMortem: [
+      "The retrospective confirms that the curve completed on schedule. It does not confirm that the community's assumptions about the next stage did.",
+      "The party invitation listed graduation as the outcome. The post-mortem lists it as the first line of a longer unanswered report.",
+    ],
+  },
+  handover: {
+    incident: [
+      "The fictional CTO announcement changed the account biography and banner, while the incident register still showed unanswered questions about treasury custody, repository access and domain control.",
+      "The community inherited the ticker and social account before it could identify who held the operational keys or who was responsible for the next release.",
+      "A new takeover team published a roadmap, but the incident file contained no named owners for the codebase, treasury, website or moderation permissions.",
+    ],
+    kol: [
+      "The takeover announcement is repeated as a confirmed handover even though the cited source is the new team's own announcement and no independent access record is attached.",
+      "The timeline treats a new X handle as evidence of operational control. The source file contains no separate confirmation of who can ship code or move treasury assets.",
+      "The KOL summary says the project is back. The quoted evidence establishes only that a new account has started posting.",
+    ],
+    wallet: [
+      "A changed deployer narrative does not establish control of the old deployer wallet, treasury addresses or any permissions attached to the fictional project.",
+      "The takeover graphic connects several wallets to the new team, but labels and arrows are not proof that the keys have changed hands.",
+      "The access review distinguishes public-facing accounts from signing authority; the fictional file has evidence for the former and no verified record for the latter.",
+    ],
+    risk: [
+      "The handover remains incomplete until responsibility for treasury, code, domains, deployer permissions and community channels is recorded separately.",
+      "A continuity promise without named operators, access boundaries and a verifiable release process is still a promise, even when the banner looks professionally redesigned.",
+      "The greatest fictional exposure is a responsibility gap: every participant assumes another person controls the critical account.",
+    ],
+    memo: [
+      "The handover register requires a named owner, access status and acceptance record for each critical asset; a pinned post is not a custody receipt.",
+      "A takeover update must distinguish social-account continuity from control of code, domains, treasury and permissions.",
+    ],
+    postMortem: [
+      "The retrospective found that the community transferred the narrative faster than it transferred operational responsibility.",
+      "The new team inherited the memes on day one. The access checklist is still waiting for its first confirmed owner.",
+    ],
+  },
+  kol: {
+    incident: [
+      "The incident began with a chart crop in a large account's post. Within minutes, fictional quote-posts repeated the same caption while presenting the call as separate research.",
+      "The original thread, its reposts and a later Spaces recap were filed as three events, although all three point back to the same unsupported claim.",
+      "The call acquired a ticker, a target and a community slogan before the desk could locate the source that supposedly justified it.",
+    ],
+    kol: [
+      "The citation chain loops from account A to account B and back to account A; the file counts one originating claim, not an independent research network.",
+      "The disclosure line is absent from the fictional screenshot. The desk cannot infer whether the post was paid, gifted or unsolicited and records that uncertainty explicitly.",
+      "Follower count, verification status and Spaces attendance are recorded as reach signals only; none verifies the claim or the speaker's source.",
+    ],
+    wallet: [
+      "A wallet label appears in the KOL graphic, but the account supplying the label provides no reproducible basis for linking the address to a known trader.",
+      "The same screenshot is used to support both the KOL thesis and a wallet-coordination theory; neither claim becomes independent because the image has two captions.",
+      "The fictional address cluster is repeated by several accounts, but repost volume does not establish common ownership, intent or a reliable identity label.",
+    ],
+    risk: [
+      "The report separates audience size, source quality and promotional disclosure. Combining them into a single confidence score would conceal the very gaps under review.",
+      "A repeated call can amplify exposure without adding corroboration; the same unsupported source remains unsupported after its tenth quote-post.",
+      "No allegation about a real KOL is made. The case concerns a fictional source trail and the habit of treating repetition as verification.",
+    ],
+    memo: [
+      "Editorial records should preserve the earliest available source, timestamp, material edits and any stated promotional disclosure before counting later amplification.",
+      "Use 'repeated by' when the source is shared. Reserve 'independently confirmed' for evidence that actually originates elsewhere.",
+    ],
+    postMortem: [
+      "The post-mortem identified one originating claim, a dozen variations of its caption and no additional evidence. The reach report remains impressive.",
+      "The community archived every repost but misplaced the original source, which was the only document the review needed.",
+    ],
+  },
+  chart: {
+    incident: [
+      "The fictional chart screenshot removes the timeframe and the candles immediately before the highlighted move, leaving an arrow with no usable sequence around it.",
+      "The entry was described as early after the post went viral; the incident log places the subject's fictional discovery after the candle used to justify the call.",
+      "The group circulated a wick as a confirmed close, then used the cropped image to explain why the next entry was still considered early.",
+    ],
+    kol: [
+      "The KOL caption cites a green candle but omits the chart interval, the source of the image and the point at which the screenshot was captured.",
+      "The same annotated chart is reposted with different target prices. The underlying image and its missing timeframe remain unchanged.",
+      "Several fictional accounts describe the same visible move as confirmation, although their posts all use one cropped chart and no additional source.",
+    ],
+    wallet: [
+      "Wallet movement is narrated around the highlighted candle, but the fictional file does not establish whether the transfers preceded, followed or caused the move.",
+      "The chart annotation and wallet labels are presented as one story; the record contains no independent link between the illustrated addresses and the candle.",
+      "The screenshot's timestamp is not the transaction timestamp. The desk has opened a separate field for each and left the causal arrow blank.",
+    ],
+    risk: [
+      "A chart crop without interval, timestamp and surrounding price sequence cannot support the confident timeline attached to it.",
+      "The review separates a visible price movement from the narrative used to explain it; neither a wick nor a caption establishes the missing context.",
+      "The fictional entry note has a target but no recorded invalidation condition. The committee has classified the blank field as a formatting success.",
+    ],
+    memo: [
+      "Chart exhibits must retain the interval, capture time, source and enough surrounding context to show what the crop excludes.",
+      "A screenshot time, candle close and wallet transaction time are different records and must not be merged into one convenient timeline.",
+    ],
+    postMortem: [
+      "The review restored the omitted candles and discovered that the original arrow had been carrying most of the thesis.",
+      "The screenshot remained green in the archive. The timeframe field remained empty in every version.",
+    ],
+  },
+  wallet: {
+    incident: [
+      "The fictional wallet map groups addresses by launch timing and visual proximity, then assigns a shared owner without evidence that the addresses are controlled together.",
+      "A small set of early transfers became a 'bundle family' graphic before the source, ownership and transaction context had been checked.",
+      "The incident file contains an address cluster, several arrows and a confident label; it does not contain proof of coordinated control.",
+    ],
+    kol: [
+      "The KOL post attributes the fictional cluster to smart money but links only to another account's wallet graphic, not to an attributable source or method.",
+      "Several accounts repeat the same wallet labels and call the overlap confirmation; none supplies evidence independent of the original diagram.",
+      "The source trail records an anonymous label, a repost and a Spaces recap. It does not record a verified wallet owner.",
+    ],
+    wallet: [
+      "Transaction proximity can describe timing; it cannot by itself establish common ownership, coordination or motive for the fictional addresses.",
+      "A transfer proves that value moved between the illustrated addresses. It does not prove why it moved or who ultimately controlled either side.",
+      "The map distinguishes observed links from analyst-assigned labels, leaving unknown ownership visibly unknown rather than filling it with a bullish theory.",
+    ],
+    risk: [
+      "The review marks wallet identity, funding relationships and motive as separate unknowns instead of treating one speculative label as an answer to all three.",
+      "A cluster diagram can be useful for organising questions, but the fictional labels must not be presented as verified ownership or proof of a coordinated operation.",
+      "The main risk is false certainty: a persuasive graph has been allowed to replace the evidence needed to explain its connections.",
+    ],
+    memo: [
+      "Wallet exhibits must preserve the distinction between observed transaction paths, inferred clusters and confirmed ownership; the last category cannot be supplied by graphic design.",
+      "Record the source and method behind every address label. When ownership is unknown, the published file must say unknown.",
+    ],
+    postMortem: [
+      "The final diagram retained every arrow and lost every caveat. The post-mortem has restored the caveats and left the owner field blank.",
+      "The committee has withdrawn the word coordinated and replaced it with the less cinematic but supportable phrase: addresses observed near one another.",
+    ],
+  },
+  liquidity: {
+    incident: [
+      "The fictional post-graduation report displays a headline valuation while the pool-depth field is empty and the assumed trade size is never stated.",
+      "A launch celebration treats the migration as proof of healthy liquidity, although the incident file contains no separate review of pool reserves or execution impact.",
+      "The first post-graduation screenshot shows a price. The second, requested by the review team, was supposed to show what size could actually trade near it.",
+    ],
+    kol: [
+      "The KOL thread quotes a market-cap figure as evidence of exit capacity, without showing the pool depth or the size of the hypothetical order being discussed.",
+      "The same green valuation screenshot is repeated as a liquidity update by accounts that provide no separate pool or execution context.",
+      "A fictional call describes a large headline valuation as deep liquidity; the desk has returned the claim for a definition of 'deep'.",
+    ],
+    wallet: [
+      "The pool diagram shows token movement after graduation, but the fictional case provides no basis for inferring the identity or intention of the wallets involved.",
+      "Holder concentration and pool depth appear in separate exhibits; the group chat has combined them into one chart labelled 'healthy'.",
+      "The illustrated transfer is not an execution quote. The file keeps wallet movement separate from the question of what the pool could absorb.",
+    ],
+    risk: [
+      "The fictional review separates headline valuation, available pool depth, holder concentration and slippage at a stated trade size; none is a substitute for another.",
+      "An attractive displayed price does not establish how much could be exchanged near that price in the scenario being described.",
+      "The risk label remains open because the report never specifies the trade size behind its claim of sufficient liquidity.",
+    ],
+    memo: [
+      "Liquidity notes must identify the pool and the assumed trade size before describing depth or slippage; headline valuation is not an execution measure.",
+      "Keep holder concentration, pool reserves and price movement in separate evidence fields. A single green dashboard tile cannot answer all three.",
+    ],
+    postMortem: [
+      "The retrospective found a valuation screenshot in every slide deck and a pool-depth figure in none of them.",
+      "The committee had a target market cap, a community banner and an unanswered question about the size of the exit it kept promising.",
+    ],
+  },
+  exit: {
+    incident: [
+      "The fictional entry dossier contains pages of narrative research, a list of KOL accounts and no condition describing when the original thesis would be considered broken.",
+      "The subject documented every reason to enter and left the exit field blank, later describing the blank as flexibility.",
+      "A target price was entered in the worksheet, but no scenario was recorded for a failed catalyst, a changed deployer or a pool that could not support the assumed trade.",
+    ],
+    kol: [
+      "The KOL target is repeated as if it were an exit plan, although the source never states an invalidation condition or an execution assumption.",
+      "The timeline has replaced a missing decision rule with a more confident target and called the resulting screenshot a strategy update.",
+      "Several fictional accounts repeat the same upside thesis; none explains what evidence would cause the thesis to be withdrawn.",
+    ],
+    wallet: [
+      "The wallet graphic follows entry activity but does not establish the holder's plan, ownership identity or reason for remaining in the fictional position.",
+      "A movement by an early address is treated as a signal for the subject's own exit decision, although the file cannot establish the address owner's motive.",
+      "The record has a transaction timeline and no documented decision rule linking that timeline to the subject's fictional position.",
+    ],
+    risk: [
+      "The review distinguishes a price target from an exit condition and both from an executable plan that accounts for the fictional scenario's liquidity assumptions.",
+      "No pre-stated invalidation point appears in the dossier. The committee has classified the missing field as 'long-term conviction'.",
+      "The risk is not that the fictional subject lacks another bullish explanation; it is that the original thesis has no recorded test that could change the conclusion.",
+    ],
+    memo: [
+      "A complete fictional case record distinguishes entry rationale, invalidation condition, intended holding assumptions and exit mechanics instead of storing them under one price target.",
+      "The archive must record what would disconfirm the thesis, not only the evidence selected to keep it alive.",
+    ],
+    postMortem: [
+      "The retrospective found that the entry thesis had seven supporting screenshots and no condition under which the subject would reconsider it.",
+      "The missing exit plan has been recovered as a 46-page appendix titled 'Reasons the next update changes everything'.",
+    ],
+  },
+  migration: {
+    incident: [
+      "The fictional migration announcement names a destination but does not preserve a verifiable link between the old token, the new mint and the transaction claimed to connect them.",
+      "A screenshot of a new token page is treated as proof of migration; the incident file has no documented source for the destination address.",
+      "The community is circulating two CA references under one ticker, while the fictional record has not established which address the announcement actually identifies.",
+    ],
+    kol: [
+      "The KOL thread links to a destination screenshot, then cites reposts of that screenshot as confirmation that the migration is complete.",
+      "Several fictional accounts repeat the new CA but none links the announcement to a verifiable source or a clearly documented migration record.",
+      "The call describes the destination as official. The supporting evidence is a repost with the original source cropped out.",
+    ],
+    wallet: [
+      "The fictional transfer graphic is labelled migration proof, but the file does not establish that the sending and receiving addresses represent the same project or controller.",
+      "The old and new CA appear in one diagram. No verified link is supplied between the two records, so the arrow remains an editorial annotation.",
+      "The migration story combines a token-page screenshot with unrelated wallet movements; the dossier keeps those exhibits separate pending source evidence.",
+    ],
+    risk: [
+      "The review requires an attributable announcement and a verifiable link between the old and new token references before treating the migration claim as established within the fictional case.",
+      "A changed ticker or new token page does not independently establish continuity, authority or control of the destination address.",
+      "The risk committee has separated the destination claim, the source of the announcement and the identity of the operator; all three remain distinct fields.",
+    ],
+    memo: [
+      "Migration records must preserve the original announcement, both token references and the evidence connecting them; never let a ticker name stand in for that chain of custody.",
+      "The archive must label screenshots as screenshots and verified links as verified links. The arrow between them is not a transaction receipt.",
+    ],
+    postMortem: [
+      "The retrospective found that the new CA had been copied into every channel before anyone preserved the original migration announcement.",
+      "The community successfully migrated its confidence. The documentary link between the two token references remains in transit.",
+    ],
+  },
+};
+
 const editorialRoutes: Array<{
   label: string;
   headline: number;
@@ -676,6 +963,15 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
   const assignedDepartment = pickFrom(departments, focus.department, seed, 83);
   const disposition = pickFrom(dispositions, focus.disposition, seed, 97);
   const referenceNumber = String((seed % 9000) + 1000);
+  const depth = editorialDepthPools[route.focus];
+  const depthNotes = {
+    incident: pick(depth.incident, seed, 307),
+    kol: pick(depth.kol, seed, 311),
+    wallet: pick(depth.wallet, seed, 313),
+    risk: pick(depth.risk, seed, 317),
+    memo: pick(depth.memo, seed, 331),
+    postMortem: pick(depth.postMortem, seed, 337),
+  };
 
   const kol = {
     heading: pickFrom(kolHeadings, focus.kolHeading, seed, 109),
@@ -768,12 +1064,12 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
     subheading: "THE TRENCHES DESK / " + route.label + " / DAILY CT BRIEFING / ISSUE " + referenceNumber,
     bulletin,
     sections: [
-      { label: "INCIDENT REPORT", heading: incident.heading, body: incident.body, stamp: incident.stamp },
-      { label: "KOL INTELLIGENCE", heading: kol.heading, body: kol.body, stamp: kol.stamp },
-      { label: "ON-CHAIN DIVISION", heading: onChain.heading, body: onChain.body, stamp: onChain.stamp },
-      { label: "RISK DEPARTMENT", heading: risk.heading, body: risk.body, stamp: risk.stamp },
-      { label: "INTERNAL CORRESPONDENCE", heading: memo.heading, body: memo.body, stamp: memo.stamp },
-      { label: "BAGHOLDER POST-MORTEM", heading: postMortem.heading, body: postMortem.body, stamp: postMortem.stamp },
+      { label: "INCIDENT REPORT", heading: incident.heading, body: incident.body + " " + depthNotes.incident, stamp: incident.stamp },
+      { label: "KOL INTELLIGENCE", heading: kol.heading, body: kol.body + " " + depthNotes.kol, stamp: kol.stamp },
+      { label: "ON-CHAIN DIVISION", heading: onChain.heading, body: onChain.body + " " + depthNotes.wallet, stamp: onChain.stamp },
+      { label: "RISK DEPARTMENT", heading: risk.heading, body: risk.body + " " + depthNotes.risk, stamp: risk.stamp },
+      { label: "INTERNAL CORRESPONDENCE", heading: memo.heading, body: memo.body + " " + depthNotes.memo, stamp: memo.stamp },
+      { label: "BAGHOLDER POST-MORTEM", heading: postMortem.heading, body: postMortem.body + " " + depthNotes.postMortem, stamp: postMortem.stamp },
     ],
     convictionIndex,
     quote,
