@@ -473,6 +473,15 @@ test("DYOR Audit cross-read stays evidence-linked, deterministic and non-clinica
   assert.doesNotMatch(crowdLed.crossRead.interpretation, /diagnos(?:is|e)|mental health/i);
 });
 
+test("DYOR Audit cross-read is consistent across the public case and social preview", () => {
+  const publicPage = readFileSync("app/audit/case/[code]/page.tsx", "utf8");
+  const socialPreview = readFileSync("app/audit/case/[code]/opengraph-image.tsx", "utf8");
+  assert.match(publicPage, /result\.crossRead\.headline/);
+  assert.match(publicPage, /result\.crossRead\.strongestEvidence\.answer/);
+  assert.match(publicPage, /result\.crossRead\.strongestPressure\.answer/);
+  assert.match(socialPreview, /result\?\.crossRead\.headline/);
+});
+
 test("Token-Purpose Inspector ecosystem-mirage profile matches its source answers", () => {
   assert.equal(utilityQuestions[0].options[3].tag, "institutional-mirage");
   assert.equal(utilityQuestions[2].options[3].tag, "institutional-mirage");

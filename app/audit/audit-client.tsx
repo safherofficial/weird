@@ -335,6 +335,7 @@ export default function AuditClient() {
       "I have been audited by THE DYOR DEPARTMENT.",
       "Classification: " + result.profile.title,
       "Research: " + result.research + "/100 | Cope: " + result.cope + "/100 | Crowd dependency: " + result.crowd + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       result.profile.roast,
     ].join(" ");
 
@@ -359,6 +360,7 @@ export default function AuditClient() {
       "I have been audited by THE DYOR DEPARTMENT.",
       "Classification: " + result.profile.title + ".",
       "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
+      "Cross-read: " + result.crossRead.headline + ".",
       makeXSafeRoast(result.profile.roast),
     ].join(" ");
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(reportUrl);

@@ -65,6 +65,7 @@ export default async function PublicCasePage({ params }: CasePageProps) {
     "THE DYOR DEPARTMENT has reviewed my case.",
     "Classification: " + result.profile.title + ".",
     "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
+    "Cross-read: " + result.crossRead.headline + ".",
     result.profile.roast.length > 82 ? result.profile.roast.slice(0, 78) + "…" : result.profile.roast,
     "Your turn. Submit your own audit.",
   ].join(" ");
@@ -104,6 +105,24 @@ export default async function PublicCasePage({ params }: CasePageProps) {
             <span>CROWD DEPENDENCY</span>
             <strong className="crowd-score">{result.crowd}<small>/100</small></strong>
             <i>HOW MUCH THE CHAT DECIDES</i>
+          </div>
+        </div>
+
+        <div className="result-secondary result-cross-read">
+          <span>BEHAVIOURAL CROSS-READ / FICTIONAL ANSWER PATTERN</span>
+          <strong>{result.crossRead.headline}</strong>
+          <small>{result.crossRead.interpretation}</small>
+          <div className="result-cross-read__signals">
+            <div>
+              <span>STRONGEST RESEARCH SIGNAL / {result.crossRead.strongestEvidence.score}/5</span>
+              <p>{result.crossRead.strongestEvidence.prompt}</p>
+              <small>{result.crossRead.strongestEvidence.answer}</small>
+            </div>
+            <div>
+              <span>HIGHEST COPE / CROWD SIGNAL</span>
+              <p>{result.crossRead.strongestPressure.prompt}</p>
+              <small>{result.crossRead.strongestPressure.answer} · COPE {result.crossRead.strongestPressure.cope}/5 · CROWD {result.crossRead.strongestPressure.crowd}/5</small>
+            </div>
           </div>
         </div>
 

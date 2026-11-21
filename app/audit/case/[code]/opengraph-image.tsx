@@ -18,6 +18,7 @@ export default async function OpenGraphImage({
   const profileTitle = result?.profile.title ?? "UNRECOGNIZED CASE FILE";
   const subtitle = result?.profile.subtitle ?? "The Department could not verify this report.";
   const finding = result?.finding ?? "CASE FILE NOT FOUND";
+  const crossReadHeadline = result?.crossRead.headline ?? "BEHAVIOURAL CROSS-READ UNAVAILABLE";
   const roast = result?.profile.roast ?? "Please return to the Department and begin again.";
   const caseNumber = result?.caseNumber ?? "------";
 
@@ -88,7 +89,11 @@ export default async function OpenGraphImage({
           DEPARTMENTAL FINDING / {finding}
         </div>
 
-        <div style={{ display: "flex", gap: 12, marginTop: 18 }}>
+        <div style={{ display: "flex", marginTop: 12, color: "#b6ff65", fontSize: 14, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+
+        <div style={{ display: "flex", gap: 12, marginTop: 14 }}>
           {[
             { label: "RESEARCH EFFORT", value: result?.research ?? 0, color: "#b6ff65" },
             { label: "COPE INDEX", value: result?.cope ?? 0, color: "#ff7777" },
