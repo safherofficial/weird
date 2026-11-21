@@ -24,6 +24,8 @@ type OfficeEvidenceProfile = {
 };
 
 type DepartmentNarrativeEvidence = {
+  receivedFrom: string;
+  receivedArtifact: string;
   source: string;
   outputLabel: string;
   excerpt: string;
@@ -336,7 +338,16 @@ export function buildDepartmentNarrative(issueDate: string, currentDepartment: D
     const isCurrent = department.section === currentOffice.section;
     const profile = officeEvidenceProfiles[department.section as OfficeSection];
     if (!profile) throw new Error("A Department narrative thread references an office without an evidence profile.");
+    const previousStep = thread.offices[index - 1];
+    const previousDepartment = previousStep
+      ? departments.find((item) => item.section === previousStep.section)
+      : null;
+    const previousProfile = previousStep
+      ? officeEvidenceProfiles[previousStep.section as OfficeSection]
+      : null;
     const evidence: DepartmentNarrativeEvidence = {
+      receivedFrom: previousDepartment?.title ?? "THE TRENCHES DESK / DAILY CASE INTAKE",
+      receivedArtifact: previousProfile?.outputLabel ?? "ORIGINAL DAILY DISPATCH / INTAKE RECORD",
       source: profile.source,
       outputLabel: profile.outputLabel,
       excerpt: excerptFromDispatch(dispatch, profile),
