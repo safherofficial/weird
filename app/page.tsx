@@ -138,7 +138,7 @@ export default function Home() {
 
         <div className="hq-directory__groups">
           {departmentGroups.map((group) => (
-            <section className="hq-office" key={group.number} aria-labelledby={"hq-office-" + group.number}>
+            <section className="hq-office" id={"department-group-" + group.number} key={group.number} aria-labelledby={"hq-office-" + group.number}>
               <div className="hq-office__header">
                 <div className="hq-office__number">{group.number}</div>
                 <div className="hq-office__identity">

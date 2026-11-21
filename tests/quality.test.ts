@@ -1747,35 +1747,61 @@ test("Case Atlas labels thread chronology as the selected date window rather tha
   assert.ok(atlasClient.includes("{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES"));
 });
 
-test("U26 navigation uses the current homepage division names in desktop and mobile menus", () => {
+test("U26 navigation labels and links match the exact destination pages and directory sections", () => {
+  const routePages = [
+    ["simulator", "app/simulator/page.tsx", "THE BAGHOLDER SIMULATOR"],
+    ["club", "app/club/page.tsx", "THE 99% CLUB"],
+    ["audit", "app/audit/page.tsx", "THE DYOR AUDIT 2.0"],
+    ["daily", "app/daily-office/page.tsx", "THE TRENCHES DESK"],
+    ["archives", "app/archives/page.tsx", "THE DEPARTMENT ARCHIVES"],
+    ["roadmap", "app/roadmap-generator/page.tsx", "THE CTO TAKEOVER ROADMAP"],
+    ["whitepaper", "app/whitepaper-factory/page.tsx", "THE TOKEN DOSSIER FACTORY"],
+    ["utility", "app/utility-inspector/page.tsx", "THE TOKEN-PURPOSE INSPECTOR"],
+    ["museum", "app/museum/page.tsx", "THE TRENCHES RELIC MUSEUM"],
+    ["cope", "app/cope-index/page.tsx", "THE GLOBAL COPE INDEX"],
+  ] as const;
+  assert.equal(departments.length, routePages.length);
   assert.equal(divisionNavigationGroups.length, departmentGroups.length);
-  for (const [index, directoryGroup] of departmentGroups.entries()) {
-    const navigationGroup = divisionNavigationGroups[index];
-    assert.equal(navigationGroup.number, directoryGroup.number);
-    assert.equal(navigationGroup.label, directoryGroup.title);
-    assert.equal(navigationGroup.descriptor, directoryGroup.code);
+
+  for (const [index, group] of departmentGroups.entries()) {
+    const navGroup = divisionNavigationGroups[index];
+    assert.equal(navGroup.label, group.title);
+    assert.equal(navGroup.descriptor, group.code);
+    assert.equal(navGroup.anchorId, "department-group-" + group.number);
     assert.deepEqual(
-      navigationGroup.items.map((item) => ({
-        number: item.number,
-        label: item.label,
-        href: item.href,
-        section: item.section,
-      })),
-      directoryGroup.items.map((item) => ({
-        number: item.number,
-        label: item.title,
-        href: item.href,
-        section: item.section,
-      })),
-      "Navigation destinations and public division identities must match the homepage directory",
+      navGroup.items.map((item) => ({ number: item.number, label: item.label, href: item.href, section: item.section })),
+      group.items.map((item) => ({ number: item.number, label: item.pageTitle, href: item.href, section: item.section })),
+      "Every navigation item must use the destination page heading and its actual route",
     );
   }
 
+  for (const [section, path, pageTitle] of routePages) {
+    const department = departments.find((item) => item.section === section);
+    assert.ok(department, section + " division record must exist");
+    assert.equal(department.pageTitle, pageTitle);
+    const page = readFileSync(path, "utf8");
+    assert.ok(page.includes(pageTitle + "."), path + " heading must match its navigation label");
+    const navItem = divisionNavigationGroups.flatMap((group) => group.items).find((item) => item.section === section);
+    assert.ok(navItem);
+    assert.equal(navItem.label, pageTitle);
+    assert.equal(navItem.href, department.href);
+  }
+
+  const home = readFileSync("app/page.tsx", "utf8");
   const header = readFileSync("app/components/department-header.tsx", "utf8");
-  assert.equal(
-    header.split("navigationGroups.map(").length - 1,
-    2,
-    "Desktop and mobile menus must both render from the same current navigation groups",
-  );
+  const css = readFileSync("app/globals.css", "utf8");
+  assert.ok(home.includes('id={"department-group-" + group.number}'));
+  assert.ok(header.includes('href={"/#" + group.anchorId}'));
+  assert.equal(header.split("navigationGroups.map(").length - 1, 2, "Desktop and mobile menus must render the same current route map");
+  assert.ok(header.includes('label: "THE DEPARTMENT PASSPORT"'));
+  assert.ok(header.includes('href: "/passport"'));
+  assert.ok(header.includes('ctaLabel = "START DYOR AUDIT 2.0"'));
+  assert.ok(header.includes('ctaHref = "/audit"'));
+  assert.ok(header.includes('href={departmentsHref}'));
+  assert.ok(header.includes('href={manifestoHref}'));
+  assert.ok(home.includes('id="departments"'));
+  assert.ok(home.includes('id="manifesto"'));
+  assert.ok(css.includes(".main-nav__panel-heading a"));
+  assert.ok(css.includes(".mobile-nav__section-heading a"));
 });
 

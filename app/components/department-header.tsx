@@ -23,7 +23,7 @@ const navigationGroups = divisionNavigationGroups;
 
 const passportItem: DepartmentNavItem = {
   number: "11",
-  label: "DEPARTMENT PASSPORT",
+  label: "THE DEPARTMENT PASSPORT",
   href: "/passport",
   section: "passport",
 };
@@ -36,7 +36,7 @@ export default function DepartmentHeader({
   activeSection = "home",
   statusMessage = "ALL SYSTEMS NOMINALLY USELESS",
   ctaHref = "/audit",
-  ctaLabel = "ENTER FOMO CONTROL",
+  ctaLabel = "START DYOR AUDIT 2.0",
 }: DepartmentHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
@@ -127,7 +127,7 @@ export default function DepartmentHeader({
                 <div className="main-nav__panel">
                   <div className="main-nav__panel-heading">
                     <span>{group.descriptor}</span>
-                    <span>ROUTING DIRECTORY</span>
+                    <Link href={"/#" + group.anchorId} onClick={closeMenu}>OPEN SECTION ↗</Link>
                   </div>
                   {group.items.map((item) => renderDepartmentLink(item))}
                 </div>
@@ -178,7 +178,7 @@ export default function DepartmentHeader({
             {navigationGroups.map((group) => (
               <section className="mobile-nav__section" aria-label={group.label} key={group.number}>
                 <div className="mobile-nav__section-heading">
-                  <span>{group.number} / {group.label}</span>
+                  <Link href={"/#" + group.anchorId} onClick={closeMenu}>{group.number} / {group.label} ↗</Link>
                   <span>{String(group.items.length).padStart(2, "0")} UNITS</span>
                 </div>
                 {group.items.map((item) => renderDepartmentLink(item, true))}
@@ -187,14 +187,14 @@ export default function DepartmentHeader({
 
             <section className="mobile-nav__section mobile-nav__section--identity" aria-label="Identity">
               <div className="mobile-nav__section-heading">
-                <span>04 / IDENTITY</span>
+                <span>04 / PASSPORT</span>
                 <span>01 UNIT</span>
               </div>
               {renderDepartmentLink(passportItem, true)}
             </section>
 
             <div className="mobile-nav__utility">
-              <Link href={departmentsHref} onClick={closeMenu}>DEPARTMENTS <span aria-hidden="true">↗</span></Link>
+              <Link href={departmentsHref} onClick={closeMenu}>DIRECTORY <span aria-hidden="true">↗</span></Link>
               <Link href={manifestoHref} onClick={closeMenu}>MANIFESTO <span aria-hidden="true">↗</span></Link>
             </div>
             <div className="mobile-nav__foot">NO TOKEN. NO ALPHA. NO LIVE MARKET DATA.</div>
