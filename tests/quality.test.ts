@@ -1475,3 +1475,85 @@ test("U25.11 Case Atlas explains matched periods and displays non-predictive the
   assert.ok(css.includes("@media (max-width: 680px)"));
   assert.doesNotMatch(atlasClient + atlasPage + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });
+
+
+test("U25.12 Case Atlas reconciles division routing assignments across all matched-period windows", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const sourceAtlas = buildDepartmentCaseAtlas(today, 240);
+  assert.equal(sourceAtlas.divisions.length, 10);
+  assert.ok(sourceAtlas.divisions.every((division) => division.routingComparison === null));
+
+  const countOfficeAssignments = (startOffset: number, days: number) => {
+    const counts = new Map<string, { count: number; themes: Set<string> }>();
+    for (let offset = startOffset; offset < startOffset + days; offset += 1) {
+      const issueDate = shiftInstitutionalMemoryDate(today, -offset);
+      const dispatch = buildDailyOfficeDispatch(issueDate);
+      const thread = departmentCaseThreads[dispatch.caseTheme];
+      assert.ok(thread, "Every date-seeded daily case must resolve to a known narrative thread.");
+      assert.equal(thread.offices.length, 3, "Each daily case must route to exactly three offices.");
+      for (const office of thread.offices) {
+        const current = counts.get(office.section) ?? { count: 0, themes: new Set<string>() };
+        current.count += 1;
+        current.themes.add(dispatch.caseTheme);
+        counts.set(office.section, current);
+      }
+    }
+    return counts;
+  };
+
+  for (const days of [14, 30, 60, 90, 120]) {
+    const selected = selectDepartmentCaseAtlasWindow(sourceAtlas, days);
+    const current = countOfficeAssignments(0, days);
+    const previous = countOfficeAssignments(days, days);
+    let currentTotal = 0;
+    let previousTotal = 0;
+
+    assert.equal(selected.divisions.length, 10);
+    for (const division of selected.divisions) {
+      const currentExpected = current.get(division.section) ?? { count: 0, themes: new Set<string>() };
+      const previousExpected = previous.get(division.section) ?? { count: 0, themes: new Set<string>() };
+      const comparison = division.routingComparison;
+      const delta = currentExpected.count - previousExpected.count;
+      const expectedDirection = previousExpected.count === 0
+        ? currentExpected.count === 0 ? "unchanged" : "new"
+        : delta > 0 ? "increase" : delta < 0 ? "decrease" : "unchanged";
+
+      assert.ok(comparison, division.title + " must expose matched-period routing comparison.");
+      assert.equal(comparison.currentWindowCount, currentExpected.count);
+      assert.equal(comparison.previousWindowCount, previousExpected.count);
+      assert.equal(comparison.occurrenceDelta, delta);
+      assert.equal(comparison.percentageChange, previousExpected.count === 0 ? null : delta / previousExpected.count * 100);
+      assert.equal(comparison.direction, expectedDirection);
+      assert.equal(comparison.currentActiveThemeCount, currentExpected.themes.size);
+      assert.equal(comparison.previousActiveThemeCount, previousExpected.themes.size);
+      assert.equal(division.themeCount, division.themes.length, "the permanent connected-theme count must remain unchanged");
+      currentTotal += comparison.currentWindowCount;
+      previousTotal += comparison.previousWindowCount;
+    }
+
+    assert.equal(currentTotal, days * 3, "current office routing assignments must reconcile to three routes per daily file");
+    assert.equal(previousTotal, days * 3, "previous office routing assignments must reconcile to three routes per daily file");
+  }
+});
+
+test("U25.12 Case Atlas labels division metrics as routed assignments, not unique files", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(atlasClient.includes("selectedAtlas.divisions.map((division)"));
+  assert.ok(atlasClient.includes('className="department-case-atlas__division-routing"'));
+  assert.ok(atlasClient.includes("CURRENT ROUTING ASSIGNMENTS"));
+  assert.ok(atlasClient.includes("PREVIOUS ROUTING ASSIGNMENTS"));
+  assert.ok(atlasClient.includes("division.routingComparison.currentWindowCount"));
+  assert.ok(atlasClient.includes("currentActiveThemeCount"));
+  assert.ok(atlasClient.includes("previousActiveThemeCount"));
+  assert.ok(atlasClient.includes("ASSIGNMENTS, NOT UNIQUE FILES"));
+  assert.ok(atlasClient.includes("EACH DAILY CASE ROUTES TO THREE OFFICES"));
+  assert.ok(atlasEngine.includes("export type DepartmentCaseAtlasDivisionRoutingComparison"));
+  assert.ok(atlasEngine.includes("buildPeriodComparison(currentWindowCount, previousWindowCount)"));
+  assert.ok(atlasEngine.includes("routingComparison"));
+  assert.ok(css.includes(".department-case-atlas__division-routing"));
+  assert.ok(css.includes(".department-case-atlas__division-routing > div > strong.is-increase"));
+  assert.doesNotMatch(atlasClient + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
+});

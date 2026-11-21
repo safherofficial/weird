@@ -13204,3 +13204,56 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* U25.12 — division-level matched-period routing assignment comparison */
+.department-case-atlas__division-routing {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 2px 0 4px;
+  padding: 9px;
+  border: 1px solid #303a30;
+  background: #0b100b;
+}
+.department-case-atlas__division-routing > div {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid #263026;
+  background: #0a0e0a;
+}
+.department-case-atlas__division-routing > div > small {
+  color: #87927f;
+  font: 700 7px/1.5 var(--mono);
+  letter-spacing: .04em;
+}
+.department-case-atlas__division-routing > div > strong {
+  color: var(--text);
+  font: 700 11px/1.4 var(--mono);
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__division-routing > div > strong.is-increase { color: #d8b477; }
+.department-case-atlas__division-routing > div > strong.is-decrease { color: #c48f83; }
+.department-case-atlas__division-routing > div > strong.is-new { color: var(--green); }
+.department-case-atlas__division-routing > p {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 6px;
+  border-top: 1px solid #263026;
+  color: #d8b477;
+  font: 700 7px/1.5 var(--mono);
+}
+.department-case-atlas__division-routing > small {
+  grid-column: 1 / -1;
+  color: #87927f;
+  font: 7px/1.6 var(--mono);
+}
+@media (max-width: 680px) {
+  .department-case-atlas__division-routing {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

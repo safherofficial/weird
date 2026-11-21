@@ -51,6 +51,12 @@ export type DepartmentCaseAtlasComparisonWindow = {
   previousEndDate: string;
 };
 
+export type DepartmentCaseAtlasDivisionRoutingComparison = DepartmentCaseAtlasPeriodComparison & {
+  currentWindowCount: number;
+  currentActiveThemeCount: number;
+  previousActiveThemeCount: number;
+};
+
 export type DepartmentCaseAtlasEntry = {
   theme: string;
   narrative: string;
@@ -86,6 +92,7 @@ export type DepartmentCaseAtlasData = {
     href: string;
     themeCount: number;
     themes: string[];
+    routingComparison: DepartmentCaseAtlasDivisionRoutingComparison | null;
   }>;
 };
 
@@ -178,6 +185,20 @@ function utcDayDistance(newerDate: string, olderDate: string): number {
   const newer = Date.parse(newerDate + "T00:00:00.000Z");
   const older = Date.parse(olderDate + "T00:00:00.000Z");
   return Math.round((newer - older) / 86400000);
+}
+
+function buildPeriodComparison(currentCount: number, previousCount: number): DepartmentCaseAtlasPeriodComparison {
+  const occurrenceDelta = currentCount - previousCount;
+  const direction: DepartmentCaseAtlasComparisonDirection = previousCount === 0
+    ? currentCount === 0 ? "unchanged" : "new"
+    : occurrenceDelta > 0 ? "increase" : occurrenceDelta < 0 ? "decrease" : "unchanged";
+
+  return {
+    previousWindowCount: previousCount,
+    occurrenceDelta,
+    percentageChange: previousCount === 0 ? null : occurrenceDelta / previousCount * 100,
+    direction,
+  };
 }
 
 export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): DepartmentCaseAtlasData {
@@ -289,6 +310,7 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
       href: department.href,
       themeCount: related.length,
       themes: related.map((entry) => entry.theme),
+      routingComparison: null,
     };
   });
 
@@ -322,16 +344,7 @@ export function selectDepartmentCaseAtlasWindow(
     const previousWindowCount = entry.occurrences.filter((occurrence) =>
       occurrence.issueDate >= previousStartDate && occurrence.issueDate <= previousEndDate,
     ).length;
-    const occurrenceDelta = occurrences.length - previousWindowCount;
-    const direction: DepartmentCaseAtlasComparisonDirection = previousWindowCount === 0
-      ? occurrences.length === 0 ? "unchanged" : "new"
-      : occurrenceDelta > 0 ? "increase" : occurrenceDelta < 0 ? "decrease" : "unchanged";
-    const periodComparison: DepartmentCaseAtlasPeriodComparison = {
-      previousWindowCount,
-      occurrenceDelta,
-      percentageChange: previousWindowCount === 0 ? null : occurrenceDelta / previousWindowCount * 100,
-      direction,
-    };
+    const periodComparison = buildPeriodComparison(occurrences.length, previousWindowCount);
     const intervals: DepartmentCaseAtlasInterval[] = occurrences.slice(1).map((olderOccurrence, index) => ({
       newerIssueDate: occurrences[index].issueDate,
       olderIssueDate: olderOccurrence.issueDate,
@@ -359,5 +372,24 @@ export function selectDepartmentCaseAtlasWindow(
     };
   });
 
-  return { ...atlas, lookbackDays, comparisonWindow, entries };
+  const divisions = atlas.divisions.map((division) => {
+    const relatedEntries = entries.filter((entry) =>
+      entry.offices.some((office) => office.section === division.section),
+    );
+    const currentWindowCount = relatedEntries.reduce((total, entry) => total + entry.occurrenceCount, 0);
+    const previousWindowCount = relatedEntries.reduce(
+      (total, entry) => total + (entry.periodComparison?.previousWindowCount ?? 0),
+      0,
+    );
+    const routingComparison = {
+      ...buildPeriodComparison(currentWindowCount, previousWindowCount),
+      currentWindowCount,
+      currentActiveThemeCount: relatedEntries.filter((entry) => entry.occurrenceCount > 0).length,
+      previousActiveThemeCount: relatedEntries.filter((entry) => (entry.periodComparison?.previousWindowCount ?? 0) > 0).length,
+    };
+
+    return { ...division, routingComparison };
+  });
+
+  return { ...atlas, lookbackDays, comparisonWindow, entries, divisions };
 }

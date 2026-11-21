@@ -48,11 +48,39 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
           <p>Each office is connected to the fictional case themes it handles. Select a division to filter the registry below.</p>
         </div>
         <div className="department-case-atlas__division-grid">
-          {atlas.divisions.map((division) => (
+          {selectedAtlas.divisions.map((division) => (
             <article className={"department-case-atlas__division" + (officeFilter === division.section ? " is-active" : "")} key={division.section}>
               <span>DIVISION / {division.number}</span>
               <strong>{division.title}</strong>
               <b>{String(division.themeCount).padStart(2, "0")} CONNECTED THEMES</b>
+              {division.routingComparison ? (
+                <div className="department-case-atlas__division-routing" aria-label={"Routing comparison for " + division.title}>
+                  <div>
+                    <small>CURRENT ROUTING ASSIGNMENTS</small>
+                    <strong>{division.routingComparison.currentWindowCount}</strong>
+                  </div>
+                  <div>
+                    <small>PREVIOUS ROUTING ASSIGNMENTS</small>
+                    <strong>{division.routingComparison.previousWindowCount}</strong>
+                  </div>
+                  <div>
+                    <small>NET CHANGE</small>
+                    <strong className={"is-" + division.routingComparison.direction}>
+                      {division.routingComparison.occurrenceDelta > 0 ? "+" : ""}{division.routingComparison.occurrenceDelta}
+                    </strong>
+                  </div>
+                  <div>
+                    <small>CHANGE VS PREVIOUS</small>
+                    <strong className={"is-" + division.routingComparison.direction}>
+                      {division.routingComparison.percentageChange === null
+                        ? division.routingComparison.direction === "new" ? "NEW" : "N/A"
+                        : (division.routingComparison.percentageChange > 0 ? "+" : "") + division.routingComparison.percentageChange.toFixed(1) + "%"}
+                    </strong>
+                  </div>
+                  <p>ACTIVE THEMES / {division.routingComparison.currentActiveThemeCount} NOW · {division.routingComparison.previousActiveThemeCount} BEFORE</p>
+                  <small>ASSIGNMENTS, NOT UNIQUE FILES / EACH DAILY CASE ROUTES TO THREE OFFICES.</small>
+                </div>
+              ) : null}
               <button
                 type="button"
                 aria-pressed={officeFilter === division.section}
