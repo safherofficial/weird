@@ -15,6 +15,7 @@ export default async function CopeCaseImage({
   const answers = decodeCopeCode(code);
   const result = answers ? buildPersonalCopeResult(answers) : null;
   const title = result?.profile.title ?? "UNRECOGNIZED PERSONAL FILE";
+  const crossReadHeadline = result?.crossRead.headline ?? "CROSS-READ NOT AVAILABLE";
   const values = [
     { label: "COPE INDEX", value: result?.copeScore ?? 0, color: "#ff7777" },
     { label: "PATIENCE INDEX", value: result?.patienceScore ?? 0, color: "#b6ff65" },
@@ -31,7 +32,10 @@ export default async function CopeCaseImage({
         <div style={{ display: "flex", marginTop: 36, color: "#899486", fontSize: 14, letterSpacing: 2 }}>CASE No. {result?.caseNumber ?? "------"} / SELF-REPORTED READING</div>
         <div style={{ display: "flex", marginTop: 22, fontSize: 48, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{title}</div>
         <div style={{ display: "flex", marginTop: 14, color: "#b6ff65", fontSize: 19 }}>{result?.profile.subtitle ?? "The Department could not verify this file."}</div>
-        <div style={{ display: "flex", gap: 12, marginTop: 28 }}>
+        <div style={{ display: "flex", marginTop: 11, color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+        <div style={{ display: "flex", gap: 12, marginTop: 17 }}>
           {values.map((item) => (
             <div key={item.label} style={{ display: "flex", flexDirection: "column", flex: 1, padding: "16px 18px", border: "1px solid #384137", backgroundColor: "#121713" }}>
               <span style={{ color: "#8d968a", fontSize: 12, letterSpacing: 1 }}>{item.label}</span>

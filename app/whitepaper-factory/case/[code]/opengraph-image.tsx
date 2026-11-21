@@ -16,6 +16,7 @@ export default async function WhitepaperCaseImage({
   const result = decoded ? buildWhitepaperResult(decoded.answers, decoded.projectSlug) : null;
   const project = result?.projectLabel ?? "PROJECT PENDING";
   const title = result?.profile.title ?? "UNRECOGNIZED TOKEN DOSSIER FILE";
+  const crossReadHeadline = result?.crossRead.headline ?? "CROSS-READ NOT AVAILABLE";
   const metrics = [
     { label: "TECHNICAL DENSITY", value: result?.technicalDensity ?? 0, color: "#b6ff65" },
     { label: "BUZZWORD DENSITY", value: result?.buzzwordDensity ?? 0, color: "#ff7777" },
@@ -32,7 +33,10 @@ export default async function WhitepaperCaseImage({
         <div style={{ display: "flex", marginTop: 27, color: "#899486", fontSize: 14, letterSpacing: 2 }}>CASE No. {result?.caseNumber ?? "------"} / PROJECT: {project}</div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 48, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{title}</div>
         <div style={{ display: "flex", marginTop: 14, color: "#b6ff65", fontSize: 18 }}>{result?.profile.subtitle ?? "The Department could not verify this document."}</div>
-        <div style={{ display: "flex", gap: 12, marginTop: 27 }}>
+        <div style={{ display: "flex", marginTop: 11, color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+        <div style={{ display: "flex", gap: 12, marginTop: 17 }}>
           {metrics.map((metric) => (
             <div key={metric.label} style={{ display: "flex", flexDirection: "column", flex: 1, padding: "17px 18px", border: "1px solid #384137", backgroundColor: "#121713" }}>
               <span style={{ color: "#8d968a", fontSize: 12, letterSpacing: 1 }}>{metric.label}</span>

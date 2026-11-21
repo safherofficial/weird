@@ -14,6 +14,7 @@ export default async function ClubMemberImage({
   const { code } = await params;
   const answers = decodeClubCode(code);
   const result = answers ? buildClubResult(answers) : null;
+  const crossReadHeadline = result?.crossRead.headline ?? "CROSS-READ NOT AVAILABLE";
 
   return new ImageResponse(
     (
@@ -25,7 +26,10 @@ export default async function ClubMemberImage({
         <div style={{ display: "flex", marginTop: 38, color: "#899486", fontSize: 15, letterSpacing: 2 }}>MEMBERSHIP CERTIFICATE / {result?.memberNumber ?? "99-000000"}</div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 48, lineHeight: 1.05, fontWeight: 900, letterSpacing: -2 }}>{result?.profile.title ?? "UNRECOGNIZED MEMBER FILE"}</div>
         <div style={{ display: "flex", marginTop: 16, color: "#b6ff65", fontSize: 22 }}>{result?.profile.motto ?? "THE DEPARTMENT COULD NOT VERIFY THIS FILE."}</div>
-        <div style={{ display: "flex", gap: 12, marginTop: 30 }}>
+        <div style={{ display: "flex", marginTop: 11, color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+        <div style={{ display: "flex", gap: 12, marginTop: 17 }}>
           {[
             { label: "CONVICTION", value: result?.conviction ?? 0, color: "#b6ff65" },
             { label: "COPE INDEX", value: result?.cope ?? 0, color: "#ff7777" },

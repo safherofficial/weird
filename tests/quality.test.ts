@@ -551,6 +551,21 @@ test("six interactive departments produce deterministic answer-linked cross-read
   assert.doesNotMatch(cope.crossRead.interpretation, /mental-health diagnosis|clinical assessment/i);
 });
 
+test("all six public social-preview images render their engine cross-read headline", () => {
+  const previewPaths = [
+    "app/simulator/case/[code]/opengraph-image.tsx",
+    "app/utility-inspector/case/[code]/opengraph-image.tsx",
+    "app/roadmap-generator/case/[code]/opengraph-image.tsx",
+    "app/whitepaper-factory/case/[code]/opengraph-image.tsx",
+    "app/club/member/[code]/opengraph-image.tsx",
+    "app/cope-index/case/[code]/opengraph-image.tsx",
+  ];
+  previewPaths.forEach((path) => {
+    const source = readFileSync(path, "utf8");
+    assert.match(source, /crossRead\.headline/, path + " must display the answer-linked cross-read");
+  });
+});
+
 test("Token-Purpose Inspector ecosystem-mirage profile matches its source answers", () => {
   assert.equal(utilityQuestions[0].options[3].tag, "institutional-mirage");
   assert.equal(utilityQuestions[2].options[3].tag, "institutional-mirage");

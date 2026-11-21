@@ -18,6 +18,7 @@ export default async function SimulatorCaseImage({
   const title = result?.profile.title ?? "UNRECOGNIZED SIMULATION FILE";
   const subtitle = result?.profile.subtitle ?? "The Department could not verify this case.";
   const roast = result?.profile.roast ?? "Please return to the simulator and begin again.";
+  const crossReadHeadline = result?.crossRead.headline ?? "CROSS-READ NOT AVAILABLE";
   const pnl = result ? (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC" : "—";
   const pnlColor = result && result.paperPnl >= 0 ? "#b6ff65" : "#ff7777";
 
@@ -61,7 +62,11 @@ export default async function SimulatorCaseImage({
           {subtitle}
         </div>
 
-        <div style={{ display: "flex", gap: 12, marginTop: 29 }}>
+        <div style={{ display: "flex", marginTop: 12, color: "#b6ff65", fontSize: 13, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+
+        <div style={{ display: "flex", gap: 12, marginTop: 17 }}>
           <div style={{ display: "flex", flexDirection: "column", flex: 1, padding: "18px 20px", border: "1px solid #384137", backgroundColor: "#121713" }}>
             <span style={{ color: "#8d968a", fontSize: 13, letterSpacing: 1 }}>FINAL PAPER NET WORTH</span>
             <span style={{ display: "flex", marginTop: 10, color: "#f0f0e9", fontSize: 34, fontWeight: 800 }}>{(result?.netWorth ?? 0).toFixed(2)} DPC</span>

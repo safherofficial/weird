@@ -17,6 +17,7 @@ export default async function RoadmapCaseImage({
   const title = result?.profile.title ?? "UNRECOGNIZED ROADMAP FILE";
   const project = result?.projectLabel ?? "PROJECT SOON";
   const finding = result?.finding ?? "CASE FILE NOT FOUND";
+  const crossReadHeadline = result?.crossRead.headline ?? "CROSS-READ NOT AVAILABLE";
   const scores = [
     { label: "DELIVERY CLARITY", value: result?.delivery ?? 0, color: "#b6ff65" },
     { label: "TIMELINE REALISM", value: result?.realism ?? 0, color: "#c8b5ff" },
@@ -33,7 +34,10 @@ export default async function RoadmapCaseImage({
         <div style={{ display: "flex", marginTop: 27, color: "#899486", fontSize: 14, letterSpacing: 2 }}>CASE No. {result?.caseNumber ?? "------"} / PROJECT: {project}</div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 46, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{title}</div>
         <div style={{ display: "flex", marginTop: 17, color: "#ff8580", fontSize: 13, fontWeight: 700, letterSpacing: 1 }}>DEPARTMENTAL FINDING / {finding}</div>
-        <div style={{ display: "flex", gap: 12, marginTop: 27 }}>
+        <div style={{ display: "flex", marginTop: 11, color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+        <div style={{ display: "flex", gap: 12, marginTop: 17 }}>
           {scores.map((score) => (
             <div key={score.label} style={{ display: "flex", flexDirection: "column", flex: 1, padding: "17px 18px", border: "1px solid #384137", backgroundColor: "#121713" }}>
               <span style={{ color: "#8d968a", fontSize: 12, letterSpacing: 1 }}>{score.label}</span>

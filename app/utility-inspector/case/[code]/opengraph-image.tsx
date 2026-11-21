@@ -17,6 +17,7 @@ export default async function UtilityCaseImage({
   const title = result?.profile.title ?? "UNRECOGNIZED UTILITY FILE";
   const subtitle = result?.profile.subtitle ?? "The Department could not verify this inspection.";
   const finding = result?.finding ?? "CASE FILE NOT FOUND";
+  const crossReadHeadline = result?.crossRead.headline ?? "CROSS-READ NOT AVAILABLE";
   const metrics = [
     { label: "UTILITY EVIDENCE", value: result?.evidence ?? 0, color: "#b6ff65" },
     { label: "NARRATIVE FOG", value: result?.fog ?? 0, color: "#ff7777" },
@@ -34,7 +35,10 @@ export default async function UtilityCaseImage({
         <div style={{ display: "flex", marginTop: 20, fontSize: 47, lineHeight: 1.04, fontWeight: 900, letterSpacing: -2 }}>{title}</div>
         <div style={{ display: "flex", marginTop: 12, color: "#b6ff65", fontSize: 18 }}>{subtitle}</div>
         <div style={{ display: "flex", marginTop: 20, color: "#ff8580", fontSize: 13, fontWeight: 700, letterSpacing: 1 }}>DEPARTMENTAL FINDING / {finding}</div>
-        <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
+        <div style={{ display: "flex", marginTop: 11, color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
+          BEHAVIOURAL CROSS-READ / {crossReadHeadline}
+        </div>
+        <div style={{ display: "flex", gap: 12, marginTop: 17 }}>
           {metrics.map((metric) => (
             <div key={metric.label} style={{ display: "flex", flexDirection: "column", flex: 1, padding: "17px 18px", border: "1px solid #384137", backgroundColor: "#121713" }}>
               <span style={{ color: "#8d968a", fontSize: 12, letterSpacing: 1 }}>{metric.label}</span>
