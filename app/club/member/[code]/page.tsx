@@ -7,6 +7,7 @@ import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentCrossRead from "../../../components/department-cross-read";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildClubResult, decodeClubCode, encodeClubCode } from "../../club-engine";
+import { buildClubMemberShareText } from "../../club-social";
 
 type MemberPageProps = {
   params: Promise<{ code: string }>;
@@ -17,14 +18,14 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
   const answers = decodeClubCode(code);
   if (!answers) {
     return {
-      title: "Unrecognized Solana Trenches Survivor File",
-      description: "This fictional Solana trenches survivor membership file could not be verified.",
+      title: "Unrecognized 99% Club Member File",
+      description: "This fictional 99% Club member file could not be verified.",
       robots: { index: false, follow: false },
     };
   }
 
   const result = buildClubResult(answers);
-  const title = result.profile.title + " | SOLANA TRENCHES 99% CLUB";
+  const title = result.profile.title + " | THE 99% CLUB / ALL CHAINS";
   const description = result.faction.title + " / " + result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.motto;
   const route = "/club/member/" + encodeURIComponent(encodeClubCode(answers));
   const image = route + "/opengraph-image";
@@ -59,31 +60,21 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
   const canonicalCode = encodeClubCode(answers);
   const caseUrl = "/club/member/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/club?challenge=" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
-    "Member No. " + result.memberNumber + ".",
-    result.profile.title + ".",
-    "Faction: " + result.faction.title + " (" + result.faction.code + ").",
-    result.faction.motto,
-    "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.motto,
-    "Your application is pending.",
-  ].join(" ");
+  const xText = buildClubMemberShareText(result);
 
   return (
     <main className="audit-page club-member-page" id="main-content">
-      <DepartmentHeader activeSection="club" statusMessage="PUBLIC SOLANA TRENCHES MEMBER FILE / FICTIONAL" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
+      <DepartmentHeader activeSection="club" statusMessage="PUBLIC 99% CLUB MEMBER FILE / FICTIONAL" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
 
       <article className="club-public-member shell" id="content-start" tabIndex={-1}>
         <div className="club-public-member__meta">
           <span>PUBLIC MEMBERSHIP RECORD / {result.memberNumber}</span>
-          <span>SOLANA TRENCHES / 99% CLUB / NO BENEFITS</span>
+          <span>CRYPTO TRENCHES / ALL CHAINS / NO BENEFITS</span>
         </div>
 
         <div className="club-membership-card">
           <div className="club-membership-card__top">
-            <span>SOLANA TRENCHES / SURVIVOR REGISTRY</span>
+            <span>CRYPTO TRENCHES / ALL CHAINS / SURVIVOR REGISTRY</span>
             <span>THE 99% CLUB</span>
           </div>
           <p className="eyebrow">MEMBER No. {result.memberNumber}</p>
@@ -130,7 +121,7 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
 
         <div className="club-public-member__actions">
           <Link className="button button--primary" href={challengeUrl}>NOMINATE ANOTHER DEGEN <span>↗</span></Link>
-          <DepartmentPublicShare title="Solana Trenches survivor file" shareText={xText} casePath={caseUrl} />
+          <DepartmentPublicShare title="99% Club member file" shareText={xText} casePath={caseUrl} />
           <Link className="button button--quiet" href="/club">APPLY FOR YOUR OWN MEMBERSHIP ↗</Link>
         </div>
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
 import PassportResultReceipt from "../components/passport-result-receipt";
 import { recordClubMembership, recordPassportActivity } from "../passport/passport-store";
+import { buildClubMemberShareText, buildClubNominationText, CLUB_SOCIAL_HASHTAGS } from "./club-social";
 import {
   buildClubResult,
   decodeClubCode,
@@ -49,7 +50,7 @@ function makeMembershipSvg(result: ClubResult) {
     '<path d="M30 126H1170M30 550H1170" stroke="#34412f"/>' +
     '<path d="M935 30L1170 265M1015 30L1170 185M1095 30L1170 105" stroke="#b6ff65" stroke-opacity=".12" stroke-width="2"/>' +
     '<text x="68" y="86" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1132" y="86" text-anchor="end" fill="#85917c" font-family="monospace" font-size="14">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</text>' +
+    '<text x="1132" y="86" text-anchor="end" fill="#85917c" font-family="monospace" font-size="14">CRYPTO TRENCHES / ALL CHAINS / 99% CLUB</text>' +
     '<text x="68" y="178" fill="#879481" font-family="monospace" font-size="16" letter-spacing="3">MEMBERSHIP CERTIFICATE / FICTIONAL ISSUE</text>' +
     '<text x="68" y="269" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="57" font-weight="900">' + title + '</text>' +
     '<text x="68" y="321" fill="#b6ff65" font-family="monospace" font-size="23">' + motto + '</text>' +
@@ -134,7 +135,7 @@ export default function ClubClient() {
     const caseUrl = makeCaseUrl(result.answers);
     const challengeUrl = makeChallengeUrl(result.answers);
     const text = [
-      "THE DYOR DEPARTMENT — SOLANA TRENCHES SURVIVOR REGISTRY",
+      "THE DYOR DEPARTMENT — CRYPTO TRENCHES / ALL CHAINS",
       "MEMBER No. " + result.memberNumber,
       "CLASSIFICATION: " + result.profile.title,
       "FACTION: " + result.faction.title + " / " + result.faction.code,
@@ -147,6 +148,7 @@ export default function ClubClient() {
       result.crossRead.interpretation,
       ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.motto,
+      CLUB_SOCIAL_HASHTAGS,
       "This is a fictional entertainment membership. '99%' is a satirical club name, not a statistic about real investors or markets. No benefits, token or financial product are provided.",
       "PUBLIC MEMBER FILE: " + caseUrl,
       "NOMINATE ANOTHER DEGEN: " + challengeUrl,
@@ -208,16 +210,10 @@ export default function ClubClient() {
   async function shareMembership() {
     if (!result) return;
     const caseUrl = makeCaseUrl(result.answers);
-    const text = [
-      "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
-      "Classification: " + result.profile.title + ".",
-      "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
-      "Cross-read: " + result.crossRead.headline + ".",
-      result.profile.motto,
-    ].join(" ");
+    const text = buildClubMemberShareText(result);
     if (navigator.share) {
       try {
-        await navigator.share({ title: "My Solana Trenches survivor file", text, url: caseUrl });
+        await navigator.share({ title: "My 99% Club member file", text, url: caseUrl });
       } catch {
         setNotice("SHARE CANCELLED. YOUR MEMBERSHIP FILE REMAINS OPEN.");
       }
@@ -228,19 +224,9 @@ export default function ClubClient() {
 
   if (result) {
     const caseUrl = makeCaseUrl(result.answers);
-    const xText = [
-      "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
-      "Member No. " + result.memberNumber + ".",
-      result.profile.title + ".",
-      "Faction: " + result.faction.title + " (" + result.faction.code + ").",
-      result.faction.motto,
-      "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
-      "Cross-read: " + result.crossRead.headline + ".",
-      result.profile.motto,
-      "Your application is pending.",
-    ].join(" ");
+    const xText = buildClubMemberShareText(result);
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(caseUrl);
-    const challengeText = "THE DYOR DEPARTMENT has filed my 99% Club membership. " + result.profile.title + ". Your application is pending.";
+    const challengeText = buildClubNominationText(result);
     const challengeIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(challengeText) + "&url=" + encodeURIComponent(makeChallengeUrl(result.answers));
 
     return (
@@ -329,7 +315,7 @@ export default function ClubClient() {
         {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
         <div className="club-briefing__body">
-          <p className="eyebrow">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</p>
+          <p className="eyebrow">CRYPTO TRENCHES / ALL CHAINS / 99% CLUB</p>
           <h2>YOU ARE NOT<br /><span>ALONE IN THIS.</span></h2>
           <p className="club-briefing__lead">
             Five questions. Three fictional indices. Sixteen Club badges. An unlimited supply of explanations.

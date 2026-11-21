@@ -6,6 +6,7 @@ import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { CLUB_FACTION_IDS, getClubFactionById, factions } from "../../club-engine";
+import { buildClubFactionShareText } from "../../club-social";
 
 type ClubFactionPageProps = {
   params: Promise<{ id: string }>;
@@ -53,13 +54,7 @@ export default async function ClubFactionPage({ params }: ClubFactionPageProps) 
   if (!faction) notFound();
 
   const casePath = "/club/factions/" + faction.id;
-  const shareText = [
-    faction.title + " / " + faction.code,
-    "\"" + faction.motto + "\"",
-    faction.creed,
-    "Find your fictional faction inside THE 99% CLUB: six archetypes, one shared excuse.",
-    "A satire of crypto culture across chains. Not a real investor classification or statistic.",
-  ].join(" ");
+  const shareText = buildClubFactionShareText(faction);
 
   return (
     <main className="audit-page club-faction-page" id="main-content">
