@@ -823,7 +823,7 @@ test("U27.2 daily briefing contains focus-specific operational detail in all six
     assert.match(completeCopy, focus.signal, dispatch.caseTheme + " must contain its own domain-specific evidence vocabulary");
 
     for (const section of dispatch.sections) {
-      const wordCount = section.body.trim().split(/\\s+/).length;
+      const wordCount = section.body.trim().split(/\s+/).length;
       assert.ok(wordCount >= 38, issueDate + " / " + section.label + " should contain a developed report, not a one-line placeholder");
       assert.ok(section.heading.length > 0 && section.stamp.length > 0);
     }
