@@ -560,7 +560,7 @@ export function recordPassportActivity(activity: PassportActivityId): PassportDa
 
 function getMembershipBadgeUnlocks(answers: number[]): ClubBadgeId[] {
   const unlocked = new Set<ClubBadgeId>(["club-certified-bagholder"]);
-  const [bag, source, chart, dev, plaque] = answers;
+  const [bag, source, , dev, plaque] = answers;
 
   if (source === 0) unlocked.add("club-dyor-certified");
   if (bag === 0 || plaque === 0) unlocked.add("club-diamond-hands");
