@@ -54,6 +54,8 @@ export type DepartmentCaseAtlasComparisonWindow = {
 export type DepartmentCaseAtlasThemeRoutingComparison = DepartmentCaseAtlasPeriodComparison & {
   theme: string;
   currentWindowCount: number;
+  currentOccurrences: DepartmentCaseAtlasOccurrence[];
+  previousOccurrences: DepartmentCaseAtlasOccurrence[];
 };
 
 export type DepartmentCaseAtlasDivisionRoutingComparison = DepartmentCaseAtlasPeriodComparison & {
@@ -378,6 +380,9 @@ export function selectDepartmentCaseAtlasWindow(
     };
   });
 
+  const sourceOccurrencesByTheme = new Map(
+    atlas.entries.map((entry) => [entry.theme, entry.occurrences] as const),
+  );
   const divisions = atlas.divisions.map((division) => {
     const relatedEntries = entries.filter((entry) =>
       entry.offices.some((office) => office.section === division.section),
@@ -387,11 +392,18 @@ export function selectDepartmentCaseAtlasWindow(
       (total, entry) => total + (entry.periodComparison?.previousWindowCount ?? 0),
       0,
     );
-    const themeRouting: DepartmentCaseAtlasThemeRoutingComparison[] = relatedEntries.map((entry) => ({
-      theme: entry.theme,
-      ...buildPeriodComparison(entry.occurrenceCount, entry.periodComparison?.previousWindowCount ?? 0),
-      currentWindowCount: entry.occurrenceCount,
-    }));
+    const themeRouting: DepartmentCaseAtlasThemeRoutingComparison[] = relatedEntries.map((entry) => {
+      const previousOccurrences = (sourceOccurrencesByTheme.get(entry.theme) ?? []).filter((occurrence) =>
+        occurrence.issueDate >= previousStartDate && occurrence.issueDate <= previousEndDate,
+      );
+      return {
+        theme: entry.theme,
+        ...buildPeriodComparison(entry.occurrenceCount, previousOccurrences.length),
+        currentWindowCount: entry.occurrenceCount,
+        currentOccurrences: entry.occurrences,
+        previousOccurrences,
+      };
+    });
     const routingComparison = {
       ...buildPeriodComparison(currentWindowCount, previousWindowCount),
       currentWindowCount,

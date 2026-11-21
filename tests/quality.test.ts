@@ -1634,3 +1634,61 @@ test("U25.13 Case Atlas presents an accessible per-theme routing breakdown witho
   assert.ok(css.includes("@media (max-width: 560px)"));
   assert.doesNotMatch(atlasClient + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });
+
+
+test("U25.14 Case Atlas routing evidence links exact theme files in both matched UTC windows", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const sourceAtlas = buildDepartmentCaseAtlas(today, 240);
+  const expectedEvidence = (theme: string, startOffset: number, days: number) => {
+    const matches: Array<{ issueDate: string; reference: string; headline: string; href: string }> = [];
+    for (let offset = startOffset; offset < startOffset + days; offset += 1) {
+      const issueDate = shiftInstitutionalMemoryDate(today, -offset);
+      const dispatch = buildDailyOfficeDispatch(issueDate);
+      if (dispatch.caseTheme === theme) {
+        matches.push({
+          issueDate: dispatch.issueDate,
+          reference: dispatch.reference,
+          headline: dispatch.headline,
+          href: issueDate === today ? "/daily-office" : "/daily-office/archive/" + issueDate,
+        });
+      }
+    }
+    return matches;
+  };
+
+  for (const days of [14, 30, 60, 90, 120]) {
+    const selected = selectDepartmentCaseAtlasWindow(sourceAtlas, days);
+    for (const division of selected.divisions) {
+      const routing = division.routingComparison;
+      assert.ok(routing);
+      for (const item of routing.themeRouting) {
+        assert.deepEqual(item.currentOccurrences, expectedEvidence(item.theme, 0, days));
+        assert.deepEqual(item.previousOccurrences, expectedEvidence(item.theme, days, days));
+        assert.equal(item.currentOccurrences.length, item.currentWindowCount);
+        assert.equal(item.previousOccurrences.length, item.previousWindowCount);
+        assert.ok([...item.currentOccurrences, ...item.previousOccurrences].every((occurrence) =>
+          occurrence.issueDate <= today && occurrence.href.startsWith("/daily-office"),
+        ));
+      }
+    }
+  }
+});
+
+test("U25.14 Case Atlas exposes collapsible source evidence for current and previous office/theme routes", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(atlasClient.includes('className="department-case-atlas__routing-evidence"'));
+  assert.ok(atlasClient.includes("VIEW FILE EVIDENCE"));
+  assert.ok(atlasClient.includes("theme.currentOccurrences.map"));
+  assert.ok(atlasClient.includes("theme.previousOccurrences.map"));
+  assert.ok(atlasClient.includes("occurrence.href"));
+  assert.ok(atlasClient.includes("INTERNAL CASE-ROUTING EVIDENCE, NOT A LIVE MARKET RECORD"));
+  assert.ok(atlasEngine.includes("currentOccurrences: DepartmentCaseAtlasOccurrence[]"));
+  assert.ok(atlasEngine.includes("previousOccurrences: DepartmentCaseAtlasOccurrence[]"));
+  assert.ok(css.includes(".department-case-atlas__routing-evidence"));
+  assert.ok(css.includes(".department-case-atlas__routing-evidence > div"));
+  assert.ok(css.includes("@media (max-width: 560px)"));
+  assert.doesNotMatch(atlasClient + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
+});

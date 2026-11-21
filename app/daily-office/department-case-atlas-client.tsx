@@ -91,6 +91,38 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                         <strong className={"is-" + theme.direction}>
                           {theme.occurrenceDelta > 0 ? "+" : ""}{theme.occurrenceDelta}
                         </strong>
+                        <details className="department-case-atlas__routing-evidence">
+                          <summary>VIEW FILE EVIDENCE / {theme.currentOccurrences.length} CURRENT · {theme.previousOccurrences.length} PREVIOUS</summary>
+                          <div>
+                            <section>
+                              <span>CURRENT WINDOW / {selectedAtlas.comparisonWindow?.currentStartDate} → {selectedAtlas.comparisonWindow?.currentEndDate}</span>
+                              {theme.currentOccurrences.length > 0 ? (
+                                <ol>
+                                  {theme.currentOccurrences.map((occurrence) => (
+                                    <li key={occurrence.issueDate}>
+                                      <time dateTime={occurrence.issueDate}>{occurrence.issueDate} UTC</time>
+                                      <Link href={occurrence.href}>{occurrence.reference} / {occurrence.headline} ↗</Link>
+                                    </li>
+                                  ))}
+                                </ol>
+                              ) : <p>NO FICTIONAL FILES IN THIS WINDOW.</p>}
+                            </section>
+                            <section>
+                              <span>PREVIOUS WINDOW / {selectedAtlas.comparisonWindow?.previousStartDate} → {selectedAtlas.comparisonWindow?.previousEndDate}</span>
+                              {theme.previousOccurrences.length > 0 ? (
+                                <ol>
+                                  {theme.previousOccurrences.map((occurrence) => (
+                                    <li key={occurrence.issueDate}>
+                                      <time dateTime={occurrence.issueDate}>{occurrence.issueDate} UTC</time>
+                                      <Link href={occurrence.href}>{occurrence.reference} / {occurrence.headline} ↗</Link>
+                                    </li>
+                                  ))}
+                                </ol>
+                              ) : <p>NO FICTIONAL FILES IN THIS WINDOW.</p>}
+                            </section>
+                          </div>
+                          <p>DATE-SEEDED FICTIONAL DAILY FILES ROUTED TO THIS OFFICE BECAUSE THE THEME IS ASSIGNED TO IT. THIS IS INTERNAL CASE-ROUTING EVIDENCE, NOT A LIVE MARKET RECORD.</p>
+                        </details>
                       </li>
                     ))}
                   </ol>

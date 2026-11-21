@@ -13347,3 +13347,92 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     text-align: left;
   }
 }
+
+
+/* U25.14 — source-file evidence for each office/theme routing assignment */
+.department-case-atlas__routing-evidence {
+  grid-column: 1 / -1;
+  min-width: 0;
+  margin: 2px 0 1px;
+  border: 1px solid #263026;
+  background: #080c08;
+}
+.department-case-atlas__routing-evidence > summary {
+  padding: 7px 8px;
+  color: #9ba894;
+  cursor: pointer;
+  list-style: none;
+  font: 700 7px/1.55 var(--mono);
+  letter-spacing: .035em;
+}
+.department-case-atlas__routing-evidence > summary::-webkit-details-marker { display: none; }
+.department-case-atlas__routing-evidence > summary::before {
+  content: "+ ";
+  color: var(--green);
+}
+.department-case-atlas__routing-evidence[open] > summary::before { content: "− "; }
+.department-case-atlas__routing-evidence > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 8px 8px;
+}
+.department-case-atlas__routing-evidence > div > section {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #263026;
+  background: #0a0f0a;
+}
+.department-case-atlas__routing-evidence > div > section > span {
+  color: #d8b477;
+  font: 700 7px/1.6 var(--mono);
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__routing-evidence ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.department-case-atlas__routing-evidence li {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.department-case-atlas__routing-evidence time {
+  color: #87927f;
+  font: 7px/1.5 var(--mono);
+}
+.department-case-atlas__routing-evidence a {
+  color: #d4ddcf;
+  font: 7px/1.55 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__routing-evidence a:hover { color: var(--green); }
+.department-case-atlas__routing-evidence section > p {
+  margin: 0;
+  color: #87927f;
+  font: 7px/1.6 var(--mono);
+}
+.department-case-atlas__routing-evidence > p {
+  margin: 0;
+  padding: 8px;
+  border-top: 1px solid #263026;
+  color: #87927f;
+  font: 7px/1.6 var(--mono);
+}
+.department-case-atlas__routing-evidence summary:focus-visible,
+.department-case-atlas__routing-evidence a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .department-case-atlas__routing-evidence > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
