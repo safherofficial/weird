@@ -12,10 +12,10 @@ import { factions } from "./club-engine";
 export const metadata: Metadata = {
   alternates: { canonical: "/club" },
   title: "The 99% Club",
-  description: "The 99% Club: six fictional crypto-culture factions across all chains, shareable member files, local badges and interactive excuses.",
+  description: "The 99% Club is a satire of crypto investors across all chains: six fictional factions, unwavering conviction, self-declared research and the next trade.",
   openGraph: {
     title: "THE 99% CLUB",
-    description: "Six fictional crypto factions. One shared excuse. Find your archetype across chains in THE 99% CLUB.",
+    description: "It's never our fault when we lose. The next one is mine. Six fictional crypto factions for the self-assured crypto trenches.",
     images: ["/club/opengraph-image"],
   },
   twitter: {
@@ -37,12 +37,12 @@ export default function ClubPage() {
           <p className="eyebrow">CRYPTO MARKETS / ALL CHAINS / 99% SURVIVOR REGISTRY</p>
           <h1>THE 99%<br /><span>CLUB.</span></h1>
           <p className="audit-intro__lead">
-            For crypto investors on every chain who trust their research, defend every entry and can turn any red candle into a reason to try again.
+            For the 99% of crypto culture who trust their skills, believe their own research and know that every loss has an explanation. Every chain. Every cycle. The next one is always ours.
           </p>
           <div className="club-intro__stamp">
             <span>OFFICIAL CLUB MOTTO</span>
-            <strong>IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.</strong>
-            <small>I DID MY OWN RESEARCH. PLEASE FILE NO FURTHER QUESTIONS.</small>
+            <strong>IT'S NEVER OUR FAULT WHEN WE LOSE. THE NEXT ONE IS MINE.</strong>
+            <small>I DID MY OWN RESEARCH. I KNOW EXACTLY WHAT I'M DOING.</small>
           </div>
           <div className="club-intro__fineprint">
             “99%” IS A SATIRICAL IDENTITY, NOT A MEASURED STATISTIC ABOUT REAL INVESTORS.
