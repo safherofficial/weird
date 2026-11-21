@@ -12,6 +12,7 @@ import { questions as clubQuestions, CLUB_QUESTIONS, CLUB_FACTION_IDS, buildClub
 import { buildClubCampaignText, buildClubFactionShareText, buildClubMemberShareText, buildClubNominationText, CLUB_SOCIAL_HASHTAGS } from "../app/club/club-social";
 import { CLUB_CULTURE_CATEGORIES, CLUB_CULTURE_POSTS } from "../app/club/club-culture";
 import { CLUB_MEME_TEMPLATES, CLUB_PUBLIC_CHALLENGES } from "../app/club/club-war-room-data";
+import { buildClubCampaignPack, CLUB_CAMPAIGN_ROTATION_LENGTH, CLUB_CAMPAIGN_THEMES, getClubCampaignDrop, getClubCampaignSchedule } from "../app/club/club-campaign-engine";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
