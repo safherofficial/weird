@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { DepartmentCaseAtlasData, DepartmentSection } from "./case-atlas";
+import type { DepartmentCaseAtlasData } from "./case-atlas";
+import type { DepartmentSection } from "../divisions";
 
 type DepartmentCaseAtlasClientProps = {
   atlas: DepartmentCaseAtlasData;
