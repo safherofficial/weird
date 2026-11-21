@@ -9,6 +9,7 @@ import { classifications as utilityClassifications, questions as utilityQuestion
 import { classifications as roadmapClassifications, questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
 import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
 import { questions as clubQuestions, CLUB_QUESTIONS, CLUB_FACTION_IDS, buildClubResult, decodeClubCode, encodeClubCode, factions as clubFactions, getClubFactionById, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
+import { buildClubCampaignText, buildClubFactionShareText, buildClubMemberShareText, buildClubNominationText, CLUB_SOCIAL_HASHTAGS } from "../app/club/club-social";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
@@ -2548,4 +2549,64 @@ test("U28.5 all six 99% Club factions have stable public, shareable and indexabl
   assert.ok(sitemap.includes('CLUB_FACTION_IDS.map((id) => "/club/factions/" + id)'));
   assert.ok(styles.includes(".club-faction-page__related-grid"));
   assert.ok(styles.includes("@media (max-width: 640px)"));
+});
+
+
+test("U28.6 Club social identity uses one consistent cross-chain campaign voice and share templates", () => {
+  const clubPage = readFileSync("app/club/page.tsx", "utf8");
+  const campaignDesk = readFileSync("app/club/club-campaign-desk.tsx", "utf8");
+  const clubClient = readFileSync("app/club/club-client.tsx", "utf8");
+  const memberPage = readFileSync("app/club/member/[code]/page.tsx", "utf8");
+  const memberImage = readFileSync("app/club/member/[code]/opengraph-image.tsx", "utf8");
+  const clubImage = readFileSync("app/club/opengraph-image.tsx", "utf8");
+  const factionPage = readFileSync("app/club/factions/[id]/page.tsx", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+
+  const campaign = buildClubCampaignText();
+  assert.ok(campaign.includes("THE 99% CLUB"));
+  assert.ok(campaign.includes("Six fictional crypto factions"));
+  assert.ok(campaign.includes("IT'S NEVER OUR FAULT."));
+  assert.ok(campaign.includes("THE NEXT ONE IS MINE."));
+  assert.ok(campaign.includes("I DID MY OWN RESEARCH."));
+  assert.ok(campaign.includes(CLUB_SOCIAL_HASHTAGS));
+  assert.ok(campaign.length <= 230, "Campaign copy must leave room for a shared URL");
+
+  for (const id of CLUB_FACTION_IDS) {
+    const faction = getClubFactionById(id);
+    assert.ok(faction);
+    const shareText = buildClubFactionShareText(faction);
+    assert.ok(shareText.includes(faction.title));
+    assert.ok(shareText.includes(faction.code));
+    assert.ok(shareText.includes(faction.motto));
+    assert.ok(shareText.includes(CLUB_SOCIAL_HASHTAGS));
+    assert.ok(shareText.length <= 250, "Faction copy should fit a standard post with its URL");
+  }
+
+  const result = buildClubResult([0, 1, 2, 3, 0]);
+  const memberCopy = buildClubMemberShareText(result);
+  const nominationCopy = buildClubNominationText(result);
+  assert.ok(memberCopy.includes(result.memberNumber));
+  assert.ok(memberCopy.includes(result.faction.code));
+  assert.ok(memberCopy.includes(CLUB_SOCIAL_HASHTAGS));
+  assert.ok(memberCopy.length <= 250);
+  assert.ok(nominationCopy.includes("I nominate you"));
+  assert.ok(nominationCopy.includes(CLUB_SOCIAL_HASHTAGS));
+
+  assert.ok(clubPage.includes("<ClubCampaignDesk />"));
+  assert.ok(campaignDesk.includes("DepartmentPublicShare"));
+  assert.ok(campaignDesk.includes('casePath="/club"'));
+  assert.ok(campaignDesk.includes("TAKE THE FIVE-QUESTION INTERVIEW"));
+  assert.ok(clubClient.includes("buildClubMemberShareText(result)"));
+  assert.ok(clubClient.includes("buildClubNominationText(result)"));
+  assert.ok(memberPage.includes("buildClubMemberShareText(result)"));
+  assert.ok(factionPage.includes("buildClubFactionShareText(faction)"));
+
+  for (const source of [clubClient, memberPage, memberImage, clubImage]) {
+    assert.doesNotMatch(source, /Solana Trenches|SOLANA TRENCHES/i,
+      "Club member-facing identity should describe crypto culture across chains");
+  }
+  assert.ok(clubImage.includes("ALL CHAINS"));
+  assert.ok(memberImage.includes("ALL CHAINS"));
+  assert.ok(styles.includes(".club-campaign-desk__statement"));
+  assert.ok(styles.includes("@media (max-width: 560px)"));
 });
