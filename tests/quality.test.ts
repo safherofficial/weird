@@ -6,7 +6,7 @@ import { AUDIT_QUESTION_COUNT, buildResult as buildAuditResult, decodeCaseCode, 
 import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode, isValidDecisions, simulateProgress } from "../app/simulator/simulator-engine";
 import { questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
 import { questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
-import { questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
+import { questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
@@ -183,6 +183,162 @@ for (const engine of engines) {
     }
   });
 }
+
+
+function expectedRoundedAverage(values: number[], decimalPlaces = 0) {
+  const average = values.reduce((sum, value) => sum + value, 0) / (values.length * 5) * 100;
+  const factor = 10 ** decimalPlaces;
+  return Math.round(average * factor) / factor;
+}
+
+function selectedMetricValues(
+  questions: Array<{ options: unknown[] }>,
+  answers: number[],
+  field: string,
+) {
+  return answers.map((answer, index) => {
+    const option = questions[index].options[answer] as Record<string, unknown>;
+    const value = option[field];
+    return value as number;
+  });
+}
+
+function assertIndependentMetricMath(engineName: string, answers: number[], result: ResultRecord) {
+  const check = (field: string, values: number[], places = 0) => {
+    assert.equal(result[field], expectedRoundedAverage(values, places), engineName + " " + field + " must match the selected option scores");
+  };
+
+  if (engineName === "DYOR Audit") {
+    check("research", selectedMetricValues(auditQuestions, answers, "research"));
+    check("cope", selectedMetricValues(auditQuestions, answers, "cope"));
+    check("crowd", selectedMetricValues(auditQuestions, answers, "crowd"));
+  } else if (engineName === "Token-Purpose Inspector") {
+    check("evidence", selectedMetricValues(utilityQuestions, answers, "evidence"), 2);
+    check("fog", selectedMetricValues(utilityQuestions, answers, "fog"), 2);
+    check("tokenFit", selectedMetricValues(utilityQuestions, answers, "tokenFit"), 2);
+    const history = result.history as Array<{ question: string; answer: string }>;
+    history.forEach((item, index) => {
+      assert.equal(item.question, utilityQuestions[index].prompt);
+      assert.equal(item.answer, utilityQuestions[index].options[answers[index]].label);
+    });
+  } else if (engineName === "CTO Takeover Roadmap") {
+    check("delivery", selectedMetricValues(roadmapQuestions, answers, "delivery"), 2);
+    check("realism", selectedMetricValues(roadmapQuestions, answers, "realism"), 2);
+    check("inflation", selectedMetricValues(roadmapQuestions, answers, "inflation"), 2);
+  } else if (engineName === "Fictional Token Dossier") {
+    check("technicalDensity", selectedMetricValues(whitepaperQuestions, answers, "technical"), 2);
+    check("buzzwordDensity", selectedMetricValues(whitepaperQuestions, answers, "buzzwords"), 2);
+    check("productClarity", selectedMetricValues(whitepaperQuestions, answers, "clarity"), 2);
+    assert.equal(result.narrative, whitepaperQuestions[0].options[answers[0]].label);
+    assert.equal(result.problemStatement, whitepaperQuestions[1].options[answers[1]].label);
+  } else if (engineName === "99% Club") {
+    check("conviction", selectedMetricValues(clubQuestions, answers, "conviction"), 2);
+    check("cope", selectedMetricValues(clubQuestions, answers, "cope"), 2);
+    check("chatDependency", selectedMetricValues(clubQuestions, answers, "chatDependency"), 2);
+  } else if (engineName === "Personal Cope Calibration") {
+    check("copeScore", selectedMetricValues(copeQuestions, answers, "cope"));
+    check("patienceScore", selectedMetricValues(copeQuestions, answers, "patience"));
+    check("chatDependency", selectedMetricValues(copeQuestions, answers, "chat"));
+  } else if (engineName === "Paper Market Simulator") {
+    const history = result.history as Array<{ day: number; action: string; netWorthAfter: number; priceAfter: number; cashAfter: number; unitsAfter: number }>;
+    assert.equal(history.length, SIMULATOR_ROUNDS);
+    history.forEach((entry, index) => {
+      assert.equal(entry.day, index + 1);
+      assert.equal(entry.action, simulatorActions[answers[index]].id);
+      assert.ok(entry.priceAfter > 0 && entry.cashAfter >= 0 && entry.unitsAfter >= 0 && entry.netWorthAfter >= 0);
+    });
+    const counts = result.counts as Record<string, number>;
+    assert.equal(Object.values(counts).reduce((sum, value) => sum + value, 0), SIMULATOR_ROUNDS);
+    assert.ok(Math.abs((result.paperPnl as number) - ((result.netWorth as number) - 1000)) < 0.011);
+  }
+}
+
+test("all valid answer combinations preserve score math and reconstructible public case codes", () => {
+  let totalCombinations = 0;
+
+  for (const engine of engines) {
+    const combinationCount = 4 ** engine.questionCount;
+    for (let ordinal = 0; ordinal < combinationCount; ordinal += 1) {
+      let remainder = ordinal;
+      const answers = Array(engine.questionCount).fill(0) as number[];
+      for (let index = engine.questionCount - 1; index >= 0; index -= 1) {
+        answers[index] = remainder % 4;
+        remainder = Math.floor(remainder / 4);
+      }
+
+      const code = engine.encode(answers);
+      const pathSegment = encodeURIComponent(code);
+      const restoredCode = decodeURIComponent(pathSegment);
+      const decoded = engine.decode(restoredCode);
+      const restoredAnswers = engine.decodedAnswers(decoded);
+      if (!restoredAnswers || restoredAnswers.join("") !== answers.join("")) {
+        throw new Error(engine.name + " failed to reconstruct combination " + ordinal + " from its public case code");
+      }
+      engine.assertDecodedExtra?.(decoded);
+
+      const result = engine.build(restoredAnswers);
+      if ((result[engine.answerKey] as number[]).join("") !== answers.join("")) {
+        throw new Error(engine.name + " did not preserve answer order for combination " + ordinal);
+      }
+      if (!result.profile || typeof (result.profile as { title?: unknown }).title !== "string") {
+        throw new Error(engine.name + " returned no primary classification for combination " + ordinal);
+      }
+      assertIndependentMetricMath(engine.name, answers, result);
+      totalCombinations += 1;
+    }
+  }
+
+  const expectedCombinations = engines.reduce((sum, engine) => sum + (4 ** engine.questionCount), 0);
+  assert.equal(totalCombinations, expectedCombinations, "Every possible answer vector must be covered for all seven engines");
+  assert.ok(totalCombinations >= 1_000_000, "Coverage must include the complete ten-question DYOR Audit space");
+});
+
+test("fictional token dossier HTML and Markdown exports retain the case record and disclaimers", () => {
+  const answers = [0, 1, 2, 3, 0, 1, 2];
+  const result = buildWhitepaperResult(answers, "Fictional Token / 404");
+  const markdown = formatWhitepaperMarkdown(result);
+  const html = formatWhitepaperHtml(result);
+
+  assert.ok(markdown.startsWith("# " + result.projectLabel + " — FICTIONAL TOKEN DOSSIER"));
+  assert.ok(markdown.includes("FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION"));
+  assert.ok(markdown.includes(result.profile.title));
+  assert.ok(markdown.includes(result.secondaryProfile.title));
+  assert.ok(markdown.includes(result.problemStatement));
+  result.sections.forEach((section) => assert.ok(markdown.includes(section.title)));
+  result.allocations.forEach((allocation) => assert.ok(markdown.includes(allocation.label)));
+
+  assert.ok(html.startsWith("<!doctype html><html lang=\"en\">"));
+  assert.ok(html.includes(result.profile.title));
+  assert.ok(html.includes(result.secondaryProfile.title));
+  assert.ok(html.includes("FICTIONAL ENTERTAINMENT DOCUMENT. NOT A TECHNICAL SPECIFICATION"));
+  assert.ok(html.includes("PRINT / SAVE AS PDF"));
+  result.sections.forEach((section) => assert.ok(html.includes(section.title)));
+  result.allocations.forEach((allocation) => assert.ok(html.includes(allocation.label)));
+});
+
+test("fictional token dossier HTML export escapes injected markup in display content", () => {
+  const base = buildWhitepaperResult([0, 1, 2, 3, 0, 1, 2], "SAFE DOSSIER");
+  const unsafeResult = {
+    ...base,
+    projectLabel: "<script>case-alert</script>",
+    profile: {
+      ...base.profile,
+      subtitle: "</p><script>profile-alert</script>",
+    },
+    sections: base.sections.map((section, index) => index === 0
+      ? { ...section, title: "<img src=x onerror=case-alert>", paragraphs: [...section.paragraphs, "<script>body-alert</script>"] }
+      : section),
+  };
+  const html = formatWhitepaperHtml(unsafeResult);
+
+  assert.ok(html.includes("&lt;script&gt;case-alert&lt;/script&gt;"));
+  assert.ok(html.includes("&lt;script&gt;profile-alert&lt;/script&gt;"));
+  assert.ok(html.includes("&lt;img src=x onerror=case-alert&gt;"));
+  assert.ok(html.includes("&lt;script&gt;body-alert&lt;/script&gt;"));
+  assert.ok(!html.includes("<script>case-alert</script>"));
+  assert.ok(!html.includes("<script>profile-alert</script>"));
+  assert.ok(!html.includes("<script>body-alert</script>"));
+});
 
 test("Daily CT Briefing is deterministic for a UTC issue date and rejects invalid dates", () => {
   const first = buildDailyOfficeDispatch("2026-11-20");
