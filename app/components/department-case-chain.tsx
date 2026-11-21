@@ -53,6 +53,8 @@ export default function DepartmentCaseChain({ currentDepartment }: DepartmentCas
     );
   }
 
+  const currentOfficeIsRouted = narrative.offices.some((office) => office.isCurrent);
+
   return (
     <section className="department-case-chain" aria-labelledby="department-case-chain-title">
       <div className="department-case-chain__header">
@@ -61,8 +63,11 @@ export default function DepartmentCaseChain({ currentDepartment }: DepartmentCas
           <h3 id="department-case-chain-title">{narrative.caseTheme}</h3>
           <strong>{narrative.headline}</strong>
         </div>
-        <div className="department-case-chain__current-office">
-          <span>CURRENT OFFICE</span>
+        <div
+          className="department-case-chain__current-office"
+          aria-label={currentOfficeIsRouted ? "Current office is assigned to this case route" : "Current office is not assigned to this case route"}
+        >
+          <span>{currentOfficeIsRouted ? "CURRENT OFFICE / ROUTED TODAY" : "VIEWING OFFICE / NOT ON THIS ROUTE"}</span>
           <strong>{narrative.currentOffice.number} / {narrative.currentOffice.title}</strong>
         </div>
       </div>

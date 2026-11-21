@@ -1692,3 +1692,48 @@ test("U25.14 Case Atlas exposes collapsible source evidence for current and prev
   assert.ok(css.includes("@media (max-width: 560px)"));
   assert.doesNotMatch(atlasClient + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });
+
+
+test("U25 audit correction marks a viewing division clearly when it is outside today's three-office case route", () => {
+  const routePages = [
+    ["app/simulator/page.tsx", "simulator"],
+    ["app/club/page.tsx", "club"],
+    ["app/audit/page.tsx", "audit"],
+    ["app/daily-office/page.tsx", "daily"],
+    ["app/archives/page.tsx", "archives"],
+    ["app/roadmap-generator/page.tsx", "roadmap"],
+    ["app/whitepaper-factory/page.tsx", "whitepaper"],
+    ["app/utility-inspector/page.tsx", "utility"],
+    ["app/museum/page.tsx", "museum"],
+    ["app/cope-index/page.tsx", "cope"],
+  ] as const;
+  const nextSteps = readFileSync("app/components/department-next-steps.tsx", "utf8");
+  const chainClient = readFileSync("app/components/department-case-chain.tsx", "utf8");
+
+  assert.ok(nextSteps.includes("<DepartmentCaseChain currentDepartment={currentDepartment as DepartmentSection} />"));
+  assert.ok(chainClient.includes("const currentOfficeIsRouted = narrative.offices.some((office) => office.isCurrent)"));
+  assert.ok(chainClient.includes("CURRENT OFFICE / ROUTED TODAY"));
+  assert.ok(chainClient.includes("VIEWING OFFICE / NOT ON THIS ROUTE"));
+
+  for (const [path, section] of routePages) {
+    const page = readFileSync(path, "utf8");
+    assert.ok(page.includes('<DepartmentNextSteps currentDepartment="' + section + '" />'), path + " must pass its own division context to the shared case chain.");
+  }
+
+  for (let index = 0; index < 90; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const thread = departmentCaseThreads[dispatch.caseTheme];
+    assert.ok(thread);
+    assert.equal(thread.offices.length, 3);
+
+    for (const department of departments) {
+      const narrative = buildDepartmentNarrative(issueDate, department.section);
+      const activeSteps = narrative.offices.filter((office) => office.isCurrent);
+      const expectedMembership = thread.offices.some((office) => office.section === department.section);
+      assert.equal(activeSteps.length, expectedMembership ? 1 : 0, department.title + " must only be marked current when it belongs to today's three-office route.");
+      assert.equal(activeSteps.every((office) => office.href === null), true);
+      assert.equal(narrative.currentOffice.title, department.title);
+    }
+  }
+});
