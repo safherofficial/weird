@@ -13538,3 +13538,361 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   outline: 2px solid var(--green);
   outline-offset: 3px;
 }
+
+
+/* U28.1 — 99% Club challenges, local badge case and vector achievement emblems. */
+.achievement-emblem {
+  display: inline-grid;
+  flex: 0 0 auto;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+}
+.achievement-emblem__art,
+.achievement-emblem__vector {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.achievement-emblem.is-locked .achievement-emblem__vector {
+  opacity: .34;
+  filter: grayscale(1);
+}
+.passport-achievement__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.passport-achievement__identity {
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+  color: var(--muted);
+  font: 8px/1.5 var(--font-mono);
+  text-align: right;
+}
+.passport-achievement__identity strong {
+  color: var(--accent);
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.club-challenges {
+  margin: clamp(42px, 7vw, 88px) auto;
+  padding: clamp(20px, 3.5vw, 38px);
+  border: 1px solid #344034;
+  background:
+    radial-gradient(circle at 90% 0, rgba(182, 255, 101, .075), transparent 34%),
+    #0b100c;
+}
+.club-challenges__header,
+.club-badge-case__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 22px;
+}
+.club-challenges__header > div:first-child > span,
+.club-badge-case__heading > div > span {
+  color: #9da98f;
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .13em;
+}
+.club-challenges__header h2,
+.club-badge-case__heading h3 {
+  margin: 13px 0 9px;
+  color: #f0f0e9;
+  font: 800 clamp(30px, 5vw, 54px)/.94 var(--sans);
+  letter-spacing: -.065em;
+}
+.club-challenges__header h2 em,
+.club-badge-case__heading h3 em {
+  color: var(--accent);
+  font-style: normal;
+}
+.club-challenges__header p {
+  max-width: 580px;
+  margin: 0;
+  color: #a2ad9a;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.club-challenges__counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 145px;
+  padding: 12px 15px;
+  border: 1px solid #46563d;
+  background: rgba(182, 255, 101, .045);
+}
+.club-challenges__counter strong {
+  color: var(--accent);
+  font: 400 31px/1 var(--font-mono);
+}
+.club-challenges__counter strong small {
+  color: #7e8c75;
+  font-size: 12px;
+}
+.club-challenges__counter span {
+  color: #9aa78e;
+  font: 7px/1.6 var(--font-mono);
+  letter-spacing: .1em;
+}
+.club-challenges__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+.club-challenge {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid #303b30;
+  background: #101610;
+}
+.club-challenge__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #2a3529;
+  color: #84927d;
+  font: 7px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+.club-challenge__top .is-filed { color: var(--accent); }
+.club-challenge > .eyebrow {
+  margin: 18px 0 7px;
+  color: #a7b29c;
+}
+.club-challenge h3 {
+  margin: 0 0 15px;
+  color: #eff3e9;
+  font: 700 19px/1.1 var(--sans);
+  letter-spacing: -.035em;
+}
+.club-challenge__prompt {
+  color: #d4ddcf;
+  font: 700 9px/1.7 var(--font-mono);
+  letter-spacing: .025em;
+}
+.club-challenge__note {
+  min-height: 47px;
+  margin: 9px 0 14px;
+  color: #879486;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.club-challenge__options {
+  display: grid;
+  gap: 7px;
+}
+.club-challenge__options button {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 9px;
+  width: 100%;
+  min-height: 54px;
+  padding: 10px;
+  border: 1px solid #303b30;
+  background: #0b100c;
+  color: #b8c2b1;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+}
+.club-challenge__options button:hover,
+.club-challenge__options button:focus-visible {
+  border-color: #819d65;
+  transform: translateY(-1px);
+}
+.club-challenge__options button.is-selected {
+  border-color: var(--accent);
+  background: rgba(182, 255, 101, .075);
+  color: #eef5e8;
+}
+.club-challenge__options button > span {
+  display: grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  border: 1px solid #45533f;
+  color: var(--accent);
+  font: 8px var(--font-mono);
+}
+.club-challenge__options button > strong {
+  font: 700 8px/1.6 var(--font-mono);
+}
+.club-challenge__finding {
+  margin-top: 12px;
+  padding: 11px;
+  border-left: 2px solid #b6ff65;
+  background: #151e14;
+}
+.club-challenge__finding span {
+  color: #9cae8d;
+  font: 7px/1.5 var(--font-mono);
+  letter-spacing: .07em;
+}
+.club-challenge__finding p {
+  margin: 6px 0 0;
+  color: #d3dec9;
+  font: 8px/1.65 var(--font-mono);
+}
+.club-challenge__file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 42px;
+  margin-top: auto;
+  padding: 11px 12px;
+  border: 1px solid #61774f;
+  background: rgba(182, 255, 101, .09);
+  color: var(--accent);
+  font: 700 8px/1.5 var(--font-mono);
+  letter-spacing: .05em;
+  text-align: left;
+  cursor: pointer;
+}
+.club-challenge__file:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.club-badge-case {
+  margin-top: 34px;
+  padding-top: 28px;
+  border-top: 1px solid #344034;
+}
+.club-badge-case__heading {
+  align-items: center;
+}
+.club-badge-case__heading h3 {
+  margin-bottom: 0;
+  font-size: clamp(25px, 4vw, 39px);
+}
+.club-badge-case__heading > strong {
+  color: var(--accent);
+  font: 9px/1.5 var(--font-mono);
+  white-space: nowrap;
+}
+.club-badge-case__intro {
+  max-width: 760px;
+  margin: 14px 0 18px;
+  color: #8f9b89;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.club-badge-case__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+.club-badge {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #303b30;
+  background: #0e140f;
+}
+.club-badge.is-earned {
+  border-color: rgba(182, 255, 101, .44);
+  background: rgba(182, 255, 101, .055);
+}
+.club-badge .achievement-emblem {
+  width: 62px;
+  height: 62px;
+}
+.club-badge > div {
+  min-width: 0;
+}
+.club-badge > div > span {
+  color: #9aa78f;
+  font: 7px/1.5 var(--font-mono);
+  letter-spacing: .05em;
+}
+.club-badge.is-earned > div > span {
+  color: var(--accent);
+}
+.club-badge h4 {
+  margin: 5px 0 6px;
+  color: #edf2e8;
+  font: 700 10px/1.35 var(--font-mono);
+}
+.club-badge p {
+  margin: 0 0 7px;
+  color: #929e8d;
+  font-size: 9px;
+  line-height: 1.55;
+}
+.club-badge small {
+  display: block;
+  color: #7d8978;
+  font: 7px/1.55 var(--font-mono);
+}
+.club-badge-case__optin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 15px;
+  border: 1px solid #46533f;
+  background: rgba(182, 255, 101, .04);
+}
+.club-badge-case__optin p {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  color: #a2ad9a;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.club-badge-case__optin p strong {
+  color: var(--accent);
+  font: 700 8px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+.club-challenges__disclaimer {
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid #2d382d;
+  color: #778372;
+  font: 7px/1.7 var(--font-mono);
+  letter-spacing: .045em;
+}
+@media (max-width: 980px) {
+  .club-challenges__grid,
+  .club-badge-case__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .club-challenges__header,
+  .club-badge-case__heading,
+  .club-badge-case__optin {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .club-challenges__counter { align-self: flex-start; }
+  .club-challenges__grid,
+  .club-badge-case__grid {
+    grid-template-columns: 1fr;
+  }
+  .club-challenge__note { min-height: 0; }
+  .club-badge-case__optin .button { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .club-challenge__options button { transition: none; }
+}
