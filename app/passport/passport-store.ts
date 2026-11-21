@@ -650,7 +650,7 @@ export function recordClubMembership(answers: number[], factionId: ClubFactionId
       ...previous,
       clubMembershipAnswers: [...answers],
       clubApplicationCount: Math.min(previous.clubApplicationCount + 1, 10000),
-      clubBadgeIds: [...new Set([...nextBadgeIds, "club-faction-aligned"])],
+      clubBadgeIds: [...new Set<ClubBadgeId>([...nextBadgeIds, "club-faction-aligned"])],
       clubFactionId: factionId,
     };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
