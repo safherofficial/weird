@@ -4,6 +4,7 @@ import DepartmentFooter from "./components/department-footer";
 import SectionLabel from "./components/section-label";
 import { departmentGroups } from "./divisions";
 import { factions } from "./club/club-engine";
+import ClubTokenNotice from "./club/club-token-notice";
 
 const conditions = [
   { label: "BONDING CURVE", value: "GRADUATED / TOO LATE", tone: "green" },
@@ -142,6 +143,10 @@ export default function Home() {
         </div>
         <p className="hq-club__disclaimer">“99%” IS A SATIRICAL CLUB IDENTITY, NOT A MEASURED STATISTIC. MEMBERSHIP IS FICTIONAL; THERE IS NO VERIFIED ROSTER, TOKEN OR FINANCIAL BENEFIT.</p>
       </section>
+
+      <div className="shell">
+        <ClubTokenNotice placement="home" />
+      </div>
 
       <section className="hq-status shell" aria-labelledby="hq-status-title">
         <div className="hq-section-heading hq-section-heading--compact">
