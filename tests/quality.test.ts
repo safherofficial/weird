@@ -8,7 +8,7 @@ import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimul
 import { classifications as utilityClassifications, questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
 import { classifications as roadmapClassifications, questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
 import { classifications as whitepaperClassifications, questions as whitepaperQuestions, FICTIONAL_SUPPLY, WHITEPAPER_QUESTIONS, buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode, formatWhitepaperHtml, formatWhitepaperMarkdown, inspectWhitepaperProgress, isValidWhitepaperAnswers, slugifyProjectName as slugifyWhitepaperProjectName } from "../app/whitepaper-factory/whitepaper-engine";
-import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, factions as clubFactions, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
+import { questions as clubQuestions, CLUB_QUESTIONS, CLUB_FACTION_IDS, buildClubResult, decodeClubCode, encodeClubCode, factions as clubFactions, getClubFactionById, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
@@ -2514,4 +2514,38 @@ test("U28.4 provides one canonical, honest future-token notice without invented 
   assert.ok(styles.includes(".club-token-notice__details"));
   assert.ok(styles.includes("@media (max-width: 620px)"));
   assert.ok(styles.includes(".club-token-notice__details > div:nth-child(3n) { border-right: 1px solid #30352b; }"));
+});
+
+
+test("U28.5 all six 99% Club factions have stable public, shareable and indexable dossiers", () => {
+  const hub = readFileSync("app/club/page.tsx", "utf8");
+  const dossier = readFileSync("app/club/factions/[id]/page.tsx", "utf8");
+  const socialImage = readFileSync("app/club/factions/[id]/opengraph-image.tsx", "utf8");
+  const sitemap = readFileSync("app/sitemap.ts", "utf8");
+  const styles = readFileSync("app/globals.css", "utf8");
+
+  assert.equal(CLUB_FACTION_IDS.length, 6);
+  assert.equal(new Set(CLUB_FACTION_IDS).size, 6);
+  assert.deepEqual(new Set(Object.values(clubFactions).map((faction) => faction.id)), new Set(CLUB_FACTION_IDS));
+  for (const id of CLUB_FACTION_IDS) {
+    const faction = getClubFactionById(id);
+    assert.ok(faction, "Every canonical faction ID must resolve: " + id);
+    assert.equal(faction.id, id);
+  }
+  assert.equal(getClubFactionById("not-a-real-faction"), null);
+  assert.equal(getClubFactionById(null), null);
+
+  assert.ok(dossier.includes("generateStaticParams"));
+  assert.ok(dossier.includes("generateMetadata"));
+  assert.ok(dossier.includes("DepartmentPublicShare"));
+  assert.ok(dossier.includes("getClubFactionById"));
+  assert.ok(dossier.includes("five-question Club interview"));
+  assert.ok(dossier.includes("across chains"));
+  assert.ok(socialImage.includes("ImageResponse"));
+  assert.ok(socialImage.includes("getClubFactionById"));
+  assert.ok(hub.includes('href={"/club/factions/" + faction.id}'));
+  assert.ok(hub.includes("CRYPTO MARKETS / ALL CHAINS"));
+  assert.ok(sitemap.includes('CLUB_FACTION_IDS.map((id) => "/club/factions/" + id)'));
+  assert.ok(styles.includes(".club-faction-page__related-grid"));
+  assert.ok(styles.includes("@media (max-width: 640px)"));
 });

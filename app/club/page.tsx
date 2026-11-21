@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
@@ -32,10 +33,10 @@ export default function ClubPage() {
       <div className="club-shell shell" id="content-start" tabIndex={-1}>
         <aside className="club-intro">
           <div className="audit-intro__meta"><span>FORM 99C-001</span><span>MEMBER BENEFITS / NONE</span></div>
-          <p className="eyebrow">SOLANA TRENCHES / 99% SURVIVOR REGISTRY</p>
+          <p className="eyebrow">CRYPTO MARKETS / ALL CHAINS / 99% SURVIVOR REGISTRY</p>
           <h1>THE 99%<br /><span>CLUB.</span></h1>
           <p className="audit-intro__lead">
-            For the people who trust their research, defend every entry and can turn any red candle into a reason to try again.
+            For crypto investors on every chain who trust their research, defend every entry and can turn any red candle into a reason to try again.
           </p>
           <div className="club-intro__stamp">
             <span>OFFICIAL CLUB MOTTO</span>
@@ -64,7 +65,7 @@ export default function ClubPage() {
             {Object.values(factions).map((faction) => (
               <article className="club-faction-tile" key={faction.id}>
                 <div className="club-faction-tile__seal">{faction.seal}</div>
-                <div><span>{faction.code} / {faction.designation}</span><h3>{faction.title}</h3><strong>“{faction.motto}”</strong><p>{faction.creed}</p><small>RITUAL / {faction.ritual}</small></div>
+                <div><span>{faction.code} / {faction.designation}</span><h3>{faction.title}</h3><strong>“{faction.motto}”</strong><p>{faction.creed}</p><small>RITUAL / {faction.ritual}</small><Link className="club-faction-tile__link" href={"/club/factions/" + faction.id}>OPEN FACTION DOSSIER ↗</Link></div>
               </article>
             ))}
           </div>
