@@ -13106,3 +13106,101 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     white-space: normal;
   }
 }
+
+
+/* U25.11 — non-overlapping matched-period comparison in the Case Atlas */
+.department-case-atlas__comparison-window {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+  margin: 18px 0 12px;
+  padding: 15px;
+  border: 1px solid #42503d;
+  background: linear-gradient(135deg, #101710, #0a0e0a);
+}
+.department-case-atlas__comparison-window > span {
+  grid-column: 1 / -1;
+  color: var(--green);
+  font: 700 8px/1.5 var(--mono);
+  letter-spacing: .1em;
+}
+.department-case-atlas__comparison-window > div {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #303a30;
+  background: #0a0f0a;
+}
+.department-case-atlas__comparison-window small,
+.department-case-atlas__period-comparison-grid small {
+  color: #87927f;
+  font: 700 8px/1.5 var(--mono);
+  letter-spacing: .06em;
+}
+.department-case-atlas__comparison-window strong {
+  color: #d8b477;
+  font: 700 10px/1.6 var(--mono);
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__comparison-window p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #9ba894;
+  font: 8px/1.6 var(--mono);
+}
+.department-case-atlas__period-comparison {
+  display: grid;
+  gap: 9px;
+  margin-top: 10px;
+  padding: 13px;
+  border: 1px solid #384438;
+  background: #0d130d;
+}
+.department-case-atlas__period-comparison > span {
+  color: #d8b477;
+  font: 700 8px/1.5 var(--mono);
+  letter-spacing: .08em;
+}
+.department-case-atlas__period-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.department-case-atlas__period-comparison-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #293429;
+  background: #0a0f0a;
+}
+.department-case-atlas__period-comparison-grid strong {
+  color: var(--text);
+  font: 700 10px/1.5 var(--mono);
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__period-comparison-grid strong.is-increase { color: #d8b477; }
+.department-case-atlas__period-comparison-grid strong.is-decrease { color: #c48f83; }
+.department-case-atlas__period-comparison-grid strong.is-new { color: var(--green); }
+.department-case-atlas__period-comparison > p {
+  margin: 0;
+  color: #87927f;
+  font: 8px/1.65 var(--mono);
+}
+@media (max-width: 980px) {
+  .department-case-atlas__period-comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .department-case-atlas__comparison-window {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .department-case-atlas__comparison-window > span,
+  .department-case-atlas__comparison-window p {
+    grid-column: auto;
+  }
+  .department-case-atlas__period-comparison-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

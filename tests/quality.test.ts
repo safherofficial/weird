@@ -1067,7 +1067,7 @@ test("U25.5 Case Atlas reconciles all 18 themes against three valid offices and 
   }
   assert.throws(() => buildDepartmentCaseAtlas("not-a-date", 90));
   assert.throws(() => buildDepartmentCaseAtlas(today, 0));
-  assert.throws(() => buildDepartmentCaseAtlas(today, 121));
+  assert.throws(() => buildDepartmentCaseAtlas(today, 241));
 });
 
 test("U25.5 Case Atlas is reachable from every division and provides working topic and office filters", () => {
@@ -1078,7 +1078,7 @@ test("U25.5 Case Atlas is reachable from every division and provides working top
   const dailyPage = readFileSync("app/daily-office/page.tsx", "utf8");
   const ledgerPage = readFileSync("app/daily-office/ledger/page.tsx", "utf8");
 
-  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 120)"));
+  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 240)"));
   assert.ok(atlasPage.includes('canonical: "/daily-office/atlas"'));
   assert.ok(atlasClient.includes('type="search"'));
   assert.ok(atlasClient.includes("setQuery"));
@@ -1294,7 +1294,7 @@ test("U25.8 Case Atlas presents recurrence calculations with accessible links an
 
 test("U25.10 Case Atlas date-window selector reconciles exact 14, 30, 60, 90 and 120-day histories", () => {
   const today = new Date().toISOString().slice(0, 10);
-  const sourceAtlas = buildDepartmentCaseAtlas(today, 120);
+  const sourceAtlas = buildDepartmentCaseAtlas(today, 240);
   const sourceOccurrences = sourceAtlas.entries.map((entry) => ({
     theme: entry.theme,
     occurrences: entry.occurrences.map((occurrence) => occurrence.issueDate + "|" + occurrence.reference),
@@ -1372,8 +1372,106 @@ test("U25.10 Case Atlas provides an accessible date-window control without chang
   assert.ok(atlasClient.includes("setQuery"));
   assert.ok(atlasEngine.includes("export function selectDepartmentCaseAtlasWindow"));
   assert.ok(atlasEngine.includes("occurrence.issueDate >= firstDate && occurrence.issueDate <= atlas.asOfDate"));
-  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 120)"));
+  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 240)"));
   assert.ok(css.includes(".department-case-atlas__filters label:nth-child(3) select"));
   assert.ok(css.includes("grid-template-columns: repeat(2, minmax(0, 1fr))"));
+  assert.doesNotMatch(atlasClient + atlasPage + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
+});
+
+
+test("U25.11 Case Atlas compares every selected period with the immediately preceding equal-length window", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const sourceAtlas = buildDepartmentCaseAtlas(today, 240);
+  assert.equal(sourceAtlas.lookbackDays, 240);
+  assert.equal(sourceAtlas.comparisonWindow, null);
+  assert.ok(sourceAtlas.entries.every((entry) => entry.periodComparison === null));
+
+  const utcGap = (newerDate: string, olderDate: string) =>
+    Math.round((Date.parse(newerDate + "T00:00:00.000Z") - Date.parse(olderDate + "T00:00:00.000Z")) / 86400000);
+
+  for (const days of [14, 30, 60, 90, 120]) {
+    const selected = selectDepartmentCaseAtlasWindow(sourceAtlas, days);
+    const currentStart = shiftInstitutionalMemoryDate(today, -(days - 1));
+    const previousEnd = shiftInstitutionalMemoryDate(currentStart, -1);
+    const previousStart = shiftInstitutionalMemoryDate(previousEnd, -(days - 1));
+    assert.deepEqual(selected.comparisonWindow, {
+      currentStartDate: currentStart,
+      currentEndDate: today,
+      previousStartDate: previousStart,
+      previousEndDate: previousEnd,
+    });
+    assert.equal(utcGap(currentStart, previousEnd), 1, "the two matched periods must be adjacent with no overlap");
+    assert.equal(utcGap(today, previousStart), days * 2 - 1, "the matched periods must span exactly twice the selected days");
+
+    const expectedCurrent = new Map<string, number>();
+    const expectedPrevious = new Map<string, number>();
+    for (let offset = 0; offset < days; offset += 1) {
+      const current = buildDailyOfficeDispatch(shiftInstitutionalMemoryDate(today, -offset));
+      expectedCurrent.set(current.caseTheme, (expectedCurrent.get(current.caseTheme) ?? 0) + 1);
+      const previous = buildDailyOfficeDispatch(shiftInstitutionalMemoryDate(today, -(days + offset)));
+      expectedPrevious.set(previous.caseTheme, (expectedPrevious.get(previous.caseTheme) ?? 0) + 1);
+    }
+
+    let currentTotal = 0;
+    let previousTotal = 0;
+    for (const entry of selected.entries) {
+      const currentCount = expectedCurrent.get(entry.theme) ?? 0;
+      const previousCount = expectedPrevious.get(entry.theme) ?? 0;
+      const delta = currentCount - previousCount;
+      const expectedDirection = previousCount === 0
+        ? currentCount === 0 ? "unchanged" : "new"
+        : delta > 0 ? "increase" : delta < 0 ? "decrease" : "unchanged";
+      const comparison = entry.periodComparison;
+
+      assert.ok(comparison);
+      assert.equal(entry.occurrenceCount, currentCount);
+      assert.equal(comparison.previousWindowCount, previousCount);
+      assert.equal(comparison.occurrenceDelta, delta);
+      assert.equal(comparison.percentageChange, previousCount === 0 ? null : delta / previousCount * 100);
+      assert.equal(comparison.direction, expectedDirection);
+      assert.ok(entry.occurrences.every((occurrence) => occurrence.issueDate >= currentStart && occurrence.issueDate <= today));
+      currentTotal += currentCount;
+      previousTotal += previousCount;
+    }
+    assert.equal(currentTotal, days, "current-window issues must reconcile to one theme each");
+    assert.equal(previousTotal, days, "previous-window issues must reconcile to one theme each");
+  }
+
+  const fullHistoryBefore = sourceAtlas.entries.map((entry) => entry.occurrences.map((item) => item.issueDate + "|" + item.reference));
+  selectDepartmentCaseAtlasWindow(sourceAtlas, 14);
+  selectDepartmentCaseAtlasWindow(sourceAtlas, 120);
+  assert.deepEqual(
+    sourceAtlas.entries.map((entry) => entry.occurrences.map((item) => item.issueDate + "|" + item.reference)),
+    fullHistoryBefore,
+    "period selection must not mutate the full 240-day source history",
+  );
+  assert.throws(() => selectDepartmentCaseAtlasWindow(sourceAtlas, 0));
+  assert.throws(() => selectDepartmentCaseAtlasWindow(sourceAtlas, 121));
+  assert.throws(() => selectDepartmentCaseAtlasWindow({ ...sourceAtlas, lookbackDays: 120 }, 90));
+});
+
+test("U25.11 Case Atlas explains matched periods and displays non-predictive theme activity comparisons", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasPage = readFileSync("app/daily-office/atlas/page.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(atlasClient.includes('className="department-case-atlas__comparison-window"'));
+  assert.ok(atlasClient.includes("MATCHED-PERIOD METHOD / NON-OVERLAPPING UTC WINDOWS"));
+  assert.ok(atlasClient.includes("selectedAtlas.comparisonWindow.currentStartDate"));
+  assert.ok(atlasClient.includes("selectedAtlas.comparisonWindow.previousStartDate"));
+  assert.ok(atlasClient.includes('className="department-case-atlas__period-comparison"'));
+  assert.ok(atlasClient.includes("PREVIOUS WINDOW"));
+  assert.ok(atlasClient.includes("CURRENT WINDOW"));
+  assert.ok(atlasClient.includes("NET CHANGE"));
+  assert.ok(atlasClient.includes("CHANGE VS PREVIOUS"));
+  assert.ok(atlasClient.includes('entry.periodComparison.direction === "new"'));
+  assert.ok(atlasClient.includes("NOT A MEASURE OF TOKEN PERFORMANCE OR MARKET MOMENTUM"));
+  assert.ok(atlasEngine.includes("previousWindowCount"));
+  assert.ok(atlasEngine.includes("previousStartDate"));
+  assert.ok(atlasEngine.includes("previousEndDate"));
+  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 240)"));
+  assert.ok(css.includes(".department-case-atlas__period-comparison-grid"));
+  assert.ok(css.includes("@media (max-width: 680px)"));
   assert.doesNotMatch(atlasClient + atlasPage + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });

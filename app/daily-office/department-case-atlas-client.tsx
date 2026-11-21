@@ -116,6 +116,21 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
           </p>
         </div>
 
+        {selectedAtlas.comparisonWindow ? (
+          <section className="department-case-atlas__comparison-window" aria-label="Matched period comparison">
+            <span>MATCHED-PERIOD METHOD / NON-OVERLAPPING UTC WINDOWS</span>
+            <div>
+              <small>CURRENT WINDOW / {windowDays} DAYS</small>
+              <strong>{selectedAtlas.comparisonWindow.currentStartDate} → {selectedAtlas.comparisonWindow.currentEndDate}</strong>
+            </div>
+            <div>
+              <small>PREVIOUS WINDOW / {windowDays} DAYS</small>
+              <strong>{selectedAtlas.comparisonWindow.previousStartDate} → {selectedAtlas.comparisonWindow.previousEndDate}</strong>
+            </div>
+            <p>The previous window ends one UTC day before the current window begins. Both periods contain the same number of date-seeded daily files.</p>
+          </section>
+        ) : null}
+
         {visibleEntries.length > 0 ? (
           <div className="department-case-atlas__case-grid">
             {visibleEntries.map((entry, index) => (
@@ -223,6 +238,46 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   </div>
                   <p>GAPS ARE UTC DAY DIFFERENCES BETWEEN ADJACENT FICTIONAL FILES IN THIS WINDOW. DESCRIPTIVE ONLY; NO FORECAST OR REAL-WORLD INFERENCE.</p>
                 </section>
+
+                {entry.periodComparison ? (
+                  <section className="department-case-atlas__period-comparison" aria-label={"Matched period activity for " + entry.theme}>
+                    <span>THEME ACTIVITY / MATCHED WINDOW COMPARISON</span>
+                    <div className="department-case-atlas__period-comparison-grid">
+                      <div>
+                        <small>PREVIOUS WINDOW</small>
+                        <strong>{entry.periodComparison.previousWindowCount} FILES</strong>
+                      </div>
+                      <div>
+                        <small>CURRENT WINDOW</small>
+                        <strong>{entry.occurrenceCount} FILES</strong>
+                      </div>
+                      <div>
+                        <small>NET CHANGE</small>
+                        <strong className={"is-" + entry.periodComparison.direction}>
+                          {entry.periodComparison.occurrenceDelta > 0 ? "+" : ""}{entry.periodComparison.occurrenceDelta} FILES
+                        </strong>
+                      </div>
+                      <div>
+                        <small>CHANGE VS PREVIOUS</small>
+                        <strong className={"is-" + entry.periodComparison.direction}>
+                          {entry.periodComparison.percentageChange === null
+                            ? entry.periodComparison.direction === "new" ? "NEW" : "NOT CALCULABLE"
+                            : (entry.periodComparison.percentageChange > 0 ? "+" : "") + entry.periodComparison.percentageChange.toFixed(1) + "%"}
+                        </strong>
+                      </div>
+                    </div>
+                    <p>
+                      {entry.periodComparison.direction === "new"
+                        ? "THIS THEME HAS APPEARED IN THE CURRENT WINDOW, BUT NOT IN THE PREVIOUS ONE."
+                        : entry.periodComparison.direction === "unchanged"
+                          ? "THE NUMBER OF FICTIONAL DAILY APPEARANCES IS UNCHANGED."
+                          : entry.periodComparison.direction === "increase"
+                            ? "MORE FICTIONAL DAILY APPEARANCES THAN IN THE MATCHED PREVIOUS WINDOW."
+                            : "FEWER FICTIONAL DAILY APPEARANCES THAN IN THE MATCHED PREVIOUS WINDOW."}
+                      {" "}DESCRIPTIVE COUNTS ONLY; NOT A MEASURE OF TOKEN PERFORMANCE OR MARKET MOMENTUM.
+                    </p>
+                  </section>
+                ) : null}
 
                 {entry.recurrence.intervals.length > 0 ? (
                   <details className="department-case-atlas__interval-ledger">

@@ -8,14 +8,14 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Department Case Atlas | THE DYOR DEPARTMENT",
-  description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and selectable 14-to-120-day history across all ten Department divisions.",
+  description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and matched-period comparisons across selectable 14-to-120-day windows.",
   alternates: { canonical: "/daily-office/atlas" },
   robots: { index: false, follow: true },
 };
 
 export default function DepartmentCaseAtlasPage() {
   const asOfDate = new Date().toISOString().slice(0, 10);
-  const atlas = buildDepartmentCaseAtlas(asOfDate, 120);
+  const atlas = buildDepartmentCaseAtlas(asOfDate, 240);
 
   return (
     <main className="audit-page department-case-atlas-page" id="main-content">
@@ -29,7 +29,7 @@ export default function DepartmentCaseAtlasPage() {
         <header className="department-case-atlas-intro">
           <div className="audit-intro__meta">
             <span>INSTITUTIONAL REFERENCE / 18 THEMATIC THREADS</span>
-            <span>120 UTC ISSUES AVAILABLE / THROUGH {asOfDate}</span>
+            <span>240 UTC ISSUES AVAILABLE / THROUGH {asOfDate}</span>
           </div>
           <p className="eyebrow">THE DYOR DEPARTMENT / CROSS-DIVISION INDEX</p>
           <h1>THE CASE<br /><span>ATLAS.</span></h1>
@@ -39,7 +39,7 @@ export default function DepartmentCaseAtlasPage() {
           <div className="department-case-atlas-intro__notice">
             <span>INDEX METHOD / DETERMINISTIC REFERENCE DATA</span>
             <strong>EVERY ROUTE LEADS TO AN EXISTING DEPARTMENT RECORD.</strong>
-            <small>COUNTS AND RECURRENCE GAPS ARE CALCULATED ONLY FROM FICTIONAL UTC BRIEFINGS, NOT LIVE MARKET ACTIVITY.</small>
+            <small>COUNTS, RECURRENCE GAPS AND MATCHED-PERIOD COMPARISONS USE ONLY FICTIONAL UTC BRIEFINGS, NOT LIVE MARKET ACTIVITY.</small>
           </div>
         </header>
         <DepartmentCaseAtlasClient atlas={atlas} />

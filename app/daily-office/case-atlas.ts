@@ -35,6 +35,22 @@ export type DepartmentCaseAtlasRecurrence = {
   longestIntervalDays: number | null;
 };
 
+export type DepartmentCaseAtlasComparisonDirection = "increase" | "decrease" | "unchanged" | "new";
+
+export type DepartmentCaseAtlasPeriodComparison = {
+  previousWindowCount: number;
+  occurrenceDelta: number;
+  percentageChange: number | null;
+  direction: DepartmentCaseAtlasComparisonDirection;
+};
+
+export type DepartmentCaseAtlasComparisonWindow = {
+  currentStartDate: string;
+  currentEndDate: string;
+  previousStartDate: string;
+  previousEndDate: string;
+};
+
 export type DepartmentCaseAtlasEntry = {
   theme: string;
   narrative: string;
@@ -55,11 +71,13 @@ export type DepartmentCaseAtlasEntry = {
   latestOccurrence: DepartmentCaseAtlasOccurrence | null;
   occurrences: DepartmentCaseAtlasOccurrence[];
   recurrence: DepartmentCaseAtlasRecurrence;
+  periodComparison: DepartmentCaseAtlasPeriodComparison | null;
 };
 
 export type DepartmentCaseAtlasData = {
   asOfDate: string;
   lookbackDays: number;
+  comparisonWindow: DepartmentCaseAtlasComparisonWindow | null;
   entries: DepartmentCaseAtlasEntry[];
   divisions: Array<{
     section: DepartmentSection;
@@ -166,8 +184,8 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
   if (!isValidInstitutionalMemoryDate(asOfDate)) {
     throw new Error("The Case Atlas requires a valid current or past UTC issue date.");
   }
-  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > 120) {
-    throw new Error("The Case Atlas lookback window must contain between 1 and 120 UTC days.");
+  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > 240) {
+    throw new Error("The Case Atlas source history must contain between 1 and 240 UTC days.");
   }
 
   const appearances = new Map<string, {
@@ -256,6 +274,7 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
         shortestIntervalDays: intervalValues.length ? Math.min(...intervalValues) : null,
         longestIntervalDays: intervalValues.length ? Math.max(...intervalValues) : null,
       },
+      periodComparison: null,
     };
   });
 
@@ -273,7 +292,7 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
     };
   });
 
-  return { asOfDate, lookbackDays, entries, divisions };
+  return { asOfDate, lookbackDays, comparisonWindow: null, entries, divisions };
 }
 
 export function selectDepartmentCaseAtlasWindow(
@@ -283,15 +302,36 @@ export function selectDepartmentCaseAtlasWindow(
   if (!isValidInstitutionalMemoryDate(atlas.asOfDate)) {
     throw new Error("A valid current or past UTC Atlas date is required.");
   }
-  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > atlas.lookbackDays) {
-    throw new Error("The selected Atlas window must fit within the available UTC history.");
+  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > 120 || lookbackDays * 2 > atlas.lookbackDays) {
+    throw new Error("The selected Atlas window and its equal-length comparison period must fit within the available UTC history.");
   }
 
   const firstDate = shiftInstitutionalMemoryDate(atlas.asOfDate, -(lookbackDays - 1));
+  const previousEndDate = shiftInstitutionalMemoryDate(firstDate, -1);
+  const previousStartDate = shiftInstitutionalMemoryDate(previousEndDate, -(lookbackDays - 1));
+  const comparisonWindow: DepartmentCaseAtlasComparisonWindow = {
+    currentStartDate: firstDate,
+    currentEndDate: atlas.asOfDate,
+    previousStartDate,
+    previousEndDate,
+  };
   const entries = atlas.entries.map((entry) => {
     const occurrences = entry.occurrences.filter((occurrence) =>
       occurrence.issueDate >= firstDate && occurrence.issueDate <= atlas.asOfDate,
     );
+    const previousWindowCount = entry.occurrences.filter((occurrence) =>
+      occurrence.issueDate >= previousStartDate && occurrence.issueDate <= previousEndDate,
+    ).length;
+    const occurrenceDelta = occurrences.length - previousWindowCount;
+    const direction: DepartmentCaseAtlasComparisonDirection = previousWindowCount === 0
+      ? occurrences.length === 0 ? "unchanged" : "new"
+      : occurrenceDelta > 0 ? "increase" : occurrenceDelta < 0 ? "decrease" : "unchanged";
+    const periodComparison: DepartmentCaseAtlasPeriodComparison = {
+      previousWindowCount,
+      occurrenceDelta,
+      percentageChange: previousWindowCount === 0 ? null : occurrenceDelta / previousWindowCount * 100,
+      direction,
+    };
     const intervals: DepartmentCaseAtlasInterval[] = occurrences.slice(1).map((olderOccurrence, index) => ({
       newerIssueDate: occurrences[index].issueDate,
       olderIssueDate: olderOccurrence.issueDate,
@@ -315,8 +355,9 @@ export function selectDepartmentCaseAtlasWindow(
         shortestIntervalDays: intervalValues.length ? Math.min(...intervalValues) : null,
         longestIntervalDays: intervalValues.length ? Math.max(...intervalValues) : null,
       },
+      periodComparison,
     };
   });
 
-  return { ...atlas, lookbackDays, entries };
+  return { ...atlas, lookbackDays, comparisonWindow, entries };
 }
