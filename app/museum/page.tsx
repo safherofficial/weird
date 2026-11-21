@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import MuseumClient from "./museum-client";
 import { exhibits } from "./museum-data";
 
@@ -48,6 +49,8 @@ export default function MuseumPage() {
 
         <MuseumClient />
       </div>
+
+      <DepartmentNextSteps currentDepartment="museum" />
 
       <DepartmentFooter message={["PLEASE DO NOT TOUCH THE EXHIBITS.", "THEY ARE ALREADY FRAGILE ENOUGH."]} />
     </main>

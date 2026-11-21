@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import ClubClient from "./club-client";
 
 export const metadata: Metadata = {
@@ -45,6 +46,8 @@ export default function ClubPage() {
 
         <ClubClient />
       </div>
+
+      <DepartmentNextSteps currentDepartment="club" />
 
       <DepartmentFooter message={["WELCOME BACK TO THE TRENCHES.", "YOUR BENEFITS HAVE BEEN DECLINED IN ADVANCE."]} />
     </main>

@@ -684,3 +684,28 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
   assert.ok(uniqueIncidentHeadings.size >= 9, "Incident reports should draw from a broad portion of the editorial library");
   assert.ok(uniqueBriefings.size >= 115, "Complete daily briefing combinations should remain distinct across the sample");
 });
+
+
+test("U24 journey routing is present on all ten divisions and points to relevant destinations", () => {
+  const routes: Record<string, { page: string; destinations: string[] }> = {
+    audit: { page: "audit", destinations: ["/simulator", "/cope-index"] },
+    simulator: { page: "simulator", destinations: ["/audit", "/club"] },
+    utility: { page: "utility-inspector", destinations: ["/roadmap-generator", "/whitepaper-factory"] },
+    roadmap: { page: "roadmap-generator", destinations: ["/whitepaper-factory", "/utility-inspector"] },
+    whitepaper: { page: "whitepaper-factory", destinations: ["/utility-inspector", "/museum"] },
+    club: { page: "club", destinations: ["/cope-index", "/archives"] },
+    cope: { page: "cope-index", destinations: ["/daily-office", "/club"] },
+    daily: { page: "daily-office", destinations: ["/archives", "/cope-index"] },
+    archives: { page: "archives", destinations: ["/daily-office", "/museum"] },
+    museum: { page: "museum", destinations: ["/archives", "/club"] },
+  };
+  const component = readFileSync("app/components/department-next-steps.tsx", "utf8");
+  for (const [department, route] of Object.entries(routes)) {
+    const page = readFileSync("app/" + route.page + "/page.tsx", "utf8");
+    assert.ok(page.includes('DepartmentNextSteps currentDepartment="' + department + '"'), department + " must render its journey routes");
+    for (const destination of route.destinations) {
+      assert.ok(component.includes('href: "' + destination + '"'), department + " destination " + destination + " must remain available");
+    }
+  }
+  assert.match(component, /"daily"[\s\S]*"archives"[\s\S]*"museum"/);
+});

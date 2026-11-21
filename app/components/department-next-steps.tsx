@@ -7,7 +7,10 @@ type DepartmentJourneyId =
   | "roadmap"
   | "whitepaper"
   | "club"
-  | "cope";
+  | "cope"
+  | "daily"
+  | "archives"
+  | "museum";
 
 type DepartmentDestination = {
   href: string;
@@ -86,6 +89,42 @@ const departmentRoutes: Record<DepartmentJourneyId, readonly DepartmentDestinati
       href: "/archives",
       title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
       description: "Browse fictional bundle-wallet dossiers, mystery-whale theories, copied CA calls and pump.fun incident reports.",
+    },
+  ],
+  daily: [
+    {
+      href: "/archives",
+      title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
+      description: "Follow the fictional dispatch trail into archived wallet theories, copied calls and unexplained on-chain lore.",
+    },
+    {
+      href: "/cope-index",
+      title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX",
+      description: "Compare the day's fictional briefing with the Department's synthetic CT, FOMO and post-graduation readings.",
+    },
+  ],
+  archives: [
+    {
+      href: "/daily-office",
+      title: "THE TRENCHES DESK / DAILY CT BRIEFING",
+      description: "Return to the date-seeded fictional report behind the Department's latest trench incident.",
+    },
+    {
+      href: "/museum",
+      title: "BAGHOLDER REHABILITATION / MUSEUM OF TRENCHES RELICS",
+      description: "See the artifacts left behind by fictional launches, copied calls and exits that never happened.",
+    },
+  ],
+  museum: [
+    {
+      href: "/archives",
+      title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
+      description: "Move from preserved relics to the fictional case records, wallet theories and incident files behind them.",
+    },
+    {
+      href: "/club",
+      title: "SOLANA TRENCHES / 99% CLUB",
+      description: "Apply for fictional survivor status. The collection is permanent; the benefits remain unavailable.",
     },
   ],
   cope: [

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import CopeIndexClient from "./cope-index-client";
 import { buildDailyCopeIndex } from "./cope-engine";
 
@@ -47,6 +48,8 @@ export default function CopeIndexPage() {
 
         <CopeIndexClient dailyIndex={dailyIndex} />
       </div>
+
+      <DepartmentNextSteps currentDepartment="cope" />
 
       <DepartmentFooter message={["THE INDEX HAS BEEN CALCULATED.", "THE MARKET HAS NOT BEEN CONSULTED."]} />
     </main>

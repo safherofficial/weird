@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
+import DepartmentNextSteps from "../components/department-next-steps";
 import DailyOfficeClient from "./daily-client";
 import { buildDailyOfficeDispatch } from "./daily-engine";
 
@@ -50,6 +51,8 @@ export default function DailyOfficePage() {
         </header>
         <DailyOfficeClient dispatch={dispatch} />
       </div>
+
+      <DepartmentNextSteps currentDepartment="daily" />
 
       <DepartmentFooter message={["TODAY'S TRENCHES REPORT HAS BEEN FILED.", "TOMORROW'S PROBLEMS ARE ALREADY IN REVIEW."]} />
     </main>
