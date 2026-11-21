@@ -49,7 +49,7 @@ function isValidClubWeeklyAnswers(value: unknown): value is Record<string, numbe
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const entries = Object.entries(value as Record<string, unknown>);
   return entries.length <= 104 && entries.every(([weekKey, answer]) =>
-    /^\\d{4}-W(?:0[1-9]|[1-4]\\d|5[0-3])$/.test(weekKey) &&
+    /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/.test(weekKey) &&
     Number.isInteger(answer) &&
     (answer as number) >= 0 &&
     (answer as number) < 3,
@@ -115,7 +115,7 @@ export type PassportAchievement = {
 };
 
 export type PassportData = {
-  version: 3;
+  version: 4;
   enabled: true;
   createdAt: string;
   visitedDepartments: DepartmentId[];
@@ -706,7 +706,7 @@ export function recordClubChallenge(id: ClubChallengeId, answerIndex: number): P
 }
 
 export function recordClubWeeklyChallenge(weekKey: string, answerIndex: number): PassportData | null {
-  if (!/^\\d{4}-W(?:0[1-9]|[1-4]\\d|5[0-3])$/.test(weekKey) ||
+  if (!/^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/.test(weekKey) ||
       !Number.isInteger(answerIndex) ||
       answerIndex < 0 ||
       answerIndex >= 3) return null;
