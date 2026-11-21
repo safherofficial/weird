@@ -25,7 +25,8 @@ export default async function ClubMemberImage({
         </div>
         <div style={{ display: "flex", marginTop: 38, color: "#899486", fontSize: 15, letterSpacing: 2 }}>MEMBERSHIP CERTIFICATE / {result?.memberNumber ?? "99-000000"}</div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 48, lineHeight: 1.05, fontWeight: 900, letterSpacing: -2 }}>{result?.profile.title ?? "UNRECOGNIZED MEMBER FILE"}</div>
-        <div style={{ display: "flex", marginTop: 16, color: "#b6ff65", fontSize: 22 }}>{result?.profile.motto ?? "THE DEPARTMENT COULD NOT VERIFY THIS FILE."}</div>
+        <div style={{ display: "flex", marginTop: 12, color: "#b6ff65", fontSize: 17, fontWeight: 700 }}>{result?.faction.title ?? "FACTION / NOT ASSIGNED"}</div>
+        <div style={{ display: "flex", marginTop: 12, color: "#c7d4bd", fontSize: 19 }}>{result?.faction.motto ?? "THE DEPARTMENT COULD NOT VERIFY THIS FILE."}</div>
         <div style={{ display: "flex", marginTop: 11, color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
           BEHAVIOURAL CROSS-READ / {crossReadHeadline}
         </div>
