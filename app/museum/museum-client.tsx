@@ -21,7 +21,7 @@ export default function MuseumClient() {
             placeholder="TRY: PUMP.FUN, BUNDLE, KOL, CTO, GRADUATION..."
           />
         </label>
-        <div className="museum-filters" aria-label="Filter exhibits by category">
+        <div className="museum-filters" role="group" aria-label="Filter exhibits by category">
           {museumCategories.map((item) => (
             <button
               key={item}
