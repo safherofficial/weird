@@ -150,6 +150,27 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                     <span>NO APPEARANCE IN THIS {atlas.lookbackDays}-DAY WINDOW / REFERENCE THREAD REMAINS IN THE REGISTER</span>
                   )}
                 </div>
+
+                <details className="department-case-atlas__timeline" disabled={entry.occurrences.length === 0}>
+                  <summary>
+                    {entry.occurrences.length > 0
+                      ? "OPEN FULL THREAD HISTORY / " + entry.occurrences.length + " MATCHING FILES"
+                      : "NO HISTORICAL APPEARANCES TO OPEN"}
+                  </summary>
+                  {entry.occurrences.length > 0 && (
+                    <ol>
+                      {entry.occurrences.map((occurrence, occurrenceIndex) => (
+                        <li key={occurrence.issueDate}>
+                          <span>{String(occurrenceIndex + 1).padStart(2, "0")}</span>
+                          <time dateTime={occurrence.issueDate}>{occurrence.issueDate} / UTC</time>
+                          <Link href={occurrence.href}>
+                            {occurrence.reference} / {occurrence.headline} ↗
+                          </Link>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </details>
               </article>
             ))}
           </div>

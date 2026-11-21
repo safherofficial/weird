@@ -12,6 +12,7 @@ import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClub
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences } from "../app/daily-office/case-atlas";
+import { shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
 import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anchor";
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
 import { archiveRecords } from "../app/archives/archive-data";
@@ -1144,4 +1145,62 @@ test("U25.6 Archive and Museum detail records provide reciprocal Case Atlas cros
   assert.equal(museumReferenceCount, 18, "all 18 threads must point back from their Museum exhibit");
   assert.ok(Object.keys(departmentCaseThreads).some((theme) => getDepartmentCaseReferences("archive", departmentCaseThreads[theme].archiveSlug).some((reference) => reference.theme === theme)));
   assert.doesNotMatch(referenceComponent, /localStorage|sessionStorage|recordPassportActivity/);
+});
+
+
+test("U25.7 Case Atlas retains every daily appearance and links the complete 90-day chronology", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const atlas = buildDepartmentCaseAtlas(today, 90);
+  const windowStart = shiftInstitutionalMemoryDate(today, -89);
+  const expectedByTheme = new Map<string, Array<{ issueDate: string; reference: string; headline: string }>>();
+
+  for (let offset = 0; offset < 90; offset += 1) {
+    const issueDate = shiftInstitutionalMemoryDate(today, -offset);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const list = expectedByTheme.get(dispatch.caseTheme) ?? [];
+    list.push({ issueDate, reference: dispatch.reference, headline: dispatch.headline });
+    expectedByTheme.set(dispatch.caseTheme, list);
+  }
+
+  let totalOccurrences = 0;
+  for (const entry of atlas.entries) {
+    const expected = expectedByTheme.get(entry.theme) ?? [];
+    assert.equal(entry.occurrenceCount, expected.length);
+    assert.equal(entry.occurrences.length, expected.length);
+    assert.equal(entry.latestOccurrence?.issueDate ?? null, expected[0]?.issueDate ?? null);
+    assert.deepEqual(
+      entry.occurrences.map(({ issueDate, reference, headline }) => ({ issueDate, reference, headline })),
+      expected,
+      entry.theme + " must expose its full most-recent-first history",
+    );
+
+    entry.occurrences.forEach((occurrence, index) => {
+      assert.ok(occurrence.issueDate >= windowStart && occurrence.issueDate <= today);
+      assert.ok(occurrence.reference.startsWith("DD-"));
+      assert.equal(occurrence.reference, expected[index].reference);
+      assert.ok(occurrence.href === "/daily-office" && occurrence.issueDate === today ||
+        occurrence.href === "/daily-office/archive/" + occurrence.issueDate);
+      assert.ok(occurrence.headline.length > 0);
+    });
+    totalOccurrences += entry.occurrences.length;
+  }
+
+  assert.equal(totalOccurrences, 90, "each of the 90 daily briefs must belong to exactly one thematic thread");
+  assert.equal(
+    atlas.entries.reduce((sum, entry) => sum + entry.occurrenceCount, 0),
+    90,
+  );
+});
+
+test("U25.7 Case Atlas renders an accessible expandable history for each thematic thread", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  assert.ok(atlasClient.includes("<details className=\"department-case-atlas__timeline\""));
+  assert.ok(atlasClient.includes("<summary>"));
+  assert.ok(atlasClient.includes("entry.occurrences.map"));
+  assert.ok(atlasClient.includes('dateTime={occurrence.issueDate}'));
+  assert.ok(atlasClient.includes('href={occurrence.href}'));
+  assert.ok(atlasEngine.includes("occurrences: DepartmentCaseAtlasOccurrence[]"));
+  assert.ok(atlasEngine.includes("existing.occurrences.push(occurrence)"));
+  assert.ok(atlasEngine.includes("occurrences: appearance?.occurrences ?? []"));
 });

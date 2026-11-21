@@ -38,6 +38,7 @@ export type DepartmentCaseAtlasEntry = {
   };
   occurrenceCount: number;
   latestOccurrence: DepartmentCaseAtlasOccurrence | null;
+  occurrences: DepartmentCaseAtlasOccurrence[];
 };
 
 export type DepartmentCaseAtlasData = {
@@ -147,7 +148,11 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
     throw new Error("The Case Atlas lookback window must contain between 1 and 120 UTC days.");
   }
 
-  const appearances = new Map<string, { count: number; latest: DepartmentCaseAtlasOccurrence | null }>();
+  const appearances = new Map<string, {
+    count: number;
+    latest: DepartmentCaseAtlasOccurrence | null;
+    occurrences: DepartmentCaseAtlasOccurrence[];
+  }>();
   for (let offset = 0; offset < lookbackDays; offset += 1) {
     const issueDate = shiftInstitutionalMemoryDate(asOfDate, -offset);
     const dispatch = buildDailyOfficeDispatch(issueDate);
@@ -161,8 +166,13 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
 
     if (existing) {
       existing.count += 1;
+      existing.occurrences.push(occurrence);
     } else {
-      appearances.set(dispatch.caseTheme, { count: 1, latest: occurrence });
+      appearances.set(dispatch.caseTheme, {
+        count: 1,
+        latest: occurrence,
+        occurrences: [occurrence],
+      });
     }
   }
 
@@ -206,6 +216,7 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
       },
       occurrenceCount: appearance?.count ?? 0,
       latestOccurrence: appearance?.latest ?? null,
+      occurrences: appearance?.occurrences ?? [],
     };
   });
 

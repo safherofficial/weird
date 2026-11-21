@@ -12863,3 +12863,76 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   outline: 2px solid var(--green);
   outline-offset: 3px;
 }
+
+
+/* U25.7 — expandable chronological history for every Atlas theme */
+.department-case-atlas__timeline {
+  margin-top: 10px;
+  border: 1px solid #303a30;
+  background: #0a0e0a;
+}
+.department-case-atlas__timeline > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px;
+  color: var(--green);
+  cursor: pointer;
+  list-style: none;
+  font: 700 9px/1.5 var(--mono);
+  letter-spacing: .06em;
+}
+.department-case-atlas__timeline > summary::-webkit-details-marker { display: none; }
+.department-case-atlas__timeline > summary::after {
+  content: "+";
+  color: #d8b477;
+  font: 700 17px/1 var(--mono);
+}
+.department-case-atlas__timeline[open] > summary::after { content: "−"; }
+.department-case-atlas__timeline > summary:hover { color: var(--text); }
+.department-case-atlas__timeline > ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 13px 9px;
+  list-style: none;
+}
+.department-case-atlas__timeline > ol > li {
+  display: grid;
+  grid-template-columns: 28px 105px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  padding: 9px 0;
+  border-top: 1px solid #263026;
+}
+.department-case-atlas__timeline > ol > li > span {
+  color: #778373;
+  font: 700 8px/1.7 var(--mono);
+}
+.department-case-atlas__timeline > ol > li > time {
+  color: #d8b477;
+  font: 8px/1.7 var(--mono);
+}
+.department-case-atlas__timeline > ol > li > a {
+  min-width: 0;
+  color: #d4ddcf;
+  font: 8px/1.7 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__timeline > ol > li > a:hover { color: var(--green); }
+.department-case-atlas__timeline > summary:focus-visible,
+.department-case-atlas__timeline > ol > li > a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .department-case-atlas__timeline > ol > li {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 4px 8px;
+  }
+  .department-case-atlas__timeline > ol > li > a {
+    grid-column: 2;
+  }
+}
