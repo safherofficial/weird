@@ -1439,6 +1439,88 @@ test("U25.5 Case Atlas is reachable from every division and provides working top
 });
 
 
+test("U27.5 institutional case themes link to semantically relevant Archive and Museum records", () => {
+  const expectedReferences = [
+    {
+      theme: "CA / LAUNCH CONTEXT",
+      archive: "appendix-m-technical-detail",
+      museum: "the-screenshot-of-a-screenshot",
+      archiveSignal: /deployer control|token purpose|launch route/i,
+    },
+    {
+      theme: "BUNDLE / WALLET THEORIES",
+      archive: "the-wallet-graph-does-not-prove-ownership",
+      museum: "the-bundle-family-portrait",
+      archiveSignal: /wallet graph|common ownership|address|transaction/i,
+    },
+    {
+      theme: "WALLET-GRAPH INTERPRETATION",
+      archive: "the-wallet-graph-does-not-prove-ownership",
+      museum: "the-bundle-family-portrait",
+      archiveSignal: /wallet graph|common ownership|address|transaction/i,
+    },
+    {
+      theme: "SNIPER THEORY",
+      archive: "the-wallet-graph-does-not-prove-ownership",
+      museum: "the-bundle-family-portrait",
+      archiveSignal: /wallet graph|common ownership|address|transaction/i,
+    },
+    {
+      theme: "DELETED KOL CALL",
+      archive: "seventeenth-rocket-custody",
+      museum: "the-screenshot-of-a-screenshot",
+      archiveSignal: /preservation memo|launch-call screenshot|screenshot/i,
+    },
+    {
+      theme: "100X ENTRY TIMING",
+      archive: "the-entry-was-impeccable",
+      museum: "the-screenshot-of-a-screenshot",
+      archiveSignal: /late.entry|five.minute chart|KOL reply/i,
+    },
+    {
+      theme: "BAGHOLDER ENTRY HISTORY",
+      archive: "the-entry-was-impeccable",
+      museum: "the-screenshot-of-a-screenshot",
+      archiveSignal: /late.entry|five.minute chart|KOL reply/i,
+    },
+  ] as const;
+
+  assert.equal(new Set(archiveRecords.map((record) => record.slug)).size, archiveRecords.length);
+  assert.equal(new Set(archiveRecords.map((record) => record.accession)).size, archiveRecords.length);
+  assert.equal(new Set(exhibits.map((exhibit) => exhibit.slug)).size, exhibits.length);
+  assert.equal(new Set(exhibits.map((exhibit) => exhibit.accession)).size, exhibits.length);
+
+  for (const expected of expectedReferences) {
+    const thread = departmentCaseThreads[expected.theme];
+    assert.ok(thread, expected.theme + " must have a registered institutional thread");
+    assert.equal(thread.archiveSlug, expected.archive, expected.theme + " must reference its matching Archive precedent");
+    assert.equal(thread.exhibitSlug, expected.museum, expected.theme + " must reference its matching Museum relic");
+
+    const archive = archiveRecords.find((record) => record.slug === thread.archiveSlug);
+    const exhibit = exhibits.find((item) => item.slug === thread.exhibitSlug);
+    assert.ok(archive, expected.theme + " Archive precedent must exist");
+    assert.ok(exhibit, expected.theme + " Museum relic must exist");
+
+    const archiveCopy = [
+      archive.title,
+      archive.summary,
+      archive.finding,
+      ...archive.sections.flatMap((section) => [section.heading, ...section.paragraphs]),
+    ].join(" ");
+    const museumCopy = [exhibit.title, exhibit.description, exhibit.curatorNote, exhibit.plaque, ...exhibit.keywords].join(" ");
+    assert.match(archiveCopy, expected.archiveSignal, expected.theme + " Archive copy must describe the same subject");
+    assert.ok(museumCopy.length > 80);
+    assert.ok(archive.relatedHref.startsWith("/"), "Archive related actions must use an internal site route");
+  }
+
+  const walletRecord = archiveRecords.find((record) => record.slug === "the-wallet-graph-does-not-prove-ownership");
+  assert.ok(walletRecord);
+  assert.equal(walletRecord.accession, "DDA-016");
+  assert.match(walletRecord.finding, /COMMON OWNERSHIP NOT ESTABLISHED/);
+  assert.match(walletRecord.sections.map((section) => section.paragraphs.join(" ")).join(" "), /observation|inference|unknown/i);
+  assert.equal(walletRecord.relatedHref, "/museum/exhibits/the-bundle-family-portrait");
+});
+
 test("U25.6 Archive and Museum detail records provide reciprocal Case Atlas cross-references", () => {
   const archivePage = readFileSync("app/archives/records/[slug]/page.tsx", "utf8");
   const museumPage = readFileSync("app/museum/exhibits/[slug]/page.tsx", "utf8");
