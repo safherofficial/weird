@@ -33,6 +33,101 @@ export type ClubProfile = {
   membership: string;
 };
 
+export const CLUB_FACTION_IDS = [
+  "thesis-preservation-society",
+  "averaging-down-commission",
+  "signal-reliance-union",
+  "exit-liquidity-witnesses",
+  "chart-exile-order",
+  "early-exit-mutual-aid",
+] as const;
+export type ClubFactionId = typeof CLUB_FACTION_IDS[number];
+
+export type ClubFaction = {
+  id: ClubFactionId;
+  code: string;
+  title: string;
+  designation: string;
+  motto: string;
+  creed: string;
+  ritual: string;
+  archetype: ClubArchetypeId;
+  seal: string;
+};
+
+export const factions: Record<ClubArchetypeId, ClubFaction> = {
+  "conviction-custodian": {
+    id: "thesis-preservation-society",
+    code: "TPS",
+    title: "THE THESIS PRESERVATION SOCIETY",
+    designation: "OFFICE OF PERMANENT CONVICTION",
+    motto: "THE THESIS IS INTACT. THE PRICE IS TEMPORARY.",
+    creed: "A red chart cannot invalidate a document that has already been pinned.",
+    ritual: "Re-read the original thesis. Add one more footnote. Never amend the conclusion.",
+    archetype: "conviction-custodian",
+    seal: "T",
+  },
+  "average-down-citizen": {
+    id: "averaging-down-commission",
+    code: "ADC",
+    title: "THE AVERAGING-DOWN COMMISSION",
+    designation: "BUREAU OF ADDITIONAL BAG ACQUISITION",
+    motto: "EVERY LOWER PRICE IS A NEW DEPARTMENTAL OPPORTUNITY.",
+    creed: "The entry did not get worse. The position merely became more comprehensive.",
+    ritual: "Rename the average entry price and issue a fresh conviction statement.",
+    archetype: "average-down-citizen",
+    seal: "↓",
+  },
+  "telegram-veteran": {
+    id: "signal-reliance-union",
+    code: "SRU",
+    title: "THE SIGNAL RELIANCE UNION",
+    designation: "COMMUNITY INTELLIGENCE & NOTIFICATION OFFICE",
+    motto: "THE PINNED MESSAGE IS OUR PRIMARY SOURCE.",
+    creed: "No thesis is complete until three admins and one KOL have repeated it.",
+    ritual: "Refresh the group chat. Interpret silence as strategic communications.",
+    archetype: "telegram-veteran",
+    seal: "↗",
+  },
+  "exit-liquidity-witness": {
+    id: "exit-liquidity-witnesses",
+    code: "ELW",
+    title: "THE EXIT LIQUIDITY WITNESSES",
+    designation: "POST-GRADUATION TESTIMONY REGISTER",
+    motto: "WE SAW THE POOL. WE WERE THE POOL.",
+    creed: "The first wallet out is a case study. The last wallet out is a committee.",
+    ritual: "Prepare a timeline of the exit. Include the unanswered DM as Exhibit A.",
+    archetype: "exit-liquidity-witness",
+    seal: "↘",
+  },
+  "chart-hermit": {
+    id: "chart-exile-order",
+    code: "CEO",
+    title: "THE CHART EXILE ORDER",
+    designation: "REMOTE OBSERVATION & SELECTIVE VISIBILITY UNIT",
+    motto: "ZOOM OUT UNTIL THE CANDLE BECOMES AN ARCHAEOLOGICAL SITE.",
+    creed: "A chart not opened cannot hurt the member's conviction in real time.",
+    ritual: "Close the five-minute chart. Check it again only when someone says volume.",
+    archetype: "chart-hermit",
+    seal: "⌁",
+  },
+  "paper-hands-survivor": {
+    id: "early-exit-mutual-aid",
+    code: "EEMA",
+    title: "THE EARLY EXIT MUTUAL AID SOCIETY",
+    designation: "PROVISIONAL EXIT PROCEDURE COLLECTIVE",
+    motto: "WE LEFT THE TRENCHES. THE GROUP CHAT HAS NOT FORGIVEN US.",
+    creed: "Preserving capital is suspicious behaviour in a room full of conviction.",
+    ritual: "Decline one revenge-entry notification and file the refusal in triplicate.",
+    archetype: "paper-hands-survivor",
+    seal: "E",
+  },
+};
+
+export function getClubFaction(archetype: ClubArchetypeId): ClubFaction {
+  return factions[archetype];
+}
+
 export type ClubProgress = {
   completedQuestions: number;
   conviction: number;
@@ -48,6 +143,8 @@ export type ClubResult = ClubProgress & {
   secondaryTag: ClubArchetypeId;
   profile: ClubProfile;
   secondaryProfile: ClubProfile;
+  faction: ClubFaction;
+  secondaryFaction: ClubFaction;
   membershipClass: string;
   finding: string;
 };
@@ -276,6 +373,8 @@ export function buildClubResult(answers: number[]): ClubResult {
     secondaryTag,
     profile,
     secondaryProfile,
+    faction: getClubFaction(primaryTag),
+    secondaryFaction: getClubFaction(secondaryTag),
     membershipClass,
     finding,
   };

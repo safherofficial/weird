@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
 
   const result = buildClubResult(answers);
   const title = result.profile.title + " | SOLANA TRENCHES 99% CLUB";
-  const description = result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.motto;
+  const description = result.faction.title + " / " + result.crossRead.headline + ". " + result.profile.subtitle + " " + result.profile.motto;
   const route = "/club/member/" + encodeURIComponent(encodeClubCode(answers));
   const image = route + "/opengraph-image";
 
@@ -63,6 +63,8 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
     "THE DYOR DEPARTMENT has filed me in the Solana Trenches survivor registry.",
     "Member No. " + result.memberNumber + ".",
     result.profile.title + ".",
+    "Faction: " + result.faction.title + " (" + result.faction.code + ").",
+    result.faction.motto,
     "Conviction: " + result.conviction + "/100. Cope: " + result.cope + "/100. Chat dependency: " + result.chatDependency + "/100.",
     "Cross-read: " + result.crossRead.headline + ".",
     result.profile.motto,
@@ -88,6 +90,11 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
           <h1>{result.profile.title}</h1>
           <p className="club-membership-card__subtitle">{result.profile.subtitle}</p>
           <div className="club-membership-card__motto">“{result.profile.motto}”</div>
+          <div className="club-membership-card__faction">
+            <span>FACTION / {result.faction.code}</span>
+            <strong>{result.faction.title}</strong>
+            <small>{result.faction.motto}</small>
+          </div>
           <div className="club-membership-card__bottom">
             <div><span>MEMBERSHIP CLASS</span><strong>{result.membershipClass}</strong></div>
             <div><span>BENEFITS</span><strong>NONE / EXPECTATIONS: MANAGED</strong></div>
@@ -108,6 +115,12 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
         </div>
 
         <DepartmentCrossRead read={result.crossRead} />
+
+        <div className="club-faction-dossier">
+          <div><span>FACTION / {result.faction.code}</span><h2>{result.faction.title}</h2><strong>{result.faction.designation}</strong></div>
+          <p>{result.faction.creed}</p>
+          <small>WEEKLY RITUAL / {result.faction.ritual}</small>
+        </div>
 
         <div className="club-profile">
           <span>THE DEPARTMENT HAS A COMMENT</span>

@@ -1,4 +1,6 @@
-export const PASSPORT_VERSION = 3;
+import { CLUB_FACTION_IDS, type ClubFactionId } from "../club/club-engine";
+
+export const PASSPORT_VERSION = 4;
 
 export const CLUB_CHALLENGE_IDS = ["fault-allocation", "next-entry", "research-receipt"] as const;
 export type ClubChallengeId = typeof CLUB_CHALLENGE_IDS[number];
@@ -16,6 +18,9 @@ export const CLUB_BADGE_IDS = [
   "club-cope-engineer",
   "club-kol-disciple",
   "club-certified-bagholder",
+  "club-faction-aligned",
+  "club-departmental-echo",
+  "club-weekly-regular",
 ] as const;
 export type ClubBadgeId = typeof CLUB_BADGE_IDS[number];
 
@@ -37,6 +42,17 @@ function isValidClubChallengeAnswers(value: unknown): value is Partial<Record<Cl
     Number.isInteger(answer) &&
     (answer as number) >= 0 &&
     (answer as number) < CLUB_CHALLENGE_OPTION_COUNTS[id as ClubChallengeId],
+  );
+}
+
+function isValidClubWeeklyAnswers(value: unknown): value is Record<string, number> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const entries = Object.entries(value as Record<string, unknown>);
+  return entries.length <= 104 && entries.every(([weekKey, answer]) =>
+    /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/.test(weekKey) &&
+    Number.isInteger(answer) &&
+    (answer as number) >= 0 &&
+    (answer as number) < 3,
   );
 }
 // Keep the v1 storage key so existing opted-in Passports can be migrated in place.
@@ -95,10 +111,11 @@ export type PassportAchievement = {
   requirement: string;
   rarity: BadgeRarity;
   icon: BadgeIcon;
+  secret?: boolean;
 };
 
 export type PassportData = {
-  version: 3;
+  version: 4;
   enabled: true;
   createdAt: string;
   visitedDepartments: DepartmentId[];
@@ -109,6 +126,8 @@ export type PassportData = {
   clubApplicationCount: number;
   clubChallengeAnswers: Partial<Record<ClubChallengeId, number>>;
   clubBadgeIds: ClubBadgeId[];
+  clubFactionId: ClubFactionId | null;
+  clubWeeklyChallengeAnswers: Record<string, number>;
 };
 
 export type PassportAchievementStatus = PassportAchievement & {
@@ -325,6 +344,32 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     rarity: "COMMON",
     icon: "club",
   },
+  {
+    id: "club-faction-aligned",
+    title: "FACTION AFFILIATION",
+    description: "Your archetype has been assigned to one of the six official Club factions.",
+    requirement: "Complete the membership interview and receive your faction designation.",
+    rarity: "UNCOMMON",
+    icon: "club",
+  },
+  {
+    id: "club-departmental-echo",
+    title: "THE DEPARTMENTAL ECHO",
+    description: "Three separate case files. Exactly the same explanation. Absolutely no personal liability.",
+    requirement: "File the same response position in all three original Club challenges.",
+    rarity: "LEGENDARY",
+    icon: "club",
+    secret: true,
+  },
+  {
+    id: "club-weekly-regular",
+    title: "THREE-WEEK REGULAR",
+    description: "You have returned for three separate weekly Club rituals.",
+    requirement: "File the weekly challenge during three different UTC calendar weeks.",
+    rarity: "LEGENDARY",
+    icon: "club",
+    secret: true,
+  },
 ];
 
 const departmentIds = new Set<string>(DEPARTMENT_STAMPS.map((stamp) => stamp.id));
@@ -367,41 +412,51 @@ function normalizePassport(value: unknown): { data: PassportData; migrated: bool
     activities.every((id) => typeof id === "string" && activityIds.has(id)) &&
     new Set(activities).size === activities.length;
 
-  if (candidate.version === 3) {
+  const validClubV3Fields = () =>
+    (candidate.clubMembershipAnswers === null || isValidClubAnswers(candidate.clubMembershipAnswers)) &&
+    Number.isInteger(candidate.clubApplicationCount) &&
+    (candidate.clubApplicationCount as number) >= 0 &&
+    (candidate.clubApplicationCount as number) <= 10000 &&
+    isValidClubChallengeAnswers(candidate.clubChallengeAnswers) &&
+    Array.isArray(candidate.clubBadgeIds) &&
+    candidate.clubBadgeIds.every((id) => CLUB_BADGE_IDS.includes(id as ClubBadgeId)) &&
+    new Set(candidate.clubBadgeIds).size === candidate.clubBadgeIds.length;
+
+  if (candidate.version === 4) {
     if (
       !validActivities(candidate.completedActivities) ||
-      !(candidate.clubMembershipAnswers === null || isValidClubAnswers(candidate.clubMembershipAnswers)) ||
-      !Number.isInteger(candidate.clubApplicationCount) ||
-      (candidate.clubApplicationCount as number) < 0 ||
-      (candidate.clubApplicationCount as number) > 10000 ||
-      !isValidClubChallengeAnswers(candidate.clubChallengeAnswers) ||
-      !Array.isArray(candidate.clubBadgeIds) ||
-      !candidate.clubBadgeIds.every((id) => CLUB_BADGE_IDS.includes(id as ClubBadgeId)) ||
-      new Set(candidate.clubBadgeIds).size !== candidate.clubBadgeIds.length
+      !validClubV3Fields() ||
+      !(candidate.clubFactionId === null || CLUB_FACTION_IDS.includes(candidate.clubFactionId as ClubFactionId)) ||
+      !isValidClubWeeklyAnswers(candidate.clubWeeklyChallengeAnswers)
     ) return null;
 
     return { data: candidate as unknown as PassportData, migrated: false };
   }
 
-  if (candidate.version === 1 || candidate.version === 2) {
+  if (candidate.version === 1 || candidate.version === 2 || candidate.version === 3) {
     const completedActivities = candidate.version === 1
       ? []
       : candidate.completedActivities;
     if (!validActivities(completedActivities)) return null;
 
+    const hasV3ClubFields = candidate.version === 3;
+    if (hasV3ClubFields && !validClubV3Fields()) return null;
+
     return {
       data: {
-        version: 3,
+        version: 4,
         enabled: true,
         createdAt: candidate.createdAt as string,
         visitedDepartments: candidate.visitedDepartments as DepartmentId[],
         dailyOfficeDates: candidate.dailyOfficeDates as string[],
         bestDailyStreak: candidate.bestDailyStreak as number,
         completedActivities,
-        clubMembershipAnswers: null,
-        clubApplicationCount: 0,
-        clubChallengeAnswers: {},
-        clubBadgeIds: [],
+        clubMembershipAnswers: hasV3ClubFields ? candidate.clubMembershipAnswers as number[] | null : null,
+        clubApplicationCount: hasV3ClubFields ? candidate.clubApplicationCount as number : 0,
+        clubChallengeAnswers: hasV3ClubFields ? candidate.clubChallengeAnswers as Partial<Record<ClubChallengeId, number>> : {},
+        clubBadgeIds: hasV3ClubFields ? candidate.clubBadgeIds as ClubBadgeId[] : [],
+        clubFactionId: null,
+        clubWeeklyChallengeAnswers: {},
       },
       migrated: true,
     };
@@ -484,6 +539,8 @@ export function enablePassport(now = new Date()): PassportData | null {
     clubApplicationCount: 0,
     clubChallengeAnswers: {},
     clubBadgeIds: [],
+    clubFactionId: null,
+    clubWeeklyChallengeAnswers: {},
   };
 
   try {
@@ -579,8 +636,8 @@ function getMembershipBadgeUnlocks(answers: number[]): ClubBadgeId[] {
   return [...unlocked];
 }
 
-export function recordClubMembership(answers: number[]): PassportData | null {
-  if (!isValidClubAnswers(answers)) return null;
+export function recordClubMembership(answers: number[], factionId: ClubFactionId): PassportData | null {
+  if (!isValidClubAnswers(answers) || !CLUB_FACTION_IDS.includes(factionId)) return null;
   const storage = getBrowserStorage();
   if (!storage) return null;
 
@@ -593,7 +650,8 @@ export function recordClubMembership(answers: number[]): PassportData | null {
       ...previous,
       clubMembershipAnswers: [...answers],
       clubApplicationCount: Math.min(previous.clubApplicationCount + 1, 10000),
-      clubBadgeIds: nextBadgeIds,
+      clubBadgeIds: [...new Set<ClubBadgeId>([...nextBadgeIds, "club-faction-aligned"])],
+      clubFactionId: factionId,
     };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
     announcePassportUpdate();
@@ -627,10 +685,52 @@ export function recordClubChallenge(id: ClubChallengeId, answerIndex: number): P
     if (CLUB_CHALLENGE_IDS.every((challengeId) =>
       Number.isInteger(clubChallengeAnswers[challengeId]),
     )) unlocks.add("club-cope-engineer");
+    const filedPositions = CLUB_CHALLENGE_IDS.map((challengeId) => clubChallengeAnswers[challengeId]);
+    if (filedPositions.every((answer) => Number.isInteger(answer)) &&
+        filedPositions.every((answer) => answer === filedPositions[0])) {
+      unlocks.add("club-departmental-echo");
+    }
 
     const updated: PassportData = {
       ...previous,
       clubChallengeAnswers,
+      clubBadgeIds: [...unlocks],
+    };
+    storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
+    announcePassportUpdate();
+    announceNewAchievements(previous, updated);
+    return updated;
+  } catch {
+    return null;
+  }
+}
+
+export function recordClubWeeklyChallenge(weekKey: string, answerIndex: number): PassportData | null {
+  if (!/^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/.test(weekKey) ||
+      !Number.isInteger(answerIndex) ||
+      answerIndex < 0 ||
+      answerIndex >= 3) return null;
+  const storage = getBrowserStorage();
+  if (!storage) return null;
+
+  try {
+    const previous = readStoredPassport(storage);
+    if (!previous) return null;
+    const weeklyAnswers = {
+      ...previous.clubWeeklyChallengeAnswers,
+      [weekKey]: answerIndex,
+    };
+    const trimmedEntries = Object.entries(weeklyAnswers)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .slice(-104);
+    const clubWeeklyChallengeAnswers = Object.fromEntries(trimmedEntries);
+    const unlocks = new Set<ClubBadgeId>(previous.clubBadgeIds);
+    if (Object.keys(clubWeeklyChallengeAnswers).length >= 3) {
+      unlocks.add("club-weekly-regular");
+    }
+    const updated: PassportData = {
+      ...previous,
+      clubWeeklyChallengeAnswers,
       clubBadgeIds: [...unlocks],
     };
     storage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(updated));
@@ -684,6 +784,9 @@ export function getPassportAchievementStatuses(data: PassportData): PassportAchi
     "club-cope-engineer": { progress: data.clubBadgeIds.includes("club-cope-engineer") ? 3 : Object.keys(data.clubChallengeAnswers).length, target: 3 },
     "club-kol-disciple": { progress: Number(data.clubBadgeIds.includes("club-kol-disciple")), target: 1 },
     "club-certified-bagholder": { progress: Number(data.clubBadgeIds.includes("club-certified-bagholder")), target: 1 },
+    "club-faction-aligned": { progress: Number(data.clubBadgeIds.includes("club-faction-aligned")), target: 1 },
+    "club-departmental-echo": { progress: Number(data.clubBadgeIds.includes("club-departmental-echo")), target: 3 },
+    "club-weekly-regular": { progress: Math.min(Object.keys(data.clubWeeklyChallengeAnswers).length, 3), target: 3 },
   };
 
   return PASSPORT_ACHIEVEMENTS.map((achievement) => {

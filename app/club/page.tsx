@@ -4,6 +4,7 @@ import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import ClubClient from "./club-client";
 import ClubChallenges from "./club-challenges";
+import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/club" },
@@ -11,13 +12,13 @@ export const metadata: Metadata = {
   description: "The 99% Club: fictional crypto archetypes, local achievement badges and interactive excuses for why the next entry is still yours.",
   openGraph: {
     title: "THE 99% CLUB",
-    description: "Five questions, thirteen Club badges and three interactive excuses. The next one is yours.",
+    description: "Five questions, sixteen Club badges and three interactive excuses. The next one is yours.",
     images: ["/club/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE 99% CLUB",
-    description: "Five questions, thirteen Club badges and three interactive excuses.",
+    description: "Five questions, sixteen Club badges and three interactive excuses.",
     images: ["/club/opengraph-image"],
   },
 };
@@ -46,6 +47,23 @@ export default function ClubPage() {
         </aside>
 
         <ClubClient />
+      </div>
+
+      <div className="shell">
+        <section className="club-faction-directory" aria-labelledby="club-factions-title">
+          <header>
+            <div><span>THE 99% CLUB / SIX FICTIONAL FACTIONS</span><h2 id="club-factions-title">PICK YOUR <em>EXCUSE.</em></h2></div>
+            <p>Your primary membership archetype determines your faction. No wallets, applications, token holdings or real-world groups are involved.</p>
+          </header>
+          <div className="club-faction-directory__grid">
+            {Object.values(factions).map((faction) => (
+              <article className="club-faction-tile" key={faction.id}>
+                <div className="club-faction-tile__seal">{faction.seal}</div>
+                <div><span>{faction.code} / {faction.designation}</span><h3>{faction.title}</h3><strong>“{faction.motto}”</strong><p>{faction.creed}</p><small>RITUAL / {faction.ritual}</small></div>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
 
       <div className="shell">
