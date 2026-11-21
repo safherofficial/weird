@@ -594,17 +594,12 @@ test("U23.3 audited classifications match the exact answer semantics", () => {
   // Evidence-led handover verification belongs with the evidence archivist, not the disengaged profile.
   assert.equal(copeQuestions[1].options[0].tag, "thesis-archivist");
   assert.match(copeQuestions[1].options[0].label, /verifiable handover/i);
-  assert.match(copeQuestions[1].options[0].tag, /thesis-archivist/);
-  assert.match(copeClassificationsForTest(), /source links/i);
-  assert.equal(roadmapQuestions[4].options[3].tag, "community-amplifier");
-  assert.match(roadmapClassificationsForTest(), /named owners and deliverables/i);
-});
   assert.match(copeClassifications["thesis-archivist"].subtitle, /source links/i);
+
+  // Social posting after a red candle is community amplification, not a global-adoption claim.
+  assert.equal(roadmapQuestions[4].options[3].tag, "community-amplifier");
   assert.match(roadmapClassifications["actually-shipping"].subtitle, /named owners and deliverables/i);
 });
-function awaitNever() {
-  return "never";
-}
 
 test("Fictional Token Dossier archetypes align with technical, community and governance answers", () => {
   assert.equal(whitepaperQuestions[0].options[1].tag, "interoperability-evangelist");
