@@ -391,7 +391,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
 
                 {entry.occurrences.length > 0 ? (
                   <details className="department-case-atlas__timeline">
-                    <summary>OPEN FULL THREAD HISTORY / {entry.occurrences.length} MATCHING FILES</summary>
+                    <summary>OPEN SELECTED-WINDOW HISTORY / {entry.occurrences.length} MATCHING FILES</summary>
                     <ol>
                       {entry.occurrences.map((occurrence, occurrenceIndex) => (
                         <li key={occurrence.issueDate}>

@@ -1737,3 +1737,12 @@ test("U25 audit correction marks a viewing division clearly when it is outside t
     }
   }
 });
+
+
+test("Case Atlas labels thread chronology as the selected date window rather than implying all 240 source days are open", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  assert.ok(atlasClient.includes("OPEN SELECTED-WINDOW HISTORY / {entry.occurrences.length} MATCHING FILES"));
+  assert.doesNotMatch(atlasClient, /OPEN FULL THREAD HISTORY/);
+  assert.ok(atlasClient.includes("{windowDays} UTC-DAY WINDOW"));
+  assert.ok(atlasClient.includes("{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES"));
+});
