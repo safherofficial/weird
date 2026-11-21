@@ -28,4 +28,7 @@ export const CLUB_BADGE_MARKS: Record<string, string> = {
   "club-cope-engineer": "∿",
   "club-kol-disciple": "KOL",
   "club-certified-bagholder": "99",
+  "club-faction-aligned": "F",
+  "club-departmental-echo": "↺",
+  "club-weekly-regular": "W3",
 };
