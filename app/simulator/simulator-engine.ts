@@ -152,50 +152,50 @@ export const marketEvents: MarketEvent[] = [
 const profiles: Record<string, SimulatorProfile> = {
   telegram: {
     title: "THE CT / TELEGRAM SENTINEL",
-    subtitle: "You consulted CT or Telegram in at least three rounds. The fictional market sequence had a separate agenda.",
+    subtitle: "You did not follow the fictional launch. You followed every CT reply and Telegram admin reaction to it.",
     roast: "You know which KOL deleted the call and which mod is online at 03:17. The post-graduation pool remains a mystery.",
     ending: "REFERRED TO THE OFFICE OF COMMUNITY-BASED DENIAL.",
   },
   accumulator: {
-    title: "THE POSITION-EXPANSION ACCUMULATOR",
-    subtitle: "You executed three or more ADD TO POSITION decisions. The paper position kept expanding as the scripted launch sequence unfolded.",
-    roast: "You gave the position a growth strategy. The chart submitted a competing plan.",
+    title: "THE POST-GRADUATION ACCUMULATOR",
+    subtitle: "Every post-graduation red candle became a reason to add another chapter to the bag's lore.",
+    roast: "You did not catch the falling knife. You joined its CTO Telegram and asked when the next catalyst lands.",
     ending: "AWARDED THE GOLDEN POSITION-EXPANSION CERTIFICATE.",
   },
   defector: {
     title: "THE EARLY POOL DEFECTOR",
-    subtitle: "You used TRIM repeatedly and finished the fictional sequence above your starting paper capital. The group chat has noticed.",
-    roast: "You reduced the position while the timeline was still renaming every sell-off healthy rotation.",
+    subtitle: "You left the fictional post-graduation pool before the group chat could rename the sell-off healthy rotation.",
+    roast: "You sold into the chaos and kept your imaginary credits. The group chat has noticed.",
     ending: "RELEASED FROM THE BAG. SOCIAL CONSEQUENCES MAY APPLY.",
   },
   consultant: {
     title: "THE POST-GRADUATION EXIT CONSULTANT",
-    subtitle: "You used TRIM repeatedly, but the final paper balance still finished below its starting value.",
-    roast: "You kept reducing the position. The final drawdown still requested a meeting with your imaginary accountant.",
+    subtitle: "You found the sell button after the curve completed. CT has requested your entry and exit screenshots for review.",
+    roast: "You escaped the position, then watched the next candle with the energy of a divorcee.",
     ending: "REFERRED TO THE DEPARTMENT OF POST-EXIT REGRET.",
   },
   diamond: {
     title: "THE CTO-ERA DIAMOND HAND",
-    subtitle: "You chose HOLD in at least five of the seven rounds. The fictional bag has become a long-running commitment.",
-    roast: "The launch narrative changed several times. Your selected action did not.",
+    subtitle: "You held through the graduation, deployer silence and community takeover. The bag now has its own pinned message.",
+    roast: "The chart graduated, migrated and changed its narrative. You are still waiting for the original KOL to come back.",
     ending: "PROMOTED TO PERMANENT CUSTODIAN OF THE BAG.",
   },
   liquidity: {
     title: "CERTIFIED EXIT LIQUIDITY",
-    subtitle: "The scripted launch sequence left your final paper net worth at 400 DPC or less. The Department has filed the receipt.",
-    roast: "The first fictional wallets appreciate your contribution to the post-graduation pool. Their CT accounts have gone quiet.",
+    subtitle: "The early fictional wallets needed an exit. Your late entry arrived just in time to provide one.",
+    roast: "The first wallets appreciate your contribution to the post-graduation pool. Their CT accounts have gone quiet.",
     ending: "FILED UNDER: A VALUABLE LESSON WITH NO REFUND.",
   },
   tourist: {
     title: "THE VOLATILITY TOURIST",
-    subtitle: "You made it through the fictional launch, graduation and post-graduation volatility without fitting any of the Department's other filing categories.",
+    subtitle: "You chased the launch, watched the curve graduate and left with a suitcase full of screenshots.",
     roast: "You bought the story, toured the drawdown and left a five-star review for the community.",
     ending: "CLEARED TO LEAVE THE MARKETPLACE. PLEASE KEEP YOUR RECEIPT.",
   },
   survivor: {
     title: "THE PAPER-HANDS SURVIVOR",
-    subtitle: "You finished the scripted market sequence with at least your 1,000 starting paper credits. The Department is checking the arithmetic.",
-    roast: "You kept the imaginary balance above water. CT has requested a screenshot and three explanations.",
+    subtitle: "You checked the fictional launch, ignored the copied KOL call and kept your paper credits. Rare CT behaviour.",
+    roast: "You treated a meme token like a revolving door. The Department is not sure how to process this.",
     ending: "RELEASED WITH A CAUTIONARY FOOTNOTE.",
   },
 };
@@ -250,20 +250,15 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
     const action = actions[decisionIndex];
     const event = marketEvents[index];
     const priceBefore = price;
-    let actionLabel = action.shortLabel;
 
     if (action.id === "trim") {
       const unitsToSell = units * 0.2;
       units -= unitsToSell;
       cash += unitsToSell * price;
-    } else if (action.id === "average") {
-      if (cash >= 25) {
-        const amount = Math.min(125, cash);
-        units += amount / price;
-        cash -= amount;
-      } else {
-        actionLabel = "ADD SKIPPED";
-      }
+    } else if (action.id === "average" && cash >= 25) {
+      const amount = Math.min(125, cash);
+      units += amount / price;
+      cash -= amount;
     }
 
     counts[action.id] += 1;
@@ -275,7 +270,7 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
       day: event.day,
       headline: event.headline,
       action: action.id,
-      actionLabel,
+      actionLabel: action.shortLabel,
       priceBefore: round(priceBefore),
       priceAfter: round(price),
       movement: event.movement,
@@ -304,13 +299,10 @@ export function simulateProgress(decisions: number[]): SimulatorProgress {
 }
 
 function selectProfile(progress: SimulatorProgress): SimulatorProfile {
-  const { hold, trim, telegram } = progress.counts;
-  const executedAdds = progress.history.filter(
-    (entry) => entry.action === "average" && entry.actionLabel === "ADD"
-  ).length;
+  const { hold, trim, average, telegram } = progress.counts;
 
   if (telegram >= 3) return profiles.telegram;
-  if (executedAdds >= 3) return profiles.accumulator;
+  if (average >= 3) return profiles.accumulator;
   if (trim >= 4) return progress.netWorth >= STARTING_CREDITS ? profiles.defector : profiles.consultant;
   if (hold >= 5) return profiles.diamond;
   if (progress.netWorth >= STARTING_CREDITS) return profiles.survivor;
@@ -326,14 +318,10 @@ export function buildSimulatorResult(decisions: number[]): SimulatorResult {
   const progress = simulateProgress(decisions);
   const profile = selectProfile(progress);
   const counts = progress.counts;
-  const executedAdds = progress.history.filter(
-    (entry) => entry.action === "average" && entry.actionLabel === "ADD"
-  ).length;
-  const skippedAddAttempts = counts.average - executedAdds;
   const decisionSummary = [
     counts.hold + " holds",
     counts.trim + " trims",
-    executedAdds + " additional buys" + (skippedAddAttempts ? " / " + skippedAddAttempts + " add attempts skipped" : ""),
+    counts.average + " additional buys",
     counts.telegram + " CT / Telegram consultations",
   ].join(" / ");
 
