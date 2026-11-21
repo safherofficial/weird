@@ -17,7 +17,7 @@ export default function DepartmentPassportOpenGraphImage() {
           <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>REGISTER DPP-001 / VISITS + COMPLETION BADGES</span>
           <span style={{ display: "flex", marginTop: 17, fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE DEPARTMENT</span>
           <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>PASSPORT.</span>
-          <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>10 visit stamps. 11 achievement badges. Absolutely no practical value.</span>
+          <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>10 visit stamps. 23 achievement badges. Absolutely no practical value.</span>
         </div>
         <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
           {["OPTIONAL / OFF BY DEFAULT", "NO ACCOUNT", "LOCAL STORAGE ONLY"].map((label) => (
