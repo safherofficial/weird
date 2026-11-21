@@ -20,6 +20,21 @@ export type DepartmentCaseAtlasOccurrence = {
   href: string;
 };
 
+export type DepartmentCaseAtlasInterval = {
+  newerIssueDate: string;
+  olderIssueDate: string;
+  days: number;
+};
+
+export type DepartmentCaseAtlasRecurrence = {
+  daysSinceLatest: number | null;
+  previousOccurrence: DepartmentCaseAtlasOccurrence | null;
+  intervals: DepartmentCaseAtlasInterval[];
+  averageIntervalDays: number | null;
+  shortestIntervalDays: number | null;
+  longestIntervalDays: number | null;
+};
+
 export type DepartmentCaseAtlasEntry = {
   theme: string;
   narrative: string;
@@ -39,6 +54,7 @@ export type DepartmentCaseAtlasEntry = {
   occurrenceCount: number;
   latestOccurrence: DepartmentCaseAtlasOccurrence | null;
   occurrences: DepartmentCaseAtlasOccurrence[];
+  recurrence: DepartmentCaseAtlasRecurrence;
 };
 
 export type DepartmentCaseAtlasData = {
@@ -140,6 +156,12 @@ function dailyRecordHref(issueDate: string): string {
   return issueDate === today ? "/daily-office" : "/daily-office/archive/" + issueDate;
 }
 
+function utcDayDistance(newerDate: string, olderDate: string): number {
+  const newer = Date.parse(newerDate + "T00:00:00.000Z");
+  const older = Date.parse(olderDate + "T00:00:00.000Z");
+  return Math.round((newer - older) / 86400000);
+}
+
 export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): DepartmentCaseAtlasData {
   if (!isValidInstitutionalMemoryDate(asOfDate)) {
     throw new Error("The Case Atlas requires a valid current or past UTC issue date.");
@@ -198,6 +220,15 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
     });
 
     const appearance = appearances.get(theme);
+    const occurrences = appearance?.occurrences ?? [];
+    const intervals: DepartmentCaseAtlasInterval[] = occurrences.slice(1).map((olderOccurrence, index) => ({
+      newerIssueDate: occurrences[index].issueDate,
+      olderIssueDate: olderOccurrence.issueDate,
+      days: utcDayDistance(occurrences[index].issueDate, olderOccurrence.issueDate),
+    }));
+    const intervalValues = intervals.map((interval) => interval.days);
+    const latestOccurrence = occurrences[0] ?? null;
+
     return {
       theme,
       narrative: thread.narrative,
@@ -215,8 +246,16 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
         href: "/museum/exhibits/" + relic.slug,
       },
       occurrenceCount: appearance?.count ?? 0,
-      latestOccurrence: appearance?.latest ?? null,
-      occurrences: appearance?.occurrences ?? [],
+      latestOccurrence,
+      occurrences,
+      recurrence: {
+        daysSinceLatest: latestOccurrence ? utcDayDistance(asOfDate, latestOccurrence.issueDate) : null,
+        previousOccurrence: occurrences[1] ?? null,
+        intervals,
+        averageIntervalDays: intervalValues.length ? intervalValues.reduce((sum, days) => sum + days, 0) / intervalValues.length : null,
+        shortestIntervalDays: intervalValues.length ? Math.min(...intervalValues) : null,
+        longestIntervalDays: intervalValues.length ? Math.max(...intervalValues) : null,
+      },
     };
   });
 

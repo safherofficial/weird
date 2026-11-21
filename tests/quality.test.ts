@@ -1202,3 +1202,75 @@ test("U25.7 Case Atlas renders an accessible expandable history for each themati
   assert.ok(atlasEngine.includes("existing.occurrences.push(occurrence)"));
   assert.ok(atlasEngine.includes("occurrences: appearance?.occurrences ?? []"));
 });
+
+
+test("U25.8 Case Atlas recurrence analysis reports exact UTC gaps without inventing missing history", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const atlas = buildDepartmentCaseAtlas(today, 90);
+
+  const utcGap = (newerDate: string, olderDate: string) =>
+    Math.round((Date.parse(newerDate + "T00:00:00.000Z") - Date.parse(olderDate + "T00:00:00.000Z")) / 86400000);
+
+  for (const entry of atlas.entries) {
+    const occurrences = entry.occurrences;
+    const expectedIntervals = occurrences.slice(1).map((older, index) => ({
+      newerIssueDate: occurrences[index].issueDate,
+      olderIssueDate: older.issueDate,
+      days: utcGap(occurrences[index].issueDate, older.issueDate),
+    }));
+    const gaps = expectedIntervals.map((interval) => interval.days);
+    const recurrence = entry.recurrence;
+
+    assert.deepEqual(recurrence.intervals, expectedIntervals, entry.theme + " must preserve every adjacent recurrence gap");
+    assert.equal(recurrence.daysSinceLatest, occurrences[0] ? utcGap(today, occurrences[0].issueDate) : null);
+    assert.equal(recurrence.previousOccurrence?.issueDate ?? null, occurrences[1]?.issueDate ?? null);
+    assert.equal(recurrence.averageIntervalDays, gaps.length ? gaps.reduce((sum, days) => sum + days, 0) / gaps.length : null);
+    assert.equal(recurrence.shortestIntervalDays, gaps.length ? Math.min(...gaps) : null);
+    assert.equal(recurrence.longestIntervalDays, gaps.length ? Math.max(...gaps) : null);
+    assert.ok(recurrence.daysSinceLatest === null || recurrence.daysSinceLatest >= 0);
+    assert.ok(recurrence.intervals.every((interval) => interval.days > 0));
+  }
+
+  const singleDayAtlas = buildDepartmentCaseAtlas(today, 1);
+  const todaysTheme = buildDailyOfficeDispatch(today).caseTheme;
+  assert.equal(singleDayAtlas.entries.filter((entry) => entry.occurrenceCount === 1).length, 1);
+  for (const entry of singleDayAtlas.entries) {
+    if (entry.theme === todaysTheme) {
+      assert.equal(entry.recurrence.daysSinceLatest, 0);
+      assert.equal(entry.recurrence.previousOccurrence, null);
+      assert.deepEqual(entry.recurrence.intervals, []);
+      assert.equal(entry.recurrence.averageIntervalDays, null);
+      assert.equal(entry.recurrence.shortestIntervalDays, null);
+      assert.equal(entry.recurrence.longestIntervalDays, null);
+    } else {
+      assert.equal(entry.recurrence.daysSinceLatest, null);
+      assert.equal(entry.recurrence.previousOccurrence, null);
+      assert.deepEqual(entry.recurrence.intervals, []);
+      assert.equal(entry.recurrence.averageIntervalDays, null);
+      assert.equal(entry.recurrence.shortestIntervalDays, null);
+      assert.equal(entry.recurrence.longestIntervalDays, null);
+    }
+  }
+});
+
+test("U25.8 Case Atlas presents recurrence calculations with accessible links and explicit fictional-data limits", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasPage = readFileSync("app/daily-office/atlas/page.tsx", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(atlasClient.includes('className="department-case-atlas__recurrence"'));
+  assert.ok(atlasClient.includes("AGE OF LATEST FILE"));
+  assert.ok(atlasClient.includes("MOST RECENT GAP"));
+  assert.ok(atlasClient.includes("MEAN GAP"));
+  assert.ok(atlasClient.includes("SHORTEST GAP"));
+  assert.ok(atlasClient.includes("LONGEST GAP"));
+  assert.ok(atlasClient.includes("entry.recurrence.previousOccurrence.href"));
+  assert.ok(atlasClient.includes("entry.recurrence.intervals[0]?.days"));
+  assert.ok(atlasClient.includes("NO PRIOR FILE IN WINDOW"));
+  assert.ok(atlasClient.includes("NO FILE IN WINDOW"));
+  assert.ok(atlasClient.includes("NO FORECAST OR REAL-WORLD INFERENCE"));
+  assert.ok(atlasPage.includes("recurrence intervals"));
+  assert.ok(css.includes(".department-case-atlas__recurrence-grid"));
+  assert.ok(css.includes("@media (max-width: 680px)"));
+  assert.doesNotMatch(atlasClient + atlasPage, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
+});

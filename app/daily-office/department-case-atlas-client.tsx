@@ -151,6 +151,62 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   )}
                 </div>
 
+                <section className="department-case-atlas__recurrence" aria-label={"Recurrence profile for " + entry.theme}>
+                  <div className="department-case-atlas__recurrence-heading">
+                    <span>REPEAT-FILING PROFILE / {entry.recurrence.intervals.length} OBSERVED INTERVALS</span>
+                  </div>
+                  <div className="department-case-atlas__recurrence-grid">
+                    <div>
+                      <small>AGE OF LATEST FILE</small>
+                      <strong>
+                        {entry.recurrence.daysSinceLatest === null
+                          ? "NO FILE IN WINDOW"
+                          : entry.recurrence.daysSinceLatest === 0
+                            ? "TODAY"
+                            : entry.recurrence.daysSinceLatest + " DAYS"}
+                      </strong>
+                    </div>
+                    <div>
+                      <small>MOST RECENT GAP</small>
+                      {entry.recurrence.previousOccurrence ? (
+                        <>
+                          <strong>{entry.recurrence.intervals[0]?.days} DAYS</strong>
+                          <Link href={entry.recurrence.previousOccurrence.href}>
+                            PRIOR FILE / {entry.recurrence.previousOccurrence.issueDate} ↗
+                          </Link>
+                        </>
+                      ) : (
+                        <strong>{entry.latestOccurrence ? "NO PRIOR FILE IN WINDOW" : "NO FILE IN WINDOW"}</strong>
+                      )}
+                    </div>
+                    <div>
+                      <small>MEAN GAP</small>
+                      <strong>
+                        {entry.recurrence.averageIntervalDays === null
+                          ? "NOT CALCULABLE"
+                          : entry.recurrence.averageIntervalDays.toFixed(1) + " DAYS"}
+                      </strong>
+                    </div>
+                    <div>
+                      <small>SHORTEST GAP</small>
+                      <strong>
+                        {entry.recurrence.shortestIntervalDays === null
+                          ? "NOT RECORDED"
+                          : entry.recurrence.shortestIntervalDays + " DAYS"}
+                      </strong>
+                    </div>
+                    <div>
+                      <small>LONGEST GAP</small>
+                      <strong>
+                        {entry.recurrence.longestIntervalDays === null
+                          ? "NOT RECORDED"
+                          : entry.recurrence.longestIntervalDays + " DAYS"}
+                      </strong>
+                    </div>
+                  </div>
+                  <p>GAPS ARE UTC DAY DIFFERENCES BETWEEN ADJACENT FICTIONAL FILES IN THIS WINDOW. DESCRIPTIVE ONLY; NO FORECAST OR REAL-WORLD INFERENCE.</p>
+                </section>
+
                 {entry.occurrences.length > 0 ? (
                   <details className="department-case-atlas__timeline">
                     <summary>OPEN FULL THREAD HISTORY / {entry.occurrences.length} MATCHING FILES</summary>

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Department Case Atlas | THE DYOR DEPARTMENT",
-  description: "An interactive index of 18 fictional case themes, their three assigned offices, existing archive precedents and Museum exhibits across all ten Department divisions.",
+  description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals across all ten Department divisions.",
   alternates: { canonical: "/daily-office/atlas" },
   robots: { index: false, follow: true },
 };
@@ -34,12 +34,12 @@ export default function DepartmentCaseAtlasPage() {
           <p className="eyebrow">THE DYOR DEPARTMENT / CROSS-DIVISION INDEX</p>
           <h1>THE CASE<br /><span>ATLAS.</span></h1>
           <p className="audit-intro__lead">
-            Eighteen recurring fictional case themes. Ten divisions. Thirty-six archive and Museum reference points. The Atlas shows who handles each file, which old records inform it and where the theme last appeared in the daily register.
+            Eighteen recurring fictional case themes. Ten divisions. Thirty-six archive and Museum reference points. The Atlas shows who handles each file, which old records inform it, how often the theme reappeared and how many UTC days separated its fictional daily filings.
           </p>
           <div className="department-case-atlas-intro__notice">
             <span>INDEX METHOD / DETERMINISTIC REFERENCE DATA</span>
             <strong>EVERY ROUTE LEADS TO AN EXISTING DEPARTMENT RECORD.</strong>
-            <small>THE 90-DAY APPEARANCE COUNTS ARE GENERATED FROM FICTIONAL UTC BRIEFINGS, NOT LIVE MARKET ACTIVITY.</small>
+            <small>COUNTS AND RECURRENCE GAPS ARE CALCULATED ONLY FROM FICTIONAL UTC BRIEFINGS, NOT LIVE MARKET ACTIVITY.</small>
           </div>
         </header>
         <DepartmentCaseAtlasClient atlas={atlas} />

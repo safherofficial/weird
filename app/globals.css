@@ -12936,3 +12936,66 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     grid-column: 2;
   }
 }
+
+
+/* U25.8 — descriptive recurrence intervals for fictional Case Atlas threads */
+.department-case-atlas__recurrence {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 13px;
+  border: 1px solid #344034;
+  background: #0c120c;
+}
+.department-case-atlas__recurrence-heading > span {
+  color: #d8b477;
+  font: 700 8px/1.5 var(--mono);
+  letter-spacing: .09em;
+}
+.department-case-atlas__recurrence-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.department-case-atlas__recurrence-grid > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid #293429;
+  background: #0a0f0a;
+}
+.department-case-atlas__recurrence-grid small {
+  color: #87927f;
+  font: 700 8px/1.5 var(--mono);
+  letter-spacing: .06em;
+}
+.department-case-atlas__recurrence-grid strong {
+  color: var(--text);
+  font: 700 11px/1.4 var(--mono);
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__recurrence-grid a {
+  color: var(--green);
+  font: 700 8px/1.55 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__recurrence-grid a:hover { color: var(--text); }
+.department-case-atlas__recurrence > p {
+  margin: 0;
+  color: #87927f;
+  font: 8px/1.6 var(--mono);
+}
+.department-case-atlas__recurrence a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+@media (max-width: 980px) {
+  .department-case-atlas__recurrence-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .department-case-atlas__recurrence-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
