@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   description: "The 99% Club: fictional crypto archetypes, local achievement badges and interactive excuses for why the next entry is still yours.",
   openGraph: {
     title: "THE 99% CLUB",
-    description: "Five questions, thirteen Club badges and three interactive excuses. The next one is yours.",
+    description: "Five questions, sixteen Club badges and three interactive excuses. The next one is yours.",
     images: ["/club/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE 99% CLUB",
-    description: "Five questions, thirteen Club badges and three interactive excuses.",
+    description: "Five questions, sixteen Club badges and three interactive excuses.",
     images: ["/club/opengraph-image"],
   },
 };
