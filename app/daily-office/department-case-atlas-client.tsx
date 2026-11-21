@@ -54,6 +54,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
               <strong>{division.title}</strong>
               <b>{String(division.themeCount).padStart(2, "0")} CONNECTED THEMES</b>
               {division.routingComparison ? (
+                <>
                 <div className="department-case-atlas__division-routing" aria-label={"Routing comparison for " + division.title}>
                   <div>
                     <small>CURRENT ROUTING ASSIGNMENTS</small>
@@ -95,6 +96,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   </ol>
                   <p>PER-THEME ROUTES TO THIS OFFICE / CURRENT AND PREVIOUS MATCHED UTC WINDOWS. COUNTS ARE FICTIONAL ASSIGNMENTS, NOT MARKET EVENTS.</p>
                 </details>
+                </>
               ) : null}
               <button
                 type="button"
