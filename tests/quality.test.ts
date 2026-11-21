@@ -744,6 +744,48 @@ test("Fictional Token Dossier purpose-missing archetype also reflects risk-denia
   assert.match(whitepaperClassifications["product-not-found"].subtitle, /credible account of project risks/i);
 });
 
+test("U27.1 daily editorial rotation avoids repeating a focus across the previous four UTC issues", () => {
+  const focusByTheme = {
+    "CA / LAUNCH CONTEXT": "launch",
+    "BONDING-CURVE GRADUATION": "graduation",
+    "DEPLOYER / CTO HANDOVER": "handover",
+    "KOL ECHO / COPIED CALLS": "kol",
+    "GREEN-CANDLE CONVICTION": "chart",
+    "BUNDLE / WALLET THEORIES": "wallet",
+    "POST-GRADUATION LIQUIDITY": "liquidity",
+    "COMMUNITY TAKEOVER": "handover",
+    "DELETED KOL CALL": "kol",
+    "100X ENTRY TIMING": "chart",
+    "CA SOURCE VERIFICATION": "launch",
+    "CTO ACCESS CHECKLIST": "handover",
+    "WALLET-GRAPH INTERPRETATION": "wallet",
+    "EXIT-PLAN ABSENCE": "exit",
+    "GREEN-CANDLE EVIDENCE": "chart",
+    "SNIPER THEORY": "wallet",
+    "MIGRATION CLAIM": "migration",
+    "BAGHOLDER ENTRY HISTORY": "exit",
+  } as const;
+  const focusHistory: string[] = [];
+  const themes = new Set<string>();
+
+  for (let index = 0; index < 180; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const focus = focusByTheme[dispatch.caseTheme as keyof typeof focusByTheme];
+
+    assert.ok(focus, issueDate + " must map to a known editorial focus");
+    assert.ok(
+      !focusHistory.slice(-4).includes(focus),
+      issueDate + " repeats the " + focus + " editorial focus inside the four-issue cooldown",
+    );
+    focusHistory.push(focus);
+    themes.add(dispatch.caseTheme);
+  }
+
+  assert.equal(new Set(focusHistory).size, 9, "the rotation must use all nine editorial focus lanes");
+  assert.ok(themes.size >= 12, "the rotation must retain broad coverage of the 18 existing case themes");
+});
+
 test("Daily CT Briefing retains a healthy range of date-seeded editorial variants", () => {
   const reports = Array.from({ length: 120 }, (_, index) => {
     const date = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
