@@ -13896,3 +13896,369 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (prefers-reduced-motion: reduce) {
   .club-challenge__options button { transition: none; }
 }
+
+
+/* U28.2 — Club factions, member-specific affiliation, hidden achievements and weekly rituals. */
+.club-faction-directory {
+  margin: clamp(38px, 6vw, 72px) auto;
+  padding: clamp(20px, 3.5vw, 38px);
+  border: 1px solid #344034;
+  background: linear-gradient(145deg, rgba(182,255,101,.055), transparent 42%), #0b100c;
+}
+.club-faction-directory > header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(220px, .8fr);
+  gap: 22px;
+  align-items: end;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #344034;
+}
+.club-faction-directory > header span {
+  color: #98a78d;
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .13em;
+}
+.club-faction-directory > header h2 {
+  margin: 11px 0 0;
+  color: #f0f0e9;
+  font: 800 clamp(32px, 5vw, 58px)/.94 var(--sans);
+  letter-spacing: -.065em;
+}
+.club-faction-directory > header h2 em { color: var(--accent); font-style: normal; }
+.club-faction-directory > header p {
+  margin: 0;
+  color: #94a18c;
+  font-size: 11px;
+  line-height: 1.75;
+}
+.club-faction-directory__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+.club-faction-tile {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid #303b30;
+  background: #101610;
+}
+.club-faction-tile__seal {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  border: 1px solid #61774f;
+  border-radius: 50%;
+  background: radial-gradient(circle, #24321d, #0a100b 72%);
+  color: var(--accent);
+  font: 900 25px/1 var(--font-mono);
+  box-shadow: inset 0 0 0 5px #b6ff6509, 0 0 22px #b6ff650c;
+}
+.club-faction-tile > div:last-child { min-width: 0; }
+.club-faction-tile > div:last-child > span {
+  color: #8c9b83;
+  font: 7px/1.55 var(--font-mono);
+  letter-spacing: .07em;
+}
+.club-faction-tile h3 {
+  margin: 6px 0 8px;
+  color: #edf2e8;
+  font: 700 13px/1.25 var(--font-mono);
+}
+.club-faction-tile strong {
+  display: block;
+  color: var(--accent);
+  font: 700 8px/1.65 var(--font-mono);
+}
+.club-faction-tile p {
+  margin: 8px 0;
+  color: #9aa790;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.club-faction-tile small {
+  display: block;
+  color: #778473;
+  font: 7px/1.6 var(--font-mono);
+}
+
+.club-membership-card {
+  min-height: 390px;
+}
+.club-membership-card__faction {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+  align-self: flex-start;
+  max-width: 86%;
+  margin-top: 13px;
+  padding: 9px 12px;
+  border-left: 2px solid #b6ff65;
+  background: #101b10;
+}
+.club-membership-card__faction span {
+  color: #91a286;
+  font: 7px/1.5 var(--font-mono);
+  letter-spacing: .12em;
+}
+.club-membership-card__faction strong {
+  color: #eaf4df;
+  font: 700 9px/1.4 var(--font-mono);
+}
+.club-membership-card__faction small {
+  color: #a3b597;
+  font: 7px/1.6 var(--font-mono);
+}
+.club-faction-dossier {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, .85fr);
+  gap: 14px 22px;
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid #52633f;
+  background: linear-gradient(110deg, #172216, #101510 78%);
+}
+.club-faction-dossier > div > span {
+  color: var(--accent);
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .1em;
+}
+.club-faction-dossier h2,
+.club-faction-dossier h3 {
+  margin: 7px 0;
+  color: #edf2e8;
+  font: 700 14px/1.35 var(--font-mono);
+}
+.club-faction-dossier > div > strong {
+  color: #8e9d83;
+  font: 7px/1.6 var(--font-mono);
+}
+.club-faction-dossier p {
+  margin: 0;
+  color: #b6c2ae;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.club-faction-dossier small {
+  grid-column: 1 / -1;
+  padding-top: 10px;
+  border-top: 1px solid #344034;
+  color: #91a085;
+  font: 8px/1.65 var(--font-mono);
+}
+
+.club-weekly-ritual {
+  margin-top: 34px;
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid #52633f;
+  background:
+    radial-gradient(circle at 100% 0, rgba(182,255,101,.09), transparent 34%),
+    #0b100c;
+}
+.club-weekly-ritual__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #344034;
+}
+.club-weekly-ritual__header > div:first-child > span {
+  color: #9eae92;
+  font: 8px/1.5 var(--font-mono);
+  letter-spacing: .12em;
+}
+.club-weekly-ritual__header h3 {
+  margin: 10px 0;
+  color: #f0f0e9;
+  font: 800 clamp(26px, 4vw, 42px)/.98 var(--sans);
+  letter-spacing: -.06em;
+}
+.club-weekly-ritual__header h3 em { color: var(--accent); font-style: normal; }
+.club-weekly-ritual__header p {
+  max-width: 600px;
+  margin: 0;
+  color: #9aa690;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.club-weekly-ritual__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border: 1px solid #46563d;
+  background: #111911;
+}
+.club-weekly-ritual__status strong {
+  color: var(--accent);
+  font: 400 28px/1 var(--font-mono);
+}
+.club-weekly-ritual__status strong small {
+  color: #899783;
+  font-size: 11px;
+}
+.club-weekly-ritual__status span {
+  color: #8e9d83;
+  font: 7px/1.55 var(--font-mono);
+  letter-spacing: .08em;
+}
+.club-weekly-ritual__case { padding-top: 18px; }
+.club-weekly-ritual__case-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #8d9b83;
+  font: 7px/1.5 var(--font-mono);
+  letter-spacing: .08em;
+}
+.club-weekly-ritual__case-top span:last-child { color: var(--accent); }
+.club-weekly-ritual__case > .eyebrow {
+  margin: 16px 0 7px;
+  color: #9baa91;
+}
+.club-weekly-ritual__case h4 {
+  margin: 0 0 12px;
+  color: #eff4e9;
+  font: 700 20px/1.2 var(--sans);
+}
+.club-weekly-ritual__prompt {
+  color: #d2ddcb;
+  font: 700 9px/1.7 var(--font-mono);
+}
+.club-weekly-ritual__note {
+  margin: 8px 0 14px;
+  color: #899683;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.club-weekly-ritual__options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.club-weekly-ritual__options button {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 70px;
+  padding: 12px;
+  border: 1px solid #303b30;
+  background: #101610;
+  color: #b8c2b1;
+  text-align: left;
+  cursor: pointer;
+}
+.club-weekly-ritual__options button:hover,
+.club-weekly-ritual__options button:focus-visible { border-color: #8da875; }
+.club-weekly-ritual__options button.is-selected {
+  border-color: var(--accent);
+  background: rgba(182,255,101,.075);
+  color: #eef5e8;
+}
+.club-weekly-ritual__options button > span {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 1px solid #46563d;
+  color: var(--accent);
+  font: 8px var(--font-mono);
+}
+.club-weekly-ritual__options button > strong {
+  font: 700 8px/1.6 var(--font-mono);
+}
+.club-weekly-ritual__finding {
+  margin-top: 12px;
+  padding: 11px;
+  border-left: 2px solid var(--accent);
+  background: #151e14;
+}
+.club-weekly-ritual__finding span {
+  color: #9cae8d;
+  font: 7px/1.5 var(--font-mono);
+  letter-spacing: .07em;
+}
+.club-weekly-ritual__finding p {
+  margin: 5px 0 0;
+  color: #d3dec9;
+  font: 8px/1.65 var(--font-mono);
+}
+.club-weekly-ritual__file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 43px;
+  margin-top: 14px;
+  padding: 11px 13px;
+  border: 1px solid #61774f;
+  background: rgba(182,255,101,.09);
+  color: var(--accent);
+  font: 700 8px/1.5 var(--font-mono);
+  cursor: pointer;
+}
+.club-weekly-ritual__file:disabled { opacity: .35; cursor: not-allowed; }
+.club-weekly-ritual__disclaimer {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #2d382d;
+  color: #778372;
+  font: 7px/1.7 var(--font-mono);
+}
+.club-badge.is-secret:not(.is-earned) {
+  border-style: dashed;
+  border-color: #665b38;
+}
+.club-badge__share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+.club-badge__share button {
+  min-height: 28px;
+  padding: 6px 8px;
+  border: 1px solid #46563d;
+  background: #111911;
+  color: var(--accent);
+  font: 700 7px/1.4 var(--font-mono);
+  cursor: pointer;
+}
+.club-badge__share button:hover,
+.club-badge__share button:focus-visible {
+  border-color: var(--accent);
+}
+@media (max-width: 760px) {
+  .club-faction-directory > header {
+    grid-template-columns: 1fr;
+  }
+  .club-weekly-ritual__options {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .club-faction-directory__grid {
+    grid-template-columns: 1fr;
+  }
+  .club-faction-dossier {
+    grid-template-columns: 1fr;
+  }
+  .club-weekly-ritual__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .club-faction-dossier small { grid-column: auto; }
+  .club-membership-card__faction { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .club-weekly-ritual__options button { transition: none; }
+}
