@@ -675,6 +675,27 @@ test("U27.4 Daily Content Quality keeps risk conclusions, post-mortems and Cope 
       "CALM / SUSPICIOUSLY WELL-ADJUSTED";
     assert.equal(copeIndex.status, expectedStatus, "the status label must match the displayed score");
 
+    const conviction = dispatch.convictionIndex;
+    assert.ok(conviction.score >= 96 && conviction.score <= 99);
+    assert.equal(conviction.classification, "UNREASONABLY CONFIDENT");
+    assert.match(conviction.note, /intentionally insulated from evidence quality/i);
+    assert.equal(conviction.readings.length, 6);
+    const expectedReadings = [
+      { label: "CA RESEARCH EFFORT", min: 86, max: 100, assessment: "EXCESSIVE", tone: "green" },
+      { label: "KOL SOURCE INDEPENDENCE", min: 2, max: 16, assessment: "MOSTLY ECHO", tone: "red" },
+      { label: "BUNDLE THEORY CONFIDENCE", min: 93, max: 100, assessment: "OPTIMISM DETECTED", tone: "green" },
+      { label: "POST-GRADUATION LIQUIDITY AWARENESS", min: 1, max: 14, assessment: "SELECTIVE", tone: "red" },
+      { label: "EXIT PLAN READINESS", min: 0, max: 8, assessment: "NOT DETECTED", tone: "red" },
+      { label: "CTO HANDOVER UNDERSTANDING", min: 1, max: 11, assessment: "PENDING", tone: "amber" },
+    ] as const;
+    for (const [readingIndex, expectedReading] of expectedReadings.entries()) {
+      const reading = conviction.readings[readingIndex];
+      assert.equal(reading.label, expectedReading.label);
+      assert.ok(reading.score >= expectedReading.min && reading.score <= expectedReading.max);
+      assert.equal(reading.assessment, expectedReading.assessment);
+      assert.equal(reading.tone, expectedReading.tone);
+    }
+
     observedThemes.add(dispatch.caseTheme);
     observedCopeBulletins.add(copeIndex.bulletin);
   }
