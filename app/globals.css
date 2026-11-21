@@ -12130,6 +12130,74 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   line-height: 1.65;
 }
 
+.department-case-chain__evidence {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+  margin: 2px 0 12px;
+  padding: 11px;
+  border: 1px solid #354333;
+  background: #090f0a;
+}
+
+.department-case-chain__evidence-heading {
+  display: grid;
+  gap: 5px;
+}
+
+.department-case-chain__evidence-heading > span,
+.department-case-chain__handoff > span {
+  color: #b6ff65;
+  font: 700 7px/1.5 var(--mono);
+  letter-spacing: .07em;
+  overflow-wrap: anywhere;
+}
+
+.department-case-chain__evidence-heading > strong {
+  color: #e3bd7d;
+  font: 700 9px/1.5 var(--mono);
+}
+
+.department-case-chain__evidence > p,
+.department-case-chain__handoff > p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 9px;
+  line-height: 1.65;
+}
+
+.department-case-chain__evidence > small {
+  padding-top: 7px;
+  border-top: 1px solid #283428;
+  color: #b8aa8c;
+  font: 8px/1.6 var(--mono);
+}
+
+.department-case-chain__handoff {
+  display: grid;
+  width: 100%;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #354333;
+}
+
+.department-case-chain__handoff > div {
+  display: grid;
+  gap: 6px;
+}
+
+.department-case-chain__handoff a {
+  color: var(--green);
+  font: 8px/1.55 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.department-case-chain__handoff a:hover {
+  color: var(--text);
+}
+
 .department-case-chain__step > a,
 .department-case-chain__step > small,
 .department-case-chain__precedents article > a {
