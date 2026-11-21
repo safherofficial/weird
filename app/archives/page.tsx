@@ -8,7 +8,7 @@ import { archiveRecords } from "./archive-data";
 export const metadata: Metadata = {
   alternates: { canonical: "/archives" },
   title: "Department Archives",
-  description: "Fifteen fictional case records from Solana trenches: deployer silence, bundle-wallet theories, bonding-curve graduation, copied KOL calls and missing exit plans.",
+  description: archiveRecords.length + " fictional case records from Solana trenches: deployer silence, bundle-wallet theories, bonding-curve graduation, copied KOL calls and missing exit plans.",
   openGraph: {
     title: "THE DEPARTMENT ARCHIVES",
     description: archiveRecords.length + " fictional Solana trenches records. No live wallets, real KOLs or actual market history.",
@@ -29,7 +29,7 @@ export default function ArchivesPage() {
 
       <div className="archives-shell shell" id="content-start" tabIndex={-1}>
         <header className="archives-intro">
-          <div className="audit-intro__meta"><span>REGISTER / {archiveRecords[0]?.accession ?? "DDA-001"}–{archiveRecords[archiveRecords.length - 1]?.accession ?? "DDA-015"}</span><span>ACCESS / PUBLIC COLLECTION</span></div>
+          <div className="audit-intro__meta"><span>REGISTER / {archiveRecords[0]?.accession ?? "NO RECORDS"}–{archiveRecords[archiveRecords.length - 1]?.accession ?? "NO RECORDS"}</span><span>ACCESS / PUBLIC COLLECTION</span></div>
           <p className="eyebrow">WHALE & WALLET INVESTIGATION / FICTIONAL CASE ARCHIVE</p>
           <h1>THE DEPARTMENT<br /><span>ARCHIVES.</span></h1>
           <p className="audit-intro__lead">
