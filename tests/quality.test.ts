@@ -1785,7 +1785,7 @@ test("U26 navigation labels and links match the exact destination pages and dire
     assert.ok(department, section + " division record must exist");
     assert.equal(department.pageTitle, pageTitle);
     const page = readFileSync(path, "utf8");
-    const visibleHeading = page.replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ");
+    const visibleHeading = page.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
     assert.ok(visibleHeading.includes(pageTitle + "."), path + " heading must match its navigation label");
     const navItem = divisionNavigationGroups.flatMap((group) => group.items).find((item) => item.section === section);
     assert.ok(navItem);
