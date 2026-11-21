@@ -275,3 +275,48 @@ export function buildDepartmentCaseAtlas(asOfDate: string, lookbackDays = 90): D
 
   return { asOfDate, lookbackDays, entries, divisions };
 }
+
+export function selectDepartmentCaseAtlasWindow(
+  atlas: DepartmentCaseAtlasData,
+  lookbackDays: number,
+): DepartmentCaseAtlasData {
+  if (!isValidInstitutionalMemoryDate(atlas.asOfDate)) {
+    throw new Error("A valid current or past UTC Atlas date is required.");
+  }
+  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > atlas.lookbackDays) {
+    throw new Error("The selected Atlas window must fit within the available UTC history.");
+  }
+
+  const firstDate = shiftInstitutionalMemoryDate(atlas.asOfDate, -(lookbackDays - 1));
+  const entries = atlas.entries.map((entry) => {
+    const occurrences = entry.occurrences.filter((occurrence) =>
+      occurrence.issueDate >= firstDate && occurrence.issueDate <= atlas.asOfDate,
+    );
+    const intervals: DepartmentCaseAtlasInterval[] = occurrences.slice(1).map((olderOccurrence, index) => ({
+      newerIssueDate: occurrences[index].issueDate,
+      olderIssueDate: olderOccurrence.issueDate,
+      days: utcDayDistance(occurrences[index].issueDate, olderOccurrence.issueDate),
+    }));
+    const intervalValues = intervals.map((interval) => interval.days);
+    const latestOccurrence = occurrences[0] ?? null;
+
+    return {
+      ...entry,
+      occurrenceCount: occurrences.length,
+      latestOccurrence,
+      occurrences,
+      recurrence: {
+        daysSinceLatest: latestOccurrence ? utcDayDistance(atlas.asOfDate, latestOccurrence.issueDate) : null,
+        previousOccurrence: occurrences[1] ?? null,
+        intervals,
+        averageIntervalDays: intervalValues.length
+          ? intervalValues.reduce((sum, days) => sum + days, 0) / intervalValues.length
+          : null,
+        shortestIntervalDays: intervalValues.length ? Math.min(...intervalValues) : null,
+        longestIntervalDays: intervalValues.length ? Math.max(...intervalValues) : null,
+      },
+    };
+  });
+
+  return { ...atlas, lookbackDays, entries };
+}

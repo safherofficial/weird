@@ -13080,3 +13080,29 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     gap: 7px;
   }
 }
+
+
+/* U25.10 — responsive date-window selector for the Case Atlas */
+.department-case-atlas__filters {
+  grid-template-columns: minmax(0, 1.35fr) minmax(190px, .95fr) minmax(150px, .7fr) auto;
+}
+.department-case-atlas__filters label:nth-child(3) select {
+  border-color: #58664a;
+}
+@media (max-width: 980px) {
+  .department-case-atlas__filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .department-case-atlas__filters > p {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 680px) {
+  .department-case-atlas__filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .department-case-atlas__filters > p {
+    grid-column: auto;
+    white-space: normal;
+  }
+}

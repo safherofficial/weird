@@ -11,7 +11,7 @@ import { classifications as whitepaperClassifications, questions as whitepaperQu
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
-import { buildDepartmentCaseAtlas, getDepartmentCaseReferences } from "../app/daily-office/case-atlas";
+import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
 import { buildInstitutionalMemory, isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
 import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anchor";
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
@@ -1078,7 +1078,7 @@ test("U25.5 Case Atlas is reachable from every division and provides working top
   const dailyPage = readFileSync("app/daily-office/page.tsx", "utf8");
   const ledgerPage = readFileSync("app/daily-office/ledger/page.tsx", "utf8");
 
-  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 90)"));
+  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 120)"));
   assert.ok(atlasPage.includes('canonical: "/daily-office/atlas"'));
   assert.ok(atlasClient.includes('type="search"'));
   assert.ok(atlasClient.includes("setQuery"));
@@ -1289,4 +1289,91 @@ test("U25.8 Case Atlas presents recurrence calculations with accessible links an
   assert.ok(css.includes("@media (max-width: 680px)"));
   assert.ok(css.includes("@media (max-width: 680px)"));
   assert.doesNotMatch(atlasClient + atlasPage, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
+});
+
+
+test("U25.10 Case Atlas date-window selector reconciles exact 14, 30, 60, 90 and 120-day histories", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const sourceAtlas = buildDepartmentCaseAtlas(today, 120);
+  const sourceOccurrences = sourceAtlas.entries.map((entry) => ({
+    theme: entry.theme,
+    occurrences: entry.occurrences.map((occurrence) => occurrence.issueDate + "|" + occurrence.reference),
+  }));
+
+  for (const days of [14, 30, 60, 90, 120]) {
+    const selectedAtlas = selectDepartmentCaseAtlasWindow(sourceAtlas, days);
+    const startDate = shiftInstitutionalMemoryDate(today, -(days - 1));
+    const expectedByTheme = new Map<string, Array<{ issueDate: string; reference: string; headline: string; href: string }>>();
+
+    for (let offset = 0; offset < days; offset += 1) {
+      const dispatch = buildDailyOfficeDispatch(shiftInstitutionalMemoryDate(today, -offset));
+      const list = expectedByTheme.get(dispatch.caseTheme) ?? [];
+      list.push({
+        issueDate: dispatch.issueDate,
+        reference: dispatch.reference,
+        headline: dispatch.headline,
+        href: dispatch.issueDate === today ? "/daily-office" : "/daily-office/archive/" + dispatch.issueDate,
+      });
+      expectedByTheme.set(dispatch.caseTheme, list);
+    }
+
+    assert.equal(selectedAtlas.asOfDate, today);
+    assert.equal(selectedAtlas.lookbackDays, days);
+    assert.equal(selectedAtlas.entries.length, 18);
+
+    let totalOccurrences = 0;
+    for (const entry of selectedAtlas.entries) {
+      const expected = expectedByTheme.get(entry.theme) ?? [];
+      assert.equal(entry.occurrenceCount, expected.length, entry.theme + " count must match selected range");
+      assert.deepEqual(entry.occurrences, expected, entry.theme + " must expose precisely the selected range");
+      assert.equal(entry.latestOccurrence?.issueDate ?? null, expected[0]?.issueDate ?? null);
+      assert.equal(entry.recurrence.daysSinceLatest, expected[0] ? Math.round((Date.parse(today + "T00:00:00.000Z") - Date.parse(expected[0].issueDate + "T00:00:00.000Z")) / 86400000) : null);
+
+      const gaps = expected.slice(1).map((older, index) =>
+        Math.round((Date.parse(expected[index].issueDate + "T00:00:00.000Z") - Date.parse(older.issueDate + "T00:00:00.000Z")) / 86400000),
+      );
+      assert.equal(entry.recurrence.intervals.length, Math.max(0, expected.length - 1));
+      assert.deepEqual(entry.recurrence.intervals.map((interval) => interval.days), gaps);
+      assert.equal(entry.recurrence.previousOccurrence?.issueDate ?? null, expected[1]?.issueDate ?? null);
+      assert.equal(entry.recurrence.averageIntervalDays, gaps.length ? gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length : null);
+      assert.equal(entry.recurrence.shortestIntervalDays, gaps.length ? Math.min(...gaps) : null);
+      assert.equal(entry.recurrence.longestIntervalDays, gaps.length ? Math.max(...gaps) : null);
+      assert.ok(entry.occurrences.every((occurrence) => occurrence.issueDate >= startDate && occurrence.issueDate <= today));
+      totalOccurrences += entry.occurrences.length;
+    }
+    assert.equal(totalOccurrences, days, "each daily issue must be assigned to exactly one theme in the selected window");
+  }
+
+  assert.deepEqual(
+    sourceAtlas.entries.map((entry) => ({
+      theme: entry.theme,
+      occurrences: entry.occurrences.map((occurrence) => occurrence.issueDate + "|" + occurrence.reference),
+    })),
+    sourceOccurrences,
+    "changing a selected window must not mutate the full source history",
+  );
+  assert.throws(() => selectDepartmentCaseAtlasWindow(sourceAtlas, 0));
+  assert.throws(() => selectDepartmentCaseAtlasWindow(sourceAtlas, 121));
+  assert.throws(() => selectDepartmentCaseAtlasWindow({ ...sourceAtlas, asOfDate: "2099-01-01" }, 30));
+});
+
+test("U25.10 Case Atlas provides an accessible date-window control without changing its division and topic filters", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasPage = readFileSync("app/daily-office/atlas/page.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(atlasClient.includes("const ATLAS_WINDOW_OPTIONS = [14, 30, 60, 90, 120] as const"));
+  assert.ok(atlasClient.includes('aria-label="Select Atlas date window"'));
+  assert.ok(atlasClient.includes("setWindowDays"));
+  assert.ok(atlasClient.includes("selectedAtlas.entries.filter"));
+  assert.ok(atlasClient.includes("selectedAtlas.lookbackDays"));
+  assert.ok(atlasClient.includes("setOfficeFilter"));
+  assert.ok(atlasClient.includes("setQuery"));
+  assert.ok(atlasEngine.includes("export function selectDepartmentCaseAtlasWindow"));
+  assert.ok(atlasEngine.includes("occurrence.issueDate >= firstDate && occurrence.issueDate <= atlas.asOfDate"));
+  assert.ok(atlasPage.includes("buildDepartmentCaseAtlas(asOfDate, 120)"));
+  assert.ok(css.includes(".department-case-atlas__filters label:nth-child(3) select"));
+  assert.ok(css.includes("grid-template-columns: repeat(2, minmax(0, 1fr))"));
+  assert.doesNotMatch(atlasClient + atlasPage + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });

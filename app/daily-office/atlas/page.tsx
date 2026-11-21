@@ -8,14 +8,14 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Department Case Atlas | THE DYOR DEPARTMENT",
-  description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals across all ten Department divisions.",
+  description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and selectable 14-to-120-day history across all ten Department divisions.",
   alternates: { canonical: "/daily-office/atlas" },
   robots: { index: false, follow: true },
 };
 
 export default function DepartmentCaseAtlasPage() {
   const asOfDate = new Date().toISOString().slice(0, 10);
-  const atlas = buildDepartmentCaseAtlas(asOfDate, 90);
+  const atlas = buildDepartmentCaseAtlas(asOfDate, 120);
 
   return (
     <main className="audit-page department-case-atlas-page" id="main-content">
@@ -29,7 +29,7 @@ export default function DepartmentCaseAtlasPage() {
         <header className="department-case-atlas-intro">
           <div className="audit-intro__meta">
             <span>INSTITUTIONAL REFERENCE / 18 THEMATIC THREADS</span>
-            <span>90 UTC ISSUES / THROUGH {asOfDate}</span>
+            <span>120 UTC ISSUES AVAILABLE / THROUGH {asOfDate}</span>
           </div>
           <p className="eyebrow">THE DYOR DEPARTMENT / CROSS-DIVISION INDEX</p>
           <h1>THE CASE<br /><span>ATLAS.</span></h1>

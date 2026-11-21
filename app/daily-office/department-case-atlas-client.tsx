@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { DepartmentCaseAtlasData } from "./case-atlas";
+import { selectDepartmentCaseAtlasWindow, type DepartmentCaseAtlasData } from "./case-atlas";
 import type { DepartmentSection } from "../divisions";
 import { getDepartmentCaseThemeAnchor } from "./case-theme-anchor";
 
@@ -10,13 +10,18 @@ type DepartmentCaseAtlasClientProps = {
   atlas: DepartmentCaseAtlasData;
 };
 
+const ATLAS_WINDOW_OPTIONS = [14, 30, 60, 90, 120] as const;
+type AtlasWindowDays = (typeof ATLAS_WINDOW_OPTIONS)[number];
+
 export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlasClientProps) {
   const [query, setQuery] = useState("");
   const [officeFilter, setOfficeFilter] = useState<DepartmentSection | "ALL">("ALL");
+  const [windowDays, setWindowDays] = useState<AtlasWindowDays>(90);
+  const selectedAtlas = useMemo(() => selectDepartmentCaseAtlasWindow(atlas, windowDays), [atlas, windowDays]);
 
   const visibleEntries = useMemo(() => {
     const normalized = query.trim().toLowerCase();
-    return atlas.entries.filter((entry) => {
+    return selectedAtlas.entries.filter((entry) => {
       const officeMatch = officeFilter === "ALL" ||
         entry.offices.some((office) => office.section === officeFilter);
       const searchable = [
@@ -30,7 +35,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
       ].join(" ").toLowerCase();
       return officeMatch && (!normalized || searchable.includes(normalized));
     });
-  }, [atlas.entries, officeFilter, query]);
+  }, [selectedAtlas.entries, officeFilter, query]);
 
   return (
     <div className="department-case-atlas">
@@ -64,7 +69,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
       <section className="department-case-atlas__registry" aria-labelledby="case-atlas-registry-title">
         <div className="department-case-atlas__section-heading">
           <div>
-            <span>THEMATIC REGISTER / {atlas.entries.length} CASE THREADS</span>
+            <span>THEMATIC REGISTER / {atlas.entries.length} CASE THREADS / {windowDays} UTC-DAY WINDOW</span>
             <h2 id="case-atlas-registry-title">THE CASE ATLAS.</h2>
           </div>
           <p>Search the subject, the assigned responsibility, the precedent file or the museum object. All routes point to existing Department records.</p>
@@ -94,8 +99,20 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
               ))}
             </select>
           </label>
+          <label>
+            <span>DATE WINDOW</span>
+            <select
+              aria-label="Select Atlas date window"
+              value={windowDays}
+              onChange={(event) => setWindowDays(Number(event.target.value) as AtlasWindowDays)}
+            >
+              {ATLAS_WINDOW_OPTIONS.map((days) => (
+                <option value={days} key={days}>{days} UTC DAYS</option>
+              ))}
+            </select>
+          </label>
           <p role="status" aria-live="polite">
-            SHOWING {visibleEntries.length} OF {atlas.entries.length} CASE THREADS
+            SHOWING {visibleEntries.length} OF {atlas.entries.length} CASE THREADS / {windowDays} UTC DAYS
           </p>
         </div>
 
@@ -109,7 +126,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
               >
                 <div className="department-case-atlas__case-top">
                   <span>CASE THREAD / {String(index + 1).padStart(2, "0")}</span>
-                  <span>{entry.occurrenceCount} / {atlas.lookbackDays} RECENT ISSUES</span>
+                  <span>{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES</span>
                 </div>
                 <p className="department-case-atlas__theme-code">{entry.theme}</p>
                 <h3>{entry.narrative}</h3>
@@ -147,7 +164,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                       </Link>
                     </>
                   ) : (
-                    <span>NO APPEARANCE IN THIS {atlas.lookbackDays}-DAY WINDOW / REFERENCE THREAD REMAINS IN THE REGISTER</span>
+                    <span>NO APPEARANCE IN THIS {selectedAtlas.lookbackDays}-DAY WINDOW / REFERENCE THREAD REMAINS IN THE REGISTER</span>
                   )}
                 </div>
 
@@ -274,7 +291,7 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
         )}
       </section>
       <p className="department-case-atlas__notice">
-        FICTIONAL EDITORIAL INDEX / THE 90-DAY COUNTS REFER ONLY TO DATE-SEEDED DAILY THEMES. NO LIVE TOKENS,
+        FICTIONAL EDITORIAL INDEX / THE SELECTED WINDOW COUNTS REFER ONLY TO DATE-SEEDED DAILY THEMES. NO LIVE TOKENS,
         WALLETS, ACCOUNTS, PEOPLE OR MARKET EVENTS ARE TRACKED.
       </p>
     </div>
