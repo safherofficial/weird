@@ -1,4 +1,6 @@
 import Link from "next/link";
+import DepartmentCaseChain from "./department-case-chain";
+import type { DepartmentSection } from "../divisions";
 
 type DepartmentJourneyId =
   | "audit"
@@ -173,6 +175,8 @@ export default function DepartmentNextSteps({ currentDepartment }: DepartmentNex
           </Link>
         ))}
       </div>
+
+      <DepartmentCaseChain currentDepartment={currentDepartment as DepartmentSection} />
 
       <div className="department-next-steps__passport">
         <p>

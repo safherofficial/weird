@@ -11,6 +11,9 @@ import { classifications as whitepaperClassifications, questions as whitepaperQu
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
+import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
+import { archiveRecords } from "../app/archives/archive-data";
+import { exhibits } from "../app/museum/museum-data";
 import { departments } from "../app/divisions";
 import { DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
@@ -372,6 +375,54 @@ test("Daily CT Briefing is deterministic for a UTC issue date and rejects invali
   assert.ok(first.sections.every((section) => section.heading.length > 0 && section.body.length > 0));
   assert.throws(() => buildDailyOfficeDispatch("2026-02-30"));
   assert.throws(() => buildDailyOfficeDispatch("not-a-date"));
+});
+
+test("U25.3 Department narrative threads connect all ten offices to existing fictional precedents", () => {
+  const officeSections = new Set(departments.map((department) => department.section));
+  const archiveSlugs = new Set(archiveRecords.map((record) => record.slug));
+  const exhibitSlugs = new Set(exhibits.map((exhibit) => exhibit.slug));
+  const mappedOffices = new Set<string>();
+
+  assert.equal(Object.keys(departmentCaseThreads).length, 18, "Every daily editorial case theme must have a narrative thread");
+
+  for (const [theme, thread] of Object.entries(departmentCaseThreads)) {
+    assert.ok(theme.length > 0);
+    assert.equal(thread.offices.length, 3);
+    assert.ok(archiveSlugs.has(thread.archiveSlug), theme + " must cite an existing archive precedent");
+    assert.ok(exhibitSlugs.has(thread.exhibitSlug), theme + " must cite an existing museum relic");
+
+    for (const office of thread.offices) {
+      assert.ok(officeSections.has(office.section), theme + " must route only to an existing Department office");
+      mappedOffices.add(office.section);
+      assert.ok(office.responsibility.length > 20);
+    }
+    assert.ok(thread.narrative.length > 80, theme + " must have a meaningful continuity explanation");
+  }
+
+  assert.deepEqual([...mappedOffices].sort(), [...officeSections].sort(), "The narrative network must include all ten divisions");
+});
+
+test("U25.3 daily case chains keep identical case identity across offices and dates", () => {
+  for (let index = 0; index < 90; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const auditView = buildDepartmentNarrative(issueDate, "audit");
+    const walletView = buildDepartmentNarrative(issueDate, "archives");
+
+    for (const narrative of [auditView, walletView]) {
+      assert.equal(narrative.issueDate, dispatch.issueDate);
+      assert.equal(narrative.reference, dispatch.reference);
+      assert.equal(narrative.caseTheme, dispatch.caseTheme);
+      assert.equal(narrative.headline, dispatch.headline);
+      assert.equal(narrative.offices.length, 3);
+      assert.ok(narrative.precedent.href.startsWith("/archives/records/"));
+      assert.ok(narrative.relic.href.startsWith("/museum/exhibits/"));
+      assert.ok(narrative.precedent.summary.length > 30);
+      assert.ok(narrative.relic.description.length > 30);
+    }
+
+    assert.notEqual(auditView.currentOffice.title, walletView.currentOffice.title);
+  }
 });
 
 test("Global Cope Index and Trenches Desk share the same UTC editorial case across dates", () => {

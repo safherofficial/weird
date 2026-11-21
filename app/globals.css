@@ -12025,3 +12025,214 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     text-align: left;
   }
 }
+
+
+/* U25.3 — Shared fictional case continuity across all ten Department offices. */
+.department-case-chain {
+  display: grid;
+  gap: 15px;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #46543e;
+  background: linear-gradient(145deg, #121a12, #0b100c 76%);
+}
+
+.department-case-chain__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--line);
+}
+
+.department-case-chain__header > div:first-child {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.department-case-chain__header span,
+.department-case-chain__current-office span,
+.department-case-chain__step > span,
+.department-case-chain__precedents article > span,
+.department-case-chain__notice {
+  color: var(--green);
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .07em;
+}
+
+.department-case-chain__header h3 {
+  margin: 0;
+  color: var(--text);
+  font: 600 clamp(17px, 2.2vw, 23px)/1.12 var(--sans);
+  letter-spacing: -.035em;
+}
+
+.department-case-chain__header > div:first-child > strong {
+  color: #d9dfd3;
+  font: 600 10px/1.55 var(--mono);
+}
+
+.department-case-chain__current-office {
+  display: grid;
+  flex: 0 0 210px;
+  gap: 7px;
+  padding: 10px 12px;
+  border: 1px solid #46543e;
+  background: #0d130d;
+}
+
+.department-case-chain__current-office strong {
+  color: #e3bd7d;
+  font: 600 9px/1.5 var(--mono);
+}
+
+.department-case-chain__narrative {
+  max-width: 920px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.department-case-chain__route {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.department-case-chain__step {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 13px;
+  border: 1px solid #2b382b;
+  background: #0c120d;
+}
+
+.department-case-chain__step.is-current {
+  border-color: #708653;
+  background: linear-gradient(145deg, #172116, #0d130d);
+}
+
+.department-case-chain__step > strong {
+  margin-top: 8px;
+  color: var(--text);
+  font: 600 10px/1.5 var(--mono);
+}
+
+.department-case-chain__step > p {
+  margin: 7px 0 14px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.department-case-chain__step > a,
+.department-case-chain__step > small,
+.department-case-chain__precedents article > a {
+  margin-top: auto;
+  color: var(--green);
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .05em;
+  text-decoration: none;
+}
+
+.department-case-chain__step > small {
+  color: #e3bd7d;
+}
+
+.department-case-chain__precedents {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.department-case-chain__precedents article {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 13px;
+  border-top: 1px solid #58664a;
+  background: #0e140e;
+}
+
+.department-case-chain__precedents article > strong {
+  margin-top: 7px;
+  color: #e4dfd3;
+  font: 600 10px/1.5 var(--mono);
+}
+
+.department-case-chain__precedents article > p {
+  margin: 7px 0 13px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.department-case-chain__notice {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: #87927f;
+  font-size: 7px;
+}
+
+.department-case-chain--loading,
+.department-case-chain--error {
+  display: grid;
+  gap: 7px;
+  min-height: 88px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  background: #0d130d;
+}
+
+.department-case-chain--loading > span,
+.department-case-chain--error > span {
+  color: var(--green);
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .07em;
+}
+
+.department-case-chain--loading > p,
+.department-case-chain--error > p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.department-case-chain a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .department-case-chain__header {
+    flex-direction: column;
+  }
+
+  .department-case-chain__current-office {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .department-case-chain__route {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .department-case-chain {
+    padding: 14px;
+  }
+
+  .department-case-chain__precedents {
+    grid-template-columns: 1fr;
+  }
+}
