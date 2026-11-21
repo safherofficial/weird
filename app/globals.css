@@ -13257,3 +13257,93 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* U25.13 — per-theme routing composition within each division */
+.department-case-atlas__routing-breakdown {
+  width: 100%;
+  margin: 3px 0 2px;
+  border: 1px solid #303a30;
+  background: #090d09;
+}
+.department-case-atlas__routing-breakdown > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 9px;
+  color: #d8b477;
+  cursor: pointer;
+  list-style: none;
+  font: 700 7px/1.6 var(--mono);
+  letter-spacing: .045em;
+}
+.department-case-atlas__routing-breakdown > summary::-webkit-details-marker { display: none; }
+.department-case-atlas__routing-breakdown > summary::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: var(--green);
+  font: 700 14px/1 var(--mono);
+}
+.department-case-atlas__routing-breakdown[open] > summary::after { content: "−"; }
+.department-case-atlas__routing-breakdown > ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 9px 7px;
+  list-style: none;
+}
+.department-case-atlas__routing-breakdown > ol > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 34px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid #263026;
+}
+.department-case-atlas__routing-breakdown > ol > li > a {
+  min-width: 0;
+  color: #d4ddcf;
+  font: 700 7px/1.55 var(--mono);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.department-case-atlas__routing-breakdown > ol > li > a:hover { color: var(--green); }
+.department-case-atlas__routing-breakdown > ol > li > span {
+  color: #87927f;
+  font: 7px/1.5 var(--mono);
+  text-align: right;
+  white-space: nowrap;
+}
+.department-case-atlas__routing-breakdown > ol > li > strong {
+  color: var(--text);
+  font: 700 8px/1.5 var(--mono);
+  text-align: right;
+}
+.department-case-atlas__routing-breakdown > ol > li > strong.is-increase { color: #d8b477; }
+.department-case-atlas__routing-breakdown > ol > li > strong.is-decrease { color: #c48f83; }
+.department-case-atlas__routing-breakdown > ol > li > strong.is-new { color: var(--green); }
+.department-case-atlas__routing-breakdown > p {
+  margin: 0;
+  padding: 8px 9px 10px;
+  border-top: 1px solid #263026;
+  color: #87927f;
+  font: 7px/1.6 var(--mono);
+}
+.department-case-atlas__routing-breakdown > summary:focus-visible,
+.department-case-atlas__routing-breakdown a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .department-case-atlas__routing-breakdown > ol > li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px 8px;
+  }
+  .department-case-atlas__routing-breakdown > ol > li > a {
+    grid-column: 1 / -1;
+  }
+  .department-case-atlas__routing-breakdown > ol > li > span {
+    text-align: left;
+  }
+}

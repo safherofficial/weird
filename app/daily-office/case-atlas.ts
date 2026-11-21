@@ -51,10 +51,15 @@ export type DepartmentCaseAtlasComparisonWindow = {
   previousEndDate: string;
 };
 
+export type DepartmentCaseAtlasThemeRoutingComparison = DepartmentCaseAtlasPeriodComparison & {
+  currentWindowCount: number;
+};
+
 export type DepartmentCaseAtlasDivisionRoutingComparison = DepartmentCaseAtlasPeriodComparison & {
   currentWindowCount: number;
   currentActiveThemeCount: number;
   previousActiveThemeCount: number;
+  themeRouting: DepartmentCaseAtlasThemeRoutingComparison[];
 };
 
 export type DepartmentCaseAtlasEntry = {
@@ -381,11 +386,17 @@ export function selectDepartmentCaseAtlasWindow(
       (total, entry) => total + (entry.periodComparison?.previousWindowCount ?? 0),
       0,
     );
+    const themeRouting: DepartmentCaseAtlasThemeRoutingComparison[] = relatedEntries.map((entry) => ({
+      theme: entry.theme,
+      ...buildPeriodComparison(entry.occurrenceCount, entry.periodComparison?.previousWindowCount ?? 0),
+      currentWindowCount: entry.occurrenceCount,
+    }));
     const routingComparison = {
       ...buildPeriodComparison(currentWindowCount, previousWindowCount),
       currentWindowCount,
       currentActiveThemeCount: relatedEntries.filter((entry) => entry.occurrenceCount > 0).length,
       previousActiveThemeCount: relatedEntries.filter((entry) => (entry.periodComparison?.previousWindowCount ?? 0) > 0).length,
+      themeRouting,
     };
 
     return { ...division, routingComparison };

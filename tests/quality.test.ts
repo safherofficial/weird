@@ -1557,3 +1557,80 @@ test("U25.12 Case Atlas labels division metrics as routed assignments, not uniqu
   assert.ok(css.includes(".department-case-atlas__division-routing > div > strong.is-increase"));
   assert.doesNotMatch(atlasClient + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
 });
+
+
+test("U25.13 Case Atlas reconciles per-theme division routing composition across every matched-period window", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const sourceAtlas = buildDepartmentCaseAtlas(today, 240);
+
+  for (const days of [14, 30, 60, 90, 120]) {
+    const selected = selectDepartmentCaseAtlasWindow(sourceAtlas, days);
+    const countThemes = (startOffset: number) => {
+      const counts = new Map<string, number>();
+      for (let offset = startOffset; offset < startOffset + days; offset += 1) {
+        const dispatch = buildDailyOfficeDispatch(shiftInstitutionalMemoryDate(today, -offset));
+        counts.set(dispatch.caseTheme, (counts.get(dispatch.caseTheme) ?? 0) + 1);
+      }
+      return counts;
+    };
+    const currentCounts = countThemes(0);
+    const previousCounts = countThemes(days);
+
+    for (const division of selected.divisions) {
+      const routing = division.routingComparison;
+      assert.ok(routing, division.title + " must expose routing comparison data.");
+      assert.deepEqual(
+        routing.themeRouting.map((item) => item.theme),
+        division.themes,
+        division.title + " must preserve the complete connected-theme registry order, including inactive themes.",
+      );
+
+      let currentTotal = 0;
+      let previousTotal = 0;
+      let currentActive = 0;
+      let previousActive = 0;
+      for (const item of routing.themeRouting) {
+        const current = currentCounts.get(item.theme) ?? 0;
+        const previous = previousCounts.get(item.theme) ?? 0;
+        const delta = current - previous;
+        const direction = previous === 0
+          ? current === 0 ? "unchanged" : "new"
+          : delta > 0 ? "increase" : delta < 0 ? "decrease" : "unchanged";
+
+        assert.equal(item.currentWindowCount, current);
+        assert.equal(item.previousWindowCount, previous);
+        assert.equal(item.occurrenceDelta, delta);
+        assert.equal(item.percentageChange, previous === 0 ? null : delta / previous * 100);
+        assert.equal(item.direction, direction);
+        currentTotal += current;
+        previousTotal += previous;
+        if (current > 0) currentActive += 1;
+        if (previous > 0) previousActive += 1;
+      }
+
+      assert.equal(currentTotal, routing.currentWindowCount, division.title + " current theme rows must sum to its division total.");
+      assert.equal(previousTotal, routing.previousWindowCount, division.title + " previous theme rows must sum to its division total.");
+      assert.equal(currentActive, routing.currentActiveThemeCount);
+      assert.equal(previousActive, routing.previousActiveThemeCount);
+    }
+  }
+});
+
+test("U25.13 Case Atlas presents an accessible per-theme routing breakdown without introducing live data or tracking", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+
+  assert.ok(atlasClient.includes('className="department-case-atlas__routing-breakdown"'));
+  assert.ok(atlasClient.includes("OPEN THEME ROUTING"));
+  assert.ok(atlasClient.includes("division.routingComparison.themeRouting.map"));
+  assert.ok(atlasClient.includes("theme.currentWindowCount"));
+  assert.ok(atlasClient.includes("theme.previousWindowCount"));
+  assert.ok(atlasClient.includes("getDepartmentCaseThemeAnchor(theme.theme)"));
+  assert.ok(atlasClient.includes("COUNTS ARE FICTIONAL ASSIGNMENTS, NOT MARKET EVENTS"));
+  assert.ok(atlasEngine.includes("export type DepartmentCaseAtlasThemeRoutingComparison"));
+  assert.ok(atlasEngine.includes("themeRouting: DepartmentCaseAtlasThemeRoutingComparison[]"));
+  assert.ok(css.includes(".department-case-atlas__routing-breakdown"));
+  assert.ok(css.includes("@media (max-width: 560px)"));
+  assert.doesNotMatch(atlasClient + atlasEngine, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect/i);
+});

@@ -80,6 +80,21 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   <p>ACTIVE THEMES / {division.routingComparison.currentActiveThemeCount} NOW · {division.routingComparison.previousActiveThemeCount} BEFORE</p>
                   <small>ASSIGNMENTS, NOT UNIQUE FILES / EACH DAILY CASE ROUTES TO THREE OFFICES.</small>
                 </div>
+                <details className="department-case-atlas__routing-breakdown">
+                  <summary>OPEN THEME ROUTING / {division.routingComparison.themeRouting.length} CONNECTED THEMES</summary>
+                  <ol>
+                    {division.routingComparison.themeRouting.map((theme) => (
+                      <li key={theme.theme}>
+                        <Link href={"/daily-office/atlas#case-thread-" + getDepartmentCaseThemeAnchor(theme.theme)}>{theme.theme}</Link>
+                        <span>{theme.currentWindowCount} NOW / {theme.previousWindowCount} BEFORE</span>
+                        <strong className={"is-" + theme.direction}>
+                          {theme.occurrenceDelta > 0 ? "+" : ""}{theme.occurrenceDelta}
+                        </strong>
+                      </li>
+                    ))}
+                  </ol>
+                  <p>PER-THEME ROUTES TO THIS OFFICE / CURRENT AND PREVIOUS MATCHED UTC WINDOWS. COUNTS ARE FICTIONAL ASSIGNMENTS, NOT MARKET EVENTS.</p>
+                </details>
               ) : null}
               <button
                 type="button"
