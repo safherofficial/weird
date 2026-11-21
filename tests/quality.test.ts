@@ -469,3 +469,45 @@ test("Fictional Token Dossier archetypes align with technical, community and gov
   assert.equal(community.primaryTag, "interoperability-evangelist");
   assert.match(community.profile.title, /COMMUNITY-COORDINATION/);
 });
+
+
+test("simulator profile copy reflects the actual conditions used to assign it", () => {
+  const accumulator = buildSimulatorResult([1, 2, 1, 2, 1, 2, 0]);
+  assert.match(accumulator.profile.title, /POSITION-EXPANSION ACCUMULATOR/);
+  assert.match(accumulator.profile.subtitle, /three or more ADD TO POSITION decisions/i);
+
+  const diamond = buildSimulatorResult([0, 0, 0, 0, 0, 0, 0]);
+  assert.match(diamond.profile.title, /DIAMOND HAND/);
+  assert.match(diamond.profile.subtitle, /at least five of the seven rounds/i);
+
+  const consultant = buildSimulatorResult([1, 1, 1, 1, 0, 0, 0]);
+  assert.match(consultant.profile.title, /EXIT CONSULTANT/);
+  assert.match(consultant.profile.subtitle, /TRIM repeatedly/i);
+
+  const survivor = buildSimulatorResult([0, 0, 0, 0, 0, 0, 0]);
+  assert.doesNotMatch(survivor.profile.subtitle, /ignored the copied KOL call/i);
+});
+
+test("Fictional Token Dossier purpose-missing archetype also reflects risk-denial answers", () => {
+  assert.equal(whitepaperQuestions[6].options[3].tag, "product-not-found");
+  assert.match(whitepaperClassifications["product-not-found"].title, /PURPOSE & RISK FRAMEWORK/);
+  assert.match(whitepaperClassifications["product-not-found"].subtitle, /credible account of project risks/i);
+});
+
+test("Daily CT Briefing retains a healthy range of date-seeded editorial variants", () => {
+  const reports = Array.from({ length: 120 }, (_, index) => {
+    const date = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    return buildDailyOfficeDispatch(date);
+  });
+  const uniqueHeadlines = new Set(reports.map((report) => report.headline));
+  const uniqueBulletins = new Set(reports.map((report) => report.bulletin));
+  const uniqueIncidentHeadings = new Set(reports.map((report) => report.sections[0].heading));
+  const uniqueBriefings = new Set(reports.map((report) =>
+    [report.headline, report.bulletin, ...report.sections.map((section) => section.heading + "|" + section.body)].join("||")
+  ));
+
+  assert.ok(uniqueHeadlines.size >= 12, "Daily headlines should not collapse into a small repeating subset");
+  assert.ok(uniqueBulletins.size >= 12, "Daily bulletins should retain meaningful variation");
+  assert.ok(uniqueIncidentHeadings.size >= 9, "Incident reports should draw from a broad portion of the editorial library");
+  assert.ok(uniqueBriefings.size >= 115, "Complete daily briefing combinations should remain distinct across the sample");
+});

@@ -209,10 +209,10 @@ export const classifications: Record<WhitepaperArchetypeId, WhitepaperArchetype>
     disposition: "ARCHIVED UNDER: HANDOVER DETAIL TO FOLLOW.",
   },
   "product-not-found": {
-    title: "ERROR 404: TOKEN PURPOSE NOT FOUND",
-    subtitle: "A ticker, a CA, a vision and a Telegram group have been located. The reason to exist remains missing.",
-    roast: "The Department searched the executive summary, tokenomics and three CT Spaces. No use case was found.",
-    disposition: "REFERRED TO THE OFFICE OF POST-LAUNCH PURPOSE RECOVERY.",
+    title: "ERROR 404: PURPOSE & RISK FRAMEWORK NOT FOUND",
+    subtitle: "A ticker, a CA, a vision and a Telegram group have been located. A defensible use case or a credible account of project risks has not.",
+    roast: "The Department searched the executive summary, tokenomics and risk section. It found a use case-shaped hole and a rocket emoji.",
+    disposition: "REFERRED TO THE OFFICE OF POST-LAUNCH PURPOSE AND RISK RECOVERY.",
   },
 };
 
