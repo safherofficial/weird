@@ -109,7 +109,7 @@ function excerptFromDispatch(dispatch: DailyOfficeDispatch, profile: OfficeEvide
   }
 
   return section.body
-    .split(/(?<=[.!?])\\s+(?=[A-Z0-9])/)
+    .split(/(?<=[.!?])\s+(?=[A-Z0-9])/)
     .slice(0, 2)
     .join(" ");
 }
