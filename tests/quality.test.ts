@@ -428,6 +428,103 @@ test("U25.3 daily case chains keep identical case identity across offices and da
   }
 });
 
+test("U27.3 shared case chains hand off dispatch evidence through three offices into archive and Museum records", () => {
+  const chainClient = readFileSync("app/components/department-case-chain.tsx", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+  assert.ok(chainClient.includes("office.evidence.source"));
+  assert.ok(chainClient.includes("office.evidence.excerpt"));
+  assert.ok(chainClient.includes("office.evidence.reviewQuestion"));
+  assert.ok(chainClient.includes("office.handoff.destinations.map"));
+  assert.ok(css.includes(".department-case-chain__evidence"));
+  assert.ok(css.includes(".department-case-chain__handoff"));
+
+  const seenThemes = new Set<string>();
+  const seenEvidenceSources = new Set<string>();
+
+  for (let index = 0; index < 180; index += 1) {
+    const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const views = departments.map((department) => buildDepartmentNarrative(issueDate, department.section));
+    const sharedRoute = views[0].offices;
+
+    seenThemes.add(dispatch.caseTheme);
+
+    for (const narrative of views) {
+      assert.equal(narrative.issueDate, dispatch.issueDate);
+      assert.equal(narrative.reference, dispatch.reference);
+      assert.equal(narrative.caseTheme, dispatch.caseTheme);
+      assert.equal(narrative.headline, dispatch.headline);
+      assert.equal(narrative.offices.length, 3);
+      assert.equal(new Set(narrative.offices.map((office) => office.section)).size, 3);
+
+      for (let stepIndex = 0; stepIndex < narrative.offices.length; stepIndex += 1) {
+        const office = narrative.offices[stepIndex];
+        const shared = sharedRoute[stepIndex];
+        assert.equal(office.section, shared.section, "every division view must show the same handoff order");
+        assert.deepEqual(office.evidence, shared.evidence, "all offices must receive the same source excerpt for a case step");
+        assert.deepEqual(office.handoff, shared.handoff, "handoff destinations must not change with the viewing office");
+        assert.ok(office.evidence.outputLabel.length > 10);
+        assert.ok(office.evidence.reviewQuestion.length > 30);
+        assert.ok(office.evidence.excerpt.length > 40);
+        seenEvidenceSources.add(office.evidence.source);
+
+        if (office.evidence.source === "CONVICTION INDEX") {
+          assert.ok(
+            dispatch.convictionIndex.readings.some((reading) =>
+              office.evidence.excerpt.includes(reading.label + ": " + reading.score + "/100"),
+            ),
+            "Copium Administration evidence must be drawn from a real synthetic index reading",
+          );
+        } else {
+          const sourceSection = dispatch.sections.find((section) => section.label === office.evidence.source);
+          assert.ok(sourceSection, "each handoff must cite an existing section in the same daily dispatch");
+          assert.ok(sourceSection.body.includes(office.evidence.excerpt));
+        }
+
+        const isCurrent = office.section === narrative.currentOffice.href.replace("/", "")
+          ? true
+          : office.section === departments.find((department) => department.section === views[0].currentOffice.title)?.section;
+        assert.equal(office.isCurrent, office.section === departments.find((department) => department.title === narrative.currentOffice.title)?.section);
+        if (office.isCurrent) assert.equal(office.href, null);
+        else assert.equal(office.href, departments.find((department) => department.section === office.section)?.href);
+        void isCurrent;
+
+        if (stepIndex < narrative.offices.length - 1) {
+          const nextOffice = narrative.offices[stepIndex + 1];
+          const nextDepartment = departments.find((department) => department.section === nextOffice.section);
+          assert.ok(nextDepartment);
+          assert.equal(office.handoff.destinations.length, 1);
+          assert.equal(office.handoff.destinations[0].href, nextDepartment.href);
+          assert.ok(office.handoff.note.includes(nextOffice.responsibility));
+        } else {
+          assert.match(office.handoff.label, /FINAL DEPOSIT/);
+          assert.deepEqual(
+            office.handoff.destinations.map((destination) => destination.href),
+            [narrative.precedent.href, narrative.relic.href],
+          );
+        }
+      }
+
+      assert.ok(narrative.precedent.href.startsWith("/archives/records/"));
+      assert.ok(narrative.relic.href.startsWith("/museum/exhibits/"));
+    }
+
+    assert.deepEqual(
+      views.map((view) => view.offices.map((office) => office.section)),
+      views.map(() => sharedRoute.map((office) => office.section)),
+      "the case route must be identical from all ten Department pages",
+    );
+  }
+
+  assert.equal(seenThemes.size, 18, "the shared case system must retain all 18 editorial themes");
+  assert.ok(seenEvidenceSources.has("CONVICTION INDEX"));
+  assert.equal(
+    [...seenEvidenceSources].sort().join("|"),
+    ["BAGHOLDER POST-MORTEM", "CONVICTION INDEX", "INCIDENT REPORT", "INTERNAL CORRESPONDENCE", "KOL INTELLIGENCE", "ON-CHAIN DIVISION", "RISK DEPARTMENT"].sort().join("|"),
+    "the ten offices must use only their seven existing source-record types",
+  );
+});
+
 test("Global Cope Index and Trenches Desk share the same UTC editorial case across dates", () => {
   for (let index = 0; index < 60; index += 1) {
     const issueDate = new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10);
