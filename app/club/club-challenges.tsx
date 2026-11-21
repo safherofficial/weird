@@ -153,7 +153,7 @@ export default function ClubChallenges() {
           <p>Three short case exercises. Three chances to explain why the next one is still yours.</p>
         </div>
         <div className="club-challenges__counter">
-          <strong>{unlockedCount}<small>/12</small></strong>
+          <strong>{unlockedCount}<small>/13</small></strong>
           <span>CLUB BADGES<br />UNLOCKED</span>
         </div>
       </header>
@@ -217,10 +217,10 @@ export default function ClubChallenges() {
       <div className="club-badge-case" aria-labelledby="club-badge-case-title">
         <div className="club-badge-case__heading">
           <div>
-            <span>COLLECTION / 12 CLUB-EXCLUSIVE ACHIEVEMENTS</span>
+            <span>COLLECTION / 13 CLUB ACHIEVEMENTS</span>
             <h3 id="club-badge-case-title">THE CLUB <em>BADGE CASE.</em></h3>
           </div>
-          <strong>{unlockedCount} / 12 UNLOCKED</strong>
+          <strong>{unlockedCount} / 13 UNLOCKED</strong>
         </div>
         <p className="club-badge-case__intro">
           Membership answers and completed challenges unlock these badges automatically. Enable the Passport before filing to save your collection on this device.
