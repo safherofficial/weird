@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { DepartmentCaseAtlasData } from "./case-atlas";
 import type { DepartmentSection } from "../divisions";
+import { getDepartmentCaseThemeAnchor } from "./case-theme-anchor";
 
 type DepartmentCaseAtlasClientProps = {
   atlas: DepartmentCaseAtlasData;
@@ -101,7 +102,11 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
         {visibleEntries.length > 0 ? (
           <div className="department-case-atlas__case-grid">
             {visibleEntries.map((entry, index) => (
-              <article className="department-case-atlas__case" key={entry.theme}>
+              <article
+                className="department-case-atlas__case"
+                key={entry.theme}
+                id={"case-thread-" + getDepartmentCaseThemeAnchor(entry.theme)}
+              >
                 <div className="department-case-atlas__case-top">
                   <span>CASE THREAD / {String(index + 1).padStart(2, "0")}</span>
                   <span>{entry.occurrenceCount} / {atlas.lookbackDays} RECENT ISSUES</span>

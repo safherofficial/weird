@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import RecordPassportActivity from "../../../components/record-passport-activity";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentPublicShare from "../../../components/department-public-share";
+import DepartmentCaseReferences from "../../../components/department-case-references";
 import { archiveRecords, getArchiveRecord } from "../../archive-data";
 
 type ArchiveRecordPageProps = {
@@ -100,6 +101,7 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
             <span>RELATED DEPARTMENT</span>
             <Link href={record.relatedHref}>{record.relatedLabel} ↗</Link>
           </div>
+          <DepartmentCaseReferences source="archive" slug={record.slug} />
           <div className="archive-record__footer">
             <span>RECORD STATUS / FILED</span>
             <span>PROVENANCE / FICTIONAL ARCHIVE COLLECTION</span>

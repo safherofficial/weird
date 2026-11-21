@@ -11,7 +11,8 @@ import { classifications as whitepaperClassifications, questions as whitepaperQu
 import { questions as clubQuestions, CLUB_QUESTIONS, buildClubResult, decodeClubCode, encodeClubCode, inspectClubProgress, isValidClubAnswers } from "../app/club/club-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
-import { buildDepartmentCaseAtlas } from "../app/daily-office/case-atlas";
+import { buildDepartmentCaseAtlas, getDepartmentCaseReferences } from "../app/daily-office/case-atlas";
+import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anchor";
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
 import { archiveRecords } from "../app/archives/archive-data";
 import { exhibits } from "../app/museum/museum-data";
@@ -1095,4 +1096,52 @@ test("U25.5 Case Atlas is reachable from every division and provides working top
   assert.ok(dailyPage.includes('href="/daily-office/atlas"'));
   assert.ok(ledgerPage.includes('href="/daily-office/atlas"'));
   assert.doesNotMatch(atlasPage + atlasClient + atlasEngine, /localStorage|sessionStorage|recordPassportActivity/);
+});
+
+
+test("U25.6 Archive and Museum detail records provide reciprocal Case Atlas cross-references", () => {
+  const archivePage = readFileSync("app/archives/records/[slug]/page.tsx", "utf8");
+  const museumPage = readFileSync("app/museum/exhibits/[slug]/page.tsx", "utf8");
+  const referenceComponent = readFileSync("app/components/department-case-references.tsx", "utf8");
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+
+  assert.ok(archivePage.includes('<DepartmentCaseReferences source="archive" slug={record.slug} />'));
+  assert.ok(museumPage.includes('<DepartmentCaseReferences source="museum" slug={exhibit.slug} />'));
+  assert.ok(atlasClient.includes('id={"case-thread-" + getDepartmentCaseThemeAnchor(entry.theme)}'));
+  assert.ok(referenceComponent.includes('"/daily-office/atlas#" + reference.anchor'));
+  assert.ok(referenceComponent.includes("reference.counterpart.href"));
+
+  const anchors = Object.keys(departmentCaseThreads).map(getDepartmentCaseThemeAnchor);
+  assert.equal(new Set(anchors).size, anchors.length, "all 18 Atlas case anchors must be unique");
+
+  let archiveReferenceCount = 0;
+  for (const record of archiveRecords) {
+    const references = getDepartmentCaseReferences("archive", record.slug);
+    archiveReferenceCount += references.length;
+    for (const reference of references) {
+      assert.ok(departmentCaseThreads[reference.theme]);
+      assert.equal(reference.anchor, "case-thread-" + getDepartmentCaseThemeAnchor(reference.theme));
+      assert.equal(reference.offices.length, 3);
+      assert.equal(new Set(reference.offices.map((office) => office.section)).size, 3);
+      assert.ok(reference.offices.every((office) => departments.some((department) => department.section === office.section && department.href === office.href)));
+      assert.ok(exhibits.some((exhibit) => reference.counterpart.href === "/museum/exhibits/" + exhibit.slug && reference.counterpart.accession === exhibit.accession));
+    }
+  }
+
+  let museumReferenceCount = 0;
+  for (const exhibit of exhibits) {
+    const references = getDepartmentCaseReferences("museum", exhibit.slug);
+    museumReferenceCount += references.length;
+    for (const reference of references) {
+      assert.ok(departmentCaseThreads[reference.theme]);
+      assert.equal(reference.anchor, "case-thread-" + getDepartmentCaseThemeAnchor(reference.theme));
+      assert.equal(reference.offices.length, 3);
+      assert.ok(archiveRecords.some((record) => reference.counterpart.href === "/archives/records/" + record.slug && reference.counterpart.accession === record.accession));
+    }
+  }
+
+  assert.equal(archiveReferenceCount, 18, "all 18 threads must point back from their Archive precedent");
+  assert.equal(museumReferenceCount, 18, "all 18 threads must point back from their Museum exhibit");
+  assert.ok(Object.keys(departmentCaseThreads).some((theme) => getDepartmentCaseReferences("archive", departmentCaseThreads[theme].archiveSlug).some((reference) => reference.theme === theme)));
+  assert.doesNotMatch(referenceComponent, /localStorage|sessionStorage|recordPassportActivity/);
 });

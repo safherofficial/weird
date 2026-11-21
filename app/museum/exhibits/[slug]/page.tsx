@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import RecordPassportActivity from "../../../components/record-passport-activity";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentPublicShare from "../../../components/department-public-share";
+import DepartmentCaseReferences from "../../../components/department-case-references";
 import { exhibits, getExhibit } from "../../museum-data";
 
 type ExhibitPageProps = {
@@ -95,6 +96,7 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
             <div><span>CONDITION</span><strong>{exhibit.condition}</strong></div>
             <div><span>EMOTIONAL WEIGHT</span><strong>{exhibit.emotionalWeight}</strong></div>
           </div>
+          <DepartmentCaseReferences source="museum" slug={exhibit.slug} />
           <div className="museum-exhibit__actions">
             <DepartmentPublicShare
               title="BAGHOLDER REHABILITATION / Exhibit"

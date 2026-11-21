@@ -54,6 +54,86 @@ export type DepartmentCaseAtlasData = {
   }>;
 };
 
+export type DepartmentCaseReferenceSource = "archive" | "museum";
+
+export type DepartmentCaseReference = {
+  theme: string;
+  anchor: string;
+  narrative: string;
+  offices: Array<{
+    number: string;
+    title: string;
+    href: string;
+    section: DepartmentSection;
+  }>;
+  counterpart: {
+    label: string;
+    accession: string;
+    title: string;
+    href: string;
+  };
+};
+
+import { getDepartmentCaseThemeAnchor } from "./case-theme-anchor";
+
+export function getDepartmentCaseReferences(
+  source: DepartmentCaseReferenceSource,
+  slug: string,
+): DepartmentCaseReference[] {
+  return Object.entries(departmentCaseThreads)
+    .filter(([, thread]) => source === "archive" ? thread.archiveSlug === slug : thread.exhibitSlug === slug)
+    .map(([theme, thread]) => {
+      const offices = thread.offices.map((step) => {
+        const department = departments.find((item) => item.section === step.section);
+        if (!department) {
+          throw new Error("A case reference contains an unknown Department office for " + theme + ".");
+        }
+        return {
+          number: department.number,
+          title: department.title,
+          href: department.href,
+          section: department.section,
+        };
+      });
+
+      if (source === "archive") {
+        const counterpart = exhibits.find((exhibit) => exhibit.slug === thread.exhibitSlug);
+        if (!counterpart) {
+          throw new Error("A case reference contains a missing Museum counterpart for " + theme + ".");
+        }
+        return {
+          theme,
+          anchor: "case-thread-" + getDepartmentCaseThemeAnchor(theme),
+          narrative: thread.narrative,
+          offices,
+          counterpart: {
+            label: "RELATED MUSEUM OBJECT",
+            accession: counterpart.accession,
+            title: counterpart.title,
+            href: "/museum/exhibits/" + counterpart.slug,
+          },
+        };
+      }
+
+      const counterpart = archiveRecords.find((record) => record.slug === thread.archiveSlug);
+      if (!counterpart) {
+        throw new Error("A case reference contains a missing archive counterpart for " + theme + ".");
+      }
+      return {
+        theme,
+        anchor: "case-thread-" + getDepartmentCaseThemeAnchor(theme),
+        narrative: thread.narrative,
+        offices,
+        counterpart: {
+          label: "RELATED ARCHIVE PRECEDENT",
+          accession: counterpart.accession,
+          title: counterpart.title,
+          href: "/archives/records/" + counterpart.slug,
+        },
+      };
+    });
+}
+
 function dailyRecordHref(issueDate: string): string {
   const today = new Date().toISOString().slice(0, 10);
   return issueDate === today ? "/daily-office" : "/daily-office/archive/" + issueDate;
