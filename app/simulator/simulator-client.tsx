@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
+import PassportResultReceipt from "../components/passport-result-receipt";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   actions,
@@ -331,6 +332,7 @@ export default function SimulatorClient() {
           <button className="button button--quiet" type="button" onClick={restart}>RUN IT BACK ↺</button>
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
+        <PassportResultReceipt activity="simulator" />
         <p className="simulator-result__public-link"><Link href={caseUrl}>OPEN PUBLIC CASE FILE ↗</Link></p>
       </section>
     );

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
+import PassportResultReceipt from "../components/passport-result-receipt";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildRoadmapResult,
@@ -340,6 +341,7 @@ export default function RoadmapGeneratorClient() {
           <button className="button button--quiet" type="button" onClick={restart}>GENERATE ANOTHER ↺</button>
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
+        <PassportResultReceipt activity="roadmap" />
         <p className="roadmap-public-link"><Link href={caseUrl}>OPEN PUBLIC TAKEOVER FILE ↗</Link></p>
       </section>
     );

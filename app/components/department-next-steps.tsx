@@ -177,9 +177,9 @@ export default function DepartmentNextSteps({ currentDepartment }: DepartmentNex
       <div className="department-next-steps__passport">
         <p>
           <span>KEEP THE RECORD</span>
-          Enable the optional Department Passport to collect visit stamps locally on this device.
+          With the Passport enabled, department visits and completed-experience badges are saved locally on this device. Enable it before starting.
         </p>
-        <Link href="/passport">OPEN DEPARTMENT PASSPORT ↗</Link>
+        <Link href="/passport">OPEN / ENABLE PASSPORT ↗</Link>
       </div>
     </section>
   );

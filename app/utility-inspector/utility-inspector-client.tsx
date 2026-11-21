@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
+import PassportResultReceipt from "../components/passport-result-receipt";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildUtilityResult,
@@ -338,6 +339,7 @@ export default function UtilityInspectorClient() {
           <button className="button button--quiet" type="button" onClick={restart}>INSPECT AGAIN ↺</button>
         </div>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
+        <PassportResultReceipt activity="utility" />
         <p className="utility-public-link"><Link href={caseUrl}>OPEN PUBLIC CASE FILE ↗</Link></p>
       </section>
     );

@@ -11952,3 +11952,76 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
     grid-template-columns: 1fr;
   }
 }
+
+
+/* U24.2 — local Passport receipt shown beside each completed interactive result. */
+.passport-result-receipt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 20px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  background: linear-gradient(110deg, rgba(182, 255, 101, .055), rgba(14, 19, 14, .92));
+}
+
+.passport-result-receipt__body {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.passport-result-receipt__body > span {
+  color: var(--green);
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .075em;
+}
+
+.passport-result-receipt__body > strong {
+  color: var(--text);
+  font: 600 11px/1.4 var(--mono);
+  letter-spacing: .025em;
+}
+
+.passport-result-receipt__body > p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.passport-result-receipt__link {
+  flex-shrink: 0;
+  color: var(--green);
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .045em;
+  text-align: right;
+}
+
+.passport-result-receipt__link:focus-visible,
+.audit-public-link a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+.audit-public-link {
+  margin-top: 17px;
+  text-align: right;
+}
+
+.audit-public-link a {
+  color: var(--green);
+  font: 8px var(--mono);
+}
+
+@media (max-width: 620px) {
+  .passport-result-receipt {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .passport-result-receipt__link {
+    text-align: left;
+  }
+}

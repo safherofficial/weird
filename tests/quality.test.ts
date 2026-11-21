@@ -733,3 +733,42 @@ test("U24 journey routing is mapped once across all ten divisions without self-l
     assert.doesNotMatch(source, /DepartmentNextSteps/, path + " must not duplicate the page-level journey panel inside its result state");
   });
 });
+
+
+test("U24.2 every completed experience shows its local Passport receipt and opens its public case file", () => {
+  const experiences = [
+    { activity: "audit", client: "app/audit/audit-client.tsx", page: "app/audit/case/[code]/page.tsx", department: "audit", link: "OPEN PUBLIC CASE FILE" },
+    { activity: "simulator", client: "app/simulator/simulator-client.tsx", page: "app/simulator/case/[code]/page.tsx", department: "simulator", link: "OPEN PUBLIC CASE FILE" },
+    { activity: "utility", client: "app/utility-inspector/utility-inspector-client.tsx", page: "app/utility-inspector/case/[code]/page.tsx", department: "utility", link: "OPEN PUBLIC CASE FILE" },
+    { activity: "roadmap", client: "app/roadmap-generator/roadmap-generator-client.tsx", page: "app/roadmap-generator/case/[code]/page.tsx", department: "roadmap", link: "OPEN PUBLIC TAKEOVER FILE" },
+    { activity: "whitepaper", client: "app/whitepaper-factory/whitepaper-factory-client.tsx", page: "app/whitepaper-factory/case/[code]/page.tsx", department: "whitepaper", link: "OPEN PUBLIC TOKEN DOSSIER FILE" },
+    { activity: "club", client: "app/club/club-client.tsx", page: "app/club/member/[code]/page.tsx", department: "club", link: "OPEN PUBLIC MEMBER FILE" },
+    { activity: "cope", client: "app/cope-index/cope-index-client.tsx", page: "app/cope-index/case/[code]/page.tsx", department: "cope", link: "OPEN PUBLIC PERSONAL FILE" },
+  ];
+
+  for (const item of experiences) {
+    const client = readFileSync(item.client, "utf8");
+    const publicPage = readFileSync(item.page, "utf8");
+    assert.ok(client.includes('recordPassportActivity("' + item.activity + '")'), item.activity + " must record completion at result creation");
+    assert.ok(client.includes('PassportResultReceipt activity="' + item.activity + '"'), item.activity + " result must show its local receipt status");
+    assert.ok(client.includes(item.link), item.activity + " result must expose its public case link");
+    assert.ok(publicPage.includes("DepartmentPublicShare"), item.activity + " public case must expose share actions");
+    assert.ok(publicPage.includes('DepartmentNextSteps currentDepartment="' + item.department + '"'), item.activity + " public case must offer curated next steps and Passport access");
+    assert.ok(publicPage.includes("crossRead.headline"), item.activity + " public case must retain the result cross-read");
+    assert.ok(!publicPage.includes("recordPassportActivity"), item.activity + " public views must not award the owner's completion activity to visitors");
+  }
+
+  const audit = readFileSync("app/audit/audit-client.tsx", "utf8");
+  assert.ok(audit.includes('<a href={reportUrl}>OPEN PUBLIC CASE FILE'), "DYOR Audit must expose its public file directly from the result");
+  const receipt = readFileSync("app/components/passport-result-receipt.tsx", "utf8");
+  assert.ok(receipt.includes("readPassport()"));
+  assert.ok(receipt.includes("completedActivities.includes(activity)"));
+  assert.ok(receipt.includes("earlier completions are not backfilled"));
+  assert.ok(receipt.includes('href="/passport"'));
+});
+
+test("U24.2 journey Passport messaging describes both visit stamps and completed-experience badges accurately", () => {
+  const journey = readFileSync("app/components/department-next-steps.tsx", "utf8");
+  assert.ok(journey.includes("department visits and completed-experience badges are saved locally"));
+  assert.ok(journey.includes("OPEN / ENABLE PASSPORT"));
+});

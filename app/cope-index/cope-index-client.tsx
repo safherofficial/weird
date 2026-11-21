@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
+import PassportResultReceipt from "../components/passport-result-receipt";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildPersonalCopeResult,
@@ -353,6 +354,7 @@ export default function CopeIndexClient({ dailyIndex }: CopeIndexClientProps) {
               <button className="button button--quiet" type="button" onClick={copyReport}>COPY REPORT + LINKS</button>
               <button className="button button--quiet" type="button" onClick={restart}>CALIBRATE AGAIN ↺</button>
             </div>
+        <PassportResultReceipt activity="cope" />
             <p className="cope-personal-result__public-link"><Link href={makeCaseUrl(result.answers)}>OPEN PUBLIC PERSONAL FILE ↗</Link></p>
           </div>
         )}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DepartmentCrossRead from "../components/department-cross-read";
+import PassportResultReceipt from "../components/passport-result-receipt";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
   buildWhitepaperResult,
@@ -270,6 +271,7 @@ export default function WhitepaperFactoryClient() {
           <button className="button button--quiet" type="button" onClick={restart}>GENERATE ANOTHER ↺</button>
         </div>
 
+        <PassportResultReceipt activity="whitepaper" />
         <p className="whitepaper-public-link"><Link href={caseUrl}>OPEN PUBLIC TOKEN DOSSIER FILE ↗</Link></p>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
       </section>

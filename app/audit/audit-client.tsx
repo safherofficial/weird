@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import PassportResultReceipt from "../components/passport-result-receipt";
 import { questions } from "./audit-data";
 import { recordPassportActivity } from "../passport/passport-store";
 import {
@@ -453,6 +454,8 @@ export default function AuditClient() {
           <button className="button button--quiet" onClick={saveCase} type="button">SAVE TO THIS DEVICE ↓</button>
           <button className="button button--quiet" onClick={restart} type="button">REOPEN INVESTIGATION ↺</button>
         </div>
+        <PassportResultReceipt activity="audit" />
+        <p className="audit-public-link"><a href={reportUrl}>OPEN PUBLIC CASE FILE ↗</a></p>
         {notice && <p className="audit-notice" role="status">{notice}</p>}
       </section>
     );
