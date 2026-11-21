@@ -6,21 +6,22 @@ import DepartmentNextSteps from "../components/department-next-steps";
 import ClubClient from "./club-client";
 import ClubChallenges from "./club-challenges";
 import ClubTokenNotice from "./club-token-notice";
+import ClubCampaignDesk from "./club-campaign-desk";
 import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/club" },
   title: "The 99% Club",
-  description: "The 99% Club: fictional crypto archetypes, local achievement badges and interactive excuses for why the next entry is still yours.",
+  description: "The 99% Club: six fictional crypto-culture factions across all chains, shareable member files, local badges and interactive excuses.",
   openGraph: {
     title: "THE 99% CLUB",
-    description: "Five questions, sixteen Club badges and three interactive excuses. The next one is yours.",
+    description: "Six fictional crypto factions. One shared excuse. Find your archetype across chains in THE 99% CLUB.",
     images: ["/club/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE 99% CLUB",
-    description: "Five questions, sixteen Club badges and three interactive excuses.",
+    description: "Six fictional crypto factions. One shared excuse. Find your archetype across chains in THE 99% CLUB.",
     images: ["/club/opengraph-image"],
   },
 };
@@ -70,6 +71,10 @@ export default function ClubPage() {
             ))}
           </div>
         </section>
+      </div>
+
+      <div className="shell">
+        <ClubCampaignDesk />
       </div>
 
       <div className="shell">
