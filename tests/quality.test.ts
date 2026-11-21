@@ -1200,7 +1200,7 @@ test("U25.7 Case Atlas renders an accessible expandable history for each themati
   assert.ok(atlasClient.includes('href={occurrence.href}'));
   assert.ok(atlasEngine.includes("occurrences: DepartmentCaseAtlasOccurrence[]"));
   assert.ok(atlasEngine.includes("existing.occurrences.push(occurrence)"));
-  assert.ok(atlasEngine.includes("occurrences: appearance?.occurrences ?? []"));
+  assert.ok(atlasEngine.includes("const occurrences = appearance?.occurrences ?? []"));
 });
 
 
