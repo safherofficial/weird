@@ -25,7 +25,7 @@ test("laser cursor schedules only while needed and stops when hidden or reduced 
 });
 
 test("laser cursor caches hit testing and avoids repeated DOM state writes", () => {
-  assert.match(component, /if \(target !== lastTarget\)/u);
+  assert.match(component, /if \(target === lastTarget\) return/u);
   assert.match(component, /if \(cursor\.dataset\.state !== state\)/u);
   assert.match(component, /if \(cursor\.dataset\.visible !== value\)/u);
   assert.match(component, /INTERACTIVE_SELECTOR/u);
@@ -68,4 +68,14 @@ test("Raf smoothing reaches the same position after equal elapsed time at 60, 12
   for (const remaining of remainingOffsets) {
     assert.ok(Math.abs(remaining - remainingOffsets[0]) < 1e-12);
   }
+});
+
+
+test("laser cursor snaps to authoritative pointer coordinates before press and release", () => {
+  assert.match(component, /const syncToPointer = \(event: PointerEvent\) =>/u);
+  assert.match(component, /targetX = event\.clientX;[\s\S]*?targetY = event\.clientY;[\s\S]*?currentX = targetX;[\s\S]*?currentY = targetY;/u);
+  assert.match(component, /stopAnimation\(\);[\s\S]*?writePosition\(currentX, currentY\);/u);
+  assert.match(component, /if \(syncToPointer\(event\) && cursor\.dataset\.pressed !== "true"\)/u);
+  assert.match(component, /const handlePointerUp = \(event: PointerEvent\) => \{\s*syncToPointer\(event\);/u);
+  assert.match(component, /updateHitTarget\(target\)/u);
 });

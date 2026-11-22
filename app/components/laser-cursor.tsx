@@ -72,6 +72,38 @@ export default function LaserCursor() {
       if (cursor.dataset.visible !== value) cursor.dataset.visible = value;
     };
 
+    const updateHitTarget = (target: Element | null) => {
+      if (target === lastTarget) return;
+      lastTarget = target;
+      isTextEntry = Boolean(target?.closest(TEXT_ENTRY_SELECTOR));
+      isInteractive = Boolean(target?.closest(INTERACTIVE_SELECTOR));
+    };
+
+    // Pointer events carry the authoritative click coordinates. Snap to them
+    // before the browser dispatches click so the easing loop cannot trail behind.
+    const syncToPointer = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return false;
+
+      const target = event.target instanceof Element ? event.target : null;
+      updateHitTarget(target);
+
+      if (isTextEntry) {
+        hideCursor();
+        return false;
+      }
+
+      targetX = event.clientX;
+      targetY = event.clientY;
+      currentX = targetX;
+      currentY = targetY;
+      hasPosition = true;
+      stopAnimation();
+      writePosition(currentX, currentY);
+      setCursorVisible(true);
+      setCursorState(isInteractive ? "hover" : "idle");
+      return true;
+    };
+
     const animatePosition = (timestamp: number) => {
       if (!hasPosition || cursor.dataset.visible !== "true") {
         animationFrame = 0;
@@ -135,11 +167,7 @@ export default function LaserCursor() {
       if (event.pointerType !== "mouse") return;
 
       const target = event.target instanceof Element ? event.target : null;
-      if (target !== lastTarget) {
-        lastTarget = target;
-        isTextEntry = Boolean(target?.closest(TEXT_ENTRY_SELECTOR));
-        isInteractive = Boolean(target?.closest(INTERACTIVE_SELECTOR));
-      }
+      updateHitTarget(target);
 
       if (isTextEntry) {
         hideCursor();
@@ -166,12 +194,13 @@ export default function LaserCursor() {
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (event.pointerType === "mouse" && cursor.dataset.visible === "true" && cursor.dataset.pressed !== "true") {
+      if (syncToPointer(event) && cursor.dataset.pressed !== "true") {
         cursor.dataset.pressed = "true";
       }
     };
 
-    const handlePointerUp = () => {
+    const handlePointerUp = (event: PointerEvent) => {
+      syncToPointer(event);
       if (cursor.dataset.pressed === "true") delete cursor.dataset.pressed;
     };
 
