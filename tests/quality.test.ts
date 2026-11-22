@@ -2740,3 +2740,19 @@ test("U28.9 weekly campaign engine coordinates real Club assets on a determinist
   assert.ok(styles.includes(".club-campaign-engine__assets"));
   assert.ok(styles.includes("@media (max-width:620px)"));
 });
+
+
+
+test("site-wide header keeps home-directory shortcuts valid off-home and does not record legal pages as home visits", () => {
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+  const privacy = readFileSync("app/privacy/page.tsx", "utf8");
+  const terms = readFileSync("app/terms/page.tsx", "utf8");
+  assert.ok(header.includes('import { usePathname } from "next/navigation"'));
+  assert.ok(header.includes('const isHomePage = pathname === "/"'));
+  assert.ok(header.includes('isHomePage ? "#departments" : "/#departments"'));
+  assert.ok(header.includes('isHomePage ? "#manifesto" : "/#manifesto"'));
+  assert.ok(header.includes("if (activeSection) recordDepartmentVisit(activeSection)"));
+  assert.ok(privacy.includes("<DepartmentHeader statusMessage="));
+  assert.ok(terms.includes("<DepartmentHeader statusMessage="));
+  assert.doesNotMatch(header, /activeSection = "home"/);
+});

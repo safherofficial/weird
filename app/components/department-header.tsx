@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { recordDepartmentVisit } from "../passport/passport-store";
 import { divisionIdentityBySection, divisionNavigationGroups, type DepartmentSection } from "../divisions";
@@ -33,17 +34,19 @@ function isCurrent(item: DepartmentNavItem, activeSection: DepartmentSection) {
 }
 
 export default function DepartmentHeader({
-  activeSection = "home",
+  activeSection,
   statusMessage = "ALL SYSTEMS NOMINALLY USELESS",
   ctaHref = "/audit",
   ctaLabel = "START DYOR AUDIT 2.0",
 }: DepartmentHeaderProps) {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const departmentsHref = activeSection === "home" ? "#departments" : "/#departments";
-  const manifestoHref = activeSection === "home" ? "#manifesto" : "/#manifesto";
-  const activeDivision = divisionIdentityBySection[activeSection];
+  const departmentsHref = isHomePage ? "#departments" : "/#departments";
+  const manifestoHref = isHomePage ? "#manifesto" : "/#manifesto";
+  const activeDivision = activeSection ? divisionIdentityBySection[activeSection] : undefined;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -60,7 +63,7 @@ export default function DepartmentHeader({
   }, [menuOpen]);
 
   useEffect(() => {
-    recordDepartmentVisit(activeSection);
+    if (activeSection) recordDepartmentVisit(activeSection);
   }, [activeSection]);
 
   function closeMenu() {
@@ -68,7 +71,7 @@ export default function DepartmentHeader({
   }
 
   function renderDepartmentLink(item: DepartmentNavItem, mobile = false) {
-    const current = isCurrent(item, activeSection);
+    const current = activeSection ? isCurrent(item, activeSection) : false;
     return (
       <Link
         className={mobile
@@ -116,7 +119,7 @@ export default function DepartmentHeader({
 
         <nav className="main-nav" aria-label="Main navigation">
           {navigationGroups.map((group) => {
-            const groupIsActive = group.items.some((item) => isCurrent(item, activeSection));
+            const groupIsActive = activeSection ? group.items.some((item) => isCurrent(item, activeSection)) : false;
             return (
               <details className="main-nav__group" data-active={groupIsActive || undefined} name="department-navigation" key={group.number}>
                 <summary className="main-nav__trigger">
@@ -137,7 +140,7 @@ export default function DepartmentHeader({
           <Link
             className="main-nav__passport"
             href={passportItem.href}
-            aria-current={isCurrent(passportItem, activeSection) ? "page" : undefined}
+            aria-current={activeSection && isCurrent(passportItem, activeSection) ? "page" : undefined}
             onClick={closeMenu}
           >
             {passportItem.label} <span aria-hidden="true">↗</span>
