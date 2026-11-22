@@ -17,11 +17,16 @@ const INTERACTIVE_SELECTOR = [
 ].join(", ");
 
 const TEXT_ENTRY_SELECTOR = [
-  'textarea',
+  "textarea",
   '[contenteditable="true"]',
   '[role="textbox"]',
   'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]):not([type="hidden"])',
 ].join(", ");
+
+const FOLLOW_TIME_CONSTANT_MS = 48;
+const MAX_FRAME_DELTA_MS = 34;
+const POSITION_EPSILON = 0.3;
+const NOMINAL_FRAME_MS = 1000 / 60;
 
 export default function LaserCursor() {
   const cursorRef = useRef<HTMLSpanElement>(null);
@@ -42,7 +47,11 @@ export default function LaserCursor() {
     let currentY = 0;
     let hasPosition = false;
     let animationFrame = 0;
+    let lastFrameTime = 0;
     let motionReduced = reducedMotion.matches;
+    let lastTarget: Element | null = null;
+    let isTextEntry = false;
+    let isInteractive = false;
 
     const writePosition = (x: number, y: number) => {
       cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
@@ -51,20 +60,44 @@ export default function LaserCursor() {
     const stopAnimation = () => {
       if (animationFrame) window.cancelAnimationFrame(animationFrame);
       animationFrame = 0;
+      lastFrameTime = 0;
     };
 
-    const animatePosition = () => {
+    const setCursorState = (state: "idle" | "hover") => {
+      if (cursor.dataset.state !== state) cursor.dataset.state = state;
+    };
+
+    const setCursorVisible = (visible: boolean) => {
+      const value = String(visible);
+      if (cursor.dataset.visible !== value) cursor.dataset.visible = value;
+    };
+
+    const animatePosition = (timestamp: number) => {
+      if (!hasPosition || cursor.dataset.visible !== "true") {
+        animationFrame = 0;
+        lastFrameTime = 0;
+        return;
+      }
+
+      const elapsed = lastFrameTime
+        ? Math.min(timestamp - lastFrameTime, MAX_FRAME_DELTA_MS)
+        : NOMINAL_FRAME_MS;
+      lastFrameTime = timestamp;
+
+      // Exponential smoothing keeps the same follow response at 60, 120 and 144 Hz.
+      const follow = 1 - Math.exp(-elapsed / FOLLOW_TIME_CONSTANT_MS);
       const dx = targetX - currentX;
       const dy = targetY - currentY;
 
-      currentX += dx * 0.28;
-      currentY += dy * 0.28;
+      currentX += dx * follow;
+      currentY += dy * follow;
 
-      if (Math.abs(dx) < 0.35 && Math.abs(dy) < 0.35) {
+      if (Math.abs(dx) < POSITION_EPSILON && Math.abs(dy) < POSITION_EPSILON) {
         currentX = targetX;
         currentY = targetY;
         writePosition(currentX, currentY);
         animationFrame = 0;
+        lastFrameTime = 0;
         return;
       }
 
@@ -74,6 +107,7 @@ export default function LaserCursor() {
 
     const schedulePosition = () => {
       if (motionReduced) {
+        stopAnimation();
         currentX = targetX;
         currentY = targetY;
         writePosition(currentX, currentY);
@@ -81,23 +115,33 @@ export default function LaserCursor() {
       }
 
       if (!animationFrame) {
+        lastFrameTime = 0;
         animationFrame = window.requestAnimationFrame(animatePosition);
       }
     };
 
     const hideCursor = () => {
-      cursor.dataset.visible = "false";
-      cursor.dataset.state = "idle";
+      if (cursor.dataset.visible !== "true") return;
+
+      setCursorVisible(false);
+      setCursorState("idle");
+      delete cursor.dataset.pressed;
+      hasPosition = false;
+      lastTarget = null;
+      stopAnimation();
     };
 
     const handlePointerMove = (event: PointerEvent) => {
       if (event.pointerType !== "mouse") return;
 
-      const target = event.target;
-      const element = target instanceof Element ? target : null;
-      const textEntry = Boolean(element?.closest(TEXT_ENTRY_SELECTOR));
+      const target = event.target instanceof Element ? event.target : null;
+      if (target !== lastTarget) {
+        lastTarget = target;
+        isTextEntry = Boolean(target?.closest(TEXT_ENTRY_SELECTOR));
+        isInteractive = Boolean(target?.closest(INTERACTIVE_SELECTOR));
+      }
 
-      if (textEntry) {
+      if (isTextEntry) {
         hideCursor();
         return;
       }
@@ -109,10 +153,11 @@ export default function LaserCursor() {
         currentX = targetX;
         currentY = targetY;
         hasPosition = true;
+        writePosition(currentX, currentY);
       }
 
-      cursor.dataset.visible = "true";
-      cursor.dataset.state = element?.closest(INTERACTIVE_SELECTOR) ? "hover" : "idle";
+      setCursorVisible(true);
+      setCursorState(isInteractive ? "hover" : "idle");
       schedulePosition();
     };
 
@@ -121,18 +166,19 @@ export default function LaserCursor() {
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (event.pointerType === "mouse" && cursor.dataset.visible === "true") {
+      if (event.pointerType === "mouse" && cursor.dataset.visible === "true" && cursor.dataset.pressed !== "true") {
         cursor.dataset.pressed = "true";
       }
     };
 
     const handlePointerUp = () => {
-      delete cursor.dataset.pressed;
+      if (cursor.dataset.pressed === "true") delete cursor.dataset.pressed;
     };
 
     const handleMotionChange = () => {
       motionReduced = reducedMotion.matches;
       cursor.dataset.reducedMotion = String(motionReduced);
+
       if (motionReduced) {
         stopAnimation();
         currentX = targetX;
@@ -142,6 +188,9 @@ export default function LaserCursor() {
     };
 
     const handleWindowLeave = () => hideCursor();
+    const handleDocumentMouseOut = (event: MouseEvent) => {
+      if (event.relatedTarget === null) hideCursor();
+    };
     const handleVisibilityChange = () => {
       if (document.hidden) hideCursor();
     };
@@ -156,19 +205,25 @@ export default function LaserCursor() {
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     window.addEventListener("pointerup", handlePointerUp, { passive: true });
     window.addEventListener("pointercancel", handlePointerUp, { passive: true });
+    window.addEventListener("mouseleave", handleWindowLeave);
     window.addEventListener("blur", handleWindowLeave);
+    document.addEventListener("mouseout", handleDocumentMouseOut);
     document.addEventListener("visibilitychange", handleVisibilityChange);
     reducedMotion.addEventListener("change", handleMotionChange);
 
     return () => {
       stopAnimation();
       root.classList.remove("laser-cursor-enabled");
+      setCursorVisible(false);
+      delete cursor.dataset.pressed;
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerleave", handlePointerLeave);
       window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointerup", handlePointerUp);
       window.removeEventListener("pointercancel", handlePointerUp);
+      window.removeEventListener("mouseleave", handleWindowLeave);
       window.removeEventListener("blur", handleWindowLeave);
+      document.removeEventListener("mouseout", handleDocumentMouseOut);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       reducedMotion.removeEventListener("change", handleMotionChange);
     };

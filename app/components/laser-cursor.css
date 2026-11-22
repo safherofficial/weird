@@ -1,4 +1,4 @@
-/* Laser cursor — desktop precision pointer, no touch-device override. */
+/* Laser cursor — lightweight precision pointer for fine-pointer desktops only. */
 @media (hover: hover) and (pointer: fine) {
   html.laser-cursor-enabled,
   html.laser-cursor-enabled * {
@@ -20,22 +20,22 @@
     left: 0;
     z-index: 10000;
     display: block;
-    width: 26px;
-    height: 26px;
-    border: 1px solid rgb(182 255 101 / 34%);
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgb(182 255 101 / 48%);
     border-radius: 50%;
-    background: radial-gradient(circle, rgb(182 255 101 / 11%) 0%, rgb(182 255 101 / 4%) 48%, transparent 73%);
-    box-shadow: 0 0 9px rgb(182 255 101 / 24%), inset 0 0 7px rgb(182 255 101 / 9%);
+    background: radial-gradient(circle, rgb(182 255 101 / 8%) 0%, rgb(182 255 101 / 3%) 52%, transparent 76%);
+    box-shadow: 0 0 10px rgb(182 255 101 / 22%), inset 0 0 6px rgb(182 255 101 / 8%);
     opacity: 0;
     pointer-events: none;
-    will-change: transform, opacity;
+    scale: 1;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    will-change: transform;
     transition:
-      opacity 130ms ease,
-      width 150ms ease,
-      height 150ms ease,
-      border-color 150ms ease,
-      background 150ms ease,
-      box-shadow 150ms ease;
+      opacity 100ms ease,
+      scale 125ms cubic-bezier(0.2, 0.75, 0.25, 1),
+      border-color 125ms ease;
   }
 
   .laser-cursor::before {
@@ -48,8 +48,8 @@
     background: #e8ffd2;
     box-shadow:
       0 0 4px 1px #e8ffd2,
-      0 0 9px 3px rgb(182 255 101 / 95%),
-      0 0 17px 5px rgb(182 255 101 / 45%);
+      0 0 9px 3px rgb(182 255 101 / 88%),
+      0 0 15px 4px rgb(182 255 101 / 34%);
     content: "";
     transform: translate(-50%, -50%);
   }
@@ -70,52 +70,23 @@
     opacity: 1;
   }
 
-  .laser-cursor[data-state="idle"]:not([data-reduced-motion="true"]) {
-    animation: laser-cursor-pulse 2.1s ease-in-out infinite;
-  }
-
   .laser-cursor[data-state="hover"] {
-    width: 32px;
-    height: 32px;
-    border-color: rgb(209 255 164 / 78%);
-    background: radial-gradient(circle, rgb(182 255 101 / 18%) 0%, rgb(182 255 101 / 7%) 53%, transparent 76%);
-    box-shadow: 0 0 15px rgb(182 255 101 / 43%), inset 0 0 9px rgb(182 255 101 / 15%);
-  }
-
-  .laser-cursor[data-state="hover"]::before {
-    width: 6px;
-    height: 6px;
-    box-shadow:
-      0 0 5px 2px #e8ffd2,
-      0 0 12px 5px rgb(182 255 101 / 100%),
-      0 0 22px 7px rgb(182 255 101 / 58%);
+    border-color: rgb(209 255 164 / 86%);
+    scale: 1.18;
   }
 
   .laser-cursor[data-pressed="true"] {
-    width: 19px;
-    height: 19px;
-    border-color: rgb(232 255 210 / 92%);
-    box-shadow: 0 0 19px rgb(182 255 101 / 68%);
+    border-color: rgb(232 255 210 / 96%);
+    scale: 0.76;
   }
 
   .laser-cursor[data-reduced-motion="true"] {
-    animation: none !important;
     transition: none;
-  }
-}
-
-@keyframes laser-cursor-pulse {
-  0%, 100% {
-    box-shadow: 0 0 8px rgb(182 255 101 / 21%), inset 0 0 6px rgb(182 255 101 / 8%);
-  }
-  50% {
-    box-shadow: 0 0 13px rgb(182 255 101 / 38%), inset 0 0 8px rgb(182 255 101 / 12%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .laser-cursor {
-    animation: none !important;
     transition: none !important;
   }
 }
