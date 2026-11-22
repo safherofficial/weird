@@ -129,7 +129,7 @@ test("all seven dynamic Open Graph endpoints reconstruct the matching fictional 
   for (const item of publicCases) {
     const image = readRepoFile(item.image);
     assert.ok(image.includes('from "next/og"'), item.name + " uses Next's Open Graph image renderer");
-    assert.ok(image.includes("export const runtime = \"edge\""), item.name + " declares a supported image runtime");
+    assert.ok(!image.includes("export const runtime = \"edge\""), item.name + " uses the default Node.js image runtime");
     assert.ok(image.includes("export const alt ="), item.name + " exposes descriptive image alternative text");
     assert.ok(image.includes("export const size = { width: 1200, height: 630 }"), item.name + " uses standard 1200x630 dimensions");
     assert.ok(image.includes('export const contentType = "image/png"'), item.name + " declares PNG output");

@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getExhibit } from "../../museum-data";
 
-export const runtime = "edge";
 export const alt = "A fictional relic from THE DYOR DEPARTMENT Bagholder Rehabilitation collection.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

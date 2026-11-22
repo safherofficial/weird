@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "THE 100X RESEARCH BUREAU — Inspect a fictional Solana token narrative, purpose and evidence.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

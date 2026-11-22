@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getArchiveRecord } from "../../archive-data";
 
-export const runtime = "edge";
 export const alt = "A fictional Solana trenches case file from THE DYOR DEPARTMENT Whale & Wallet Investigation.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildDailyOfficeDispatch } from "./daily-engine";
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 export const alt = "THE TRENCHES DESK — a fictional daily Crypto Twitter and Solana trenches briefing.";
 export const size = { width: 1200, height: 630 };

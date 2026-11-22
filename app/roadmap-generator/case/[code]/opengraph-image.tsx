@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildRoadmapResult, decodeRoadmapCode } from "../../roadmap-engine";
 
-export const runtime = "edge";
 export const alt = "A fictional CTO Emergency Office recovery roadmap card from THE DYOR DEPARTMENT.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

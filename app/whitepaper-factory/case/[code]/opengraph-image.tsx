@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildWhitepaperResult, decodeWhitepaperCode } from "../../whitepaper-engine";
 
-export const runtime = "edge";
 export const alt = "A fictional Exit Liquidity Department token dossier card from THE DYOR DEPARTMENT.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

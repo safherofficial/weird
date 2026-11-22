@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildResult, decodeCaseCode } from "../../audit-engine";
 
-export const runtime = "edge";
 export const alt = "A fictional DYOR Department personal audit case file.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "THE 99% CLUB — Six fictional crypto-culture factions. One shared excuse across all chains.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

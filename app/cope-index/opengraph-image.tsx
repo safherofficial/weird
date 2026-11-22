@@ -2,7 +2,6 @@ import { ImageResponse } from "next/og";
 import { buildDailyCopeIndex } from "./cope-engine";
 import { getDailyEditorialCase } from "../daily-office/daily-engine";
 
-export const runtime = "edge";
 export const alt = "COPIUM ADMINISTRATION — A fictional daily Solana trenches index of CT echo, launch FOMO and post-graduation cope.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "THE MUSEUM OF TRENCHES RELICS — Fifteen fictional Solana launch artifacts, bundle diagrams and CTO handover relics.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

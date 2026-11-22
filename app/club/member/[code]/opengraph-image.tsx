@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildClubResult, decodeClubCode } from "../../club-engine";
 
-export const runtime = "edge";
 export const alt = "A fictional crypto-culture member card from THE DYOR DEPARTMENT 99% CLUB.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildUtilityResult, decodeUtilityCode } from "../../utility-engine";
 
-export const runtime = "edge";
 export const alt = "A fictional 100X Research Bureau token-purpose inspection card.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

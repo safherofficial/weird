@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "CTO EMERGENCY OFFICE — Community takeover roadmap. Six questions, seven fictional recovery phases and one flexible ETA."
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

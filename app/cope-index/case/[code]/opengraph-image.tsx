@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { buildPersonalCopeResult, decodeCopeCode } from "../../cope-engine";
 
-export const runtime = "edge";
 export const alt = "A fictional Solana Trenches cope profile from THE DYOR DEPARTMENT Copium Administration.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
