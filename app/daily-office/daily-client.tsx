@@ -7,6 +7,7 @@ import type { DailyOfficeDispatch } from "./daily-engine";
 type DailyOfficeClientProps = {
   dispatch: DailyOfficeDispatch;
   pagePath?: string;
+  headlineLevel?: "h1" | "h2";
 };
 
 function escapeXml(value: string) {
@@ -81,7 +82,13 @@ function makeDispatchSvg(dispatch: DailyOfficeDispatch) {
   );
 }
 
-export default function DailyOfficeClient({ dispatch, pagePath = "/daily-office" }: DailyOfficeClientProps) {
+export default function DailyOfficeClient({
+  dispatch,
+  pagePath = "/daily-office",
+  headlineLevel = "h2",
+}: DailyOfficeClientProps) {
+  const HeadlineTag = headlineLevel;
+  const SupportingHeadingTag = headlineLevel === "h1" ? "h2" : "h3";
   const [notice, setNotice] = useState("");
   const dispatchLabel = pagePath === "/daily-office" ? "TODAY'S" : "ARCHIVED";
   const xText = [
@@ -186,7 +193,7 @@ export default function DailyOfficeClient({ dispatch, pagePath = "/daily-office"
 
       <div className="daily-office-headline">
         <p className="eyebrow">THE TRENCHES DESK / DAILY CT BRIEFING</p>
-        <h2>{dispatch.headline}</h2>
+        <HeadlineTag>{dispatch.headline}</HeadlineTag>
         <p>{dispatch.subheading}</p>
       </div>
 
@@ -199,7 +206,7 @@ export default function DailyOfficeClient({ dispatch, pagePath = "/daily-office"
         <div className="daily-office-index__header">
           <div>
             <span>FICTIONAL SYNTHETIC READING / NOT A RISK MODEL</span>
-            <h3 id="daily-office-index-title">THE CONVICTION INDEX</h3>
+            <SupportingHeadingTag id="daily-office-index-title">THE CONVICTION INDEX</SupportingHeadingTag>
             <p>{dispatch.convictionIndex.classification}</p>
           </div>
           <div className="daily-office-index__score" aria-label={"Final conviction score: " + dispatch.convictionIndex.score + " out of 100"}>
@@ -237,7 +244,7 @@ export default function DailyOfficeClient({ dispatch, pagePath = "/daily-office"
               <span>{section.label}</span>
               <small>{String(index + 1).padStart(2, "0")} / {String(dispatch.sections.length).padStart(2, "0")}</small>
             </div>
-            <h3>{section.heading}</h3>
+            <SupportingHeadingTag>{section.heading}</SupportingHeadingTag>
             <p>{section.body}</p>
             <div className="daily-office-section__stamp">{section.stamp}</div>
           </article>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./accessibility-refinements.css";
 import "./passport/achievements.css";
 import "./components/laser-cursor.css";
 import { SITE_URL } from "./site-config";

@@ -1,0 +1,54 @@
+/* Accessibility refinements: stronger small-text contrast and semantic heading styles. */
+.daily-office-headline h1 {
+  margin: 14px 0 12px;
+  color: var(--text);
+  font: 700 clamp(28px, 3.7vw, 45px)/1.02 var(--sans);
+  letter-spacing: -.055em;
+  overflow-wrap: anywhere;
+}
+
+.daily-office-index__header h2 {
+  margin: 7px 0 4px;
+  color: var(--text);
+  font: 700 19px/1.05 var(--sans);
+  letter-spacing: -.04em;
+}
+
+.daily-office-section h2 {
+  margin: 15px 0 9px;
+  color: #e1e8dc;
+  font: 600 15px/1.2 var(--sans);
+  letter-spacing: -.02em;
+}
+
+@media (max-width: 800px) {
+  .daily-office-headline h1 { font-size: 32px; }
+}
+
+/* AA contrast for the fine-print labels identified by the page audit. */
+.hq-status-card__index { color: #76836f; }
+.hq-status-card__foot { color: #768270; }
+
+.utility-briefing__facts span,
+.roadmap-briefing__facts span,
+.whitepaper-briefing__facts span,
+.club-briefing__facts span { color: #768570; }
+
+.result-metrics i,
+.utility-metrics i,
+.roadmap-metrics i,
+.club-metrics i { color: #798475; }
+
+.utility-history__heading span:last-child { color: #768270; }
+.whitepaper-cover__scores strong small { color: #798673; }
+.whitepaper-allocation__heading small { color: #768272; }
+.museum-exhibit__facts span { color: #798573; }
+.cope-dimension__top strong small { color: #76846f; }
+
+/* WCAG 2.2 target-size: make adjacent case-handoff links independently tappable. */
+.department-case-chain__handoff a {
+  display: block;
+  min-height: 26px;
+  padding-block: 7px;
+  line-height: 12px;
+}

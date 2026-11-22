@@ -122,7 +122,7 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="hq-club__membership" aria-label="The 99% Club identity">
+        <div className="hq-club__membership" role="group" aria-label="The 99% Club identity">
           <div className="hq-club__membership-top"><span>FORM 99C-001</span><span>FICTIONAL ISSUE</span></div>
           <div className="hq-club__seal">99<span>%</span></div>
           <strong>IT'S NEVER OUR FAULT.</strong>
@@ -131,7 +131,7 @@ export default function Home() {
             <span>MEMBER BENEFITS / NONE</span>
             <span>EXPECTATIONS / MANAGED</span>
           </div>
-        </aside>
+        </div>
 
         <div className="hq-club__factions" aria-label="The six fictional 99% Club factions">
           <div><span>THE SIX FACTIONS</span><strong>ONE VERY FLEXIBLE THESIS</strong></div>

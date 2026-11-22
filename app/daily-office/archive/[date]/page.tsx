@@ -67,7 +67,7 @@ export default async function InstitutionalMemoryRecordPage({ params }: Institut
           <Link href="/daily-office/ledger">← INSTITUTIONAL MEMORY LEDGER</Link>
           <span>{dispatch.issueDate} / UTC · {dispatch.reference}</span>
         </div>
-        <DailyOfficeClient dispatch={dispatch} pagePath={route} />
+        <DailyOfficeClient dispatch={dispatch} pagePath={route} headlineLevel="h1" />
         <nav className="institutional-memory-adjacent" aria-label="Adjacent daily records">
           <Link href={"/daily-office/archive/" + previousDate}>
             <span>PRECEDING UTC RECORD</span>

@@ -133,11 +133,11 @@ export default function ClubCampaignEngineDesk() {
             <button type="button" className="button button--x" onClick={openMainPostOnX}>OPEN MAIN POST ON X ↗</button>
           </div>
 
-          <aside className="club-campaign-engine__next">
+          <div className="club-campaign-engine__next" role="group" aria-label="Next week campaign preview">
             <span>NEXT WEEK / {schedule.next.weekKey}</span>
             <strong>{schedule.next.theme.title}</strong>
             <p>{schedule.next.theme.brief}</p>
-          </aside>
+          </div>
         </>
       ) : (
         <p className="club-campaign-engine__loading" role="status">ALIGNING THE WEEKLY CAMPAIGN FILE…</p>
