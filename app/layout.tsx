@@ -3,10 +3,12 @@ import "./globals.css";
 import "./accessibility-refinements.css";
 import "./passport/achievements.css";
 import "./components/laser-cursor.css";
+import "./components/energy-scrollbar.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
 import CircuitClickReveal from "./components/circuit-click-reveal";
 import LaserCursor from "./components/laser-cursor";
+import EnergyScrollbar from "./components/energy-scrollbar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -40,7 +42,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" id="page-scroll-region">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -53,6 +55,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <CircuitClickReveal />
         <LaserCursor />
+        <EnergyScrollbar />
         <AchievementToastHost />
       </body>
     </html>
