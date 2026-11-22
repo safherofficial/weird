@@ -7,7 +7,7 @@ import { buildDepartmentCaseAtlas } from "../case-atlas";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Department Case Atlas | THE DYOR DEPARTMENT",
+  title: "Department Case Atlas",
   description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and matched-period comparisons across selectable 14-to-120-day windows.",
   alternates: { canonical: "/daily-office/atlas" },
   robots: { index: false, follow: true },

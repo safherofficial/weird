@@ -24,7 +24,8 @@ export async function generateMetadata({ params }: CasePageProps): Promise<Metad
   }
 
   const result = buildResult(answers);
-  const title = result.profile.title + " | THE DYOR DEPARTMENT";
+  const title = result.profile.title;
+  const socialTitle = title + " | THE DYOR DEPARTMENT";
   const description = result.profile.subtitle + " " + result.profile.roast;
   const route = "/audit/case/" + encodeURIComponent(code);
   const image = route + "/opengraph-image";
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: CasePageProps): Promise<Metad
     alternates: { canonical: route },
     robots: { index: false, follow: true },
     openGraph: {
-      title,
+      title: socialTitle,
       description,
       type: "website",
       url: route,
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: CasePageProps): Promise<Metad
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: socialTitle,
       description,
       images: [image],
     },

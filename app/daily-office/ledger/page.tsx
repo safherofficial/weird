@@ -7,7 +7,7 @@ import { buildInstitutionalMemory } from "../institutional-memory";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Institutional Memory Ledger | THE DYOR DEPARTMENT",
+  title: "Institutional Memory Ledger",
   description: "A chronological register of recent fictional Trenches Desk dispatches, connected by date, reference and deliberately unresolved institutional paperwork.",
   alternates: { canonical: "/daily-office/ledger" },
   robots: { index: false, follow: true },

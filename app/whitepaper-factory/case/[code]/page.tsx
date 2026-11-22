@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: WhitepaperCasePageProps): Pro
   const image = route + "/opengraph-image";
 
   return {
-    title: title + " | THE DYOR DEPARTMENT",
+    title,
     description,
     alternates: { canonical: route },
     robots: { index: false, follow: true },
