@@ -23,10 +23,9 @@ const TEXT_ENTRY_SELECTOR = [
   'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]):not([type="hidden"])',
 ].join(", ");
 
-const FOLLOW_TIME_CONSTANT_MS = 48;
-const MAX_FRAME_DELTA_MS = 34;
+const FOLLOW_TIME_CONSTANT_MS = 16;
+const MAX_FRAME_DELTA_MS = 32;
 const POSITION_EPSILON = 0.3;
-const NOMINAL_FRAME_MS = 1000 / 60;
 
 export default function LaserCursor() {
   const cursorRef = useRef<HTMLSpanElement>(null);
@@ -111,12 +110,13 @@ export default function LaserCursor() {
         return;
       }
 
-      const elapsed = lastFrameTime
-        ? Math.min(timestamp - lastFrameTime, MAX_FRAME_DELTA_MS)
-        : NOMINAL_FRAME_MS;
+      const elapsed = Math.min(
+        Math.max(timestamp - lastFrameTime, 0),
+        MAX_FRAME_DELTA_MS,
+      );
       lastFrameTime = timestamp;
 
-      // Exponential smoothing keeps the same follow response at 60, 120 and 144 Hz.
+      // Measure real frame intervals from the first frame for consistent 60–144 Hz response.
       const follow = 1 - Math.exp(-elapsed / FOLLOW_TIME_CONSTANT_MS);
       const dx = targetX - currentX;
       const dy = targetY - currentY;
@@ -147,7 +147,7 @@ export default function LaserCursor() {
       }
 
       if (!animationFrame) {
-        lastFrameTime = 0;
+        lastFrameTime = performance.now();
         animationFrame = window.requestAnimationFrame(animatePosition);
       }
     };

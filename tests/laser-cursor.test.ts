@@ -6,9 +6,9 @@ const component = readFileSync("app/components/laser-cursor.tsx", "utf8");
 const stylesheet = readFileSync("app/components/laser-cursor.css", "utf8");
 
 test("laser cursor follows with frame-time-based smoothing rather than a refresh-rate-dependent factor", () => {
-  assert.match(component, /FOLLOW_TIME_CONSTANT_MS\s*=\s*48/u);
+  assert.match(component, /FOLLOW_TIME_CONSTANT_MS\s*=\s*16/u);
   assert.match(component, /1\s*-\s*Math\.exp\(-elapsed\s*\/\s*FOLLOW_TIME_CONSTANT_MS\)/u);
-  assert.match(component, /MAX_FRAME_DELTA_MS\s*=\s*34/u);
+  assert.match(component, /MAX_FRAME_DELTA_MS\s*=\s*32/u);
   assert.match(component, /requestAnimationFrame\(animatePosition\)/u);
   assert.doesNotMatch(component, /currentX\s*\+=\s*dx\s*\*\s*0\.28/u);
 });
@@ -45,14 +45,14 @@ test("laser cursor uses transform and composited scale feedback without permanen
   assert.match(stylesheet, /will-change: transform/u);
   assert.match(stylesheet, /\.laser-cursor\[data-state="hover"\] \.laser-cursor__visual/u);
   assert.match(stylesheet, /\.laser-cursor\[data-pressed="true"\] \.laser-cursor__visual/u);
-  assert.match(stylesheet, /scale: 1\.18/u);
-  assert.match(stylesheet, /scale: 0\.76/u);
+  assert.match(stylesheet, /scale: 1\.08/u);
+  assert.match(stylesheet, /scale: 0\.84/u);
   assert.doesNotMatch(stylesheet, /animation:\s*laser-cursor-pulse/u);
   assert.doesNotMatch(stylesheet, /@keyframes\s+laser-cursor-pulse/u);
 });
 
 test("Raf smoothing reaches the same position after equal elapsed time at 60, 120 and 144 Hz", () => {
-  const timeConstant = 48;
+  const timeConstant = 16;
   const elapsedTotal = 100;
   const frameIntervals = [1000 / 60, 1000 / 120, 1000 / 144];
   const remainingOffsets = frameIntervals.map((frameInterval) => {
@@ -91,6 +91,44 @@ test("laser cursor keeps its coordinate anchor separate from hover and press sca
   assert.doesNotMatch(outerRule, /\bscale\s*:/u);
   assert.doesNotMatch(outerRule, /\brotate\s*:/u);
   assert.match(stylesheet, /\.laser-cursor__visual \{[\s\S]*?transform-origin: center/u);
-  assert.match(stylesheet, /\.laser-cursor\[data-state="hover"\] \.laser-cursor__visual[\s\S]*?scale: 1\.18/u);
-  assert.match(stylesheet, /\.laser-cursor\[data-pressed="true"\] \.laser-cursor__visual[\s\S]*?scale: 0\.76/u);
+  assert.match(stylesheet, /\.laser-cursor\[data-state="hover"\] \.laser-cursor__visual[\s\S]*?scale: 1\.08/u);
+  assert.match(stylesheet, /\.laser-cursor\[data-pressed="true"\] \.laser-cursor__visual[\s\S]*?scale: 0\.84/u);
+});
+
+
+test("laser cursor uses a shorter, frame-rate-independent follow response", () => {
+  const timeConstant = 16;
+  const remainingAfter50ms = Math.exp(-50 / timeConstant);
+  const previousResponse = Math.exp(-50 / 48);
+  assert.ok(remainingAfter50ms < previousResponse * 0.4);
+  assert.ok(remainingAfter50ms < 0.045);
+  assert.match(component, /lastFrameTime = performance\.now\(\)/u);
+  assert.match(component, /Math\.max\(timestamp - lastFrameTime, 0\)/u);
+
+  const elapsedTotal = 100;
+  const frameIntervals = [1000 / 60, 1000 / 120, 1000 / 144];
+  const remainingOffsets = frameIntervals.map((frameInterval) => {
+    let elapsed = 0;
+    let remaining = 1;
+    while (elapsed < elapsedTotal) {
+      const delta = Math.min(frameInterval, elapsedTotal - elapsed, 32);
+      remaining *= Math.exp(-delta / timeConstant);
+      elapsed += delta;
+    }
+    return remaining;
+  });
+  for (const remaining of remainingOffsets) {
+    assert.ok(Math.abs(remaining - remainingOffsets[0]) < 1e-12);
+  }
+});
+
+test("laser cursor keeps a restrained single-ring graphic with subtle hover and press feedback", () => {
+  assert.match(stylesheet, /width:\s*24px/u);
+  assert.match(stylesheet, /height:\s*24px/u);
+  assert.match(stylesheet, /\.laser-cursor__visual::before/u);
+  assert.doesNotMatch(stylesheet, /\.laser-cursor__visual::after/u);
+  assert.doesNotMatch(stylesheet, /radial-gradient/u);
+  assert.match(stylesheet, /scale:\s*1\.08/u);
+  assert.match(stylesheet, /scale:\s*0\.84/u);
+  assert.match(stylesheet, /transition:[\s\S]*?scale 105ms/u);
 });

@@ -1,4 +1,4 @@
-/* Laser cursor — position and visual feedback are deliberately isolated. */
+/* Minimal laser cursor: a precise anchor with one clean ring and centre point. */
 @media (hover: hover) and (pointer: fine) {
   html.laser-cursor-enabled,
   html.laser-cursor-enabled * {
@@ -14,63 +14,48 @@
     cursor: text !important;
   }
 
-  /* This outer element owns coordinates only. Never scale or rotate it. */
+  /* The outer element only tracks pointer coordinates. */
   .laser-cursor {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 10000;
     display: block;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     opacity: 0;
     pointer-events: none;
     transform: translate(-50%, -50%);
     transform-origin: center;
     will-change: transform;
-    transition: opacity 100ms ease;
+    transition: opacity 90ms ease;
   }
 
-  /* All decorative changes happen on this centred child, not the anchor. */
+  /* Keep the graphic deliberately light: one ring, one centre point. */
   .laser-cursor__visual {
     position: absolute;
     inset: 0;
     display: block;
-    border: 1px solid rgb(182 255 101 / 48%);
+    border: 1px solid rgb(182 255 101 / 62%);
     border-radius: 50%;
-    background: radial-gradient(circle, rgb(182 255 101 / 8%) 0%, rgb(182 255 101 / 3%) 52%, transparent 76%);
-    box-shadow: 0 0 10px rgb(182 255 101 / 22%), inset 0 0 6px rgb(182 255 101 / 8%);
+    box-shadow: 0 0 8px rgb(182 255 101 / 18%);
     scale: 1;
     transform-origin: center;
     transition:
-      scale 125ms cubic-bezier(0.2, 0.75, 0.25, 1),
-      border-color 125ms ease;
+      scale 105ms cubic-bezier(0.2, 0.75, 0.25, 1),
+      border-color 105ms ease,
+      box-shadow 105ms ease;
   }
 
   .laser-cursor__visual::before {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: #e8ffd2;
-    box-shadow:
-      0 0 4px 1px #e8ffd2,
-      0 0 9px 3px rgb(182 255 101 / 88%),
-      0 0 15px 4px rgb(182 255 101 / 34%);
-    content: "";
-    transform: translate(-50%, -50%);
-  }
-
-  .laser-cursor__visual::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: #fff;
+    box-shadow: 0 0 7px 2px rgb(182 255 101 / 68%);
     content: "";
     transform: translate(-50%, -50%);
   }
@@ -80,13 +65,15 @@
   }
 
   .laser-cursor[data-state="hover"] .laser-cursor__visual {
-    border-color: rgb(209 255 164 / 86%);
-    scale: 1.18;
+    border-color: rgb(224 255 195 / 94%);
+    box-shadow: 0 0 11px rgb(182 255 101 / 32%);
+    scale: 1.08;
   }
 
   .laser-cursor[data-pressed="true"] .laser-cursor__visual {
-    border-color: rgb(232 255 210 / 96%);
-    scale: 0.76;
+    border-color: #e8ffd2;
+    box-shadow: 0 0 12px rgb(182 255 101 / 42%);
+    scale: 0.84;
   }
 
   .laser-cursor[data-reduced-motion="true"] .laser-cursor__visual {
