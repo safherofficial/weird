@@ -52,3 +52,11 @@
   padding-block: 7px;
   line-height: 12px;
 }
+
+.department-case-atlas__division > button,
+.department-case-atlas__division > a {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding-block: 6px;
+}

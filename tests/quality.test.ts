@@ -1624,8 +1624,11 @@ test("U25.7 Case Atlas retains every daily appearance and links the complete 90-
 test("U25.7 Case Atlas renders an accessible expandable history for each thematic thread", () => {
   const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
   const atlasEngine = readFileSync("app/daily-office/case-atlas.ts", "utf8");
-  assert.ok(atlasClient.includes("<details className=\"department-case-atlas__timeline\""));
-  assert.ok(atlasClient.includes("<summary>"));
+  assert.ok(atlasClient.includes('className="department-case-atlas__timeline"'));
+  assert.ok(atlasClient.includes("function AtlasDisclosure"));
+  assert.ok(atlasClient.includes("onToggle={(event) => setIsOpen(event.currentTarget.open)}"));
+  assert.ok(atlasClient.includes("{isOpen ? renderContent() : null}"));
+  assert.ok(atlasClient.includes("<summary>{summary}</summary>"));
   assert.ok(atlasClient.includes("entry.occurrences.map"));
   assert.ok(atlasClient.includes('dateTime={occurrence.issueDate}'));
   assert.ok(atlasClient.includes('href={occurrence.href}'));
@@ -2054,7 +2057,9 @@ test("U25.13 Case Atlas presents an accessible per-theme routing breakdown witho
 
   assert.ok(atlasClient.includes('className="department-case-atlas__routing-breakdown"'));
   assert.ok(atlasClient.includes("OPEN THEME ROUTING"));
-  assert.ok(atlasClient.includes("division.routingComparison.themeRouting.map"));
+  assert.ok(atlasClient.includes("division.routingComparison!.themeRouting.map"));
+  assert.ok(atlasClient.includes('className="department-case-atlas__routing-evidence"'));
+  assert.ok(atlasClient.includes('className="department-case-atlas__routing-breakdown"'));
   assert.ok(atlasClient.includes("theme.currentWindowCount"));
   assert.ok(atlasClient.includes("theme.previousWindowCount"));
   assert.ok(atlasClient.includes("getDepartmentCaseThemeAnchor(theme.theme)"));
@@ -2172,7 +2177,7 @@ test("U25 audit correction marks a viewing division clearly when it is outside t
 
 test("Case Atlas labels thread chronology as the selected date window rather than implying all 240 source days are open", () => {
   const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
-  assert.ok(atlasClient.includes("OPEN SELECTED-WINDOW HISTORY / {entry.occurrences.length} MATCHING FILES"));
+  assert.ok(atlasClient.includes('summary={"OPEN SELECTED-WINDOW HISTORY / " + entry.occurrences.length + " MATCHING FILES"}'));
   assert.doesNotMatch(atlasClient, /OPEN FULL THREAD HISTORY/);
   assert.ok(atlasClient.includes("{windowDays} UTC-DAY WINDOW"));
   assert.ok(atlasClient.includes("{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES"));
@@ -2755,4 +2760,19 @@ test("site-wide header keeps home-directory shortcuts valid off-home and does no
   assert.ok(privacy.includes("<DepartmentHeader statusMessage="));
   assert.ok(terms.includes("<DepartmentHeader statusMessage="));
   assert.doesNotMatch(header, /activeSection = "home"/);
+});
+
+test("R3 Case Atlas leaves deep evidence unmounted until its disclosure is opened", () => {
+  const atlasClient = readFileSync("app/daily-office/department-case-atlas-client.tsx", "utf8");
+  const accessibilityStyles = readFileSync("app/accessibility-refinements.css", "utf8");
+
+  assert.ok(atlasClient.includes("function AtlasDisclosure"));
+  assert.ok(atlasClient.includes("onToggle={(event) => setIsOpen(event.currentTarget.open)}"));
+  assert.ok(atlasClient.includes("{isOpen ? renderContent() : null}"));
+  assert.ok(atlasClient.includes('className="department-case-atlas__routing-breakdown"'));
+  assert.ok(atlasClient.includes('className="department-case-atlas__routing-evidence"'));
+  assert.ok(atlasClient.includes('className="department-case-atlas__interval-ledger"'));
+  assert.ok(atlasClient.includes('className="department-case-atlas__timeline"'));
+  assert.ok(accessibilityStyles.includes(".department-case-atlas__division > button"));
+  assert.ok(accessibilityStyles.includes("min-height: 24px"));
 });

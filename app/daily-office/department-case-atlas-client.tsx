@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { selectDepartmentCaseAtlasWindow, type DepartmentCaseAtlasData } from "./case-atlas";
 import type { DepartmentSection } from "../divisions";
 import { getDepartmentCaseThemeAnchor } from "./case-theme-anchor";
@@ -9,6 +9,23 @@ import { getDepartmentCaseThemeAnchor } from "./case-theme-anchor";
 type DepartmentCaseAtlasClientProps = {
   atlas: DepartmentCaseAtlasData;
 };
+
+type AtlasDisclosureProps = {
+  className: string;
+  summary: ReactNode;
+  renderContent: () => ReactNode;
+};
+
+function AtlasDisclosure({ className, summary, renderContent }: AtlasDisclosureProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <details className={className} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
+      <summary>{summary}</summary>
+      {isOpen ? renderContent() : null}
+    </details>
+  );
+}
 
 const ATLAS_WINDOW_OPTIONS = [14, 30, 60, 90, 120] as const;
 type AtlasWindowDays = (typeof ATLAS_WINDOW_OPTIONS)[number];
@@ -81,53 +98,63 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                   <p>ACTIVE THEMES / {division.routingComparison.currentActiveThemeCount} NOW · {division.routingComparison.previousActiveThemeCount} BEFORE</p>
                   <small>ASSIGNMENTS, NOT UNIQUE FILES / EACH DAILY CASE ROUTES TO THREE OFFICES.</small>
                 </div>
-                <details className="department-case-atlas__routing-breakdown">
-                  <summary>OPEN THEME ROUTING / {division.routingComparison.themeRouting.length} CONNECTED THEMES</summary>
-                  <ol>
-                    {division.routingComparison.themeRouting.map((theme) => (
-                      <li key={theme.theme}>
-                        <Link href={"/daily-office/atlas#case-thread-" + getDepartmentCaseThemeAnchor(theme.theme)}>{theme.theme}</Link>
-                        <span>{theme.currentWindowCount} NOW / {theme.previousWindowCount} BEFORE</span>
-                        <strong className={"is-" + theme.direction}>
-                          {theme.occurrenceDelta > 0 ? "+" : ""}{theme.occurrenceDelta}
-                        </strong>
-                        <details className="department-case-atlas__routing-evidence">
-                          <summary>VIEW FILE EVIDENCE / {theme.currentOccurrences.length} CURRENT · {theme.previousOccurrences.length} PREVIOUS</summary>
-                          <div>
-                            <section>
-                              <span>CURRENT WINDOW / {selectedAtlas.comparisonWindow?.currentStartDate} → {selectedAtlas.comparisonWindow?.currentEndDate}</span>
-                              {theme.currentOccurrences.length > 0 ? (
-                                <ol>
-                                  {theme.currentOccurrences.map((occurrence) => (
-                                    <li key={occurrence.issueDate}>
-                                      <time dateTime={occurrence.issueDate}>{occurrence.issueDate} UTC</time>
-                                      <Link href={occurrence.href}>{occurrence.reference} / {occurrence.headline} ↗</Link>
-                                    </li>
-                                  ))}
-                                </ol>
-                              ) : <p>NO FICTIONAL FILES IN THIS WINDOW.</p>}
-                            </section>
-                            <section>
-                              <span>PREVIOUS WINDOW / {selectedAtlas.comparisonWindow?.previousStartDate} → {selectedAtlas.comparisonWindow?.previousEndDate}</span>
-                              {theme.previousOccurrences.length > 0 ? (
-                                <ol>
-                                  {theme.previousOccurrences.map((occurrence) => (
-                                    <li key={occurrence.issueDate}>
-                                      <time dateTime={occurrence.issueDate}>{occurrence.issueDate} UTC</time>
-                                      <Link href={occurrence.href}>{occurrence.reference} / {occurrence.headline} ↗</Link>
-                                    </li>
-                                  ))}
-                                </ol>
-                              ) : <p>NO FICTIONAL FILES IN THIS WINDOW.</p>}
-                            </section>
-                          </div>
-                          <p>DATE-SEEDED FICTIONAL DAILY FILES ROUTED TO THIS OFFICE BECAUSE THE THEME IS ASSIGNED TO IT. THIS IS INTERNAL CASE-ROUTING EVIDENCE, NOT A LIVE MARKET RECORD.</p>
-                        </details>
-                      </li>
-                    ))}
-                  </ol>
-                  <p>PER-THEME ROUTES TO THIS OFFICE / CURRENT AND PREVIOUS MATCHED UTC WINDOWS. COUNTS ARE FICTIONAL ASSIGNMENTS, NOT MARKET EVENTS.</p>
-                </details>
+                <AtlasDisclosure
+                  className="department-case-atlas__routing-breakdown"
+                  summary={"OPEN THEME ROUTING / " + division.routingComparison.themeRouting.length + " CONNECTED THEMES"}
+                  renderContent={() => (
+                    <>
+                      <ol>
+                        {division.routingComparison!.themeRouting.map((theme) => (
+                          <li key={theme.theme}>
+                            <Link href={"/daily-office/atlas#case-thread-" + getDepartmentCaseThemeAnchor(theme.theme)}>{theme.theme}</Link>
+                            <span>{theme.currentWindowCount} NOW / {theme.previousWindowCount} BEFORE</span>
+                            <strong className={"is-" + theme.direction}>
+                              {theme.occurrenceDelta > 0 ? "+" : ""}{theme.occurrenceDelta}
+                            </strong>
+                            <AtlasDisclosure
+                              className="department-case-atlas__routing-evidence"
+                              summary={"VIEW FILE EVIDENCE / " + theme.currentOccurrences.length + " CURRENT · " + theme.previousOccurrences.length + " PREVIOUS"}
+                              renderContent={() => (
+                                <>
+                                  <div>
+                                    <section>
+                                      <span>CURRENT WINDOW / {selectedAtlas.comparisonWindow?.currentStartDate} → {selectedAtlas.comparisonWindow?.currentEndDate}</span>
+                                      {theme.currentOccurrences.length > 0 ? (
+                                        <ol>
+                                          {theme.currentOccurrences.map((occurrence) => (
+                                            <li key={occurrence.issueDate}>
+                                              <time dateTime={occurrence.issueDate}>{occurrence.issueDate} UTC</time>
+                                              <Link href={occurrence.href}>{occurrence.reference} / {occurrence.headline} ↗</Link>
+                                            </li>
+                                          ))}
+                                        </ol>
+                                      ) : <p>NO FICTIONAL FILES IN THIS WINDOW.</p>}
+                                    </section>
+                                    <section>
+                                      <span>PREVIOUS WINDOW / {selectedAtlas.comparisonWindow?.previousStartDate} → {selectedAtlas.comparisonWindow?.previousEndDate}</span>
+                                      {theme.previousOccurrences.length > 0 ? (
+                                        <ol>
+                                          {theme.previousOccurrences.map((occurrence) => (
+                                            <li key={occurrence.issueDate}>
+                                              <time dateTime={occurrence.issueDate}>{occurrence.issueDate} UTC</time>
+                                              <Link href={occurrence.href}>{occurrence.reference} / {occurrence.headline} ↗</Link>
+                                            </li>
+                                          ))}
+                                        </ol>
+                                      ) : <p>NO FICTIONAL FILES IN THIS WINDOW.</p>}
+                                    </section>
+                                  </div>
+                                  <p>DATE-SEEDED FICTIONAL DAILY FILES ROUTED TO THIS OFFICE BECAUSE THE THEME IS ASSIGNED TO IT. THIS IS INTERNAL CASE-ROUTING EVIDENCE, NOT A LIVE MARKET RECORD.</p>
+                                </>
+                              )}
+                            />
+                          </li>
+                        ))}
+                      </ol>
+                      <p>PER-THEME ROUTES TO THIS OFFICE / CURRENT AND PREVIOUS MATCHED UTC WINDOWS. COUNTS ARE FICTIONAL ASSIGNMENTS, NOT MARKET EVENTS.</p>
+                    </>
+                  )}
+                />
                 </>
               ) : null}
               <button
@@ -357,32 +384,35 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                 ) : null}
 
                 {entry.recurrence.intervals.length > 0 ? (
-                  <details className="department-case-atlas__interval-ledger">
-                    <summary>OPEN INTERVAL EVIDENCE / {entry.recurrence.intervals.length} ADJACENT PAIRS</summary>
-                    <ol>
-                      {entry.recurrence.intervals.map((interval, intervalIndex) => {
-                        const newerOccurrence = entry.occurrences[intervalIndex];
-                        const olderOccurrence = entry.occurrences[intervalIndex + 1];
-                        return (
-                          <li key={interval.newerIssueDate + "-" + interval.olderIssueDate}>
-                            <strong>{String(intervalIndex + 1).padStart(2, "0")} / {interval.days} UTC DAYS</strong>
-                            <div>
-                              <span>NEWER DAILY FILE</span>
-                              <Link href={newerOccurrence.href}>
-                                {newerOccurrence.issueDate} / {newerOccurrence.reference} ↗
-                              </Link>
-                            </div>
-                            <div>
-                              <span>PREVIOUS DAILY FILE</span>
-                              <Link href={olderOccurrence.href}>
-                                {olderOccurrence.issueDate} / {olderOccurrence.reference} ↗
-                              </Link>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  </details>
+                  <AtlasDisclosure
+                    className="department-case-atlas__interval-ledger"
+                    summary={"OPEN INTERVAL EVIDENCE / " + entry.recurrence.intervals.length + " ADJACENT PAIRS"}
+                    renderContent={() => (
+                      <ol>
+                        {entry.recurrence.intervals.map((interval, intervalIndex) => {
+                          const newerOccurrence = entry.occurrences[intervalIndex];
+                          const olderOccurrence = entry.occurrences[intervalIndex + 1];
+                          return (
+                            <li key={interval.newerIssueDate + "-" + interval.olderIssueDate}>
+                              <strong>{String(intervalIndex + 1).padStart(2, "0")} / {interval.days} UTC DAYS</strong>
+                              <div>
+                                <span>NEWER DAILY FILE</span>
+                                <Link href={newerOccurrence.href}>
+                                  {newerOccurrence.issueDate} / {newerOccurrence.reference} ↗
+                                </Link>
+                              </div>
+                              <div>
+                                <span>PREVIOUS DAILY FILE</span>
+                                <Link href={olderOccurrence.href}>
+                                  {olderOccurrence.issueDate} / {olderOccurrence.reference} ↗
+                                </Link>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ol>
+                    )}
+                  />
                 ) : (
                   <p className="department-case-atlas__interval-empty">
                     NO INTERVAL EVIDENCE / AT LEAST TWO APPEARANCES ARE REQUIRED TO MEASURE A GAP.
@@ -390,20 +420,23 @@ export default function DepartmentCaseAtlasClient({ atlas }: DepartmentCaseAtlas
                 )}
 
                 {entry.occurrences.length > 0 ? (
-                  <details className="department-case-atlas__timeline">
-                    <summary>OPEN SELECTED-WINDOW HISTORY / {entry.occurrences.length} MATCHING FILES</summary>
-                    <ol>
-                      {entry.occurrences.map((occurrence, occurrenceIndex) => (
-                        <li key={occurrence.issueDate}>
-                          <span>{String(occurrenceIndex + 1).padStart(2, "0")}</span>
-                          <time dateTime={occurrence.issueDate}>{occurrence.issueDate} / UTC</time>
-                          <Link href={occurrence.href}>
-                            {occurrence.reference} / {occurrence.headline} ↗
-                          </Link>
-                        </li>
-                      ))}
-                    </ol>
-                  </details>
+                  <AtlasDisclosure
+                    className="department-case-atlas__timeline"
+                    summary={"OPEN SELECTED-WINDOW HISTORY / " + entry.occurrences.length + " MATCHING FILES"}
+                    renderContent={() => (
+                      <ol>
+                        {entry.occurrences.map((occurrence, occurrenceIndex) => (
+                          <li key={occurrence.issueDate}>
+                            <span>{String(occurrenceIndex + 1).padStart(2, "0")}</span>
+                            <time dateTime={occurrence.issueDate}>{occurrence.issueDate} / UTC</time>
+                            <Link href={occurrence.href}>
+                              {occurrence.reference} / {occurrence.headline} ↗
+                            </Link>
+                          </li>
+                        ))}
+                      </ol>
+                    )}
+                  />
                 ) : (
                   <p className="department-case-atlas__timeline-empty">
                     NO HISTORICAL APPEARANCES TO OPEN / REFERENCE THREAD REMAINS IN THE REGISTER.
