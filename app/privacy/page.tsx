@@ -20,7 +20,7 @@ const sections = [
   {
     title: "02 / ACCOUNTS AND SUBMISSIONS",
     paragraphs: [
-      "The site does not ask visitors to register an account, provide an email address, connect a wallet, upload documents or submit a real project for review. Its interactive experiences run from choices selected in the visitor's browser.",
+      "The site does not ask visitors to register an account, provide an email address, connect a wallet, upload documents or submit a real project for review. Most interactive answers and result generation are handled in the visitor's browser; the shared Department Case Thread makes a separate same-origin request described below.",
       "Do not enter personal, confidential or commercially sensitive information as a project designation. The CTO Emergency Office roadmap and Exit Liquidity Department token dossier place the sanitized project label in a shareable URL.",
     ],
   },
@@ -48,8 +48,8 @@ const sections = [
   {
     title: "06 / HOSTING AND THIRD-PARTY REQUESTS",
     paragraphs: [
-      "The site is hosted on Vercel. As with other hosted websites, the hosting provider may process technical request information such as IP address, requested path, browser information and operational or security logs to deliver and protect the service. Log handling and retention are governed by the provider's own terms and privacy documentation; this application does not control those systems.",
-      "The current stylesheet imports fonts from Google Fonts. A visitor's browser may contact Google Fonts to retrieve the font stylesheet and font files. This is a third-party network request made to render the site's typography.",
+      "The site is hosted on Vercel. As with other hosted websites, the hosting provider may process technical request information such as IP address, requested path, browser information and operational or security logs to deliver and protect the service. Log handling and retention are governed by the provider's own terms and privacy documentation; this application does not control those systems. On Department pages, the browser also makes a same-origin GET request to `/api/department-case` with the current Department identifier. The endpoint uses that identifier and the current UTC date to return a fictional three-office case narrative. It does not receive the visitor's interactive answers or free-text submissions, and it does not write to an application database or create a visitor profile. The request itself remains ordinary hosted website traffic and may appear in the provider's technical logs described above.",
+      "The page layout links to Google Fonts. A visitor's browser may contact Google Fonts to retrieve the font stylesheet and font files. This is a third-party network request made to render the site's typography.",
       "When a visitor chooses a 'Post to X' or 'Share on X' action, the browser opens an X intent URL containing the prepared post text and case link. The visitor decides whether to submit the post. The site does not embed an X tracking pixel.",
     ],
   },
@@ -63,7 +63,7 @@ const sections = [
   {
     title: "08 / RETENTION AND CONTROL",
     paragraphs: [
-      "The optional Audit archive remains in the visitor's browser until an individual case is deleted or the browser's site data is cleared. The Department Passport remains there until it is disabled and deleted from its page or the browser's site data is cleared. Public case information is encoded in the URL rather than stored in an application account. Copies of a URL shared elsewhere cannot be recalled by this site.",
+      "The optional Audit archive remains in the visitor's browser until an individual case is deleted or the browser's site data is cleared. The Department Passport remains there until it is deleted from its page or the browser's site data is cleared. Public case information is encoded in the URL rather than stored in an application account. Copies of a URL shared elsewhere cannot be recalled by this site.",
       "Operational hosting logs, font requests and external share services are controlled by their respective providers. Their retention periods cannot be configured or verified by this application.",
     ],
   },
@@ -71,7 +71,7 @@ const sections = [
     title: "09 / OPERATOR CONTACT",
     paragraphs: [
       "The legal identity and a dedicated contact channel for the site operator have not been supplied in this release. They must be added by the operator before this notice is treated as a complete statutory privacy notice or used as legal assurance.",
-      "This page is dated 21 November 2026 and should be reviewed whenever application behaviour, providers or data flows change.",
+      "This page was last reviewed on 22 November 2026. It should be reviewed whenever application behaviour, providers or data flows change.",
     ],
   },
 ];
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
     <main className="audit-page legal-page" id="main-content">
       <DepartmentHeader statusMessage="PRIVACY / OPERATIONAL TRANSPARENCY" ctaHref="/" ctaLabel="BACK TO HQ" />
       <article className="legal-document shell" id="content-start" tabIndex={-1}>
-        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / POLICY FILE</span><span>LAST REVIEWED / 21 NOV 2026</span></div>
+        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / POLICY FILE</span><span>LAST REVIEWED / 22 NOV 2026</span></div>
         <p className="eyebrow">DEPARTMENT OF DATA MINIMIZATION</p>
         <h1>PRIVACY<br /><span>NOTICE.</span></h1>
         <p className="legal-document__lead">We built a department for questionable research. We do not need your identity to do it.</p>

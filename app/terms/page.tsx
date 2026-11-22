@@ -62,7 +62,7 @@ const sections = [
     title: "08 / OPERATOR DETAILS",
     paragraphs: [
       "The legal identity and contact details for the site operator have not been supplied in this release. They must be added by the operator before these terms are treated as a complete legal agreement.",
-      "Last reviewed: 21 November 2026.",
+      "Last reviewed: 22 November 2026.",
     ],
   },
 ];
@@ -72,7 +72,7 @@ export default function TermsPage() {
     <main className="audit-page legal-page" id="main-content">
       <DepartmentHeader statusMessage="TERMS / ENTERTAINMENT ONLY" ctaHref="/" ctaLabel="BACK TO HQ" />
       <article className="legal-document shell" id="content-start" tabIndex={-1}>
-        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / TERMS FILE</span><span>LAST REVIEWED / 21 NOV 2026</span></div>
+        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / TERMS FILE</span><span>LAST REVIEWED / 22 NOV 2026</span></div>
         <p className="eyebrow">THE DYOR DEPARTMENT / TERMS OF ENGAGEMENT</p>
         <h1>TERMS &<br /><span>DISCLAIMER.</span></h1>
         <p className="legal-document__lead">Read the fine print. It is shorter than the token dossier and considerably more useful.</p>

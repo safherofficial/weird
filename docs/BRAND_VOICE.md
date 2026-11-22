@@ -28,6 +28,13 @@ Each division is an editorial identity wrapped around an existing experience. Th
 
 The ten names do not create ten new products. They organize the existing ten experiences while their original routes and interactive logic remain intact. Each page, result, social card and cross-link should reinforce this Solana / CT trenches world rather than reverting to generic Web3 startup language.
 
+## Daily editorial system
+
+- **The Trenches Desk** is the current UTC-date-seeded fictional briefing. Its reports, signals, wallet theories and incident language are editorial constructions, not research into live markets or real accounts.
+- **The Institutional Memory Ledger** presents fourteen consecutive fictional UTC dispatches from the same editorial system. It is a continuity device, not a record of actual events.
+- **The Department Case Atlas** organizes eighteen fictional themes across the ten divisions and compares generated UTC-date windows. Recurrence counts, routing totals and gaps describe only the synthetic briefing history; they must never be written as market or community statistics.
+- **The shared Department Case Thread** routes one generated fictional case through three offices using the current division and UTC date. Its handoffs and Archive / Museum references are narrative continuity, not evidence gathered from real projects, people or wallets.
+
 ## What the Department is — and is not
 - It is a self-aware insider parody of degen behaviour, FOMO, overconfidence, cope and bagholding.
 - It is not a market terminal, token tracker, trading tool, alpha group, launchpad, wallet analyser or financial-advice product.
