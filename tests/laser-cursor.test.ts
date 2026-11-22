@@ -43,6 +43,8 @@ test("laser cursor remains desktop-only, restores text entry and respects reduce
 
 test("laser cursor uses transform and composited scale feedback without permanent pulse animation", () => {
   assert.match(stylesheet, /will-change: transform/u);
+  assert.match(stylesheet, /\.laser-cursor\[data-state="hover"\] \.laser-cursor__visual/u);
+  assert.match(stylesheet, /\.laser-cursor\[data-pressed="true"\] \.laser-cursor__visual/u);
   assert.match(stylesheet, /scale: 1\.18/u);
   assert.match(stylesheet, /scale: 0\.76/u);
   assert.doesNotMatch(stylesheet, /animation:\s*laser-cursor-pulse/u);
@@ -78,4 +80,17 @@ test("laser cursor snaps to authoritative pointer coordinates before press and r
   assert.match(component, /if \(syncToPointer\(event\) && cursor\.dataset\.pressed !== "true"\)/u);
   assert.match(component, /const handlePointerUp = \(event: PointerEvent\) => \{\s*syncToPointer\(event\);/u);
   assert.match(component, /updateHitTarget\(target\)/u);
+});
+
+
+test("laser cursor keeps its coordinate anchor separate from hover and press scaling", () => {
+  assert.match(component, /<span className="laser-cursor__visual" \/>/u);
+  const outerRule = stylesheet.match(/\.laser-cursor \{([\s\S]*?)\n  \}/u)?.[1] ?? "";
+  assert.ok(outerRule.length > 0, "outer cursor positioning rule exists");
+  assert.match(outerRule, /transform: translate\(-50%, -50%\)/u);
+  assert.doesNotMatch(outerRule, /\bscale\s*:/u);
+  assert.doesNotMatch(outerRule, /\brotate\s*:/u);
+  assert.match(stylesheet, /\.laser-cursor__visual \{[\s\S]*?transform-origin: center/u);
+  assert.match(stylesheet, /\.laser-cursor\[data-state="hover"\] \.laser-cursor__visual[\s\S]*?scale: 1\.18/u);
+  assert.match(stylesheet, /\.laser-cursor\[data-pressed="true"\] \.laser-cursor__visual[\s\S]*?scale: 0\.76/u);
 });

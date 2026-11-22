@@ -265,6 +265,8 @@ export default function LaserCursor() {
       aria-hidden="true"
       data-visible="false"
       data-state="idle"
-    />
+    >
+      <span className="laser-cursor__visual" />
+    </span>
   );
 }
