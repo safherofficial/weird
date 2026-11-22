@@ -4,11 +4,13 @@ import "./accessibility-refinements.css";
 import "./passport/achievements.css";
 import "./components/laser-cursor.css";
 import "./components/energy-scrollbar.css";
+import "./components/scroll-to-top.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
 import CircuitClickReveal from "./components/circuit-click-reveal";
 import LaserCursor from "./components/laser-cursor";
 import EnergyScrollbar from "./components/energy-scrollbar";
+import ScrollToTop from "./components/scroll-to-top";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -56,6 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <CircuitClickReveal />
         <LaserCursor />
         <EnergyScrollbar />
+        <ScrollToTop />
         <AchievementToastHost />
       </body>
     </html>

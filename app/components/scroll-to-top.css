@@ -1,0 +1,99 @@
+/* Global return-to-top control — mounted once by the root layout. */
+.scroll-to-top {
+  position: fixed;
+  right: 44px;
+  bottom: 24px;
+  z-index: 9998;
+  display: inline-flex;
+  min-width: 126px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid rgb(182 255 101 / 58%);
+  border-radius: 2px;
+  background: rgb(9 11 9 / 92%);
+  box-shadow: 0 0 18px rgb(182 255 101 / 10%), inset 0 0 14px rgb(182 255 101 / 4%);
+  color: var(--green, #b6ff65);
+  cursor: pointer;
+  font: 9px/1 var(--mono, monospace);
+  letter-spacing: .09em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 9px, 0);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    visibility 0s linear 180ms;
+  visibility: hidden;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.scroll-to-top[data-visible="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0s;
+  visibility: visible;
+}
+
+.scroll-to-top:hover {
+  border-color: var(--green, #b6ff65);
+  box-shadow:
+    0 0 7px rgb(182 255 101 / 24%),
+    0 0 22px rgb(182 255 101 / 18%),
+    inset 0 0 14px rgb(182 255 101 / 8%);
+}
+
+.scroll-to-top:focus-visible {
+  outline: 2px solid var(--green, #b6ff65);
+  outline-offset: 4px;
+}
+
+.scroll-to-top__arrow {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  font: 18px/1 Arial, sans-serif;
+  transition: transform 180ms ease;
+}
+
+.scroll-to-top:hover .scroll-to-top__arrow {
+  transform: translateY(-2px);
+}
+
+.scroll-to-top__label {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .scroll-to-top {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .scroll-to-top {
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    padding: 0;
+  }
+
+  .scroll-to-top__label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top,
+  .scroll-to-top__arrow {
+    transition: none !important;
+  }
+}
