@@ -150,3 +150,52 @@ export function buildClubCampaignArtworkZip(entries: ClubCampaignArtworkZipEntry
 export function buildClubCampaignArtworkPackFilename(campaign: ClubCampaignDrop): string {
   return "the-99-percent-club-" + campaign.weekKey.toLowerCase() + "-" + campaign.theme.id + "-artwork-pack.zip";
 }
+
+
+export type ClubCampaignArtworkPreflightFindings = {
+  campaignTitleClipped: boolean;
+  topTextClipped: boolean;
+  bottomTextClipped: boolean;
+  horizontalOverflow: boolean;
+  outsideSafeArea: boolean;
+  topTextEmpty: boolean;
+  bottomTextEmpty: boolean;
+  smallestHeadlineFontPx: number;
+};
+
+export type ClubCampaignArtworkPreflight = {
+  formatId: ClubCampaignArtworkFormatId;
+  label: string;
+  dimensions: string;
+  ready: boolean;
+  issues: string[];
+};
+
+/**
+ * Converts measurements collected from the actual canvas renderer into
+ * visible preflight results. A pack is safe to export only when all formats pass.
+ */
+export function buildClubCampaignArtworkPreflight(
+  formatId: ClubCampaignArtworkFormatId,
+  findings: ClubCampaignArtworkPreflightFindings,
+): ClubCampaignArtworkPreflight {
+  const format = getClubCampaignArtworkFormat(formatId);
+  const issues: string[] = [];
+  if (findings.campaignTitleClipped) issues.push("Campaign title exceeds its two-line layout.");
+  if (findings.topTextEmpty) issues.push("Top headline is empty.");
+  if (findings.bottomTextEmpty) issues.push("Bottom headline is empty.");
+  if (findings.topTextClipped) issues.push("Top headline is truncated.");
+  if (findings.bottomTextClipped) issues.push("Bottom headline is truncated.");
+  if (findings.horizontalOverflow) issues.push("Text exceeds its available horizontal area.");
+  if (findings.outsideSafeArea) issues.push("One or more elements exceed the safe canvas area.");
+  if (!Number.isFinite(findings.smallestHeadlineFontPx) || findings.smallestHeadlineFontPx < 38) {
+    issues.push("Headline type falls below the 38 px readability threshold.");
+  }
+  return {
+    formatId,
+    label: format.label,
+    dimensions: format.dimensions,
+    ready: issues.length === 0,
+    issues,
+  };
+}

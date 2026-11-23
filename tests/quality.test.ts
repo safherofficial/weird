@@ -22,6 +22,7 @@ import {
   buildClubCampaignArtworkCaption,
   buildClubCampaignArtworkFilename,
   buildClubCampaignArtworkPackFilename,
+  buildClubCampaignArtworkPreflight,
   buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   getClubCampaignArtworkFormat,
@@ -3219,5 +3220,68 @@ test("U37 Campaign Export Pack creates a valid local ZIP containing three named 
   assert.ok(component.includes("new Uint8Array(archiveBuffer).set(archive)"));
   assert.ok(component.includes("DOWNLOAD ALL 3 / ZIP"));
   assert.ok(component.includes("document.createElement(\"canvas\")"));
+  assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
+});
+
+
+test("U38 Campaign Export Preflight flags truncation, overflow, unsafe bounds and unreadable headline sizes", () => {
+  const format = "story";
+  const clean = buildClubCampaignArtworkPreflight(format, {
+    campaignTitleClipped: false,
+    topTextClipped: false,
+    bottomTextClipped: false,
+    horizontalOverflow: false,
+    outsideSafeArea: false,
+    topTextEmpty: false,
+    bottomTextEmpty: false,
+    smallestHeadlineFontPx: 39.6,
+  });
+  assert.equal(clean.ready, true);
+  assert.deepEqual(clean.issues, []);
+  assert.equal(clean.dimensions, "1080 × 1920");
+
+  const failed = buildClubCampaignArtworkPreflight(format, {
+    campaignTitleClipped: true,
+    topTextClipped: true,
+    bottomTextClipped: false,
+    horizontalOverflow: true,
+    outsideSafeArea: true,
+    topTextEmpty: false,
+    bottomTextEmpty: true,
+    smallestHeadlineFontPx: 31,
+  });
+  assert.equal(failed.ready, false);
+  assert.equal(failed.issues.length, 7);
+  assert.ok(failed.issues.some((issue) => issue.includes("Campaign title")));
+  assert.ok(failed.issues.some((issue) => issue.includes("Top headline is truncated")));
+  assert.ok(failed.issues.some((issue) => issue.includes("Bottom headline is empty")));
+  assert.ok(failed.issues.some((issue) => issue.includes("38 px")));
+  assert.equal(
+    buildClubCampaignArtworkPreflight("square", {
+      campaignTitleClipped: false,
+      topTextClipped: false,
+      bottomTextClipped: false,
+      horizontalOverflow: false,
+      outsideSafeArea: false,
+      topTextEmpty: false,
+      bottomTextEmpty: false,
+      smallestHeadlineFontPx: Number.NaN,
+    }).ready,
+    false,
+    "non-finite measurements must never pass preflight",
+  );
+
+  const component = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+  assert.ok(component.includes("buildClubCampaignArtworkPreflight(format.id"));
+  assert.ok(component.includes("preflightCanvasRefs"));
+  assert.ok(component.includes("ALL THREE FORMATS PASSED"));
+  assert.ok(component.includes("REVIEW REQUIRED BEFORE EXPORT"));
+  assert.ok(component.includes("disabled={busy || !packageReady}"));
+  assert.ok(component.includes("!selectedPreflight?.ready"));
+  assert.ok(component.includes("if (!packageReady)"));
+  assert.ok(component.includes("Text bounds, truncation and headline readability passed."));
+  assert.ok(css.includes(".club-meme-studio__preflight-grid"));
+  assert.ok(css.includes(".club-meme-studio__preflight-note"));
   assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
 });

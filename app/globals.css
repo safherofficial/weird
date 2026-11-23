@@ -15026,3 +15026,84 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (max-width:560px) {
   .club-meme-studio__formats { grid-template-columns:1fr; }
 }
+
+
+/* U38 — visible three-format render proof and export gating. */
+.club-meme-studio__preflight {
+  margin:0 0 22px;
+  padding:14px;
+  border:1px solid #344331;
+  background:rgb(10 16 11 / 82%);
+}
+.club-meme-studio__preflight-heading {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:12px;
+}
+.club-meme-studio__preflight-heading > span {
+  color:#84937d;
+  font:700 7px/1.5 var(--font-mono);
+  letter-spacing:.12em;
+}
+.club-meme-studio__preflight-heading > strong {
+  color:var(--accent);
+  font:800 8px/1.5 var(--font-mono);
+  letter-spacing:.06em;
+}
+.club-meme-studio__preflight-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.club-meme-studio__preflight-grid article {
+  display:grid;
+  align-content:start;
+  gap:8px;
+  min-width:0;
+  padding:10px;
+  border:1px solid #344331;
+  background:#080d09;
+}
+.club-meme-studio__preflight-grid article.is-ready { border-color:#526744; }
+.club-meme-studio__preflight-grid article.has-issues { border-color:#a65d46; }
+.club-meme-studio__preflight-grid article > header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.club-meme-studio__preflight-grid article > header strong {
+  color:#e3eadc;
+  font:800 8px/1.4 var(--sans);
+}
+.club-meme-studio__preflight-grid article > header span {
+  color:var(--accent);
+  font:700 7px/1.4 var(--font-mono);
+}
+.club-meme-studio__preflight-grid article.has-issues > header span { color:#ff9a7a; }
+.club-meme-studio__preflight-grid canvas {
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid #344331;
+  background:#090d0a;
+}
+.club-meme-studio__preflight-grid article > small {
+  color:#91a08a;
+  font-size:8px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+.club-meme-studio__preflight-note {
+  margin:12px 0 0;
+  color:#74836e;
+  font:6px/1.8 var(--font-mono);
+  letter-spacing:.04em;
+}
+@media (max-width:620px) {
+  .club-meme-studio__preflight-grid { grid-template-columns:1fr; }
+  .club-meme-studio__preflight-grid article canvas { max-height:250px; object-fit:contain; }
+}

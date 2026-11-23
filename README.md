@@ -128,3 +128,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U37 — 99% Club Campaign Export Pack: one action generates the active campaign's square feed, portrait feed and story PNGs in separate correctly named files, then bundles them into a single ZIP for download. The archive is assembled locally in the browser with a small ZIP32 STORE writer; no third-party dependency, server upload, database or tracking is added. Individual PNG downloads remain available.
+
+
+- U38 — 99% Club Campaign Export Preflight: the Meme Office now renders all three campaign formats into a visible proof grid before export. Canvas-measured checks flag truncated campaign/headline text, horizontal overflow, text outside the safe area, empty headlines and headline type below 38 px. Single-format downloads require that format to pass; the ZIP pack remains locked until all three pass and repeats the checks on the final render. No image is uploaded or persisted.

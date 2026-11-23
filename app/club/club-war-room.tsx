@@ -16,6 +16,8 @@ import {
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   getClubCampaignArtworkFormat,
   type ClubCampaignArtworkFormatId,
+  type ClubCampaignArtworkPreflight,
+  buildClubCampaignArtworkPreflight,
 } from "./club-campaign-artwork-engine";
 import { CLUB_SOCIAL_HASHTAGS } from "./club-social";
 
@@ -83,7 +85,7 @@ function drawMeme(
   campaign: ClubCampaignDrop | null,
   formatName: string,
   format: ReturnType<typeof getClubCampaignArtworkFormat>,
-) {
+): ClubCampaignArtworkPreflight {
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Canvas rendering is unavailable in this browser.");
 
@@ -140,8 +142,11 @@ function drawMeme(
   context.fillStyle = "#edf1e7";
   context.font = "800 " + 25 * scale + "px Arial, sans-serif";
   const campaignTitle = campaign?.theme.title ?? "THE WEEKLY CAMPAIGN";
-  const campaignLines = wrapCanvasText(context, campaignTitle, contentWidth * 0.86, 2);
-  campaignLines.forEach((line, index) => context.fillText(line, insetX + 7 * scale, y(0.198) + index * 32 * scale, contentWidth * 0.86));
+  const campaignTitleMaxWidth = contentWidth * 0.86;
+  const campaignLines = wrapCanvasText(context, campaignTitle, campaignTitleMaxWidth, 2);
+  let horizontalOverflow = campaignLines.some((line) => context.measureText(line).width > campaignTitleMaxWidth + 1);
+  const campaignTitleClipped = campaignLines.some((line) => line.endsWith("…"));
+  campaignLines.forEach((line, index) => context.fillText(line, insetX + 7 * scale, y(0.198) + index * 32 * scale, campaignTitleMaxWidth));
   context.strokeStyle = "#526744";
   context.lineWidth = 2 * scale;
   context.beginPath();
@@ -161,17 +166,30 @@ function drawMeme(
 
     const lineHeight = fontSize * 1.16;
     const firstY = centerY - ((lines.length - 1) * lineHeight) / 2;
+    const maxLineWidth = contentWidth * 0.92;
     context.font = "900 " + fontSize + "px Arial, sans-serif";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = accent ? "#b6ff65" : "#f1f3eb";
-    lines.forEach((line, index) => context.fillText(line, width / 2, firstY + index * lineHeight, contentWidth * 0.92));
+    const measuredWidths = lines.map((line) => context.measureText(line).width);
+    const lineOverflow = measuredWidths.some((lineWidth) => lineWidth > maxLineWidth + 1);
+    const top = firstY - fontSize * 0.6;
+    const bottom = firstY + (lines.length - 1) * lineHeight + fontSize * 0.6;
+    const minY = accent ? y(0.59) : y(0.285);
+    const maxY = accent ? y(0.84) : y(0.53);
+    lines.forEach((line, index) => context.fillText(line, width / 2, firstY + index * lineHeight, maxLineWidth));
+    return {
+      clipped: lines.some((line) => line.endsWith("…")),
+      horizontalOverflow: lineOverflow,
+      outsideSafeArea: top < minY || bottom > maxY,
+      fontSize,
+    };
   };
 
-  drawBlock(topText, y(0.405), false);
+  const topAudit = drawBlock(topText, y(0.405), false);
   context.fillStyle = "#526744";
   context.fillRect(width * 0.435, y(0.555), width * 0.13, 5 * scale);
-  drawBlock(bottomText, y(0.705), true);
+  const bottomAudit = drawBlock(bottomText, y(0.705), true);
 
   context.textAlign = "left";
   context.textBaseline = "alphabetic";
@@ -184,7 +202,21 @@ function drawMeme(
   context.textAlign = "center";
   context.fillStyle = "#74836d";
   context.font = "700 " + 13 * scale + "px monospace";
-  context.fillText("SATIRE / ALL CHAINS / " + CLUB_SOCIAL_HASHTAGS, width / 2, y(0.94), contentWidth * 0.9);
+  const footerText = "SATIRE / ALL CHAINS / " + CLUB_SOCIAL_HASHTAGS;
+  const footerMaxWidth = contentWidth * 0.9;
+  if (context.measureText(footerText).width > footerMaxWidth + 1) horizontalOverflow = true;
+  context.fillText(footerText, width / 2, y(0.94), footerMaxWidth);
+
+  return buildClubCampaignArtworkPreflight(format.id, {
+    campaignTitleClipped,
+    topTextClipped: topAudit.clipped,
+    bottomTextClipped: bottomAudit.clipped,
+    horizontalOverflow: horizontalOverflow || topAudit.horizontalOverflow || bottomAudit.horizontalOverflow,
+    outsideSafeArea: topAudit.outsideSafeArea || bottomAudit.outsideSafeArea,
+    topTextEmpty: topText.trim().length === 0,
+    bottomTextEmpty: bottomText.trim().length === 0,
+    smallestHeadlineFontPx: Math.min(topAudit.fontSize, bottomAudit.fontSize),
+  });
 }
 
 function canvasBlob(canvas: HTMLCanvasElement) {
@@ -200,6 +232,8 @@ export default function ClubWarRoom() {
   const initialTemplate = CLUB_MEME_TEMPLATES[0];
   const [campaign, setCampaign] = useState<ClubCampaignDrop | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const preflightCanvasRefs = useRef<Partial<Record<ClubCampaignArtworkFormatId, HTMLCanvasElement>>>({});
+  const [packagePreflight, setPackagePreflight] = useState<ClubCampaignArtworkPreflight[] | null>(null);
   const [selectedId, setSelectedId] = useState(initialTemplate.id);
   const [artworkFormatId, setArtworkFormatId] = useState<ClubCampaignArtworkFormatId>("square");
   const artworkFormat = getClubCampaignArtworkFormat(artworkFormatId);
@@ -215,6 +249,12 @@ export default function ClubWarRoom() {
   const caption = campaign
     ? buildClubCampaignArtworkCaption(selectedTemplate, campaign)
     : selectedTemplate.caption + " " + CLUB_SOCIAL_HASHTAGS;
+  const selectedPreflight = packagePreflight?.find((item) => item.formatId === artworkFormatId);
+  const packageReady = Boolean(
+    campaign
+    && packagePreflight?.length === CLUB_CAMPAIGN_ARTWORK_FORMATS.length
+    && packagePreflight.every((item) => item.ready),
+  );
 
   useEffect(() => {
     const current = getClubCampaignDrop(new Date());
@@ -228,8 +268,22 @@ export default function ClubWarRoom() {
     if (!canvasRef.current) return;
     try {
       drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat);
+      const reports = CLUB_CAMPAIGN_ARTWORK_FORMATS.map((format) => {
+        const previewCanvas = document.createElement("canvas");
+        const report = drawMeme(previewCanvas, topText, bottomText, campaign, selectedTemplate.name, format);
+        const thumbnail = preflightCanvasRefs.current[format.id];
+        if (thumbnail) {
+          thumbnail.width = format.width;
+          thumbnail.height = format.height;
+          const thumbnailContext = thumbnail.getContext("2d");
+          thumbnailContext?.drawImage(previewCanvas, 0, 0);
+        }
+        return report;
+      });
+      setPackagePreflight(reports);
     } catch {
-      setNotice("MEME PREVIEW UNAVAILABLE. YOUR BROWSER MAY NOT SUPPORT CANVAS.");
+      setPackagePreflight(null);
+      setNotice("MEME PREVIEW OR PREFLIGHT UNAVAILABLE. YOUR BROWSER MAY NOT SUPPORT CANVAS.");
     }
   }, [topText, bottomText, campaign, selectedTemplate.name, artworkFormat]);
 
@@ -242,6 +296,7 @@ export default function ClubWarRoom() {
 
   async function getMemeFile() {
     if (!canvasRef.current) throw new Error("The meme preview is not ready yet.");
+    if (!selectedPreflight?.ready) throw new Error("The selected format did not pass the export preflight.");
     const blob = await canvasBlob(canvasRef.current);
     return new File([blob], campaign
       ? buildClubCampaignArtworkFilename(campaign, artworkFormat.id)
@@ -271,17 +326,31 @@ export default function ClubWarRoom() {
 
   async function downloadArtworkPack() {
     if (!campaign) return;
+    if (!packageReady) {
+      setNotice("PACK BLOCKED. REVIEW THE THREE-FORMAT PREFLIGHT AND FIX THE FLAGGED TEXT.");
+      return;
+    }
     setBusy(true);
     try {
-      const entries = await Promise.all(CLUB_CAMPAIGN_ARTWORK_FORMATS.map(async (format) => {
+      const rendered = await Promise.all(CLUB_CAMPAIGN_ARTWORK_FORMATS.map(async (format) => {
         const exportCanvas = document.createElement("canvas");
-        drawMeme(exportCanvas, topText, bottomText, campaign, selectedTemplate.name, format);
+        const audit = drawMeme(exportCanvas, topText, bottomText, campaign, selectedTemplate.name, format);
         const png = await canvasBlob(exportCanvas);
         return {
-          name: buildClubCampaignArtworkFilename(campaign, format.id),
-          bytes: new Uint8Array(await png.arrayBuffer()),
+          audit,
+          entry: {
+            name: buildClubCampaignArtworkFilename(campaign, format.id),
+            bytes: new Uint8Array(await png.arrayBuffer()),
+          },
         };
       }));
+      const failedAudits = rendered.filter((item) => !item.audit.ready);
+      if (failedAudits.length > 0) {
+        setPackagePreflight(rendered.map((item) => item.audit));
+        setNotice("PACK BLOCKED. ONE OR MORE FORMATS FAILED THE FINAL RENDER CHECK.");
+        return;
+      }
+      const entries = rendered.map((item) => item.entry);
       const archive = buildClubCampaignArtworkZip(entries);
       const archiveBuffer = new ArrayBuffer(archive.byteLength);
       new Uint8Array(archiveBuffer).set(archive);
@@ -401,6 +470,41 @@ export default function ClubWarRoom() {
             </button>
           ))}
         </div>
+        <section className="club-meme-studio__preflight" aria-labelledby="club-meme-studio-preflight-title" aria-live="polite">
+          <div className="club-meme-studio__preflight-heading">
+            <span>U38 / PACKAGE QUALITY CONTROL</span>
+            <strong id="club-meme-studio-preflight-title">
+              {packagePreflight
+                ? packageReady ? "ALL THREE FORMATS PASSED" : "REVIEW REQUIRED BEFORE EXPORT"
+                : "RENDERING THREE FORMAT CHECKS"}
+            </strong>
+          </div>
+          <div className="club-meme-studio__preflight-grid">
+            {CLUB_CAMPAIGN_ARTWORK_FORMATS.map((format) => {
+              const report = packagePreflight?.find((item) => item.formatId === format.id);
+              return (
+                <article key={format.id} className={report?.ready ? "is-ready" : report ? "has-issues" : "is-checking"}>
+                  <header>
+                    <strong>{format.label}</strong>
+                    <span>{report ? report.ready ? "PASS" : "FIX" : "CHECKING"}</span>
+                  </header>
+                  <canvas
+                    ref={(node) => {
+                      if (node) preflightCanvasRefs.current[format.id] = node;
+                      else delete preflightCanvasRefs.current[format.id];
+                    }}
+                    width={format.width}
+                    height={format.height}
+                    style={{ aspectRatio: format.width + " / " + format.height }}
+                    aria-label={format.label + " campaign artwork quality preview"}
+                  />
+                  <small>{report ? report.issues.length ? report.issues.join(" ") : "Text bounds, truncation and headline readability passed." : "Rendering and measuring this campaign artwork."}</small>
+                </article>
+              );
+            })}
+          </div>
+          <p className="club-meme-studio__preflight-note">ALL THREE PNGS ARE RENDERED AND CHECKED LOCALLY. EXPORT BUTTONS STAY LOCKED UNTIL THEIR FORMAT CHECKS PASS.</p>
+        </section>
         <div className="club-meme-studio__editor">
           <div className="club-meme-studio__fields">
             <label>TOP LINE / <span>{topText.length}/100</span>
@@ -410,9 +514,9 @@ export default function ClubWarRoom() {
               <textarea value={bottomText} maxLength={100} rows={3} onChange={(event) => setBottomText(event.target.value)} />
             </label>
             <div className="club-meme-studio__actions">
-              <button type="button" className="button button--primary" onClick={() => void downloadMeme()} disabled={busy || !campaign}>DOWNLOAD PNG ↓</button>
-              <button type="button" className="button button--outline" onClick={() => void downloadArtworkPack()} disabled={busy || !campaign}>DOWNLOAD ALL 3 / ZIP ↓</button>
-              <button type="button" className="button button--outline" onClick={() => void shareMeme()} disabled={busy || !campaign}>SHARE IMAGE ↗</button>
+              <button type="button" className="button button--primary" onClick={() => void downloadMeme()} disabled={busy || !campaign || !selectedPreflight?.ready}>DOWNLOAD PNG ↓</button>
+              <button type="button" className="button button--outline" onClick={() => void downloadArtworkPack()} disabled={busy || !packageReady}>DOWNLOAD ALL 3 / ZIP ↓</button>
+              <button type="button" className="button button--outline" onClick={() => void shareMeme()} disabled={busy || !campaign || !selectedPreflight?.ready}>SHARE IMAGE ↗</button>
               <button type="button" className="button button--quiet" onClick={() => void copyCaption()}>COPY CAPTION</button>
               <button type="button" className="button button--x" onClick={openMemeOnX} disabled={!campaign}>OPEN X DRAFT ↗</button>
             </div>
