@@ -41,7 +41,7 @@ const departmentRoutes: Record<DepartmentJourneyId, readonly DepartmentDestinati
     },
     {
       href: "/club",
-      title: "SOLANA TRENCHES / 99% CLUB",
+      title: "CROSS-CHAIN TRENCHES / 99% CLUB",
       description: "Apply for fictional survivor status after missed calls, late entries, deployer silence and bagholder rehabilitation.",
     },
   ],
@@ -125,7 +125,7 @@ const departmentRoutes: Record<DepartmentJourneyId, readonly DepartmentDestinati
     },
     {
       href: "/club",
-      title: "SOLANA TRENCHES / 99% CLUB",
+      title: "CROSS-CHAIN TRENCHES / 99% CLUB",
       description: "Apply for fictional survivor status. The collection is permanent; the benefits remain unavailable.",
     },
   ],
@@ -137,8 +137,8 @@ const departmentRoutes: Record<DepartmentJourneyId, readonly DepartmentDestinati
     },
     {
       href: "/club",
-      title: "SOLANA TRENCHES / 99% CLUB",
-      description: "Apply to the fictional Solana trenches survivor registry. No privileges, no token, no financial benefits.",
+      title: "CROSS-CHAIN TRENCHES / 99% CLUB",
+      description: "Apply to the fictional cross-chain crypto survivor registry. No privileges, no token, no financial benefits.",
     },
   ],
 };
