@@ -283,7 +283,9 @@ export default function ClubWarRoom() {
         };
       }));
       const archive = buildClubCampaignArtworkZip(entries);
-      const file = new Blob([archive], { type: "application/zip" });
+      const archiveBuffer = new ArrayBuffer(archive.byteLength);
+      new Uint8Array(archiveBuffer).set(archive);
+      const file = new Blob([archiveBuffer], { type: "application/zip" });
       const url = URL.createObjectURL(file);
       const anchor = document.createElement("a");
       anchor.href = url;
