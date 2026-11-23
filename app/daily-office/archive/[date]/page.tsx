@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DailyOfficeClient from "../../daily-client";
+import DailyOfficeRelatedLinks from "../../daily-office-related-links";
 import { buildDailyOfficeDispatch } from "../../daily-engine";
 import { isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../../institutional-memory";
 
