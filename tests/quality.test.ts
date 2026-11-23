@@ -32,7 +32,7 @@ import {
   getClubCampaignArtworkLayout,
 } from "../app/club/club-campaign-artwork-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
-import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
+import { buildDailyOfficeDispatch, getDailyEditorialCase, getPreviousDailyOfficeFocusIssue } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
 import { buildInstitutionalMemory, isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
 import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anchor";
@@ -400,6 +400,56 @@ test("Daily CT Briefing is deterministic for a UTC issue date and rejects invali
   assert.ok(first.sections.every((section) => section.heading.length > 0 && section.body.length > 0));
   assert.throws(() => buildDailyOfficeDispatch("2026-02-30"));
   assert.throws(() => buildDailyOfficeDispatch("not-a-date"));
+});
+
+
+test("U46 Daily Trenches keeps 18 themes, 9 focus families and a four-issue UTC cooldown", () => {
+  const firstEpoch = Date.UTC(2026, 0, 1);
+  const issues: ReturnType<typeof buildDailyOfficeDispatch>[] = [];
+
+  for (let offset = 0; offset < 365; offset += 1) {
+    const issueDate = new Date(firstEpoch + offset * 86_400_000).toISOString().slice(0, 10);
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    assert.deepEqual(buildDailyOfficeDispatch(issueDate), dispatch, issueDate + " must remain date-deterministic");
+
+    const recentFocuses = new Set(issues.slice(Math.max(0, issues.length - 4)).map((issue) => issue.focusType));
+    assert.ok(
+      !recentFocuses.has(dispatch.focusType),
+      issueDate + " repeats editorial focus " + dispatch.focusType + " within the preceding four UTC issues",
+    );
+    issues.push(dispatch);
+  }
+
+  assert.equal(new Set(issues.map((issue) => issue.caseTheme)).size, 18, "The complete 18-theme registry must remain in rotation.");
+  assert.equal(new Set(issues.map((issue) => issue.focusType)).size, 9, "The complete nine-family focus registry must remain in rotation.");
+
+  const current = buildDailyOfficeDispatch("2026-11-20");
+  const previous = getPreviousDailyOfficeFocusIssue(current.issueDate);
+  assert.ok(previous, "A prior issue from the same focus family must exist in the bounded lookback.");
+  assert.equal(previous.focusType, current.focusType);
+  assert.ok(previous.issueDate < current.issueDate);
+  assert.deepEqual(buildDailyOfficeDispatch(previous.issueDate).focusType, current.focusType);
+  assert.throws(() => getPreviousDailyOfficeFocusIssue(current.issueDate, 0));
+  assert.throws(() => getPreviousDailyOfficeFocusIssue(current.issueDate, 367));
+});
+
+test("U46 Daily Trenches cross-reference current and archived issues without adding tracking or network data", () => {
+  const dailyPage = readFileSync("app/daily-office/page.tsx", "utf8");
+  const archivedPage = readFileSync("app/daily-office/archive/[date]/page.tsx", "utf8");
+  const related = readFileSync("app/daily-office/daily-office-related-links.tsx", "utf8");
+  const styles = readFileSync("app/daily-office/daily-office-related-links.module.css", "utf8");
+
+  assert.ok(dailyPage.includes("<DailyOfficeRelatedLinks dispatch={dispatch} />"));
+  assert.ok(archivedPage.includes("<DailyOfficeRelatedLinks dispatch={dispatch} />"));
+  assert.ok(related.includes("getPreviousDailyOfficeFocusIssue(dispatch.issueDate)"));
+  assert.ok(related.includes('"/daily-office/atlas#case-thread-"'));
+  assert.ok(related.includes('"/archives/records/" + precedent.slug'));
+  assert.ok(related.includes('"/museum/exhibits/" + relic.slug'));
+  assert.ok(related.includes("offices.map"));
+  assert.ok(related.includes("departmentCaseThreads[dispatch.caseTheme]"));
+  assert.ok(styles.includes(".cards"));
+  assert.ok(styles.includes("@media (max-width: 640px)"));
+  assert.doesNotMatch(related, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect|analytics|tracking/i);
 });
 
 test("U25.3 Department narrative threads connect all ten offices to existing fictional precedents", () => {
