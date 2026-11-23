@@ -1,5 +1,3 @@
-"use server";
-
 import Link from "next/link";
 import { archiveRecords } from "../archives/archive-data";
 import { departments } from "../divisions";
