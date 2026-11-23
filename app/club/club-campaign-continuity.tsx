@@ -180,8 +180,9 @@ export default function ClubCampaignContinuity() {
             <article className={styles.step}>
               <span>04 / WEEKLY RITUAL</span>
               <strong>{progress?.currentWeeklyRitualFiled ? "LOCAL FILED" : progress?.passportEnabled ? "OPEN" : "NOT SAVED"}</strong>
-              <h4>THE WEEKLY TRENCHES FILE</h4>
-              <p>{progress?.currentWeeklyRitualFiled ? "This week's ritual response is saved in your local Passport." : "File this week's response to complete the current editorial cycle on this device."}</p>
+              <h4>{continuity.weeklyRitual.title}</h4>
+              <p>{continuity.weeklyRitual.prompt}</p>
+              <small className={styles.ritualNote}>{progress?.currentWeeklyRitualFiled ? "THIS WEEK'S RESPONSE IS SAVED IN YOUR LOCAL PASSPORT." : "THIS IS THE SEPARATE WEEKLY RITUAL FOR THE SAME UTC WEEK."}</small>
               <Link href="#club-weekly-ritual">FILE THIS WEEK'S RESPONSE ↗</Link>
             </article>
           </div>

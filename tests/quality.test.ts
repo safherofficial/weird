@@ -2990,6 +2990,8 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   assert.ok(component.includes('href="#club-meme-studio"'));
   assert.ok(component.includes('href="#club-challenge-board"'));
   assert.ok(component.includes('href="#club-weekly-ritual"'));
+  assert.ok(component.includes("{continuity.weeklyRitual.title}"));
+  assert.ok(component.includes("{continuity.weeklyRitual.prompt}"));
   assert.ok(component.includes("This panel creates no new stored record"));
   assert.doesNotMatch(component + data, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|recordClub|recordPassport/i);
   assert.ok(css.includes("@media (max-width: 620px)"));
