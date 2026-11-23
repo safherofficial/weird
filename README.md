@@ -131,3 +131,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U38 — 99% Club Campaign Export Preflight: the Meme Office now renders all three campaign formats into a visible proof grid before export. Canvas-measured checks flag truncated campaign/headline text, horizontal overflow, text outside the safe area, empty headlines and headline type below 38 px. Single-format downloads require that format to pass; the ZIP pack remains locked until all three pass and repeats the checks on the final render. No image is uploaded or persisted.
+
+
+- U39 — 99% Club Adaptive Campaign Typography: headline type is measured and resized against each format's actual canvas width and vertical budget. The two headline blocks are composed together as a balanced group, and the separator follows their measured heights instead of fixed coordinates. Short copy gains visual weight; longer copy receives a smaller, multi-line layout. The existing preflight checks the resulting safe-area bounds before any PNG or ZIP export.

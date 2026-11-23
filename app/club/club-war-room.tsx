@@ -18,6 +18,7 @@ import {
   type ClubCampaignArtworkFormatId,
   type ClubCampaignArtworkPreflight,
   buildClubCampaignArtworkPreflight,
+  buildClubCampaignArtworkComposition,
 } from "./club-campaign-artwork-engine";
 import { CLUB_SOCIAL_HASHTAGS } from "./club-social";
 
@@ -154,42 +155,82 @@ function drawMeme(
   context.lineTo(rightX, y(0.265));
   context.stroke();
 
-  const drawBlock = (value: string, centerY: number, accent: boolean) => {
-    let fontSize = 70 * scale;
-    let lines: string[] = [];
-    do {
-      context.font = "900 " + fontSize + "px Arial, sans-serif";
-      lines = wrapCanvasText(context, value.toUpperCase(), contentWidth * 0.9, 4);
-      if (lines.length <= 3 || fontSize <= 44 * scale) break;
-      fontSize -= 4 * scale;
-    } while (fontSize >= 44 * scale);
-
-    const lineHeight = fontSize * 1.16;
-    const firstY = centerY - ((lines.length - 1) * lineHeight) / 2;
+  const measureHeadline = (value: string) => {
     const maxLineWidth = contentWidth * 0.92;
+    const maxBlockHeight = height * 0.235;
+    const minimumFontSize = 44 * scale;
+    let fontSize = 90 * scale;
+    let lines: string[] = [];
+    let lineHeight = fontSize * 1.16;
+    let blockHeight = 0;
+    let lineOverflow = false;
+
+    while (true) {
+      context.font = "900 " + fontSize + "px Arial, sans-serif";
+      lines = wrapCanvasText(context, value.toUpperCase(), maxLineWidth, 4);
+      lineHeight = fontSize * 1.16;
+      const visualLineCount = Math.max(1, lines.length);
+      blockHeight = (visualLineCount - 1) * lineHeight + fontSize * 1.2;
+      lineOverflow = lines.some((line) => context.measureText(line).width > maxLineWidth + 1);
+      const clipped = lines.some((line) => line.endsWith("…"));
+      if ((!clipped && !lineOverflow && blockHeight <= maxBlockHeight) || fontSize <= minimumFontSize) break;
+      fontSize = Math.max(minimumFontSize, fontSize - 4 * scale);
+    }
+
     context.font = "900 " + fontSize + "px Arial, sans-serif";
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.fillStyle = accent ? "#b6ff65" : "#f1f3eb";
-    const measuredWidths = lines.map((line) => context.measureText(line).width);
-    const lineOverflow = measuredWidths.some((lineWidth) => lineWidth > maxLineWidth + 1);
-    const top = firstY - fontSize * 0.6;
-    const bottom = firstY + (lines.length - 1) * lineHeight + fontSize * 0.6;
-    const minY = accent ? y(0.59) : y(0.285);
-    const maxY = accent ? y(0.84) : y(0.53);
-    lines.forEach((line, index) => context.fillText(line, width / 2, firstY + index * lineHeight, maxLineWidth));
+    const visualLineCount = Math.max(1, lines.length);
+    lineHeight = fontSize * 1.16;
+    blockHeight = (visualLineCount - 1) * lineHeight + fontSize * 1.2;
+    lineOverflow = lines.some((line) => context.measureText(line).width > maxLineWidth + 1);
     return {
+      lines,
+      lineCount: visualLineCount,
+      fontSize,
+      lineHeight,
+      blockHeight,
       clipped: lines.some((line) => line.endsWith("…")),
       horizontalOverflow: lineOverflow,
-      outsideSafeArea: top < minY || bottom > maxY,
-      fontSize,
     };
   };
 
-  const topAudit = drawBlock(topText, y(0.405), false);
+  const topMeasured = measureHeadline(topText);
+  const bottomMeasured = measureHeadline(bottomText);
+  const composition = buildClubCampaignArtworkComposition(
+    format.id,
+    topMeasured.lineCount,
+    bottomMeasured.lineCount,
+    topMeasured.fontSize,
+    bottomMeasured.fontSize,
+  );
+
+  const drawBlock = (
+    measured: ReturnType<typeof measureHeadline>,
+    centerY: number,
+    accent: boolean,
+  ) => {
+    const firstY = centerY - ((measured.lines.length - 1) * measured.lineHeight) / 2;
+    context.font = "900 " + measured.fontSize + "px Arial, sans-serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillStyle = accent ? "#b6ff65" : "#f1f3eb";
+    measured.lines.forEach((line, index) => {
+      context.fillText(line, width / 2, firstY + index * measured.lineHeight, contentWidth * 0.92);
+    });
+    const top = centerY - measured.blockHeight / 2;
+    const bottom = centerY + measured.blockHeight / 2;
+    return {
+      clipped: measured.clipped,
+      horizontalOverflow: measured.horizontalOverflow,
+      outsideSafeArea: top < composition.safeBounds.top || bottom > composition.safeBounds.bottom,
+      fontSize: measured.fontSize,
+      lineCount: measured.lineCount,
+    };
+  };
+
+  const topAudit = drawBlock(topMeasured, composition.topCenterY, false);
   context.fillStyle = "#526744";
-  context.fillRect(width * 0.435, y(0.555), width * 0.13, 5 * scale);
-  const bottomAudit = drawBlock(bottomText, y(0.705), true);
+  context.fillRect(width * 0.435, composition.separatorY - 2.5 * scale, width * 0.13, 5 * scale);
+  const bottomAudit = drawBlock(bottomMeasured, composition.bottomCenterY, true);
 
   context.textAlign = "left";
   context.textBaseline = "alphabetic";
@@ -212,7 +253,7 @@ function drawMeme(
     topTextClipped: topAudit.clipped,
     bottomTextClipped: bottomAudit.clipped,
     horizontalOverflow: horizontalOverflow || topAudit.horizontalOverflow || bottomAudit.horizontalOverflow,
-    outsideSafeArea: topAudit.outsideSafeArea || bottomAudit.outsideSafeArea,
+    outsideSafeArea: !composition.withinSafeArea || topAudit.outsideSafeArea || bottomAudit.outsideSafeArea,
     topTextEmpty: topText.trim().length === 0,
     bottomTextEmpty: bottomText.trim().length === 0,
     smallestHeadlineFontPx: Math.min(topAudit.fontSize, bottomAudit.fontSize),

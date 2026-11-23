@@ -199,3 +199,75 @@ export function buildClubCampaignArtworkPreflight(
     issues,
   };
 }
+
+
+export type ClubCampaignArtworkComposition = {
+  topCenterY: number;
+  bottomCenterY: number;
+  separatorY: number;
+  topHeight: number;
+  bottomHeight: number;
+  gap: number;
+  topBounds: { top: number; bottom: number };
+  bottomBounds: { top: number; bottom: number };
+  safeBounds: { top: number; bottom: number };
+  withinSafeArea: boolean;
+  topLineCount: number;
+  bottomLineCount: number;
+};
+
+/**
+ * Distributes headline blocks as one balanced typographic group inside the
+ * campaign-safe area. Heights use the same line-height and cap-height
+ * allowance as the canvas renderer, so preflight can inspect the real layout.
+ */
+export function buildClubCampaignArtworkComposition(
+  formatId: ClubCampaignArtworkFormatId,
+  topLineCount: number,
+  bottomLineCount: number,
+  topFontSize: number,
+  bottomFontSize: number,
+): ClubCampaignArtworkComposition {
+  const format = getClubCampaignArtworkFormat(formatId);
+  const counts = [topLineCount, bottomLineCount];
+  const sizes = [topFontSize, bottomFontSize];
+  if (counts.some((count) => !Number.isInteger(count) || count < 1 || count > 4)) {
+    throw new Error("Headline line counts must be between 1 and 4.");
+  }
+  if (sizes.some((size) => !Number.isFinite(size) || size <= 0)) {
+    throw new Error("Headline font sizes must be finite positive values.");
+  }
+
+  const lineHeight = (fontSize: number) => fontSize * 1.16;
+  const blockHeight = (lineCount: number, fontSize: number) =>
+    (lineCount - 1) * lineHeight(fontSize) + fontSize * 1.2;
+  const topHeight = blockHeight(topLineCount, topFontSize);
+  const bottomHeight = blockHeight(bottomLineCount, bottomFontSize);
+  const safeBounds = { top: format.height * 0.295, bottom: format.height * 0.84 };
+  const gap = format.height * 0.065;
+  const groupHeight = topHeight + gap + bottomHeight;
+  const startY = safeBounds.top + Math.max(0, (safeBounds.bottom - safeBounds.top - groupHeight) / 2);
+  const topBounds = { top: startY, bottom: startY + topHeight };
+  const bottomBounds = {
+    top: topBounds.bottom + gap,
+    bottom: topBounds.bottom + gap + bottomHeight,
+  };
+  const withinSafeArea = topBounds.top >= safeBounds.top - 0.5
+    && bottomBounds.bottom <= safeBounds.bottom + 0.5
+    && topBounds.bottom <= bottomBounds.top;
+
+  return {
+    topCenterY: (topBounds.top + topBounds.bottom) / 2,
+    bottomCenterY: (bottomBounds.top + bottomBounds.bottom) / 2,
+    separatorY: topBounds.bottom + gap / 2,
+    topHeight,
+    bottomHeight,
+    gap,
+    topBounds,
+    bottomBounds,
+    safeBounds,
+    withinSafeArea,
+    topLineCount,
+    bottomLineCount,
+  };
+}

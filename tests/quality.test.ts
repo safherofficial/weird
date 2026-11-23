@@ -23,6 +23,7 @@ import {
   buildClubCampaignArtworkFilename,
   buildClubCampaignArtworkPackFilename,
   buildClubCampaignArtworkPreflight,
+  buildClubCampaignArtworkComposition,
   buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   getClubCampaignArtworkFormat,
@@ -3284,4 +3285,43 @@ test("U38 Campaign Export Preflight flags truncation, overflow, unsafe bounds an
   assert.ok(css.includes(".club-meme-studio__preflight-grid"));
   assert.ok(css.includes(".club-meme-studio__preflight-note"));
   assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
+});
+
+
+test("U39 adaptive artwork composition balances short and long headlines across all export formats", () => {
+  for (const format of CLUB_CAMPAIGN_ARTWORK_FORMATS) {
+    const short = buildClubCampaignArtworkComposition(format.id, 1, 1, format.width * 0.075, format.width * 0.075);
+    const longTop = buildClubCampaignArtworkComposition(format.id, 4, 1, format.width * 0.037, format.width * 0.075);
+    const longBottom = buildClubCampaignArtworkComposition(format.id, 1, 4, format.width * 0.075, format.width * 0.037);
+
+    assert.equal(short.withinSafeArea, true, format.id + " short copy fits the safe area");
+    assert.equal(longTop.withinSafeArea, true, format.id + " long top headline fits the safe area");
+    assert.equal(longBottom.withinSafeArea, true, format.id + " long bottom headline fits the safe area");
+    assert.ok(short.topBounds.bottom < short.bottomBounds.top, format.id + " short blocks do not overlap");
+    assert.ok(longTop.topBounds.bottom < longTop.bottomBounds.top, format.id + " long top and short bottom do not overlap");
+    assert.ok(longBottom.topBounds.bottom < longBottom.bottomBounds.top, format.id + " short top and long bottom do not overlap");
+    assert.ok(Math.abs((short.topCenterY + short.bottomCenterY) / 2 - format.height * 0.5675) < format.height * 0.01, format.id + " short composition is centered in its headline band");
+    assert.ok(longTop.topHeight > longTop.bottomHeight, format.id + " four-line top headline receives a larger block");
+    assert.ok(longBottom.bottomHeight > longBottom.topHeight, format.id + " four-line bottom headline receives a larger block");
+    assert.ok(short.separatorY > short.topBounds.bottom && short.separatorY < short.bottomBounds.top);
+    assert.ok(longTop.separatorY > longTop.topBounds.bottom && longTop.separatorY < longTop.bottomBounds.top);
+    assert.ok(longBottom.separatorY > longBottom.topBounds.bottom && longBottom.separatorY < longBottom.bottomBounds.top);
+  }
+
+  assert.throws(
+    () => buildClubCampaignArtworkComposition("square", 5, 1, 70, 70),
+    /line counts must be between 1 and 4/i,
+  );
+  assert.throws(
+    () => buildClubCampaignArtworkComposition("square", 1, 1, Number.NaN, 70),
+    /finite positive/i,
+  );
+  const component = readFileSync("app/club/club-war-room.tsx", "utf8");
+  assert.ok(component.includes("const measureHeadline = (value: string) =>"));
+  assert.ok(component.includes("buildClubCampaignArtworkComposition("));
+  assert.ok(component.includes("composition.topCenterY"));
+  assert.ok(component.includes("composition.bottomCenterY"));
+  assert.ok(component.includes("composition.separatorY"));
+  assert.ok(component.includes("height * 0.235"));
+  assert.ok(component.includes("let fontSize = 90 * scale"));
 });
