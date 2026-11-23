@@ -3125,7 +3125,7 @@ test("U35 Campaign Artwork gives each meme export a consistent campaign identity
   const globalCss = readFileSync("app/globals.css", "utf8");
   const engine = readFileSync("app/club/club-campaign-artwork-engine.ts", "utf8");
   assert.ok(warRoom.includes("getClubCampaignDrop(new Date())"));
-  assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat)"));
+  assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat, artworkLayout)"));
   assert.ok(warRoom.includes("WEEKLY ISSUE / "));
   assert.ok(warRoom.includes("CROSS-CHAIN CAMPAIGN SERIES"));
   assert.ok(warRoom.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id)"));
@@ -3163,7 +3163,7 @@ test("U36 Multi-Format Campaign Export provides correctly sized, campaign-stampe
   assert.ok(component.includes("width={artworkFormat.width}"));
   assert.ok(component.includes("height={artworkFormat.height}"));
   assert.ok(component.includes('style={{ aspectRatio: artworkFormat.width + " / " + artworkFormat.height }}'));
-  assert.ok(component.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id)"));
+  assert.ok(component.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id, artworkLayout.id)"));
   assert.ok(component.includes("format.width"));
   assert.ok(component.includes("format.height"));
   assert.ok(engine.includes('id: "portrait"'));
