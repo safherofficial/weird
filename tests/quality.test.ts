@@ -18,6 +18,7 @@ import { getClubCommunityContentInventory, getClubLocalPassportEvidence } from "
 import { CLUB_FACTION_CAMPAIGN_MISSIONS, getClubCampaignContinuity } from "../app/club/club-campaign-continuity-data";
 import { CLUB_CONTRIBUTION_CHARACTER_BUDGET, getClubContributionStarters, getClubContributionWritingCue } from "../app/club/club-contribution-engine";
 import { CLUB_PARTICIPATION_TEXT_BUDGET, getClubParticipationDrafts } from "../app/club/club-participation-loop-engine";
+import { buildClubCampaignArtworkCaption, buildClubCampaignArtworkFilename } from "../app/club/club-campaign-artwork-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -3090,4 +3091,33 @@ test("U34 Participation Loop builds a three-step campaign relay without collecti
   assert.ok(css.includes("@media (max-width: 820px)"));
   assert.ok(css.includes("@media (max-width: 620px)"));
   assert.ok(readme.includes("U34 — 99% Club Community Participation Loop"));
+});
+
+
+test("U35 Campaign Artwork gives each meme export a consistent campaign identity, date label and reusable sharing copy", () => {
+  const campaign = getClubCampaignDrop(new Date("2026-11-23T12:00:00.000Z"));
+  assert.equal(campaign.weekKey, "2026-W48");
+  assert.equal(campaign.theme.id, "dyor-receipt");
+
+  for (const template of CLUB_MEME_TEMPLATES) {
+    const caption = buildClubCampaignArtworkCaption(template, campaign);
+    const filename = buildClubCampaignArtworkFilename(campaign);
+    assert.ok(caption.includes(template.caption));
+    assert.ok(caption.includes(campaign.theme.title));
+    assert.ok(caption.includes(campaign.weekKey));
+    assert.ok(caption.includes("#The99PercentClub"));
+    assert.ok(caption.length <= 257, "the artwork caption should leave a practical character margin");
+    assert.match(filename, /^the-99-percent-club-2026-w48-dyor-receipt\.png$/);
+  }
+
+  const warRoom = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const engine = readFileSync("app/club/club-campaign-artwork-engine.ts", "utf8");
+  assert.ok(warRoom.includes("getClubCampaignDrop(new Date())"));
+  assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name)"));
+  assert.ok(warRoom.includes("WEEKLY ISSUE / "));
+  assert.ok(warRoom.includes("CROSS-CHAIN CAMPAIGN SERIES"));
+  assert.ok(warRoom.includes("buildClubCampaignArtworkFilename(campaign)"));
+  assert.ok(warRoom.includes("buildClubCampaignArtworkCaption(selectedTemplate, campaign)"));
+  assert.ok(warRoom.includes("campaign.theme.title"));
+  assert.ok(engine.includes("campaign.weekKey.toLowerCase()"));
 });
