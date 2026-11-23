@@ -8,16 +8,16 @@ import { exhibits } from "./museum-data";
 export const metadata: Metadata = {
   alternates: { canonical: "/museum" },
   title: "Bagholder Rehabilitation | Museum of Trenches Relics",
-  description: "Fifteen fictional Solana trenches relics: bonding-curve progress bars, bundle-wallet diagrams, KOL screenshots, abandoned deployers and artifacts of bagholder conviction.",
+  description: exhibits.length + " fictional cross-chain trenches relics: bridge queue tickets, airdrop passport stamps, multi-chain unlock clocks and governance artifacts.",
   openGraph: {
     title: "THE MUSEUM OF TRENCHES RELICS",
-    description: "Fifteen exhibits from the Solana trenches. Countless missed exits. Absolutely no refunds.",
+    description: exhibits.length + " fictional exhibits from the cross-chain trenches. Every artifact is fictional; absolutely no refunds.",
     images: ["/museum/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE MUSEUM OF TRENCHES RELICS",
-    description: "Fifteen exhibits from the Solana trenches. Countless missed exits. Absolutely no refunds.",
+    description: exhibits.length + " fictional exhibits from the cross-chain trenches. Every artifact is fictional; absolutely no refunds.",
     images: ["/museum/opengraph-image"],
   },
 };
@@ -29,11 +29,11 @@ export default function MuseumPage() {
 
       <div className="museum-shell shell" id="content-start" tabIndex={-1}>
         <header className="museum-intro">
-          <div className="audit-intro__meta"><span>INSTITUTION EST. YESTERDAY</span><span>ACCESSION REGISTER / {exhibits[0]?.accession ?? "BHM-001"}–{exhibits[exhibits.length - 1]?.accession ?? "BHM-015"}</span></div>
+          <div className="audit-intro__meta"><span>INSTITUTION EST. YESTERDAY</span><span>ACCESSION REGISTER / {exhibits[0]?.accession ?? "BHM-001"}–{exhibits[exhibits.length - 1]?.accession ?? "BHM-019"}</span></div>
           <p className="eyebrow">BAGHOLDER REHABILITATION / THE TRENCHES RELIC COLLECTION</p>
           <h1>THE TRENCHES<br /><span>RELIC MUSEUM.</span></h1>
           <p className="audit-intro__lead">
-            A permanent collection of launch-night screenshots, bonding-curve celebrations, bundle theories, KOL calls and CTO banners left behind in the trenches.
+            A permanent collection of crypto-culture relics: bridge receipts, airdrop passport stamps, multi-chain unlock clocks, governance artifacts and the objects left behind in the trenches.
           </p>
           <div className="museum-intro__notice">
             <span>VISITOR NOTICE / PLEASE READ</span>
