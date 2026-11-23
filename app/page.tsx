@@ -110,10 +110,10 @@ export default function Home() {
 
       <section className="hq-club shell" aria-labelledby="hq-club-title">
         <div className="hq-club__identity">
-          <span className="hq-club__eyebrow">THE DEPARTMENT'S UNOFFICIAL OFFICIAL COMMUNITY</span>
+          <span className="hq-club__eyebrow">THE DEPARTMENT'S UNOFFICIAL OFFICIAL COMMUNITY / ALL CHAINS</span>
           <h2 id="hq-club-title">THE 99%<br /><em>CLUB.</em></h2>
           <p>
-            Six factions. One shared excuse. Find your fictional Solana trenches archetype,
+            Born in the Solana trenches. Open to every chain and every cycle. Find your fictional crypto archetype,
             receive your membership file and nominate the next degen who insists they are still early.
           </p>
           <div className="hq-club__actions">
@@ -128,7 +128,7 @@ export default function Home() {
           <strong>IT'S NEVER OUR FAULT.</strong>
           <strong>THE NEXT ONE IS MINE.</strong>
           <div className="hq-club__membership-bottom">
-            <span>MEMBER BENEFITS / NONE</span>
+            <span>MEMBERSHIP / ALL CHAINS</span>
             <span>EXPECTATIONS / MANAGED</span>
           </div>
         </div>
