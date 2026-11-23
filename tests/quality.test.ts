@@ -3128,7 +3128,7 @@ test("U35 Campaign Artwork gives each meme export a consistent campaign identity
   assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat, artworkLayout)"));
   assert.ok(warRoom.includes("WEEKLY ISSUE / "));
   assert.ok(warRoom.includes("CROSS-CHAIN CAMPAIGN SERIES"));
-  assert.ok(warRoom.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id)"));
+  assert.ok(warRoom.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id, artworkLayout.id)"));
   assert.ok(warRoom.includes("buildClubCampaignArtworkCaption(selectedTemplate, campaign)"));
   assert.ok(warRoom.includes("campaign.theme.title"));
   assert.ok(globalCss.includes(".club-meme-studio__campaign-edition"));
