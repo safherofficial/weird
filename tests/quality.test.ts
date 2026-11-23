@@ -969,6 +969,57 @@ test("U23.3 audited classifications match the exact answer semantics", () => {
   assert.match(roadmapClassifications["actually-shipping"].subtitle, /named owners and deliverables/i);
 });
 
+test("U43 separates Roadmap handover operations, Whitepaper public specification and Utility current-use evidence", () => {
+  const copy = (items: Array<{ prompt: string; note?: string; options: Array<{ label: string }> }>) =>
+    items.map((item) => item.prompt + " " + (item.note ?? "") + " " + item.options.map((option) => option.label).join(" ")).join(" ");
+
+  const roadmapCopy = copy(roadmapQuestions);
+  const whitepaperCopy = copy(whitepaperQuestions);
+  const utilityCopy = copy(utilityQuestions);
+
+  assert.equal(roadmapQuestions.length, ROADMAP_QUESTIONS);
+  assert.equal(whitepaperQuestions.length, WHITEPAPER_QUESTIONS);
+  assert.equal(utilityQuestions.length, INSPECTOR_QUESTIONS);
+  assert.match(roadmapCopy, /access|permission|credential/i);
+  assert.match(roadmapCopy, /asset.*register|assets.*inventoried/i);
+  assert.match(roadmapCopy, /responsibility|accountable owner/i);
+  assert.match(roadmapCopy, /acceptance criteria|release sign-off/i);
+  assert.doesNotMatch(roadmapCopy, /tokenomics|KOL partnership|community growth|100x|green candle|token purpose/i);
+
+  assert.match(whitepaperCopy, /executive summary|document.*scope/i);
+  assert.match(whitepaperCopy, /protocol architecture|interfaces/i);
+  assert.match(whitepaperCopy, /supply|allocation|unlocks/i);
+  assert.match(whitepaperCopy, /governance|upgrade/i);
+  assert.match(whitepaperCopy, /limitations|failure modes|risks/i);
+  assert.doesNotMatch(whitepaperCopy, /CTO takeover roadmap|community takeover checklist|five-minute chart|live product demo/i);
+
+  assert.match(utilityCopy, /task.*today|task.*right now/i);
+  assert.match(utilityCopy, /repeatable|user flow/i);
+  assert.match(utilityCopy, /current users|completing that task/i);
+  assert.match(utilityCopy, /record shows|evidence/i);
+  assert.match(utilityCopy, /necessary role in the current user flow/i);
+  assert.doesNotMatch(utilityCopy, /tokenomics|governance framework|protocol architecture|CTO takeover roadmap|milestone acceptance/i);
+
+  // The three tools keep their existing deterministic result codes, score dimensions and answer counts.
+  assert.deepEqual(roadmapQuestions.map((question) => question.options.map((option) => option.delivery)), [
+    [5, 4, 2, 0], [5, 4, 1, 0], [5, 3, 1, 0], [5, 4, 1, 0], [5, 4, 1, 0], [5, 4, 1, 0],
+  ]);
+  assert.deepEqual(whitepaperQuestions.map((question) => question.options.map((option) => option.technical)), [
+    [5, 4, 1, 0], [4, 5, 1, 0], [5, 5, 2, 0], [5, 5, 1, 0], [5, 4, 1, 0], [5, 4, 1, 0], [5, 4, 1, 0],
+  ]);
+  assert.deepEqual(utilityQuestions.map((question) => question.options.map((option) => option.evidence)), [
+    [5, 3, 1, 0], [5, 4, 1, 0], [5, 4, 1, 0], [5, 4, 2, 0], [5, 4, 1, 0], [5, 4, 1, 0], [5, 4, 1, 0],
+  ]);
+
+  const operational = buildRoadmapResult([0, 0, 0, 0, 0, 0], "Verified Handover");
+  assert.match(operational.milestones[1].title, /ASSET AND DEPENDENCY REGISTER/);
+  assert.match(operational.milestones[4].description, /Rotate credentials/);
+  const dossier = buildWhitepaperResult([0, 0, 0, 0, 0, 0, 0], "Versioned Spec");
+  assert.match(dossier.sections[6].title, /VERSIONING.*CHANGE CONTROL/);
+  const utilityResult = buildUtilityResult([0, 0, 0, 0, 0, 0, 0]);
+  assert.match(utilityResult.history[1].question, /REPEAT THE TASK/);
+});
+
 test("U42 99% Club interview measures cross-chain community identity, distinct from Audit and Cope", () => {
   const clubCopy = clubQuestions.map((question) =>
     question.prompt + " " + question.note + " " + question.options.map((option) => option.label).join(" ")

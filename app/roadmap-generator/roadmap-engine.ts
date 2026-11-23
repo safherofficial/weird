@@ -69,63 +69,63 @@ export type RoadmapResult = RoadmapProgress & {
 
 export const questions: RoadmapQuestion[] = [
   {
-    prompt: "WHAT ACTUALLY EXISTS AFTER THE LAUNCH POST?",
-    note: "Please distinguish between a working product, a token launch and a well-designed pinned thread.",
+    prompt: "WHAT ACCESS IS ACTUALLY CONTROLLED BY THE INCOMING TEAM?",
+    note: "A community announcement is not a credential transfer. The Department is asking about operational control.",
     options: [
-      { label: "A live product or service with real users, shipped features and a verifiable release history.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
-      { label: "A public beta with clear limits, visible owners and a backlog that can be checked.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
-      { label: "The token is live. The product is still a pinned post and a “building” status.", delivery: 2, realism: 2, inflation: 3, tag: "soon-architect" },
-      { label: "A CA, a banner, a Telegram group and an extremely confident launch thread.", delivery: 0, realism: 0, inflation: 5, tag: "documentation-empire" },
+      { label: "Named operators can demonstrate scoped access to the repository, deployment, domain and required admin controls.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
+      { label: "Some permissions have transferred, but the written register still shows pending owners or unverified credentials.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
+      { label: "The new team has a social account and expects operational access after the next announcement.", delivery: 2, realism: 2, inflation: 3, tag: "soon-architect" },
+      { label: "The takeover is documented in a pinned thread, but nobody can identify who holds the keys.", delivery: 0, realism: 0, inflation: 5, tag: "documentation-empire" },
     ],
   },
   {
-    prompt: "WHEN DOES “SOON” BECOME A DELIVERABLE?",
-    note: "“After graduation” is not a delivery date. The Department has checked.",
+    prompt: "WHICH PROJECT ASSETS AND DEPENDENCIES ARE INVENTORIED?",
+    note: "A logo folder is not an asset register. Record what exists, where it lives and who can access it.",
     options: [
-      { label: "By named owners, concrete deliverables, dependencies and actual capacity.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
-      { label: "By dated milestones with clear acceptance criteria and public revisions.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
-      { label: "After the next catalyst. The catalyst is currently being discussed on Spaces.", delivery: 1, realism: 1, inflation: 4, tag: "soon-architect" },
-      { label: "Before the next 100x. The calendar has declined to confirm which one.", delivery: 0, realism: 0, inflation: 5, tag: "milestone-matryoshka" },
+      { label: "Repositories, domains, deployments, contracts, documentation, backups and custodians are listed in one verifiable register.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
+      { label: "A partial inventory exists, with missing custodians or dependencies assigned to named follow-up owners.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
+      { label: "Assets are referenced in old threads, but their locations, status and owners still need to be found.", delivery: 1, realism: 1, inflation: 4, tag: "soon-architect" },
+      { label: "Every phase creates another asset list, which will eventually explain the previous asset list.", delivery: 0, realism: 0, inflation: 5, tag: "milestone-matryoshka" },
     ],
   },
   {
-    prompt: "WHAT HAPPENS TO THE TOKEN AFTER THE FIRST PUMP?",
-    note: "Please do not submit “number go up” as a post-graduation operating plan.",
+    prompt: "WHO OWNS EACH OPERATIONAL RESPONSIBILITY AFTER TRANSFER?",
+    note: "The word 'community' cannot be the named owner of every repository, release and incident.",
     options: [
-      { label: "A defined token function connected to an actual product or community workflow.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
-      { label: "A scoped governance or incentive role, with limits and trade-offs disclosed.", delivery: 3, realism: 3, inflation: 2, tag: "forever-beta" },
-      { label: "Utility will arrive after the CTO takeover, the next exchange rumour and Phase 4.", delivery: 1, realism: 1, inflation: 4, tag: "ticker-decoration" },
-      { label: "The ticker will power the future of the entire Solana ecosystem.", delivery: 0, realism: 0, inflation: 5, tag: "multiverse-expansionist" },
+      { label: "A responsibility map names each accountable owner, permission boundary, backup and escalation path.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
+      { label: "Interim owners are named and the remaining responsibilities have explicit acceptance dates.", delivery: 3, realism: 3, inflation: 2, tag: "forever-beta" },
+      { label: "A group chat says everyone owns everything. No individual is responsible for the operational work.", delivery: 1, realism: 1, inflation: 4, tag: "community-amplifier" },
+      { label: "An informal council will advise the takeover, but its members and responsibilities are not documented.", delivery: 0, realism: 0, inflation: 5, tag: "partnership-vaporist" },
     ],
   },
   {
-    prompt: "HOW REAL ARE THE KOL AND ECOSYSTEM PARTNERSHIPS?",
-    note: "A follow, a quote-tweet or a rocket emoji is not a strategic alliance.",
+    prompt: "HOW ARE TAKEOVER MILESTONES ACCEPTED AS COMPLETE?",
+    note: "A milestone needs a deliverable, an owner and a test for completion—not a celebratory post.",
     options: [
-      { label: "Named counterparties, documented scope and a deliverable that can be independently checked.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
-      { label: "A disclosed campaign or pilot exists, with scope, dates and any paid promotion made clear.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
-      { label: "Several KOLs have posted the same chart. The Department is still looking for the original source.", delivery: 1, realism: 1, inflation: 4, tag: "partnership-vaporist" },
-      { label: "The right wallets are watching. We cannot say which ones or why.", delivery: 0, realism: 0, inflation: 5, tag: "partnership-vaporist" },
+      { label: "Each milestone has an accountable owner, due date, acceptance criteria, evidence artifact and sign-off.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
+      { label: "Dated checkpoints and measurable outcomes exist, although some scope and acceptance details remain open.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
+      { label: "A phase is considered complete when the next announcement is published.", delivery: 1, realism: 1, inflation: 4, tag: "partnership-vaporist" },
+      { label: "Every milestone unlocks another milestone that explains why the previous one is not complete yet.", delivery: 0, realism: 0, inflation: 5, tag: "milestone-matryoshka" },
     ],
   },
   {
-    prompt: "HOW DO YOU MEASURE REAL COMMUNITY GROWTH?",
-    note: "A trending CA and a large follower count do not prove a durable community.",
+    prompt: "WHAT MUST BE VERIFIED BEFORE ADMIN ACCESS IS DECLARED SAFE?",
+    note: "A new handle is not an access-control policy. The Department expects least privilege and a recorded transfer.",
     options: [
-      { label: "Returning contributors, real product use and useful feedback beyond launch-day replies.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
-      { label: "A mix of active holders, builders and contributors—not just copy-pasted “send it” replies.", delivery: 4, realism: 4, inflation: 1, tag: "community-amplifier" },
-      { label: "X followers, impressions, Spaces attendance and the occasional trending badge.", delivery: 2, realism: 2, inflation: 3, tag: "community-amplifier" },
-      { label: "Community growth is measured by how many people still post after the chart turns red.", delivery: 0, realism: 0, inflation: 5, tag: "community-amplifier" },
+      { label: "Credentials are rotated, old access is revoked, signer roles are verified and least-privilege permissions are recorded.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
+      { label: "A staged access transition has named owners, documented open risks and dates for final verification.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
+      { label: "The new admin takes over after the public announcement. Credential rotation can happen later.", delivery: 1, realism: 1, inflation: 4, tag: "soon-architect" },
+      { label: "The community pins a security checklist, but no one can show that the permissions changed.", delivery: 0, realism: 0, inflation: 5, tag: "community-amplifier" },
     ],
   },
   {
-    prompt: "WHAT DOES SUCCESS LOOK LIKE AFTER GRADUATION?",
-    note: "The Department has flagged “100x” as a price target, not a delivery milestone.",
+    prompt: "WHAT DOES THE FIRST POST-TAKEOVER RELEASE REQUIRE?",
+    note: "The first release should prove the handover works before the department announces an entire multiverse.",
     options: [
-      { label: "A durable product or community, transparent ownership and a clear next release.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
-      { label: "A wider ecosystem with real integrations, responsible operators and actual users.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
-      { label: "A new ticker, another launchpad and a global army of holders.", delivery: 1, realism: 1, inflation: 4, tag: "global-adoption-intern" },
-      { label: "AI, gaming, DePIN, RWA, a second CTO and the interplanetary pump.", delivery: 0, realism: 0, inflation: 5, tag: "multiverse-expansionist" },
+      { label: "A scoped deliverable, named maintainer, test evidence, rollback path and explicit release sign-off.", delivery: 5, realism: 5, inflation: 0, tag: "actually-shipping" },
+      { label: "A phased release plan with measurable checkpoints and disclosed dependencies.", delivery: 4, realism: 4, inflation: 1, tag: "forever-beta" },
+      { label: "A new roadmap thread is published and described as release one.", delivery: 1, realism: 1, inflation: 4, tag: "documentation-empire" },
+      { label: "A simultaneous chain expansion, new token, application and campaign are announced before owners or assets are settled.", delivery: 0, realism: 0, inflation: 5, tag: "multiverse-expansionist" },
     ],
   },
 ];
@@ -133,62 +133,62 @@ export const questions: RoadmapQuestion[] = [
 export const classifications: Record<RoadmapArchetypeId, RoadmapArchetype> = {
   "actually-shipping": {
     title: "THE RARELY SHIPPING CTO",
-    subtitle: "You described a live product, named owners and deliverables with a verifiable release history. The Department is suspicious.",
-    roast: "The community takeover contains actual deliverables. CT has asked whether the deployer is feeling alright.",
+    subtitle: "The handover has named owners, verified access, an asset register and deliverables with acceptance criteria. The Department is suspicious."
+    roast: "The takeover contains a real responsibility map and a tested release gate. CT has asked whether the deployer is feeling alright."
     disposition: "RELEASED UNDER OBSERVATION FOR EXCESSIVE EXECUTION.",
   },
   "forever-beta": {
     title: "THE FOREVER COMMUNITY TAKEOVER",
-    subtitle: "The new account is active. The handover is improving. The promised relaunch is still in a private channel.",
-    roast: "Your CTO is technically progressing. It is just progressing through a new pinned post every week.",
+    subtitle: "The transition is moving, but some permissions, custodians or acceptance checks remain in an interim state."
+    roast: "Your handover is technically progressing. It is just progressing through a new access checklist every week."
     disposition: "PLACED IN PERMANENT HANDOVER REVIEW.",
   },
   "soon-architect": {
     title: "THE SOON™ CTO",
-    subtitle: "Every recovery phase is imminent. The calendar has blocked the account.",
-    roast: "You have turned 'soon' into a seven-stage community takeover methodology.",
+    subtitle: "Access, credentials and operational ownership are expected after the next announcement. The keys remain elsewhere."
+    roast: "You have turned a missing permission into a seven-stage transfer methodology."
     disposition: "REFERRED TO THE OFFICE OF DEPLOYER SILENCE.",
   },
   "ticker-decoration": {
     title: "THE TICKER WITH A FUTURE JOB",
-    subtitle: "The token will become useful after the relaunch, the rebrand and the next three announcements.",
-    roast: "The roadmap gives the ticker a purpose in Phase 6. Phase 6 is waiting for the new banner.",
+    subtitle: "The takeover has a new identity and banner. Operational control still needs an owner, a scope and evidence."
+    roast: "The new account has admin energy. The actual admin permissions have declined to confirm."
     disposition: "REQUESTED TO PROVIDE A TOKEN PURPOSE BEFORE THE NEXT CTO SPACE.",
   },
   "partnership-vaporist": {
     title: "THE STRATEGIC KOL ALLIANCE",
-    subtitle: "Several accounts have posted the same CA. The Department is still looking for the original source.",
-    roast: "You have announced the pre-announcement of a KOL partnership with the possibility of a quote-tweet.",
+    subtitle: "A council or informal group is expected to own the transition, but its members, authority and deliverables are not documented."
+    roast: "You have announced the pre-announcement of an accountability matrix with the possibility of a future signature."
     disposition: "REFERRED TO THE OFFICE OF INDEPENDENT SOURCE VALIDATION.",
   },
   "community-amplifier": {
     title: "THE TELEGRAM REPLY FARM",
-    subtitle: "The community is active. The chat is moving. The deployer access checklist is still blank.",
-    roast: "Your roadmap has a very active social layer and a handover layer currently set to private.",
+    subtitle: "The group chat is active and the new checklist is pinned. No individual has confirmed the permission changes."
+    roast: "Your handover has a very active announcement layer and an access-control layer currently set to private."
     disposition: "ASSIGNED TO THE DEPARTMENT OF COMMUNITY-BASED RECOVERY.",
   },
   "global-adoption-intern": {
     title: "THE 100X REBRAND INTERN",
-    subtitle: "You have been asked to rebuild the entire Solana timeline before the next five-minute candle.",
-    roast: "Your final milestone serves every wallet on the planet. Your CTO Telegram has seventeen active members.",
+    subtitle: "You have been asked to scale the new operating structure everywhere before the first transfer record is signed."
+    roast: "Your final milestone serves every chain on the planet. The first admin permission is still awaiting an owner."
     disposition: "PROMOTED TO VICE PRESIDENT OF THE ENTIRE TIMELINE.",
   },
   "multiverse-expansionist": {
     title: "THE NARRATIVE MULTIVERSE EXPANSIONIST",
-    subtitle: "One ticker. Twelve narratives. Three separate CT accounts. No named owner.",
-    roast: "You are building the everything-memecoin for every chain, including several that only exist in the pinned thread.",
+    subtitle: "One takeover. Twelve workstreams. Three new operating groups. No agreed boundary for the first release."
+    roast: "You are transferring every system on every chain, including several that only exist in the pinned thread."
     disposition: "REFERRED TO THE OFFICE OF INTERGALACTIC CTO COORDINATION.",
   },
   "documentation-empire": {
     title: "THE PINNED-THREAD EMPIRE",
-    subtitle: "The takeover thread has a roadmap. The recovery has a table of contents.",
-    roast: "Your CTO has shipped three pinned posts. The first access question is still waiting for an answer.",
+    subtitle: "The handover has a table of contents, a checklist and three appendices. The actual permissions remain unverified."
+    roast: "Your CTO has shipped three pinned posts. The first credential rotation is still waiting for a calendar invite."
     disposition: "ARCHIVED UNDER: HANDOVER DOCUMENTED / CONTROL NOT VERIFIED.",
   },
   "milestone-matryoshka": {
     title: "THE PHASE TWO MATRYOSHKA",
-    subtitle: "Every recovery phase unlocks another recovery phase that explains the previous phase.",
-    roast: "Your Phase 2 is a roadmap for Phase 2. Phase 2.1 will explain who has the keys.",
+    subtitle: "Every acceptance phase unlocks another acceptance phase that explains why the previous phase remains open."
+    roast: "Your Phase 2 is a roadmap for Phase 2. Phase 2.1 will explain who signs off Phase 2."
     disposition: "PLACED INSIDE THE TAKEOVER ROADMAP FOR FURTHER REVIEW.",
   },
 };
@@ -291,181 +291,75 @@ function getDisposition(progress: RoadmapProgress) {
 }
 
 function buildMilestones(answers: number[], projectLabel: string): RoadmapMilestone[] {
-  const maturity = answers[0];
-  const timeline = answers[1];
-  const token = answers[2];
-  const partnerships = answers[3];
-  const community = answers[4];
-  const ambition = answers[5];
+  const access = answers[0];
+  const assets = answers[1];
+  const ownership = answers[2];
+  const acceptance = answers[3];
+  const security = answers[4];
+  const release = answers[5];
 
-  // Each timeline track reflects the answer selected in question 02.
-  const schedules = [
-    [
-      "AFTER THE NAMED OWNER ACCEPTS THE DELIVERABLE",
-      "AFTER THE DOCUMENTED ACCEPTANCE CHECK",
-      "WHEN THE VERIFIED CURVE MILESTONE IS REACHED",
-      "AFTER THE HANDOVER RECORD IS PUBLISHED",
-    ],
-    [
-      "ON THE PUBLISHED CTO MILESTONE DATE",
-      "ON THE DATED RELEASE CHECKPOINT",
-      "AFTER THE SCHEDULED COMMUNITY REVIEW",
-      "ON THE VERSIONED DELIVERY DATE",
-    ],
-    [
-      "AFTER THE NEXT CT SPACE",
-      "AFTER THE NEXT CURVE MILESTONE",
-      "WHEN THE DEPLOYER REPLIES",
-      "IN THE NEXT PINNED THREAD",
-    ],
-    [
-      "BEFORE THE NEXT 100X CALL",
-      "BEFORE THE NEXT GREEN-CANDLE SCREENSHOT",
-      "AFTER THE NEXT NARRATIVE PIVOT",
-      "WHEN THE CALENDAR ACCEPTS VIBES",
-    ],
-  ][timeline];
+  const schedule = [
+    "AFTER THE NAMED OWNER SIGNS THE ACCEPTANCE RECORD",
+    "ON THE PUBLISHED CHECKPOINT DATE",
+    "AFTER THE NEXT ANNOUNCEMENT / OWNER STILL PENDING",
+    "WHEN PHASE 2.7.4 IS APPROVED BY THE PHASE 2.7.3 WORKING GROUP",
+  ][acceptance];
 
-  const productStatus = [
-    "LIVE PRODUCT CLAIMED / RELEASE HISTORY NOT INDEPENDENTLY VERIFIED",
-    "PUBLIC BETA / SCOPE AND OWNERS REPORTED",
-    "TOKEN LIVE / PRODUCT STILL A PINNED POST",
-    "CA AND TELEGRAM LOCATED / PRODUCT DELIVERABLE NOT DESCRIBED",
-  ][maturity];
+  const accessRows = [
+    { title: "SCOPED OPERATIONAL ACCESS CONFIRMED", description: "The intake reports demonstrable access for named operators. Record the repository, deployment, domain and admin permissions, then verify the scope and revoke any access that is no longer required.", status: "NAMED ACCESS / INDEPENDENT CHECK REPORTED" },
+    { title: "PARTIAL ACCESS / OPEN TRANSFER ITEMS", description: "Some permissions have reportedly transferred. List the remaining credentials, assign an accountable recipient to each one and do not describe the handover as complete while any critical access remains unverified.", status: "PARTIAL TRANSFER / OPEN OWNERS RECORDED" },
+    { title: "SOCIAL ACCOUNT TRANSFER / OPERATIONAL ACCESS PENDING", description: "The public-facing account has changed, but the answers do not establish control of the systems that operate the project. Identify the missing permissions and the person responsible for transferring them.", status: "PUBLIC IDENTITY UPDATED / SYSTEM ACCESS UNVERIFIED" },
+    { title: "PINNED HANDOVER / KEY CUSTODY NOT IDENTIFIED", description: "The handover is described in public documentation, but no key holder or operational administrator has been identified. The first deliverable is a verified custody and access register.", status: "DOCUMENTATION LOCATED / CONTROL NOT VERIFIED" },
+  ][access];
 
-  const productTitle = [
-    "LIVE PRODUCT / RELEASE HISTORY REVIEW",
-    "PUBLIC BETA / SCOPE REVIEW",
-    "TOKEN LIVE / PRODUCT STILL A PINNED POST",
-    "CA LOCATED / PRODUCT DELIVERABLE NOT FOUND",
-  ][maturity];
+  const assetRows = [
+    { title: "COMPLETE ASSET AND DEPENDENCY REGISTER", description: "The intake reports a register covering repositories, domains, deployments, contracts, documentation, backups and custodians. Attach current locations, recovery paths and evidence of access to each entry.", status: "REGISTER REPORTED / CUSTODIANS IDENTIFIED" },
+    { title: "PARTIAL INVENTORY / FOLLOW-UP OWNERS ASSIGNED", description: "The known assets are listed, but some custodians or dependencies remain open. Assign an owner and a verification date to each missing item before the next release gate.", status: "PARTIAL REGISTER / OPEN ITEMS TRACKED" },
+    { title: "ASSET DISCOVERY STILL IN PROGRESS", description: "The asset trail is scattered across older threads and private channels. Consolidate locations, owners, recovery methods and dependencies into one versioned register.", status: "ASSET LOCATIONS / OWNERS NOT COMPLETE" },
+    { title: "THE INVENTORY HAS BECOME ITS OWN INVENTORY", description: "The register keeps expanding into nested lists. Freeze the scope, assign one custodian to the canonical record and close duplicate inventories before adding another phase.", status: "SCOPE CREEP / CANONICAL REGISTER NOT SETTLED" },
+  ][assets];
 
-  const productDescription = [
-    "The intake reports a live product, real users and shipped features. Record the release evidence, name the operators and show what remains active after launch attention fades.",
-    "The public beta is reported as active. Document its scope, limitations, named owners and acceptance criteria before calling the handover complete.",
-    "The token is live, but the product is still described as a pinned post. Separate token availability from actual product delivery and name the next verifiable release.",
-    "The CA and Telegram are present, but no working product or service has been described. File an actual deliverable before announcing another phase.",
-  ][maturity];
+  const ownershipRows = [
+    { title: "ACCOUNTABLE RESPONSIBILITY MAP", description: "Publish the named owner, backup, permission boundary and escalation route for each operational function. Each role must explicitly accept its responsibilities.", status: "OWNERS / BACKUPS / ESCALATION ROUTES REPORTED" },
+    { title: "INTERIM OWNERSHIP / ACCEPTANCE DATES PENDING", description: "The transition has interim owners. Record the responsibilities they have accepted, the items they cannot yet control and the dates for final handover.", status: "INTERIM RESPONSIBILITIES / FINAL SIGN-OFF OPEN" },
+    { title: "COLLECTIVE RESPONSIBILITY / NO INDIVIDUAL OWNER", description: "The group is described as collectively responsible, but no person owns the operational work. Convert every shared responsibility into a named role with a backup and escalation path.", status: "COMMUNITY CLAIM / ACCOUNTABILITY NOT ASSIGNED" },
+    { title: "ADVISORY COUNCIL / AUTHORITY NOT DOCUMENTED", description: "An informal council is mentioned without a public role map or confirmed decision rights. Name its members, define its scope and separate advice from authority to change systems.", status: "ADVISORY GROUP REPORTED / AUTHORITY UNVERIFIED" },
+  ][ownership];
 
-  const partnershipTitle = [
-    "NAMED COUNTERPARTIES ENTER THE RECORD",
-    "THE PILOT HAS A SCOPE AND A DATE",
-    "THE TIMELINE DISCOVERS THE SAME CA",
-    "THE RIGHT WALLETS ARE WATCHING / SOURCE NOT LOCATED",
-  ][partnerships];
+  const acceptanceRows = [
+    { title: "EVIDENCE-BASED MILESTONE ACCEPTANCE", description: "Every milestone has an owner, due date, acceptance criteria, evidence artifact and sign-off. Keep the acceptance record versioned so a completed deliverable cannot quietly become an unfinished phase.", status: "OWNER / DATE / CRITERIA / EVIDENCE REPORTED" },
+    { title: "DATED CHECKPOINTS / CRITERIA STILL EVOLVING", description: "The plan has dated checkpoints and measurable outcomes, but some acceptance criteria remain open. Publish the unresolved scope and do not mark the work complete until the evidence is available.", status: "CHECKPOINTS REPORTED / ACCEPTANCE PARTIAL" },
+    { title: "ANNOUNCEMENT-BASED COMPLETION", description: "A public update is being treated as proof that a phase is complete. Require a deliverable, owner and verifiable evidence before closing the milestone.", status: "ANNOUNCEMENT PUBLISHED / DELIVERABLE NOT VERIFIED" },
+    { title: "NESTED MILESTONE REVIEW", description: "The phase structure keeps creating additional phases. Freeze the current scope, define one acceptance test and close the existing deliverable before creating another milestone.", status: "PHASE EXPANSION / ACCEPTANCE NOT CLOSED" },
+  ][acceptance];
 
-  const partnershipStatus = [
-    "NAMED COUNTERPARTIES / SCOPE AND SOURCES REPORTED",
-    "DISCLOSED PILOT / SCOPE AND DATES REPORTED",
-    "KOL / MODERATOR DISCUSSIONS™",
-    "UNNAMED WALLET WATCHERS / SOURCE NOT LOCATED",
-  ][partnerships];
+  const securityRows = [
+    { title: "CREDENTIAL ROTATION AND LEAST-PRIVILEGE CHECK", description: "Rotate credentials, revoke former access where appropriate, verify signer roles, document least-privilege permissions and retain a timestamped record of the change.", status: "ROTATION / SIGNER REVIEW / REVOCATION REPORTED" },
+    { title: "STAGED ACCESS REVIEW / RESIDUAL RISKS TRACKED", description: "The transition is staged. Keep a register of outstanding credentials, assign a named owner to each risk and record the date and evidence required to close it.", status: "STAGED REVIEW / OPEN RISKS ASSIGNED" },
+    { title: "PUBLIC ANNOUNCEMENT / CREDENTIAL ROTATION DEFERRED", description: "The new administrator is announced before the permission changes are verified. Pause any claim of complete transfer until rotation, revocation and access testing are recorded.", status: "NEW ADMIN ANNOUNCED / PERMISSION STATE UNKNOWN" },
+    { title: "PINNED SECURITY CHECKLIST / NO PERMISSION EVIDENCE", description: "A checklist is visible, but the underlying permissions have not been demonstrated. Request evidence for each critical system and mark unverified access as an open risk.", status: "CHECKLIST PUBLISHED / CONTROL CHANGE NOT PROVEN" },
+  ][security];
 
-  const partnershipDescription = [
-    "Publish the named counterparties, agreed scope, deliverables and source links. Distinguish paid promotion from independent commentary.",
-    "Record the pilot's scope, dates, named owners and acceptance criteria. Disclose paid promotion or other incentives clearly.",
-    "Several KOL-style accounts are repeating the same call. Trace the original source and disclose any coordinated or paid campaign.",
-    "The claim that 'the right wallets are watching' has no names or checkable context. Identify the counterparties or withdraw the claim.",
-  ][partnerships];
-
-  const tokenStatus = [
-    "DEFINED TOKEN FUNCTION / WORKFLOW IDENTIFIED",
-    "INCENTIVE OR GOVERNANCE ROLE / LIMITS TO DOCUMENT",
-    "FUTURE UTILITY / CTO PHASE DEPENDENCY",
-    "TICKER CONFIRMED / PURPOSE PENDING",
-  ][token];
-
-  const tokenDescription = [
-    "Document the token's defined function, the product workflow it supports and why that workflow requires an on-chain token.",
-    "Publish the incentive or governance role, its limits and its trade-offs. The Department requests the small print.",
-    "The utility is deferred until after the CTO takeover and the next narrative pivot. Put a named owner and a verifiable milestone on that dependency.",
-    "The ticker exists, but no token-specific function has been identified. Mark the purpose as unresolved rather than inventing one.",
-  ][token];
-
-  const communityStatus = [
-    "REPEAT USERS / RETURNING CONTRIBUTORS REPORTED",
-    "ACTIVE HOLDERS / BUILDERS / CONTRIBUTORS REPORTED",
-    "FOLLOWERS / IMPRESSIONS / SPACES ATTENDANCE",
-    "POST-RED-CANDLE REPLIES / RETENTION NOT VERIFIED",
-  ][community];
-
-  const communityDescription = [
-    "Report returning contributors, repeat product use and useful feedback. The Department requests defined measures rather than a launch-day screenshot.",
-    "Separate active holders, builders and contributors. Record participation that goes beyond copy-pasted 'send it' replies.",
-    "Follower counts, impressions and Spaces attendance are not retention metrics. Add evidence of repeat participation or product use.",
-    "Record how many people remain after the chart turns red, then distinguish continued posting from continued use.",
-  ][community];
-
-  const finalGoal = [
-    "SHIP AND MAINTAIN A DURABLE PRODUCT OR COMMUNITY",
-    "EXPAND A REAL, INTEGRATED ECOSYSTEM",
-    "LAUNCH ANOTHER TICKER / THE NEXT 100X STORY",
-    "BUILD THE MEME-MULTIVERSE",
-  ][ambition];
-
-  const finalDescription = [
-    "Publish the next release, name accountable owners and show how the product or community remains useful beyond the launch cycle.",
-    "Document real integrations, responsible operators and actual users. The Department requests a working deliverable rather than a partner-logo wall.",
-    "Prepare the next ticker, launchpad and global-holder announcement. The current file remains open until the previous post-mortem is complete.",
-    "Extend the narrative across AI, gaming, DePIN and RWA before the current product or token purpose has been established.",
-  ][ambition];
-
-  const finalStatus = [
-    "DELIVERY TARGET / NOT A PROMISE",
-    "INTEGRATION TARGET / EVIDENCE REQUIRED",
-    "VISIONARY / COMMUNITY SIZE NOT VERIFIED",
-    "VISIONARY / CALENDAR NOT REQUIRED",
-  ][ambition];
+  const releaseRows = [
+    { title: "SCOPED FIRST RELEASE / TESTED ROLLBACK", description: "Deliver one bounded change with a named maintainer, test evidence, rollback path and explicit sign-off. Use the first release to prove that the new operating structure can maintain the system.", status: "SCOPE / TEST / MAINTAINER / SIGN-OFF REPORTED" },
+    { title: "PHASED RELEASE / CHECKPOINTS DEFINED", description: "The release is staged with measurable checkpoints and disclosed dependencies. Keep each phase independently testable and avoid bundling unrelated work into the handover.", status: "STAGED RELEASE / DEPENDENCIES DISCLOSED" },
+    { title: "ROADMAP THREAD MISLABELLED AS RELEASE ONE", description: "A new roadmap has been published, but the answers do not identify a shipped change. Record the first actual deliverable and its verification evidence.", status: "NEW DOCUMENT / NO RELEASE EVIDENCE" },
+    { title: "MULTIVERSE RELAUNCH / SCOPE NOT CONTROLLED", description: "Several unrelated workstreams are being announced at once. Reduce the scope to one maintainable release with an owner, asset register and acceptance test.", status: "SCOPE CREEP / RELEASE BOUNDARIES NOT SET" },
+  ][release];
 
   return [
+    { phase: "PHASE 01 / AUTHORITY TRANSFER", title: accessRows.title, description: projectLabel + " enters operational handover. " + accessRows.description, eta: "ALREADY IN PROGRESS", status: accessRows.status },
+    { phase: "PHASE 02 / ASSET DISCOVERY", title: assetRows.title, description: assetRows.description, eta: schedule, status: assetRows.status },
+    { phase: "PHASE 03 / RESPONSIBILITY MAP", title: ownershipRows.title, description: ownershipRows.description, eta: schedule, status: ownershipRows.status },
+    { phase: "PHASE 04 / DELIVERY ACCEPTANCE", title: acceptanceRows.title, description: acceptanceRows.description, eta: schedule, status: acceptanceRows.status },
+    { phase: "PHASE 05 / ACCESS SECURITY", title: securityRows.title, description: securityRows.description, eta: schedule, status: securityRows.status },
+    { phase: "PHASE 06 / FIRST MAINTAINABLE RELEASE", title: releaseRows.title, description: releaseRows.description, eta: schedule, status: releaseRows.status },
     {
-      phase: "PHASE 01 / LAUNCH AFTERMATH",
-      title: "THE DEPLOYER GOES QUIET",
-      description: projectLabel + " begins with a CA, a launch thread and a deployer account that has stopped answering questions. The Department requests a named status update.",
-      eta: "ALREADY IN PROGRESS",
-      status: "CA LOCATED / HANDOVER NOT VERIFIED",
-    },
-    {
-      phase: "PHASE 02 / COMMUNITY TAKEOVER",
-      title: "THE CTO ACCOUNT APPEARS",
-      description: "Publish the handover thread, name the people taking responsibility and explain which permissions, channels and project assets have actually changed hands.",
-      eta: schedules[0],
-      status: "BANNER UPDATED / ACCESS REVIEW OPEN",
-    },
-    {
-      phase: "PHASE 03 / LAUNCH & CURVE",
-      title: productTitle,
-      description: productDescription,
-      eta: schedules[1],
-      status: productStatus,
-    },
-    {
-      phase: "PHASE 04 / CT & KOL COORDINATION",
-      title: partnershipTitle,
-      description: partnershipDescription,
-      eta: schedules[2],
-      status: partnershipStatus,
-    },
-    {
-      phase: "PHASE 05 / TOKEN PURPOSE",
-      title: "A TICKER NEEDS MORE THAN A CHART",
-      description: tokenDescription,
-      eta: schedules[3],
-      status: tokenStatus,
-    },
-    {
-      phase: "PHASE 06 / COMMUNITY OPERATIONS",
-      title: "FROM CT REPLIES TO RESPONSIBLE OPERATORS",
-      description: communityDescription,
-      eta: schedules[(timeline + 1) % schedules.length],
-      status: communityStatus,
-    },
-    {
-      phase: "PHASE 07 / THE DESTINATION",
-      title: finalGoal,
-      description: finalDescription,
-      eta: schedules[3],
-      status: finalStatus,
+      phase: "PHASE 07 / HANDOVER CLOSEOUT",
+      title: "NO OPEN CRITICAL ACCESS OR OWNERLESS DELIVERABLES",
+      description: "Close the takeover only when critical permissions have been verified, project assets have named custodians, operational responsibilities have accepted owners and the first release has passed its stated checks. Publish unresolved limitations instead of declaring a fictional clean bill of health.",
+      eta: "AFTER ALL SIX CHECKS HAVE NAMED EVIDENCE AND OWNERS",
+      status: "CLOSEOUT / OPEN ITEMS MUST REMAIN VISIBLE",
     },
   ];
 }
