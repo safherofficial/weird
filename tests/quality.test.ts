@@ -2975,6 +2975,7 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
 
   const page = readFileSync("app/club/page.tsx", "utf8");
   const component = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const weeklyRitual = readFileSync("app/club/club-weekly-ritual.tsx", "utf8");
   const data = readFileSync("app/club/club-campaign-continuity-data.ts", "utf8");
   const css = readFileSync("app/club/club-campaign-continuity.module.css", "utf8");
   const readme = readFileSync("README.md", "utf8");
@@ -2990,6 +2991,7 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   assert.ok(component.includes('href="#club-meme-studio"'));
   assert.ok(component.includes('href="#club-challenge-board"'));
   assert.ok(component.includes('href="#club-weekly-ritual"'));
+  assert.equal((weeklyRitual.match(/id="club-weekly-ritual"/g) || []).length, 2, "both weekly ritual render states must provide the route anchor");
   assert.ok(component.includes("{continuity.weeklyRitual.title}"));
   assert.ok(component.includes("{continuity.weeklyRitual.prompt}"));
   assert.ok(component.includes("This panel creates no new stored record"));

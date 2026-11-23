@@ -55,7 +55,7 @@ export default function ClubWeeklyRitual() {
 
   if (!challenge) {
     return (
-      <section className="club-weekly-ritual" aria-labelledby="club-weekly-title">
+      <section id="club-weekly-ritual" className="club-weekly-ritual" aria-labelledby="club-weekly-title">
         <span>WEEKLY RITUAL / UTC ROTATION</span>
         <h3 id="club-weekly-title">THE WEEKLY TRENCHES FILE.</h3>
         <p>THE DEPARTMENT IS PREPARING THIS WEEK'S PAPERWORK.</p>
@@ -67,7 +67,7 @@ export default function ClubWeeklyRitual() {
   const filed = savedAnswer !== undefined;
 
   return (
-    <section className="club-weekly-ritual" aria-labelledby="club-weekly-title">
+    <section id="club-weekly-ritual" className="club-weekly-ritual" aria-labelledby="club-weekly-title">
       <header className="club-weekly-ritual__header">
         <div>
           <span>RECURRING RITUAL / {challenge.weekKey} / WEEK {String(challenge.weekNumber).padStart(2, "0")}</span>
