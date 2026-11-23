@@ -134,3 +134,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U39 — 99% Club Adaptive Campaign Typography: headline type is measured and resized against each format's actual canvas width and vertical budget. The two headline blocks are composed together as a balanced group, and the separator follows their measured heights instead of fixed coordinates. Short copy gains visual weight; longer copy receives a smaller, multi-line layout. The existing preflight checks the resulting safe-area bounds before any PNG or ZIP export.
+
+
+- U40 — 99% Club Editorial Campaign Layouts: the Meme Office offers three selectable artwork compositions — the existing centered stack, a left-aligned editorial report with accent rail, and a split left/right statement. All three retain adaptive typography and the canvas-measured preflight across square, portrait and story exports. The selected layout is included in PNG and ZIP filenames; the original centered layout remains the default. Rendering and quality checks stay local in the browser.

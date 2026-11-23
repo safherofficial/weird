@@ -11,6 +11,23 @@ export const CLUB_CAMPAIGN_ARTWORK_FORMATS = [
 export type ClubCampaignArtworkFormat = (typeof CLUB_CAMPAIGN_ARTWORK_FORMATS)[number];
 export type ClubCampaignArtworkFormatId = ClubCampaignArtworkFormat["id"];
 
+export const CLUB_CAMPAIGN_ARTWORK_LAYOUTS = [
+  { id: "centered", label: "CENTERED", description: "Balanced, symmetrical headline stack" },
+  { id: "left-editorial", label: "LEFT EDITORIAL", description: "Left-aligned report layout with an accent rail" },
+  { id: "split-statement", label: "SPLIT STATEMENT", description: "Contrasting left and right headline alignment" },
+] as const;
+
+export type ClubCampaignArtworkLayout = (typeof CLUB_CAMPAIGN_ARTWORK_LAYOUTS)[number];
+export type ClubCampaignArtworkLayoutId = ClubCampaignArtworkLayout["id"];
+
+/** The original centered composition remains the default for compatibility. */
+export function getClubCampaignArtworkLayout(
+  layoutId: ClubCampaignArtworkLayoutId = "centered",
+): ClubCampaignArtworkLayout {
+  return CLUB_CAMPAIGN_ARTWORK_LAYOUTS.find((layout) => layout.id === layoutId)
+    ?? CLUB_CAMPAIGN_ARTWORK_LAYOUTS[0];
+}
+
 /** Resolves a supported canvas size. Square remains the compatibility default. */
 export function getClubCampaignArtworkFormat(
   formatId: ClubCampaignArtworkFormatId = "square",
@@ -34,9 +51,10 @@ export function buildClubCampaignArtworkCaption(
 export function buildClubCampaignArtworkFilename(
   campaign: ClubCampaignDrop,
   formatId?: ClubCampaignArtworkFormatId,
+  layoutId?: ClubCampaignArtworkLayoutId,
 ): string {
   const base = "the-99-percent-club-" + campaign.weekKey.toLowerCase() + "-" + campaign.theme.id;
-  return base + (formatId ? "-" + formatId : "") + ".png";
+  return base + (formatId ? "-" + formatId : "") + (layoutId ? "-" + layoutId : "") + ".png";
 }
 
 
@@ -147,8 +165,12 @@ export function buildClubCampaignArtworkZip(entries: ClubCampaignArtworkZipEntry
   return output;
 }
 
-export function buildClubCampaignArtworkPackFilename(campaign: ClubCampaignDrop): string {
-  return "the-99-percent-club-" + campaign.weekKey.toLowerCase() + "-" + campaign.theme.id + "-artwork-pack.zip";
+export function buildClubCampaignArtworkPackFilename(
+  campaign: ClubCampaignDrop,
+  layoutId?: ClubCampaignArtworkLayoutId,
+): string {
+  return "the-99-percent-club-" + campaign.weekKey.toLowerCase() + "-" + campaign.theme.id
+    + (layoutId ? "-" + layoutId : "") + "-artwork-pack.zip";
 }
 
 
@@ -214,6 +236,14 @@ export type ClubCampaignArtworkComposition = {
   withinSafeArea: boolean;
   topLineCount: number;
   bottomLineCount: number;
+  layoutId: ClubCampaignArtworkLayoutId;
+  layoutLabel: string;
+  topTextAlign: "left" | "center" | "right";
+  bottomTextAlign: "left" | "center" | "right";
+  topAnchorX: number;
+  bottomAnchorX: number;
+  separatorX: number;
+  separatorWidth: number;
 };
 
 /**
@@ -227,8 +257,10 @@ export function buildClubCampaignArtworkComposition(
   bottomLineCount: number,
   topFontSize: number,
   bottomFontSize: number,
+  layoutId: ClubCampaignArtworkLayoutId = "centered",
 ): ClubCampaignArtworkComposition {
   const format = getClubCampaignArtworkFormat(formatId);
+  const layout = getClubCampaignArtworkLayout(layoutId);
   const counts = [topLineCount, bottomLineCount];
   const sizes = [topFontSize, bottomFontSize];
   if (counts.some((count) => !Number.isInteger(count) || count < 1 || count > 4)) {
@@ -245,6 +277,37 @@ export function buildClubCampaignArtworkComposition(
   const bottomHeight = blockHeight(bottomLineCount, bottomFontSize);
   const safeBounds = { top: format.height * 0.295, bottom: format.height * 0.84 };
   const gap = format.height * 0.065;
+  const insetX = format.width * 0.06;
+  const sidePadding = format.width / 1200 * 6;
+  const leftAnchorX = insetX + sidePadding;
+  const rightAnchorX = format.width - insetX - sidePadding;
+  const centeredAnchorX = format.width / 2;
+  const horizontalLayouts = layout.id === "left-editorial"
+    ? {
+      topTextAlign: "left" as const,
+      bottomTextAlign: "left" as const,
+      topAnchorX: leftAnchorX,
+      bottomAnchorX: leftAnchorX,
+      separatorX: leftAnchorX,
+      separatorWidth: (format.width - insetX * 2) * 0.22,
+    }
+    : layout.id === "split-statement"
+      ? {
+        topTextAlign: "left" as const,
+        bottomTextAlign: "right" as const,
+        topAnchorX: leftAnchorX,
+        bottomAnchorX: rightAnchorX,
+        separatorX: format.width * 0.42,
+        separatorWidth: format.width * 0.16,
+      }
+      : {
+        topTextAlign: "center" as const,
+        bottomTextAlign: "center" as const,
+        topAnchorX: centeredAnchorX,
+        bottomAnchorX: centeredAnchorX,
+        separatorX: format.width * 0.435,
+        separatorWidth: format.width * 0.13,
+      };
   const groupHeight = topHeight + gap + bottomHeight;
   const startY = safeBounds.top + Math.max(0, (safeBounds.bottom - safeBounds.top - groupHeight) / 2);
   const topBounds = { top: startY, bottom: startY + topHeight };
@@ -269,5 +332,8 @@ export function buildClubCampaignArtworkComposition(
     withinSafeArea,
     topLineCount,
     bottomLineCount,
+    layoutId: layout.id,
+    layoutLabel: layout.label,
+    ...horizontalLayouts,
   };
 }

@@ -26,7 +26,9 @@ import {
   buildClubCampaignArtworkComposition,
   buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
+  CLUB_CAMPAIGN_ARTWORK_LAYOUTS,
   getClubCampaignArtworkFormat,
+  getClubCampaignArtworkLayout,
 } from "../app/club/club-campaign-artwork-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
@@ -3324,4 +3326,65 @@ test("U39 adaptive artwork composition balances short and long headlines across 
   assert.ok(component.includes("composition.separatorY"));
   assert.ok(component.includes("height * 0.235"));
   assert.ok(component.includes("let fontSize = 90 * scale"));
+});
+
+
+test("U40 campaign artwork layouts are distinct, responsive and included in export identity", () => {
+  assert.deepEqual(
+    CLUB_CAMPAIGN_ARTWORK_LAYOUTS.map((layout) => layout.id),
+    ["centered", "left-editorial", "split-statement"],
+  );
+  assert.equal(getClubCampaignArtworkLayout().id, "centered");
+
+  for (const format of CLUB_CAMPAIGN_ARTWORK_FORMATS) {
+    const centered = buildClubCampaignArtworkComposition(format.id, 2, 2, 76, 76);
+    const editorial = buildClubCampaignArtworkComposition(format.id, 2, 2, 76, 76, "left-editorial");
+    const split = buildClubCampaignArtworkComposition(format.id, 2, 2, 76, 76, "split-statement");
+
+    for (const composition of [centered, editorial, split]) {
+      assert.equal(composition.withinSafeArea, true, format.id + " / " + composition.layoutId + " stays in the vertical safe area");
+      assert.ok(composition.topBounds.bottom < composition.bottomBounds.top, format.id + " / " + composition.layoutId + " headline blocks do not overlap");
+      assert.ok(composition.separatorY > composition.topBounds.bottom && composition.separatorY < composition.bottomBounds.top);
+      assert.ok(composition.separatorWidth > 0);
+      assert.ok(composition.separatorX >= 0);
+      assert.ok(composition.separatorX + composition.separatorWidth <= format.width);
+    }
+
+    assert.equal(centered.topTextAlign, "center");
+    assert.equal(centered.bottomTextAlign, "center");
+    assert.equal(editorial.topTextAlign, "left");
+    assert.equal(editorial.bottomTextAlign, "left");
+    assert.equal(editorial.topAnchorX, editorial.bottomAnchorX);
+    assert.equal(split.topTextAlign, "left");
+    assert.equal(split.bottomTextAlign, "right");
+    assert.ok(split.topAnchorX < split.bottomAnchorX);
+    assert.notEqual(centered.separatorX, editorial.separatorX);
+  }
+
+  const campaign = getClubCampaignDrop(new Date("2026-11-23T12:00:00.000Z"));
+  assert.equal(
+    buildClubCampaignArtworkFilename(campaign, "square", "left-editorial"),
+    "the-99-percent-club-2026-w48-dyor-receipt-square-left-editorial.png",
+  );
+  assert.equal(
+    buildClubCampaignArtworkPackFilename(campaign, "split-statement"),
+    "the-99-percent-club-2026-w48-dyor-receipt-split-statement-artwork-pack.zip",
+  );
+  assert.equal(
+    buildClubCampaignArtworkFilename(campaign),
+    "the-99-percent-club-2026-w48-dyor-receipt.png",
+    "the original no-format filename remains compatible",
+  );
+
+  const component = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+  assert.ok(component.includes('aria-label="Choose an artwork composition"'));
+  assert.ok(component.includes("setArtworkLayoutId(layout.id)"));
+  assert.ok(component.includes("composition.topTextAlign"));
+  assert.ok(component.includes("composition.bottomTextAlign"));
+  assert.ok(component.includes("composition.separatorWidth"));
+  assert.ok(component.includes("artworkLayout.id"));
+  assert.ok(component.includes("layout.label"));
+  assert.ok(css.includes(".club-meme-studio__layouts"));
+  assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog/i);
 });

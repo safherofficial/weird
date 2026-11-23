@@ -15107,3 +15107,44 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   .club-meme-studio__preflight-grid { grid-template-columns:1fr; }
   .club-meme-studio__preflight-grid article canvas { max-height:250px; object-fit:contain; }
 }
+
+
+/* U40 — selectable editorial compositions for campaign artwork. */
+.club-meme-studio__layouts {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:0 0 20px;
+}
+.club-meme-studio__layouts button {
+  display:grid;
+  align-content:start;
+  gap:6px;
+  min-width:0;
+  min-height:76px;
+  padding:12px;
+  border:1px solid #344331;
+  background:#0b110c;
+  color:#b9c3b2;
+  text-align:left;
+  cursor:pointer;
+}
+.club-meme-studio__layouts button.is-active {
+  border-color:var(--accent);
+  background:rgb(182 255 101 / 8%);
+  box-shadow:inset 0 0 0 1px rgb(182 255 101 / 15%);
+}
+.club-meme-studio__layouts button > span {
+  color:#84937d;
+  font:700 6px/1.5 var(--font-mono);
+  letter-spacing:.04em;
+}
+.club-meme-studio__layouts button > strong {
+  color:#e3eadc;
+  font:800 9px/1.35 var(--sans);
+}
+.club-meme-studio__layouts button.is-active > strong { color:var(--accent); }
+@media (max-width:560px) {
+  .club-meme-studio__layouts { grid-template-columns:1fr; }
+  .club-meme-studio__layouts button { min-height:0; }
+}

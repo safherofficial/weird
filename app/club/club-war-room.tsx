@@ -14,8 +14,11 @@ import {
   buildClubCampaignArtworkPackFilename,
   buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
+  CLUB_CAMPAIGN_ARTWORK_LAYOUTS,
   getClubCampaignArtworkFormat,
+  getClubCampaignArtworkLayout,
   type ClubCampaignArtworkFormatId,
+  type ClubCampaignArtworkLayoutId,
   type ClubCampaignArtworkPreflight,
   buildClubCampaignArtworkPreflight,
   buildClubCampaignArtworkComposition,
@@ -86,6 +89,7 @@ function drawMeme(
   campaign: ClubCampaignDrop | null,
   formatName: string,
   format: ReturnType<typeof getClubCampaignArtworkFormat>,
+  layout: ReturnType<typeof getClubCampaignArtworkLayout>,
 ): ClubCampaignArtworkPreflight {
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Canvas rendering is unavailable in this browser.");
@@ -135,6 +139,9 @@ function drawMeme(
   context.fillStyle = "#71836a";
   context.font = "700 " + 12 * scale + "px monospace";
   context.fillText("FORMAT / " + formatName.toUpperCase(), rightX - 6 * scale, y(0.096), contentWidth * 0.58);
+  context.fillStyle = "#71836a";
+  context.font = "700 " + 10 * scale + "px monospace";
+  context.fillText("LAYOUT / " + layout.label, rightX - 6 * scale, y(0.114), contentWidth * 0.58);
 
   context.textAlign = "left";
   context.fillStyle = "#b6ff65";
@@ -201,20 +208,27 @@ function drawMeme(
     bottomMeasured.lineCount,
     topMeasured.fontSize,
     bottomMeasured.fontSize,
+    layout.id,
   );
 
   const drawBlock = (
     measured: ReturnType<typeof measureHeadline>,
     centerY: number,
     accent: boolean,
+    anchorX: number,
+    textAlign: "left" | "center" | "right",
   ) => {
     const firstY = centerY - ((measured.lines.length - 1) * measured.lineHeight) / 2;
     context.font = "900 " + measured.fontSize + "px Arial, sans-serif";
-    context.textAlign = "center";
+    context.textAlign = textAlign;
     context.textBaseline = "middle";
+    if (layout.id === "left-editorial") {
+      context.fillStyle = accent ? "#b6ff65" : "#526744";
+      context.fillRect(insetX + 2 * scale, centerY - measured.blockHeight / 2, 4 * scale, measured.blockHeight);
+    }
     context.fillStyle = accent ? "#b6ff65" : "#f1f3eb";
     measured.lines.forEach((line, index) => {
-      context.fillText(line, width / 2, firstY + index * measured.lineHeight, contentWidth * 0.92);
+      context.fillText(line, anchorX, firstY + index * measured.lineHeight, contentWidth * 0.92);
     });
     const top = centerY - measured.blockHeight / 2;
     const bottom = centerY + measured.blockHeight / 2;
@@ -227,10 +241,27 @@ function drawMeme(
     };
   };
 
-  const topAudit = drawBlock(topMeasured, composition.topCenterY, false);
+  const topAudit = drawBlock(
+    topMeasured,
+    composition.topCenterY,
+    false,
+    composition.topAnchorX,
+    composition.topTextAlign,
+  );
   context.fillStyle = "#526744";
-  context.fillRect(width * 0.435, composition.separatorY - 2.5 * scale, width * 0.13, 5 * scale);
-  const bottomAudit = drawBlock(bottomMeasured, composition.bottomCenterY, true);
+  context.fillRect(
+    composition.separatorX,
+    composition.separatorY - 2.5 * scale,
+    composition.separatorWidth,
+    5 * scale,
+  );
+  const bottomAudit = drawBlock(
+    bottomMeasured,
+    composition.bottomCenterY,
+    true,
+    composition.bottomAnchorX,
+    composition.bottomTextAlign,
+  );
 
   context.textAlign = "left";
   context.textBaseline = "alphabetic";
@@ -277,7 +308,9 @@ export default function ClubWarRoom() {
   const [packagePreflight, setPackagePreflight] = useState<ClubCampaignArtworkPreflight[] | null>(null);
   const [selectedId, setSelectedId] = useState(initialTemplate.id);
   const [artworkFormatId, setArtworkFormatId] = useState<ClubCampaignArtworkFormatId>("square");
+  const [artworkLayoutId, setArtworkLayoutId] = useState<ClubCampaignArtworkLayoutId>("centered");
   const artworkFormat = getClubCampaignArtworkFormat(artworkFormatId);
+  const artworkLayout = getClubCampaignArtworkLayout(artworkLayoutId);
   const [topText, setTopText] = useState(initialTemplate.topText);
   const [bottomText, setBottomText] = useState(initialTemplate.bottomText);
   const [notice, setNotice] = useState("");
@@ -308,10 +341,10 @@ export default function ClubWarRoom() {
   useEffect(() => {
     if (!canvasRef.current) return;
     try {
-      drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat);
+      drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat, artworkLayout);
       const reports = CLUB_CAMPAIGN_ARTWORK_FORMATS.map((format) => {
         const previewCanvas = document.createElement("canvas");
-        const report = drawMeme(previewCanvas, topText, bottomText, campaign, selectedTemplate.name, format);
+        const report = drawMeme(previewCanvas, topText, bottomText, campaign, selectedTemplate.name, format, artworkLayout);
         const thumbnail = preflightCanvasRefs.current[format.id];
         if (thumbnail) {
           thumbnail.width = format.width;
@@ -326,7 +359,7 @@ export default function ClubWarRoom() {
       setPackagePreflight(null);
       setNotice("MEME PREVIEW OR PREFLIGHT UNAVAILABLE. YOUR BROWSER MAY NOT SUPPORT CANVAS.");
     }
-  }, [topText, bottomText, campaign, selectedTemplate.name, artworkFormat]);
+  }, [topText, bottomText, campaign, selectedTemplate.name, artworkFormat, artworkLayout]);
 
   function selectTemplate(template: ClubMemeTemplate) {
     setSelectedId(template.id);
@@ -340,8 +373,8 @@ export default function ClubWarRoom() {
     if (!selectedPreflight?.ready) throw new Error("The selected format did not pass the export preflight.");
     const blob = await canvasBlob(canvasRef.current);
     return new File([blob], campaign
-      ? buildClubCampaignArtworkFilename(campaign, artworkFormat.id)
-      : "the-99-percent-club-weekly-draft-" + artworkFormat.id + ".png", { type: "image/png" });
+      ? buildClubCampaignArtworkFilename(campaign, artworkFormat.id, artworkLayout.id)
+      : "the-99-percent-club-weekly-draft-" + artworkFormat.id + "-" + artworkLayout.id + ".png", { type: "image/png" });
   }
 
   async function downloadMeme() {
@@ -375,12 +408,12 @@ export default function ClubWarRoom() {
     try {
       const rendered = await Promise.all(CLUB_CAMPAIGN_ARTWORK_FORMATS.map(async (format) => {
         const exportCanvas = document.createElement("canvas");
-        const audit = drawMeme(exportCanvas, topText, bottomText, campaign, selectedTemplate.name, format);
+        const audit = drawMeme(exportCanvas, topText, bottomText, campaign, selectedTemplate.name, format, artworkLayout);
         const png = await canvasBlob(exportCanvas);
         return {
           audit,
           entry: {
-            name: buildClubCampaignArtworkFilename(campaign, format.id),
+            name: buildClubCampaignArtworkFilename(campaign, format.id, artworkLayout.id),
             bytes: new Uint8Array(await png.arrayBuffer()),
           },
         };
@@ -399,7 +432,7 @@ export default function ClubWarRoom() {
       const url = URL.createObjectURL(file);
       const anchor = document.createElement("a");
       anchor.href = url;
-      anchor.download = buildClubCampaignArtworkPackFilename(campaign);
+      anchor.download = buildClubCampaignArtworkPackFilename(campaign, artworkLayout.id);
       document.body.appendChild(anchor);
       anchor.click();
       anchor.remove();
@@ -508,6 +541,23 @@ export default function ClubWarRoom() {
               <span>{format.ratio} / {format.description}</span>
               <strong>{format.label}</strong>
               <small>{format.dimensions} PX</small>
+            </button>
+          ))}
+        </div>
+        <div className="club-meme-studio__layouts" role="group" aria-label="Choose an artwork composition">
+          {CLUB_CAMPAIGN_ARTWORK_LAYOUTS.map((layout) => (
+            <button
+              type="button"
+              key={layout.id}
+              className={artworkLayoutId === layout.id ? "is-active" : ""}
+              aria-pressed={artworkLayoutId === layout.id}
+              onClick={() => {
+                setPackagePreflight(null);
+                setArtworkLayoutId(layout.id);
+              }}
+            >
+              <span>{layout.description}</span>
+              <strong>{layout.label}</strong>
             </button>
           ))}
         </div>
