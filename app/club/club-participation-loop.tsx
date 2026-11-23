@@ -43,7 +43,7 @@ export default function ClubParticipationLoop() {
 
   if (!ready || !continuity) {
     return (
-      <section className={styles.participation} id="club-participation-loop" aria-labelledby="club-participation-title">
+      <section className={styles.participation} id="club-participation-loop" aria-label="Club participation loop loading">
         <p className={styles.loading} role="status">ALIGNING THE PARTICIPATION LOOP WITH THIS WEEK'S CAMPAIGN…</p>
       </section>
     );
