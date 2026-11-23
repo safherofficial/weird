@@ -18,7 +18,12 @@ import { getClubCommunityContentInventory, getClubLocalPassportEvidence } from "
 import { CLUB_FACTION_CAMPAIGN_MISSIONS, getClubCampaignContinuity } from "../app/club/club-campaign-continuity-data";
 import { CLUB_CONTRIBUTION_CHARACTER_BUDGET, getClubContributionStarters, getClubContributionWritingCue } from "../app/club/club-contribution-engine";
 import { CLUB_PARTICIPATION_TEXT_BUDGET, getClubParticipationDrafts } from "../app/club/club-participation-loop-engine";
-import { buildClubCampaignArtworkCaption, buildClubCampaignArtworkFilename } from "../app/club/club-campaign-artwork-engine";
+import {
+  buildClubCampaignArtworkCaption,
+  buildClubCampaignArtworkFilename,
+  CLUB_CAMPAIGN_ARTWORK_FORMATS,
+  getClubCampaignArtworkFormat,
+} from "../app/club/club-campaign-artwork-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -3114,13 +3119,50 @@ test("U35 Campaign Artwork gives each meme export a consistent campaign identity
   const globalCss = readFileSync("app/globals.css", "utf8");
   const engine = readFileSync("app/club/club-campaign-artwork-engine.ts", "utf8");
   assert.ok(warRoom.includes("getClubCampaignDrop(new Date())"));
-  assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name)"));
+  assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat)"));
   assert.ok(warRoom.includes("WEEKLY ISSUE / "));
   assert.ok(warRoom.includes("CROSS-CHAIN CAMPAIGN SERIES"));
-  assert.ok(warRoom.includes("buildClubCampaignArtworkFilename(campaign)"));
+  assert.ok(warRoom.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id)"));
   assert.ok(warRoom.includes("buildClubCampaignArtworkCaption(selectedTemplate, campaign)"));
   assert.ok(warRoom.includes("campaign.theme.title"));
   assert.ok(globalCss.includes(".club-meme-studio__campaign-edition"));
   assert.ok(globalCss.includes("overflow-wrap:anywhere"), "campaign edition title must not overflow narrow layouts");
   assert.ok(engine.includes("campaign.weekKey.toLowerCase()"));
+});
+
+
+test("U36 Multi-Format Campaign Export provides correctly sized, campaign-stamped square, portrait and story artwork", () => {
+  const campaign = getClubCampaignDrop(new Date("2026-11-23T12:00:00.000Z"));
+  assert.deepEqual(
+    CLUB_CAMPAIGN_ARTWORK_FORMATS.map(({ id, width, height, ratio }) => ({ id, width, height, ratio })),
+    [
+      { id: "square", width: 1200, height: 1200, ratio: "1:1" },
+      { id: "portrait", width: 1080, height: 1350, ratio: "4:5" },
+      { id: "story", width: 1080, height: 1920, ratio: "9:16" },
+    ],
+  );
+  assert.equal(getClubCampaignArtworkFormat().id, "square");
+  assert.equal(getClubCampaignArtworkFormat("portrait").height, 1350);
+  assert.equal(getClubCampaignArtworkFormat("story").width, 1080);
+  assert.equal(buildClubCampaignArtworkFilename(campaign), "the-99-percent-club-2026-w48-dyor-receipt.png");
+  assert.equal(buildClubCampaignArtworkFilename(campaign, "square"), "the-99-percent-club-2026-w48-dyor-receipt-square.png");
+  assert.equal(buildClubCampaignArtworkFilename(campaign, "portrait"), "the-99-percent-club-2026-w48-dyor-receipt-portrait.png");
+  assert.equal(buildClubCampaignArtworkFilename(campaign, "story"), "the-99-percent-club-2026-w48-dyor-receipt-story.png");
+
+  const component = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const css = readFileSync("app/globals.css", "utf8");
+  const engine = readFileSync("app/club/club-campaign-artwork-engine.ts", "utf8");
+  assert.ok(component.includes('aria-label="Choose an artwork export format"'));
+  assert.ok(component.includes("aria-pressed={artworkFormatId === format.id}"));
+  assert.ok(component.includes("width={artworkFormat.width}"));
+  assert.ok(component.includes("height={artworkFormat.height}"));
+  assert.ok(component.includes('style={{ aspectRatio: artworkFormat.width + " / " + artworkFormat.height }}'));
+  assert.ok(component.includes("buildClubCampaignArtworkFilename(campaign, artworkFormat.id)"));
+  assert.ok(component.includes("format.width"));
+  assert.ok(component.includes("format.height"));
+  assert.ok(engine.includes('id: "portrait"'));
+  assert.ok(engine.includes('id: "story"'));
+  assert.ok(css.includes(".club-meme-studio__formats"));
+  assert.ok(css.includes("@media (max-width:560px)"));
+  assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
 });

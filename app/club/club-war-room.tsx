@@ -11,6 +11,9 @@ import { getClubCampaignDrop, type ClubCampaignDrop } from "./club-campaign-engi
 import {
   buildClubCampaignArtworkCaption,
   buildClubCampaignArtworkFilename,
+  CLUB_CAMPAIGN_ARTWORK_FORMATS,
+  getClubCampaignArtworkFormat,
+  type ClubCampaignArtworkFormatId,
 } from "./club-campaign-artwork-engine";
 import { CLUB_SOCIAL_HASHTAGS } from "./club-social";
 
@@ -77,99 +80,109 @@ function drawMeme(
   bottomText: string,
   campaign: ClubCampaignDrop | null,
   formatName: string,
+  format: ReturnType<typeof getClubCampaignArtworkFormat>,
 ) {
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Canvas rendering is unavailable in this browser.");
 
-  canvas.width = 1200;
-  canvas.height = 1200;
-  const background = context.createLinearGradient(0, 0, 1200, 1200);
+  const width = format.width;
+  const height = format.height;
+  const scale = width / 1200;
+  const insetX = width * 0.06;
+  const rightX = width - insetX;
+  const contentWidth = width - insetX * 2;
+  const y = (fraction: number) => height * fraction;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const background = context.createLinearGradient(0, 0, width, height);
   background.addColorStop(0, "#172018");
   background.addColorStop(0.55, "#090d0a");
   background.addColorStop(1, "#10170f");
   context.fillStyle = background;
-  context.fillRect(0, 0, 1200, 1200);
+  context.fillRect(0, 0, width, height);
 
-  // A consistent editorial frame makes every exported format recognizable as
-  // part of the current cross-chain Club campaign.
+  // One responsive editorial grid keeps the campaign identity consistent
+  // while the headline and footer reflow for square, portrait and story canvases.
+  const frameInset = width * 0.022;
   context.strokeStyle = "#718c58";
-  context.lineWidth = 3;
-  context.strokeRect(26, 26, 1148, 1148);
+  context.lineWidth = 3 * scale;
+  context.strokeRect(frameInset, frameInset, width - frameInset * 2, height - frameInset * 2);
   context.strokeStyle = "rgba(182,255,101,.2)";
-  context.lineWidth = 2;
+  context.lineWidth = 2 * scale;
   context.beginPath();
-  context.moveTo(70, 145);
-  context.lineTo(1130, 145);
-  context.moveTo(70, 1025);
-  context.lineTo(1130, 1025);
+  context.moveTo(insetX, y(0.125));
+  context.lineTo(rightX, y(0.125));
+  context.moveTo(insetX, y(0.865));
+  context.lineTo(rightX, y(0.865));
   context.stroke();
 
   context.fillStyle = "#b6ff65";
-  context.font = "700 23px monospace";
+  context.font = "700 " + 23 * scale + "px monospace";
   context.textAlign = "left";
-  context.fillText("THE 99% CLUB", 76, 95);
+  context.textBaseline = "alphabetic";
+  context.fillText("THE 99% CLUB", insetX + 6 * scale, y(0.079));
   context.fillStyle = "#9aa895";
   context.textAlign = "right";
-  context.font = "700 13px monospace";
-  context.fillText("CROSS-CHAIN CAMPAIGN SERIES", 1124, 82);
+  context.font = "700 " + 13 * scale + "px monospace";
+  context.fillText("CROSS-CHAIN CAMPAIGN SERIES", rightX - 6 * scale, y(0.068), contentWidth * 0.58);
   context.fillStyle = "#71836a";
-  context.font = "700 12px monospace";
-  context.fillText("FORMAT / " + formatName.toUpperCase(), 1124, 111);
+  context.font = "700 " + 12 * scale + "px monospace";
+  context.fillText("FORMAT / " + formatName.toUpperCase(), rightX - 6 * scale, y(0.096), contentWidth * 0.58);
 
-  // The campaign issue strip is generated from the same weekly rotation as
-  // the editorial post and public challenge; no campaign date is hardcoded.
   context.textAlign = "left";
   context.fillStyle = "#b6ff65";
-  context.font = "700 13px monospace";
-  context.fillText(campaign ? "WEEKLY ISSUE / " + campaign.weekKey : "WEEKLY ISSUE / ALIGNING", 78, 183);
+  context.font = "700 " + 13 * scale + "px monospace";
+  context.fillText(campaign ? "WEEKLY ISSUE / " + campaign.weekKey : "WEEKLY ISSUE / ALIGNING", insetX + 7 * scale, y(0.157), contentWidth * 0.86);
   context.fillStyle = "#edf1e7";
-  context.font = "800 25px Arial, sans-serif";
+  context.font = "800 " + 25 * scale + "px Arial, sans-serif";
   const campaignTitle = campaign?.theme.title ?? "THE WEEKLY CAMPAIGN";
-  const campaignLines = wrapCanvasText(context, campaignTitle, 900, 2);
-  campaignLines.forEach((line, index) => context.fillText(line, 78, 225 + index * 32, 900));
+  const campaignLines = wrapCanvasText(context, campaignTitle, contentWidth * 0.86, 2);
+  campaignLines.forEach((line, index) => context.fillText(line, insetX + 7 * scale, y(0.198) + index * 32 * scale, contentWidth * 0.86));
   context.strokeStyle = "#526744";
-  context.lineWidth = 2;
+  context.lineWidth = 2 * scale;
   context.beginPath();
-  context.moveTo(70, 292);
-  context.lineTo(1130, 292);
+  context.moveTo(insetX, y(0.265));
+  context.lineTo(rightX, y(0.265));
   context.stroke();
 
   const drawBlock = (value: string, centerY: number, accent: boolean) => {
-    let fontSize = 70;
+    let fontSize = 70 * scale;
     let lines: string[] = [];
     do {
       context.font = "900 " + fontSize + "px Arial, sans-serif";
-      lines = wrapCanvasText(context, value.toUpperCase(), 980, 4);
-      if (lines.length <= 3 || fontSize <= 48) break;
-      fontSize -= 4;
-    } while (fontSize >= 48);
+      lines = wrapCanvasText(context, value.toUpperCase(), contentWidth * 0.9, 4);
+      if (lines.length <= 3 || fontSize <= 44 * scale) break;
+      fontSize -= 4 * scale;
+    } while (fontSize >= 44 * scale);
 
-    const lineHeight = fontSize * 1.18;
+    const lineHeight = fontSize * 1.16;
     const firstY = centerY - ((lines.length - 1) * lineHeight) / 2;
     context.font = "900 " + fontSize + "px Arial, sans-serif";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = accent ? "#b6ff65" : "#f1f3eb";
-    lines.forEach((line, index) => context.fillText(line, 600, firstY + index * lineHeight, 1000));
+    lines.forEach((line, index) => context.fillText(line, width / 2, firstY + index * lineHeight, contentWidth * 0.92));
   };
 
-  drawBlock(topText, 445, false);
+  drawBlock(topText, y(0.405), false);
   context.fillStyle = "#526744";
-  context.fillRect(520, 615, 160, 5);
-  drawBlock(bottomText, 805, true);
+  context.fillRect(width * 0.435, y(0.555), width * 0.13, 5 * scale);
+  drawBlock(bottomText, y(0.705), true);
 
   context.textAlign = "left";
   context.textBaseline = "alphabetic";
   context.fillStyle = "#a4b09d";
-  context.font = "700 17px monospace";
-  context.fillText("IT'S NEVER OUR FAULT.", 76, 1082);
+  context.font = "700 " + 17 * scale + "px monospace";
+  context.fillText("IT'S NEVER OUR FAULT.", insetX + 6 * scale, y(0.895), contentWidth * 0.46);
   context.textAlign = "right";
   context.fillStyle = "#b6ff65";
-  context.fillText("THE NEXT ONE IS MINE.", 1124, 1082);
+  context.fillText("THE NEXT ONE IS MINE.", rightX - 6 * scale, y(0.895), contentWidth * 0.46);
   context.textAlign = "center";
   context.fillStyle = "#74836d";
-  context.font = "700 13px monospace";
-  context.fillText("SATIRE / ALL CHAINS / " + CLUB_SOCIAL_HASHTAGS, 600, 1132, 1040);
+  context.font = "700 " + 13 * scale + "px monospace";
+  context.fillText("SATIRE / ALL CHAINS / " + CLUB_SOCIAL_HASHTAGS, width / 2, y(0.94), contentWidth * 0.9);
 }
 
 function canvasBlob(canvas: HTMLCanvasElement) {
@@ -186,6 +199,8 @@ export default function ClubWarRoom() {
   const [campaign, setCampaign] = useState<ClubCampaignDrop | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedId, setSelectedId] = useState(initialTemplate.id);
+  const [artworkFormatId, setArtworkFormatId] = useState<ClubCampaignArtworkFormatId>("square");
+  const artworkFormat = getClubCampaignArtworkFormat(artworkFormatId);
   const [topText, setTopText] = useState(initialTemplate.topText);
   const [bottomText, setBottomText] = useState(initialTemplate.bottomText);
   const [notice, setNotice] = useState("");
@@ -210,11 +225,11 @@ export default function ClubWarRoom() {
   useEffect(() => {
     if (!canvasRef.current) return;
     try {
-      drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name);
+      drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name, artworkFormat);
     } catch {
       setNotice("MEME PREVIEW UNAVAILABLE. YOUR BROWSER MAY NOT SUPPORT CANVAS.");
     }
-  }, [topText, bottomText, campaign, selectedTemplate.name]);
+  }, [topText, bottomText, campaign, selectedTemplate.name, artworkFormat]);
 
   function selectTemplate(template: ClubMemeTemplate) {
     setSelectedId(template.id);
@@ -226,7 +241,9 @@ export default function ClubWarRoom() {
   async function getMemeFile() {
     if (!canvasRef.current) throw new Error("The meme preview is not ready yet.");
     const blob = await canvasBlob(canvasRef.current);
-    return new File([blob], campaign ? buildClubCampaignArtworkFilename(campaign) : "the-99-percent-club-weekly-draft.png", { type: "image/png" });
+    return new File([blob], campaign
+      ? buildClubCampaignArtworkFilename(campaign, artworkFormat.id)
+      : "the-99-percent-club-weekly-draft-" + artworkFormat.id + ".png", { type: "image/png" });
   }
 
   async function downloadMeme() {
@@ -254,7 +271,7 @@ export default function ClubWarRoom() {
     try {
       const file = await getMemeFile();
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: "THE 99% CLUB MEME", text: caption });
+        await navigator.share({ files: [file], title: "THE 99% CLUB / " + artworkFormat.label, text: caption });
         setNotice("MEME SHARED THROUGH YOUR DEVICE'S SHARE MENU.");
       } else {
         const url = URL.createObjectURL(file);
@@ -323,13 +340,28 @@ export default function ClubWarRoom() {
         <div className="club-meme-studio__intro">
           <span>01 / THE MEME OFFICE</span>
           <h3 id="club-meme-studio-title">YOUR EXCUSE. <em>YOUR MASTERPIECE.</em></h3>
-          <p>The active weekly campaign is stamped into every export. Choose a format, rewrite the headline and export a branded 1200 × 1200 PNG in this browser.</p>
+          <p>The active weekly campaign is stamped into every export. Choose a layout, rewrite the headline and export a campaign-ready PNG in square feed, portrait feed or full-screen story dimensions.</p>
           {campaign && <div className="club-meme-studio__campaign-edition"><span>WEEKLY CAMPAIGN / {campaign.weekKey}</span><strong>{campaign.theme.title}</strong><small>{campaign.theme.brief}</small></div>}
         </div>
         <div className="club-meme-studio__templates" role="group" aria-label="Choose a meme template">
           {CLUB_MEME_TEMPLATES.map((template) => (
             <button type="button" key={template.id} className={selectedId === template.id ? "is-active" : ""} aria-pressed={selectedId === template.id} onClick={() => selectTemplate(template)}>
               <span>{template.category}</span><strong>{template.name}</strong>
+            </button>
+          ))}
+        </div>
+        <div className="club-meme-studio__formats" role="group" aria-label="Choose an artwork export format">
+          {CLUB_CAMPAIGN_ARTWORK_FORMATS.map((format) => (
+            <button
+              type="button"
+              key={format.id}
+              className={artworkFormatId === format.id ? "is-active" : ""}
+              aria-pressed={artworkFormatId === format.id}
+              onClick={() => setArtworkFormatId(format.id)}
+            >
+              <span>{format.ratio} / {format.description}</span>
+              <strong>{format.label}</strong>
+              <small>{format.dimensions} PX</small>
             </button>
           ))}
         </div>
@@ -345,12 +377,18 @@ export default function ClubWarRoom() {
               <button type="button" className="button button--primary" onClick={() => void downloadMeme()} disabled={busy || !campaign}>DOWNLOAD PNG ↓</button>
               <button type="button" className="button button--outline" onClick={() => void shareMeme()} disabled={busy || !campaign}>SHARE IMAGE ↗</button>
               <button type="button" className="button button--quiet" onClick={() => void copyCaption()}>COPY CAPTION</button>
-              <button type="button" className="button button--x" onClick={openMemeOnX}disabled={!campaign}>OPEN X DRAFT ↗</button>
+              <button type="button" className="button button--x" onClick={openMemeOnX} disabled={!campaign}>OPEN X DRAFT ↗</button>
             </div>
           </div>
           <div className="club-meme-studio__preview">
-            <span>LIVE PREVIEW / {campaign ? campaign.weekKey + " / CAMPAIGN EDITION" : "ALIGNING CAMPAIGN EDITION"}</span>
-            <canvas ref={canvasRef} width={1200} height={1200} aria-label={"Meme preview: " + topText + " " + bottomText} />
+            <span>LIVE PREVIEW / {artworkFormat.label} / {artworkFormat.dimensions} PX / {campaign ? campaign.weekKey : "ALIGNING CAMPAIGN"}</span>
+            <canvas
+              ref={canvasRef}
+              width={artworkFormat.width}
+              height={artworkFormat.height}
+              style={{ aspectRatio: artworkFormat.width + " / " + artworkFormat.height }}
+              aria-label={"Meme preview (" + artworkFormat.label + "): " + topText + " " + bottomText}
+            />
           </div>
         </div>
         <p className="club-meme-studio__disclaimer">THE IMAGE IS GENERATED LOCALLY AND IS NOT UPLOADED OR SAVED TO A SERVER. X DRAFTS OPEN WITHOUT ATTACHING THE IMAGE; DOWNLOAD THE PNG AND ADD IT TO YOUR POST.</p>

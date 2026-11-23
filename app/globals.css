@@ -14983,3 +14983,46 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (max-width:900px) { .club-campaign-engine__assets { grid-template-columns:1fr 1fr; } .club-campaign-engine__assets article:last-child { grid-column:1 / -1; } }
 @media (max-width:620px) { .club-campaign-engine { padding:16px; } .club-campaign-engine__header { gap:12px; } .club-campaign-engine__seal { min-width:76px; min-height:66px; } .club-campaign-engine__seal strong { font-size:9px; } .club-campaign-engine__assets { grid-template-columns:1fr; } .club-campaign-engine__assets article:last-child { grid-column:auto; } .club-campaign-engine__assets .button { width:100%; justify-content:space-between; } .club-campaign-engine__actions { display:grid; grid-template-columns:1fr; } .club-campaign-engine__actions .button { width:100%; justify-content:space-between; } .club-campaign-engine__next { grid-template-columns:1fr; gap:7px; } .club-campaign-engine__next > span { grid-row:auto; } }
 @media (prefers-reduced-motion:reduce) { .club-campaign-engine * { scroll-behavior:auto; transition:none !important; } }
+
+
+/* U36 — responsive campaign artwork format selector and true-ratio preview. */
+.club-meme-studio__formats {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:0 0 20px;
+}
+.club-meme-studio__formats button {
+  display:grid;
+  gap:5px;
+  min-width:0;
+  padding:12px;
+  border:1px solid #344331;
+  background:#0b110c;
+  color:#b9c3b2;
+  text-align:left;
+  cursor:pointer;
+}
+.club-meme-studio__formats button.is-active {
+  border-color:var(--accent);
+  background:rgb(182 255 101 / 8%);
+  box-shadow:inset 0 0 0 1px rgb(182 255 101 / 15%);
+}
+.club-meme-studio__formats button > span {
+  color:#84937d;
+  font:700 6px/1.4 var(--font-mono);
+  letter-spacing:.08em;
+}
+.club-meme-studio__formats button > strong {
+  color:#e3eadc;
+  font:800 9px/1.3 var(--sans);
+}
+.club-meme-studio__formats button.is-active > strong { color:var(--accent); }
+.club-meme-studio__formats button > small {
+  color:#84937d;
+  font:700 7px/1.4 var(--font-mono);
+}
+.club-meme-studio__preview canvas { aspect-ratio:auto; }
+@media (max-width:560px) {
+  .club-meme-studio__formats { grid-template-columns:1fr; }
+}
