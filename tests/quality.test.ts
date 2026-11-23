@@ -2279,6 +2279,28 @@ test("U25.14 Case Atlas exposes collapsible source evidence for current and prev
 });
 
 
+
+test("U47 preserves the 99% Club cross-chain identity in every shared department hand-off", () => {
+  const nextSteps = readFileSync("app/components/department-next-steps.tsx", "utf8");
+  const homePage = readFileSync("app/page.tsx", "utf8");
+  const clubIdentity = departments.find((department) => department.section === "club");
+
+  assert.ok(clubIdentity, "The Club must remain a registered Department division.");
+  assert.equal(clubIdentity.title, "CROSS-CHAIN TRENCHES");
+  assert.match(clubIdentity.description, /Across every chain and cycle/i);
+  assert.equal(
+    (nextSteps.match(/CROSS-CHAIN TRENCHES \/ 99% CLUB/g) ?? []).length,
+    3,
+    "Simulator, Museum and Cope journeys must all identify the Club as cross-chain.",
+  );
+  assert.doesNotMatch(
+    nextSteps,
+    /SOLANA TRENCHES \/ 99% CLUB|fictional Solana trenches survivor registry/i,
+    "Shared routing copy must not position Club membership as Solana-only.",
+  );
+  assert.match(homePage, /Born in the Solana trenches\. Open to every chain and every cycle\./);
+});
+
 test("U25 audit correction marks a viewing division clearly when it is outside today's three-office case route", () => {
   const routePages = [
     ["app/simulator/page.tsx", "simulator"],
