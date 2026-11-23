@@ -137,3 +137,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U40 — 99% Club Editorial Campaign Layouts: the Meme Office offers three selectable artwork compositions — the existing centered stack, a left-aligned editorial report with accent rail, and a split left/right statement. All three retain adaptive typography and the canvas-measured preflight across square, portrait and story exports. The selected layout is included in PNG and ZIP filenames; the original centered layout remains the default. Rendering and quality checks stay local in the browser.
+
+
+- U41 — 99% Club Live Safe-Area Guide: the Meme Office preview has an optional overlay showing the same horizontal and vertical headline-safe bounds used by the adaptive composition. The guide can be switched on or off while editing and is rendered as a non-interactive interface layer, never onto the PNG canvas or ZIP exports. The preflight and export pipeline remain unchanged.

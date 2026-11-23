@@ -15,6 +15,7 @@ import {
   buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   CLUB_CAMPAIGN_ARTWORK_LAYOUTS,
+  CLUB_CAMPAIGN_ARTWORK_SAFE_AREA,
   getClubCampaignArtworkFormat,
   getClubCampaignArtworkLayout,
   type ClubCampaignArtworkFormatId,
@@ -309,6 +310,7 @@ export default function ClubWarRoom() {
   const [selectedId, setSelectedId] = useState(initialTemplate.id);
   const [artworkFormatId, setArtworkFormatId] = useState<ClubCampaignArtworkFormatId>("square");
   const [artworkLayoutId, setArtworkLayoutId] = useState<ClubCampaignArtworkLayoutId>("centered");
+  const [showSafeArea, setShowSafeArea] = useState(false);
   const artworkFormat = getClubCampaignArtworkFormat(artworkFormatId);
   const artworkLayout = getClubCampaignArtworkLayout(artworkLayoutId);
   const [topText, setTopText] = useState(initialTemplate.topText);
@@ -613,14 +615,40 @@ export default function ClubWarRoom() {
             </div>
           </div>
           <div className="club-meme-studio__preview">
-            <span>LIVE PREVIEW / {artworkFormat.label} / {artworkFormat.dimensions} PX / {campaign ? campaign.weekKey : "ALIGNING CAMPAIGN"}</span>
-            <canvas
-              ref={canvasRef}
-              width={artworkFormat.width}
-              height={artworkFormat.height}
-              style={{ aspectRatio: artworkFormat.width + " / " + artworkFormat.height }}
-              aria-label={"Meme preview (" + artworkFormat.label + "): " + topText + " " + bottomText}
-            />
+            <div className="club-meme-studio__preview-heading">
+              <span>LIVE PREVIEW / {artworkFormat.label} / {artworkFormat.dimensions} PX / {campaign ? campaign.weekKey : "ALIGNING CAMPAIGN"}</span>
+              <button
+                type="button"
+                className={showSafeArea ? "is-active" : ""}
+                aria-pressed={showSafeArea}
+                onClick={() => setShowSafeArea((visible) => !visible)}
+              >
+                SAFE AREA / {showSafeArea ? "ON" : "OFF"}
+              </button>
+            </div>
+            <div className="club-meme-studio__preview-frame">
+              <canvas
+                ref={canvasRef}
+                width={artworkFormat.width}
+                height={artworkFormat.height}
+                style={{ aspectRatio: artworkFormat.width + " / " + artworkFormat.height }}
+                aria-label={"Meme preview (" + artworkFormat.label + "): " + topText + " " + bottomText}
+              />
+              {showSafeArea && (
+                <div
+                  className="club-meme-studio__safe-area-guide"
+                  aria-hidden="true"
+                  style={{
+                    left: (CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.horizontalInset * 100) + "%",
+                    right: (CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.horizontalInset * 100) + "%",
+                    top: (CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.top * 100) + "%",
+                    height: ((CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.bottom - CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.top) * 100) + "%",
+                  }}
+                >
+                  <span>HEADLINE SAFE AREA / NOT EXPORTED</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <p className="club-meme-studio__disclaimer">THE IMAGE IS GENERATED LOCALLY AND IS NOT UPLOADED OR SAVED TO A SERVER. X DRAFTS OPEN WITHOUT ATTACHING THE IMAGE; DOWNLOAD THE PNG AND ADD IT TO YOUR POST.</p>

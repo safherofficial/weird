@@ -27,6 +27,7 @@ import {
   buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   CLUB_CAMPAIGN_ARTWORK_LAYOUTS,
+  CLUB_CAMPAIGN_ARTWORK_SAFE_AREA,
   getClubCampaignArtworkFormat,
   getClubCampaignArtworkLayout,
 } from "../app/club/club-campaign-artwork-engine";
@@ -3387,4 +3388,34 @@ test("U40 campaign artwork layouts are distinct, responsive and included in expo
   assert.ok(component.includes("layout.label"));
   assert.ok(css.includes(".club-meme-studio__layouts"));
   assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog/i);
+});
+
+
+test("U41 safe-area guide is derived from the export composition and remains preview-only", () => {
+  assert.deepEqual(CLUB_CAMPAIGN_ARTWORK_SAFE_AREA, {
+    horizontalInset: 0.06,
+    top: 0.295,
+    bottom: 0.84,
+  });
+
+  for (const format of CLUB_CAMPAIGN_ARTWORK_FORMATS) {
+    const composition = buildClubCampaignArtworkComposition(format.id, 2, 2, 76, 76);
+    assert.equal(composition.safeBounds.top, format.height * CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.top);
+    assert.equal(composition.safeBounds.bottom, format.height * CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.bottom);
+  }
+
+  const component = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const renderer = component.slice(component.indexOf("function drawMeme("), component.indexOf("function canvasBlob("));
+  const css = readFileSync("app/globals.css", "utf8");
+  assert.ok(component.includes('aria-pressed={showSafeArea}'));
+  assert.ok(component.includes("setShowSafeArea((visible) => !visible)"));
+  assert.ok(component.includes('className="club-meme-studio__safe-area-guide"'));
+  assert.ok(component.includes('aria-hidden="true"'));
+  assert.ok(component.includes("HEADLINE SAFE AREA / NOT EXPORTED"));
+  assert.ok(component.includes("CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.horizontalInset"));
+  assert.ok(component.includes("CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.top"));
+  assert.ok(renderer.includes("buildClubCampaignArtworkPreflight"));
+  assert.doesNotMatch(renderer, /safe-area-guide|showSafeArea|HEADLINE SAFE AREA/i);
+  assert.ok(css.includes(".club-meme-studio__safe-area-guide"));
+  assert.ok(css.includes("pointer-events:none"));
 });

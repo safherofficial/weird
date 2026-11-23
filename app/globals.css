@@ -15148,3 +15148,59 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   .club-meme-studio__layouts { grid-template-columns:1fr; }
   .club-meme-studio__layouts button { min-height:0; }
 }
+
+
+/* U41 — optional safe-area overlay lives in the preview DOM, never in canvas exports. */
+.club-meme-studio__preview-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.club-meme-studio__preview-heading > span { min-width:0; }
+.club-meme-studio__preview-heading > button {
+  flex:0 0 auto;
+  padding:6px 8px;
+  border:1px solid #344331;
+  background:#0b110c;
+  color:#84937d;
+  font:700 7px/1.4 var(--font-mono);
+  letter-spacing:.06em;
+  cursor:pointer;
+}
+.club-meme-studio__preview-heading > button.is-active {
+  border-color:var(--accent);
+  background:rgb(182 255 101 / 8%);
+  color:var(--accent);
+}
+.club-meme-studio__preview-frame {
+  position:relative;
+  width:100%;
+  min-width:0;
+}
+.club-meme-studio__preview-frame > canvas {
+  display:block;
+  width:100%;
+  height:auto;
+}
+.club-meme-studio__safe-area-guide {
+  position:absolute;
+  z-index:1;
+  border:1px dashed rgb(182 255 101 / 82%);
+  background:rgb(182 255 101 / 3%);
+  box-shadow:0 0 0 1px rgb(0 0 0 / 28%);
+  pointer-events:none;
+}
+.club-meme-studio__safe-area-guide > span {
+  position:absolute;
+  top:5px;
+  left:6px;
+  max-width:calc(100% - 12px);
+  padding:3px 5px;
+  background:rgb(7 12 8 / 84%);
+  color:#c7f59c;
+  font:700 6px/1.35 var(--font-mono);
+  letter-spacing:.08em;
+  overflow-wrap:anywhere;
+}

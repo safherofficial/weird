@@ -11,6 +11,13 @@ export const CLUB_CAMPAIGN_ARTWORK_FORMATS = [
 export type ClubCampaignArtworkFormat = (typeof CLUB_CAMPAIGN_ARTWORK_FORMATS)[number];
 export type ClubCampaignArtworkFormatId = ClubCampaignArtworkFormat["id"];
 
+/** Percent-based headline bounds shared by renderer checks and the editor guide. */
+export const CLUB_CAMPAIGN_ARTWORK_SAFE_AREA = {
+  horizontalInset: 0.06,
+  top: 0.295,
+  bottom: 0.84,
+} as const;
+
 export const CLUB_CAMPAIGN_ARTWORK_LAYOUTS = [
   { id: "centered", label: "CENTERED", description: "Balanced, symmetrical headline stack" },
   { id: "left-editorial", label: "LEFT EDITORIAL", description: "Left-aligned report layout with an accent rail" },
@@ -275,9 +282,12 @@ export function buildClubCampaignArtworkComposition(
     (lineCount - 1) * lineHeight(fontSize) + fontSize * 1.2;
   const topHeight = blockHeight(topLineCount, topFontSize);
   const bottomHeight = blockHeight(bottomLineCount, bottomFontSize);
-  const safeBounds = { top: format.height * 0.295, bottom: format.height * 0.84 };
+  const safeBounds = {
+    top: format.height * CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.top,
+    bottom: format.height * CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.bottom,
+  };
   const gap = format.height * 0.065;
-  const insetX = format.width * 0.06;
+  const insetX = format.width * CLUB_CAMPAIGN_ARTWORK_SAFE_AREA.horizontalInset;
   const sidePadding = format.width / 1200 * 6;
   const leftAnchorX = insetX + sidePadding;
   const rightAnchorX = format.width - insetX - sidePadding;
