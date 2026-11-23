@@ -44,7 +44,7 @@ export default function ClubContributionStudio() {
 
   if (!ready || !continuity) {
     return (
-      <section className={styles.contribution} id="club-contribution-studio" aria-labelledby="club-contribution-title">
+      <section className={styles.contribution} id="club-contribution-studio" aria-label="Club contribution studio loading">
         <p className={styles.loading} role="status">ALIGNING THE CONTENT STUDIO WITH THIS WEEK'S CAMPAIGN…</p>
       </section>
     );
