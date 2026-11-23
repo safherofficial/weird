@@ -18,7 +18,7 @@ export default function MuseumClient() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="TRY: PUMP.FUN, BUNDLE, KOL, CTO, GRADUATION..."
+            placeholder="TRY: BRIDGE, AIRDROP, UNLOCKS, GOVERNANCE, CTO..."
           />
         </label>
         <div className="museum-filters" role="group" aria-label="Filter exhibits by category">
