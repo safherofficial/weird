@@ -37,8 +37,8 @@ import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartment
 import { buildInstitutionalMemory, isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../app/daily-office/institutional-memory";
 import { getDepartmentCaseThemeAnchor } from "../app/daily-office/case-theme-anchor";
 import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/department-narrative";
-import { archiveRecords } from "../app/archives/archive-data";
-import { exhibits } from "../app/museum/museum-data";
+import { archiveRecords, filterArchiveRecords } from "../app/archives/archive-data";
+import { exhibits, searchExhibits } from "../app/museum/museum-data";
 import { departmentGroups, departments, divisionNavigationGroups } from "../app/divisions";
 import { CLUB_BADGE_IDS, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
@@ -2282,8 +2282,57 @@ test("Case Atlas labels thread chronology as the selected date window rather tha
   assert.ok(atlasClient.includes("{entry.occurrenceCount} / {selectedAtlas.lookbackDays} RECENT ISSUES"));
 });
 
+
+test("U44 expands Archives into cross-chain written evidence and Museum into cross-chain cultural relics", () => {
+  const newRecords = archiveRecords.filter((record) => record.accession >= "DDA-017");
+  const newExhibits = exhibits.filter((exhibit) => exhibit.accession >= "BHM-016");
+
+  assert.deepEqual(newRecords.map((record) => record.accession), ["DDA-017", "DDA-018", "DDA-019", "DDA-020"]);
+  assert.deepEqual(newExhibits.map((exhibit) => exhibit.accession), ["BHM-016", "BHM-017", "BHM-018", "BHM-019"]);
+  assert.equal(new Set(archiveRecords.map((record) => record.slug)).size, archiveRecords.length);
+  assert.equal(new Set(archiveRecords.map((record) => record.accession)).size, archiveRecords.length);
+  assert.equal(new Set(exhibits.map((exhibit) => exhibit.slug)).size, exhibits.length);
+  assert.equal(new Set(exhibits.map((exhibit) => exhibit.accession)).size, exhibits.length);
+
+  for (const record of newRecords) {
+    assert.ok(record.sections.length >= 3);
+    assert.ok(record.summary.length > 80);
+    assert.ok(record.finding.length > 20);
+    assert.ok(record.relatedHref.startsWith("/"));
+    assert.match(JSON.stringify(record), /bridge|airdrop|unlock|governance|cross-chain|multi-chain/i);
+  }
+  for (const exhibit of newExhibits) {
+    assert.ok(exhibit.curatorNote.length > 80);
+    assert.ok(exhibit.description.length > 80);
+    assert.ok(exhibit.plaque.length > 10);
+    assert.match(JSON.stringify(exhibit), /bridge|airdrop|unlock|governance|cross-chain|multi-chain/i);
+    assert.equal("sections" in exhibit, false, "Museum entries remain curated artifacts, not archive case files");
+  }
+
+  assert.ok(filterArchiveRecords("bridge", "ALL FILES").some((record) => record.accession === "DDA-017"));
+  assert.ok(filterArchiveRecords("snapshot", "ALL FILES").some((record) => record.accession === "DDA-018"));
+  assert.ok(filterArchiveRecords("unlock", "ALL FILES").some((record) => record.accession === "DDA-019"));
+  assert.ok(filterArchiveRecords("quorum", "ALL FILES").some((record) => record.accession === "DDA-020"));
+  assert.ok(searchExhibits("bridge", "ALL").some((exhibit) => exhibit.accession === "BHM-016"));
+  assert.ok(searchExhibits("airdrop", "ALL").some((exhibit) => exhibit.accession === "BHM-017"));
+  assert.ok(searchExhibits("unlock", "ALL").some((exhibit) => exhibit.accession === "BHM-018"));
+  assert.ok(searchExhibits("quorum", "ALL").some((exhibit) => exhibit.accession === "BHM-019"));
+
+  const museumPage = readFileSync("app/museum/page.tsx", "utf8");
+  const museumClient = readFileSync("app/museum/museum-client.tsx", "utf8");
+  const archivePage = readFileSync("app/archives/page.tsx", "utf8");
+  const archiveClient = readFileSync("app/archives/archives-client.tsx", "utf8");
+  assert.ok(museumPage.includes("exhibits[exhibits.length - 1]?.accession"));
+  assert.ok(museumPage.includes("BHM-019"));
+  assert.ok(museumPage.includes("exhibits.length"));
+  assert.ok(museumClient.includes("BRIDGE, AIRDROP, UNLOCKS, GOVERNANCE"));
+  assert.ok(archivePage.includes("cross-chain"));
+  assert.ok(archiveClient.includes("BRIDGE, AIRDROP, UNLOCKS, QUORUM"));
+});
+
 test("U27.6 production experience keeps collection counts, filter semantics and responsive navigation accurate", () => {
   const archivePage = readFileSync("app/archives/page.tsx", "utf8");
+  const museumPage = readFileSync("app/museum/page.tsx", "utf8");
   const archivesClient = readFileSync("app/archives/archives-client.tsx", "utf8");
   const museumClient = readFileSync("app/museum/museum-client.tsx", "utf8");
   const homePage = readFileSync("app/page.tsx", "utf8");
@@ -2293,8 +2342,11 @@ test("U27.6 production experience keeps collection counts, filter semantics and 
   assert.ok(archivePage.includes('description: archiveRecords.length + " fictional case records'));
   assert.doesNotMatch(archivePage, /Fifteen fictional case records|DDA-015/);
   assert.ok(archivePage.includes("archiveRecords[archiveRecords.length - 1]?.accession"));
-  assert.equal(archiveRecords.length, 16);
-  assert.equal(archiveRecords[archiveRecords.length - 1].accession, "DDA-016");
+  assert.equal(archiveRecords.length, 20);
+  assert.equal(archiveRecords[archiveRecords.length - 1].accession, "DDA-020");
+  assert.ok(museumPage.includes('description: exhibits.length + " fictional cross-chain trenches relics'));
+  assert.equal(exhibits.length, 19);
+  assert.equal(exhibits[exhibits.length - 1].accession, "BHM-019");
 
   assert.ok(archivesClient.includes('role="group" aria-label="Filter archive category"'));
   assert.ok(museumClient.includes('role="group" aria-label="Filter exhibits by category"'));
