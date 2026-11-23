@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DailyOfficeClient from "../../daily-client";
+import DailyOfficeRelatedLinks from "../../daily-office-related-links";
 import { buildDailyOfficeDispatch } from "../../daily-engine";
 import { isValidInstitutionalMemoryDate, shiftInstitutionalMemoryDate } from "../../institutional-memory";
 
@@ -68,6 +69,7 @@ export default async function InstitutionalMemoryRecordPage({ params }: Institut
           <span>{dispatch.issueDate} / UTC · {dispatch.reference}</span>
         </div>
         <DailyOfficeClient dispatch={dispatch} pagePath={route} headlineLevel="h1" />
+        <DailyOfficeRelatedLinks dispatch={dispatch} />
         <nav className="institutional-memory-adjacent" aria-label="Adjacent daily records">
           <Link href={"/daily-office/archive/" + previousDate}>
             <span>PRECEDING UTC RECORD</span>

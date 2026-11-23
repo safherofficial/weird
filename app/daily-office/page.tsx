@@ -4,6 +4,7 @@ import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import DailyOfficeClient from "./daily-client";
+import DailyOfficeRelatedLinks from "./daily-office-related-links";
 import { buildDailyOfficeDispatch } from "./daily-engine";
 
 export const dynamic = "force-dynamic";
@@ -51,6 +52,7 @@ export default function DailyOfficePage() {
           </div>
         </header>
         <DailyOfficeClient dispatch={dispatch} />
+        <DailyOfficeRelatedLinks dispatch={dispatch} />
         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 10, margin: "24px 0" }}>
           <Link className="button button--quiet" href="/cope-index">READ THE MATCHING GLOBAL COPE INDEX ↗</Link>
           <Link className="button button--quiet" href="/daily-office/ledger">OPEN THE INSTITUTIONAL MEMORY LEDGER ↗</Link>

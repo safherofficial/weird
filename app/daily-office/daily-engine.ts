@@ -25,6 +25,7 @@ export type DailyOfficeDispatch = {
   issueDate: string;
   reference: string;
   caseTheme: string;
+  focusType: DailyOfficeFocusType;
   headline: string;
   subheading: string;
   bulletin: string;
@@ -323,7 +324,7 @@ const methodology =
   "This dispatch follows one coherent, date-selected editorial case route. Its headline, bulletin, incident, KOL note, wallet interpretation, risk review, internal memo and post-mortem are selected from compatible topic pools and reinforced with focus-specific operational detail. All reports, wallet scenarios, KOL signals, scores and post-mortems are fictional. No AI factual research, external feed, live market data, real token, wallet, project, person or visitor activity is used.";
 
 
-type EditorialFocus =
+export type DailyOfficeFocusType =
   | "launch"
   | "graduation"
   | "handover"
@@ -351,7 +352,7 @@ type EditorialFocusPool = {
   quote: number[];
 };
 
-const editorialFocusPools: Record<EditorialFocus, EditorialFocusPool> = {
+const editorialFocusPools: Record<DailyOfficeFocusType, EditorialFocusPool> = {
   launch: {
     kolHeading: [1, 5],
     kolClaim: [0, 6, 10],
@@ -512,7 +513,7 @@ type EditorialDepthPool = {
  * a recognisable trenches incident rather than a generic crypto paragraph.
  * Every item is illustrative copy, not a claim about a real token or actor.
  */
-const editorialDepthPools: Record<EditorialFocus, EditorialDepthPool> = {
+const editorialDepthPools: Record<DailyOfficeFocusType, EditorialDepthPool> = {
   launch: {
     incident: [
       "The intake record contains a mint address and a posting time, but no traceable path from the original announcement to the accounts repeating it.",
@@ -798,7 +799,7 @@ type EditorialClosurePool = {
  * wallet-label dispute or CTO handover from receiving an unrelated generic
  * post-mortem selected from a shared phrase bucket.
  */
-const editorialClosurePools: Record<EditorialFocus, EditorialClosurePool> = {
+const editorialClosurePools: Record<DailyOfficeFocusType, EditorialClosurePool> = {
   launch: {
     riskReframe: [
       "an unresolved source-verification gap around the original mint announcement",
@@ -968,7 +969,7 @@ const editorialRoutes: Array<{
   headline: number;
   bulletin: number;
   incident: number;
-  focus: EditorialFocus;
+  focus: DailyOfficeFocusType;
 }> = [
   { label: "CA / LAUNCH CONTEXT", headline: 0, bulletin: 0, incident: 0, focus: "launch" },
   { label: "BONDING-CURVE GRADUATION", headline: 1, bulletin: 1, incident: 2, focus: "graduation" },
@@ -1014,7 +1015,7 @@ function selectEditorialRoute(issueDate: string, seed: number): EditorialRoute {
     const dayDate = new Date(day * 86_400_000).toISOString().slice(0, 10);
     const daySeed = hashText("THE-DYOR-DEPARTMENT/DAILY-OFFICE/V3/" + dayDate);
     const preferredIndex = mixSeed(daySeed, 7) % editorialRoutes.length;
-    const recentFocuses = new Set<EditorialFocus>();
+    const recentFocuses = new Set<DailyOfficeFocusType>();
 
     for (let offset = 1; offset <= EDITORIAL_FOCUS_COOLDOWN_DAYS; offset += 1) {
       const recentRoute = editorialRouteCache.get(day - offset);
@@ -1195,6 +1196,7 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
     issueDate,
     reference: "DD-" + issueDate.replace(/-/g, "") + "-" + referenceNumber,
     caseTheme: route.label,
+    focusType: route.focus,
     headline,
     subheading: "THE TRENCHES DESK / " + route.label + " / DAILY CT BRIEFING / ISSUE " + referenceNumber,
     bulletin,
@@ -1216,10 +1218,55 @@ export function buildDailyOfficeDispatch(issueDate: string): DailyOfficeDispatch
 }
 
 
+export type DailyOfficeRelatedIssue = {
+  issueDate: string;
+  reference: string;
+  caseTheme: string;
+  focusType: DailyOfficeFocusType;
+  headline: string;
+  href: string;
+};
+
+/**
+ * Returns the nearest earlier UTC issue from the same broad editorial focus.
+ * The lookback is bounded so a malformed caller cannot trigger an unbounded scan.
+ */
+export function getPreviousDailyOfficeFocusIssue(
+  issueDate: string,
+  lookbackDays = 240,
+): DailyOfficeRelatedIssue | null {
+  const current = buildDailyOfficeDispatch(issueDate);
+  if (!Number.isInteger(lookbackDays) || lookbackDays < 1 || lookbackDays > 366) {
+    throw new Error("The related-issue lookback must be between 1 and 366 UTC days.");
+  }
+
+  const currentEpoch = Date.parse(issueDate + "T00:00:00.000Z");
+  const today = new Date().toISOString().slice(0, 10);
+
+  for (let offset = 1; offset <= lookbackDays; offset += 1) {
+    const previousDate = new Date(currentEpoch - offset * 86_400_000).toISOString().slice(0, 10);
+    const previous = buildDailyOfficeDispatch(previousDate);
+    if (previous.focusType === current.focusType) {
+      return {
+        issueDate: previous.issueDate,
+        reference: previous.reference,
+        caseTheme: previous.caseTheme,
+        focusType: previous.focusType,
+        headline: previous.headline,
+        href: previous.issueDate === today ? "/daily-office" : "/daily-office/archive/" + previous.issueDate,
+      };
+    }
+  }
+
+  return null;
+}
+
+
 export type DailyEditorialCaseContext = {
   issueDate: string;
   reference: string;
   caseTheme: string;
+  focusType: DailyOfficeFocusType;
   headline: string;
   bulletin: string;
 };
@@ -1230,6 +1277,7 @@ export function getDailyEditorialCase(issueDate: string): DailyEditorialCaseCont
     issueDate: dispatch.issueDate,
     reference: dispatch.reference,
     caseTheme: dispatch.caseTheme,
+    focusType: dispatch.focusType,
     headline: dispatch.headline,
     bulletin: dispatch.bulletin,
   };
