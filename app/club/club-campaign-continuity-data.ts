@@ -1,5 +1,5 @@
 import { getClubCampaignDrop } from "./club-campaign-engine";
-import { getIsoClubWeekKey } from "./club-weekly";
+import { getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "./club-weekly";
 import {
   getClubFactionById,
   type ClubFaction,
@@ -53,6 +53,7 @@ export const CLUB_FACTION_CAMPAIGN_MISSIONS: Readonly<Record<ClubFactionId, Club
 export type ClubCampaignContinuity = {
   weekKey: string;
   campaign: ReturnType<typeof getClubCampaignDrop>;
+  weeklyRitual: ReturnType<typeof getCurrentClubWeeklyChallenge>;
   faction: ClubFaction | null;
   mission: ClubFactionCampaignMission | null;
   progress: {
@@ -73,6 +74,7 @@ export function getClubCampaignContinuity(
   now = new Date(),
 ): ClubCampaignContinuity {
   const campaign = getClubCampaignDrop(now);
+  const weeklyRitual = getCurrentClubWeeklyChallenge(now);
   const weekKey = getIsoClubWeekKey(now).weekKey;
   const faction = passport ? getClubFactionById(passport.clubFactionId) : null;
   const passportEnabled = Boolean(passport?.enabled);
@@ -82,6 +84,7 @@ export function getClubCampaignContinuity(
   return {
     weekKey,
     campaign,
+    weeklyRitual,
     faction,
     mission: faction ? CLUB_FACTION_CAMPAIGN_MISSIONS[faction.id] : null,
     progress: {

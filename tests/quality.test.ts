@@ -2930,6 +2930,8 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   const noPassport = getClubCampaignContinuity(null, date);
   assert.equal(noPassport.weekKey, "2026-W48");
   assert.equal(noPassport.campaign.theme.id, "dyor-receipt");
+  assert.equal(noPassport.weeklyRitual.weekKey, "2026-W48");
+  assert.equal(noPassport.weeklyRitual.title, "THE FINAL EXPLANATION");
   assert.equal(noPassport.faction, null);
   assert.equal(noPassport.mission, null);
   assert.equal(noPassport.progress.passportEnabled, false);
@@ -2954,6 +2956,7 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   assert.equal(assigned.campaign.culturePost.id, "dyor-receipt");
   assert.equal(assigned.campaign.memeTemplate.id, "research-loop");
   assert.equal(assigned.campaign.challenge.id, "dyor-receipt");
+  assert.equal(assigned.weeklyRitual.title, "THE FINAL EXPLANATION");
 
   assert.deepEqual(Object.keys(CLUB_FACTION_CAMPAIGN_MISSIONS).sort(), [...CLUB_FACTION_IDS].sort());
   const missionTitles = new Set<string>();
@@ -2963,7 +2966,7 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
     const continuity = getClubCampaignContinuity(factionPassport, date);
     assert.equal(continuity.faction?.id, factionId);
     assert.ok(continuity.mission?.title);
-    assert.ok(continuity.mission?.instruction.includes(continuity.campaign.theme.title.split(" ")[0]) || continuity.mission?.instruction.length > 40);
+    assert.ok(continuity.mission!.instruction.length > 40);
     missionTitles.add(continuity.mission!.title);
     instructions.add(continuity.mission!.instruction);
   }
@@ -2988,7 +2991,7 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   assert.ok(component.includes('href="#club-challenge-board"'));
   assert.ok(component.includes('href="#club-weekly-ritual"'));
   assert.ok(component.includes("This panel creates no new stored record"));
-  assert.doesNotMatch(component + data, /fetch\(|sendBeacon|gtag|analytics\\.track|mixpanel|posthog|recordClub|recordPassport/i);
+  assert.doesNotMatch(component + data, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|recordClub|recordPassport/i);
   assert.ok(css.includes("@media (max-width: 620px)"));
   assert.ok(readme.includes("U32 — 99% Club Campaign Continuity"));
 });

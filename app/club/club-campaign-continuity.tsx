@@ -70,6 +70,7 @@ export default function ClubCampaignContinuity() {
       "DELIVERABLE: " + continuity.mission.deliverable,
       "EDITORIAL FILE: " + continuity.campaign.culturePost.title,
       "PUBLIC CHALLENGE: " + continuity.campaign.challenge.title,
+      "WEEKLY RITUAL: " + continuity.weeklyRitual.title,
       "SATIRE / ALL CHAINS / NO FINANCIAL PROMISES.",
     ].join("\n\n");
 
@@ -95,8 +96,8 @@ export default function ClubCampaignContinuity() {
           <span className={styles.eyebrow}>U32 / THE 99% CLUB / CAMPAIGN CONTINUITY</span>
           <h2 id="club-campaign-continuity-title">YOUR FACTION.<br /><em>THIS WEEK'S EXCUSE.</em></h2>
           <p>
-            The weekly campaign is shared across all six factions. Your saved faction gives it a different editorial assignment,
-            then the same campaign assets carry that assignment into the meme, public challenge and weekly ritual.
+            The weekly campaign is shared across all six factions. Your saved faction gives it a distinct editorial assignment;
+            the linked post, meme and public challenge lead into the separate weekly ritual for the same UTC week.
           </p>
         </div>
         <div className={styles.seal}><strong>ONE</strong><span>CAMPAIGN<br />SIX LENSES</span></div>
