@@ -16,6 +16,7 @@ import { buildClubCampaignPack, CLUB_CAMPAIGN_ROTATION_LENGTH, CLUB_CAMPAIGN_THE
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { getClubCommunityContentInventory, getClubLocalPassportEvidence } from "../app/club/club-community-intelligence-data";
 import { CLUB_FACTION_CAMPAIGN_MISSIONS, getClubCampaignContinuity } from "../app/club/club-campaign-continuity-data";
+import { CLUB_CONTRIBUTION_CHARACTER_BUDGET, getClubContributionStarters, getClubContributionWritingCue } from "../app/club/club-contribution-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -3001,4 +3002,50 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   assert.doesNotMatch(component + data, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|recordClub|recordPassport/i);
   assert.ok(css.includes("@media (max-width: 620px)"));
   assert.ok(readme.includes("U32 — 99% Club Campaign Continuity"));
+});
+
+
+test("U33 Contribution Studio builds editable faction-aware public drafts without recording or publishing participation", () => {
+  const date = new Date("2026-11-23T12:00:00.000Z");
+  const unassigned = getClubCampaignContinuity(null, date);
+  const openStarters = getClubContributionStarters(unassigned);
+  assert.equal(openStarters.length, 3);
+  assert.equal(new Set(openStarters.map((starter) => starter.id)).size, 3);
+  assert.equal(new Set(openStarters.map((starter) => starter.text)).size, 3);
+  assert.equal(openStarters[0].label, "FACTION POSITION");
+  assert.ok(openStarters[0].text.includes("99% CLUB"));
+  assert.ok(openStarters[0].text.includes(unassigned.campaign.theme.title.toLowerCase()));
+  assert.ok(openStarters[1].text.includes(unassigned.campaign.theme.title.toLowerCase()));
+  assert.ok(openStarters[2].text.includes(unassigned.campaign.challenge.title.toLowerCase()));
+  assert.ok(openStarters.every((starter) => starter.text.length <= CLUB_CONTRIBUTION_CHARACTER_BUDGET));
+  assert.ok(getClubContributionWritingCue(unassigned).length > 30);
+
+  const assigned = getClubCampaignContinuity(makePassport({ clubFactionId: CLUB_FACTION_IDS[2] }), date);
+  const factionStarters = getClubContributionStarters(assigned);
+  assert.ok(factionStarters[0].text.includes(assigned.faction!.code));
+  assert.notEqual(factionStarters[0].text, openStarters[0].text);
+  assert.equal(getClubContributionWritingCue(assigned), assigned.mission!.deliverable);
+  assert.ok(factionStarters.every((starter) => starter.text.length <= CLUB_CONTRIBUTION_CHARACTER_BUDGET));
+
+  const component = readFileSync("app/club/club-contribution-studio.tsx", "utf8");
+  const engine = readFileSync("app/club/club-contribution-engine.ts", "utf8");
+  const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const css = readFileSync("app/club/club-campaign-continuity.module.css", "utf8");
+  const readme = readFileSync("README.md", "utf8");
+
+  assert.ok(continuity.includes("<ClubContributionStudio"));
+  assert.ok(continuity.includes("key={continuity.weekKey"));
+  assert.ok(component.includes("value={draft}"));
+  assert.ok(component.includes("onChange={(event) => setDraft(event.currentTarget.value)}"));
+  assert.ok(component.includes("NEW STARTER"));
+  assert.ok(component.includes("COPY WITH CLUB LINK"));
+  assert.ok(component.includes("OPEN DRAFT ON X"));
+  assert.ok(component.includes("twitter.com/intent/tweet"));
+  assert.ok(component.includes("navigator.clipboard"));
+  assert.ok(component.includes("NOTHING IS SAVED, SENT, POSTED OR COUNTED AS ENGAGEMENT"));
+  assert.doesNotMatch(component + engine, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|recordClub|recordPassport/i);
+  assert.ok(css.includes(".contributionEditor textarea"));
+  assert.ok(css.includes(".characterCountOver"));
+  assert.ok(css.includes("@media (max-width: 620px)"));
+  assert.ok(readme.includes("U33 — 99% Club Community Contribution Studio"));
 });

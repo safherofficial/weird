@@ -11,6 +11,7 @@ import {
   type ClubCampaignContinuity as Continuity,
 } from "./club-campaign-continuity-data";
 import styles from "./club-campaign-continuity.module.css";
+import ClubContributionStudio from "./club-contribution-studio";
 
 async function copyText(value: string) {
   if (navigator.clipboard?.writeText) {
@@ -187,6 +188,11 @@ export default function ClubCampaignContinuity() {
               <Link href="#club-weekly-ritual">FILE THIS WEEK'S RESPONSE ↗</Link>
             </article>
           </div>
+
+          <ClubContributionStudio
+            key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
+            continuity={continuity}
+          />
 
           <p className={styles.privacyNote}>
             {progress?.passportEnabled

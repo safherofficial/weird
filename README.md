@@ -116,3 +116,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U31 — 99% Club Community Intelligence: a transparent content inventory, a personal summary derived only from the visitor's already-enabled local Passport, and an explicit register of global signals the site does not collect or verify. It creates no new local record, analytics event, account, network request, leaderboard or server-side engagement counter. Opening an X draft is never treated as a published post.
 
 - U32 — 99% Club Campaign Continuity: links the active weekly campaign to a faction-specific editorial assignment, the existing campaign post, meme studio, public challenge board and weekly ritual. It reads only the visitor's existing optional local Passport, creates no new records and does not infer public participation from drafts or navigation.
+
+- U33 — 99% Club Community Contribution Studio: turns the active campaign and optional saved faction into three editable public-draft starters. Visitors can edit, copy with a Club link or open an X composer themselves. Drafts remain session-only and are never saved, published, tracked or counted as engagement.
