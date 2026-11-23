@@ -953,10 +953,10 @@ test("U23.3 audited classifications match the exact answer semantics", () => {
   assert.match(whitepaperClassifications["risk-footnote"].title, /RISK FOOTNOTE/);
   assert.match(whitepaperClassifications["dao-diplomat"].subtitle, /new admin/i);
 
-  // The Club options now state the behavior described by their assigned archetypes.
-  assert.match(clubQuestions[1].options[2].label, /every dip.*chance to add/i);
+  // Club identity answers stay aligned with their existing archetypes.
+  assert.match(clubQuestions[1].options[2].label, /welcome thread.*bigger chapter/i);
   assert.equal(clubQuestions[1].options[2].tag, "average-down-citizen");
-  assert.match(clubQuestions[2].options[3].label, /tried to reopen.*ignored it/i);
+  assert.match(clubQuestions[2].options[3].label, /mute the noise.*notifications unopened/i);
   assert.equal(clubQuestions[2].options[3].tag, "paper-hands-survivor");
 
   // Evidence-led handover verification belongs with the evidence archivist, not the disengaged profile.
@@ -967,6 +967,37 @@ test("U23.3 audited classifications match the exact answer semantics", () => {
   // Social posting after a red candle is community amplification, not a global-adoption claim.
   assert.equal(roadmapQuestions[4].options[3].tag, "community-amplifier");
   assert.match(roadmapClassifications["actually-shipping"].subtitle, /named owners and deliverables/i);
+});
+
+test("U42 99% Club interview measures cross-chain community identity, distinct from Audit and Cope", () => {
+  const clubCopy = clubQuestions.map((question) =>
+    question.prompt + " " + question.note + " " + question.options.map((option) => option.label).join(" ")
+  ).join(" ");
+
+  assert.equal(clubQuestions.length, CLUB_QUESTIONS);
+  assert.ok(clubQuestions.every((question) => /COMMUNITY|ECOSYSTEM/i.test(question.prompt)));
+  assert.match(clubCopy, /across X, Discord and Telegram/i);
+  assert.match(clubCopy, /members.*different time zones/i);
+  assert.match(clubCopy, /changing their minds or leave/i);
+  assert.doesNotMatch(clubCopy, /five-minute chart|deployer stops posting|token graduated|wallet cluster|post-buy drawdown|exit plan/i);
+
+  const auditCopy = auditQuestions.map((question) =>
+    question.prompt + " " + question.options.map((option) => option.label).join(" ")
+  ).join(" ");
+  const copeCopy = copeQuestions.map((question) =>
+    question.prompt + " " + question.options.map((option) => option.label).join(" ")
+  ).join(" ");
+  assert.match(auditCopy, /CA|pre-buy|exit plan/i);
+  assert.match(copeCopy, /chart went red|deployer stops posting|wallets moves|still holding/i);
+
+  // Scores, answer positions and archetype mappings remain stable for existing deterministic case codes.
+  assert.deepEqual(clubQuestions.map((question) => question.options.map((option) => option.tag)), [
+    ["conviction-custodian", "average-down-citizen", "telegram-veteran", "exit-liquidity-witness"],
+    ["conviction-custodian", "telegram-veteran", "average-down-citizen", "paper-hands-survivor"],
+    ["chart-hermit", "telegram-veteran", "conviction-custodian", "paper-hands-survivor"],
+    ["chart-hermit", "average-down-citizen", "telegram-veteran", "paper-hands-survivor"],
+    ["conviction-custodian", "average-down-citizen", "telegram-veteran", "paper-hands-survivor"],
+  ]);
 });
 
 test("Fictional Token Dossier archetypes align with technical, community and governance answers", () => {
