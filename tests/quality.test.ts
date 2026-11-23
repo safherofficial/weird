@@ -3215,7 +3215,8 @@ test("U37 Campaign Export Pack creates a valid local ZIP containing three named 
   const component = readFileSync("app/club/club-war-room.tsx", "utf8");
   assert.ok(component.includes("async function downloadArtworkPack()"));
   assert.ok(component.includes("CLUB_CAMPAIGN_ARTWORK_FORMATS.map(async (format)"));
-  assert.ok(component.includes("new Blob([archive], { type: \"application/zip\" })"));
+  assert.ok(component.includes("new Blob([archiveBuffer], { type: \"application/zip\" })"));
+  assert.ok(component.includes("new Uint8Array(archiveBuffer).set(archive)"));
   assert.ok(component.includes("DOWNLOAD ALL 3 / ZIP"));
   assert.ok(component.includes("document.createElement(\"canvas\")"));
   assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
