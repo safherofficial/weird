@@ -8,16 +8,16 @@ import { archiveRecords } from "./archive-data";
 export const metadata: Metadata = {
   alternates: { canonical: "/archives" },
   title: "Department Archives",
-  description: archiveRecords.length + " fictional case records from Solana trenches: deployer silence, bundle-wallet theories, bonding-curve graduation, copied KOL calls and missing exit plans.",
+  description: archiveRecords.length + " fictional case records across the crypto trenches: bridge-transfer incidents, airdrop eligibility appeals, multi-chain unlock schedules, wallet inferences and governance handovers.",
   openGraph: {
     title: "THE DEPARTMENT ARCHIVES",
-    description: archiveRecords.length + " fictional Solana trenches records. No live wallets, real KOLs or actual market history.",
+    description: archiveRecords.length + " fictional cross-chain case files. No live wallets, real assets or actual market history.",
     images: ["/archives/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DEPARTMENT ARCHIVES",
-    description: archiveRecords.length + " fictional case files from the aftermath of pump.fun launches and Crypto Twitter conviction.",
+    description: archiveRecords.length + " fictional case files from the cross-chain trenches and crypto conviction cycle.",
     images: ["/archives/opengraph-image"],
   },
 };
@@ -33,7 +33,7 @@ export default function ArchivesPage() {
           <p className="eyebrow">WHALE & WALLET INVESTIGATION / FICTIONAL CASE ARCHIVE</p>
           <h1>THE DEPARTMENT<br /><span>ARCHIVES.</span></h1>
           <p className="audit-intro__lead">
-            Fictional wallet dossiers, KOL screenshot trails, bundle theories, graduation reports and CTO handover files recovered from the Solana trenches.
+            Fictional case records from across the crypto trenches: bridge transfers, airdrop eligibility, wallet inferences, unlock schedules and community governance.
           </p>
           <div className="archives-intro__notice">
             <span>COLLECTION NOTICE</span>
