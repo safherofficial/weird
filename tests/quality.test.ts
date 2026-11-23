@@ -17,6 +17,7 @@ import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, g
 import { getClubCommunityContentInventory, getClubLocalPassportEvidence } from "../app/club/club-community-intelligence-data";
 import { CLUB_FACTION_CAMPAIGN_MISSIONS, getClubCampaignContinuity } from "../app/club/club-campaign-continuity-data";
 import { CLUB_CONTRIBUTION_CHARACTER_BUDGET, getClubContributionStarters, getClubContributionWritingCue } from "../app/club/club-contribution-engine";
+import { CLUB_PARTICIPATION_TEXT_BUDGET, getClubParticipationDrafts } from "../app/club/club-participation-loop-engine";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -3048,4 +3049,45 @@ test("U33 Contribution Studio builds editable faction-aware public drafts withou
   assert.ok(css.includes(".characterCountOver"));
   assert.ok(css.includes("@media (max-width: 620px)"));
   assert.ok(readme.includes("U33 — 99% Club Community Contribution Studio"));
+});
+
+
+test("U34 Participation Loop builds a three-step campaign relay without collecting or counting public engagement", () => {
+  const date = new Date("2026-11-23T12:00:00.000Z");
+  const unassigned = getClubCampaignContinuity(null, date);
+  const openRelay = getClubParticipationDrafts(unassigned);
+  assert.equal(openRelay.length, 3);
+  assert.deepEqual(openRelay.map((draft) => draft.id), ["challenge-reply", "conversation-question", "pass-the-file"]);
+  assert.equal(new Set(openRelay.map((draft) => draft.text)).size, 3);
+  assert.ok(openRelay[0].text.includes(unassigned.campaign.challenge.title.toLowerCase()));
+  assert.ok(openRelay[1].text.includes(unassigned.campaign.theme.title.toLowerCase()));
+  assert.ok(openRelay[2].text.includes(unassigned.campaign.theme.title.toLowerCase()));
+  assert.ok(openRelay.every((draft) => draft.text.length > 0 && draft.text.length <= CLUB_PARTICIPATION_TEXT_BUDGET));
+
+  const assigned = getClubCampaignContinuity(makePassport({ clubFactionId: CLUB_FACTION_IDS[1] }), date);
+  const factionRelay = getClubParticipationDrafts(assigned);
+  assert.ok(factionRelay[2].text.includes(assigned.faction!.code));
+  assert.notEqual(factionRelay[2].text, openRelay[2].text);
+  assert.ok(factionRelay.every((draft) => draft.text.length <= CLUB_PARTICIPATION_TEXT_BUDGET));
+
+  const component = readFileSync("app/club/club-participation-loop.tsx", "utf8");
+  const engine = readFileSync("app/club/club-participation-loop-engine.ts", "utf8");
+  const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const css = readFileSync("app/club/club-campaign-continuity.module.css", "utf8");
+  const readme = readFileSync("README.md", "utf8");
+
+  assert.ok(continuity.includes("<ClubParticipationLoop"));
+  assert.ok(continuity.indexOf("<ClubContributionStudio") < continuity.indexOf("<ClubParticipationLoop"));
+  assert.ok(component.includes("value={value}"));
+  assert.ok(component.includes("setDrafts((current) => ({ ...current, [id]: value }))"));
+  assert.ok(component.includes("COPY TEXT"));
+  assert.ok(component.includes("OPEN ON X"));
+  assert.ok(component.includes("twitter.com/intent/tweet"));
+  assert.ok(component.includes("navigator.clipboard"));
+  assert.ok(component.includes("DOES NOT READ X REPLIES"));
+  assert.doesNotMatch(component + engine, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage|recordClub|recordPassport/i);
+  assert.ok(css.includes(".participationSteps"));
+  assert.ok(css.includes("@media (max-width: 820px)"));
+  assert.ok(css.includes("@media (max-width: 620px)"));
+  assert.ok(readme.includes("U34 — 99% Club Community Participation Loop"));
 });

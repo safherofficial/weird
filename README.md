@@ -118,3 +118,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U32 — 99% Club Campaign Continuity: links the active weekly campaign to a faction-specific editorial assignment, the existing campaign post, meme studio, public challenge board and weekly ritual. It reads only the visitor's existing optional local Passport, creates no new records and does not infer public participation from drafts or navigation.
 
 - U33 — 99% Club Community Contribution Studio: turns the active campaign and optional saved faction into three editable public-draft starters. Visitors can edit, copy with a Club link or open an X composer themselves. Drafts remain session-only and are never saved, published, tracked or counted as engagement.
+
+- U34 — 99% Club Community Participation Loop: adds a three-step, session-only relay for replying to the active public challenge, asking a specific follow-up question and handing the campaign to another participant. Each draft is editable, character-checked, copyable or openable as an X composer. The site does not read X replies, collect handles, verify publication or count contributors.

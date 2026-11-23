@@ -12,6 +12,7 @@ import {
 } from "./club-campaign-continuity-data";
 import styles from "./club-campaign-continuity.module.css";
 import ClubContributionStudio from "./club-contribution-studio";
+import ClubParticipationLoop from "./club-participation-loop";
 
 async function copyText(value: string) {
   if (navigator.clipboard?.writeText) {
@@ -190,6 +191,10 @@ export default function ClubCampaignContinuity() {
           </div>
 
           <ClubContributionStudio
+            key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
+            continuity={continuity}
+          />
+          <ClubParticipationLoop
             key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
             continuity={continuity}
           />
