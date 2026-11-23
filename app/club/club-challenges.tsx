@@ -148,7 +148,7 @@ export default function ClubChallenges() {
   }
 
   return (
-    <section className="club-challenges" aria-labelledby="club-challenges-title">
+    <section id="club-challenges" className="club-challenges" aria-labelledby="club-challenges-title">
       <header className="club-challenges__header">
         <div>
           <span>THE 99% CLUB / INTERACTIVE CONVICTION DESK</span>

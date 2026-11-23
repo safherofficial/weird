@@ -169,12 +169,13 @@ export default function ClubCampaignContinuity() {
             </article>
             <article className={styles.step}>
               <span>03 / MEME + PUBLIC CHALLENGE</span>
-              <strong>{progress?.passportEnabled ? progress.completedCoreChallenges + " / 3 CORE FILES" : "SESSION / NOT SAVED"}</strong>
+              <strong>{progress?.passportEnabled ? progress.completedCoreChallenges + " / 3 PERSONAL CHALLENGE FILES" : "NOT SAVED / SESSION ONLY"}</strong>
               <h4>{continuity.campaign.memeTemplate.name}</h4>
               <p>{continuity.campaign.challenge.title}: {continuity.campaign.challenge.brief}</p>
               <div className={styles.stepLinks}>
                 <Link href="#club-meme-studio">MEME OFFICE ↗</Link>
-                <Link href="#club-challenge-board">CHALLENGE BOARD ↗</Link>
+                <Link href="#club-challenge-board">PUBLIC CHALLENGE ↗</Link>
+                <Link href="#club-challenges">PERSONAL FILES ↗</Link>
               </div>
             </article>
             <article className={styles.step}>
