@@ -3,7 +3,7 @@
 ## Core identity
 **The official aftercare desk for Crypto Twitter, Solana memecoin trenches and pump.fun launches.**
 
-A deliberately useless satirical institution for people who recognize themselves in Crypto Twitter, Solana memecoin trenches, pump.fun launches and the endless hunt for the next 100x.
+A deliberately useless satirical institution for people who recognize themselves in Crypto Twitter, Solana memecoin trenches, pump.fun launches and the endless hunt for the next 100x. THE 99% CLUB is the cross-chain identity inside this world: it welcomes the same habits across every chain and cycle. Solana is the Department's editorial starting point, not a boundary for Club membership.
 
 The visitor is not an outsider who needs crypto explained. The visitor is one of us: the person who refreshed the chart, followed the KOL, chased the mystery-wallet lore, entered after the green candle and then found a reason not to sell.
 
@@ -16,7 +16,7 @@ Each division is an editorial identity wrapped around an existing experience. Th
 | Division | Existing experience | Editorial territory |
 | --- | --- | --- |
 | 01. Pump.fun Intelligence | Paper Market Simulator | Fictional launches, bonding curves, graduation, migration and paper-market decisions. |
-| 02. Solana Trenches | 99% Club | Survivor identity, microcap fatigue, missed calls and re-entry habits. |
+| 02. Cross-Chain Trenches | 99% Club | Cross-chain survivor identity, microcap fatigue, missed calls and re-entry habits across every cycle. |
 | 03. FOMO Control Unit | DYOR Audit | KOL triggers, green-candle chasing, crowd dependency and research-to-entry behaviour. |
 | 04. KOL Surveillance | The Trenches Desk / Daily CT Briefing | Date-seeded fictional CT briefings; no real accounts are monitored. |
 | 05. Whale & Wallet Investigation | Department Archives | Fictional wallet dossiers, suspicious labels, screenshot trails and evidence folklore. |
@@ -26,7 +26,7 @@ Each division is an editorial identity wrapped around an existing experience. Th
 | 09. Bagholder Rehabilitation | Museum of Trenches Relics | Preserved relics, missed exits, abandoned roadmaps and long-term conviction artifacts. |
 | 10. Copium Administration | Global Cope Index | Synthetic readings of CT echo, launch FOMO, Telegram reassurance and post-graduation denial. |
 
-The ten names do not create ten new products. They organize the existing ten experiences while their original routes and interactive logic remain intact. Each page, result, social card and cross-link should reinforce this Solana / CT trenches world rather than reverting to generic Web3 startup language.
+The ten names do not create ten new products. They organize the existing ten experiences while their original routes and interactive logic remain intact. The Department remains rooted in its Solana / Crypto Twitter editorial world; the 99% Club is the explicit cross-chain exception and must never be framed as Solana-only.
 
 ## Daily editorial system
 
@@ -45,7 +45,8 @@ The ten names do not create ten new products. They organize the existing ten exp
 ## Audience and cultural territory
 Write for people familiar with:
 - Crypto Twitter (CT), KOLs, shilling, paid calls, raids, quote-posts and echo chambers.
-- Solana trenches, microcaps, pump.fun, bonding curves, graduation and migration.
+- Solana trenches, microcaps, pump.fun, bonding curves, graduation and migration as the Department's editorial starting point.
+- Crypto investor behaviour across every chain and cycle as the 99% Club's cultural territory.
 - Snipers, bundles, wallet clusters, mystery whales and copy-trading narratives.
 - CTOs (community takeovers), abandoned devs, Telegram groups and promised revivals.
 - FOMO, late entries, jeets, paper hands, diamond hands, revenge entries and exit liquidity.
@@ -96,7 +97,7 @@ The bonding curve completed. The community called it a historic milestone. The s
 | 100x | The life-changing return fantasy that keeps the search going. |
 
 ## Quality bar for every generated item
-- Is the scenario specifically recognizable to a Solana / Crypto Twitter degen?
+- Is the scenario anchored in recognizable crypto-culture behaviour, with Solana / Crypto Twitter specificity for the Department and cross-chain relevance for the 99% Club?
 - Does it contain a concrete behaviour or event, rather than generic crypto words?
 - Is the formal interpretation funnier than a generic meme caption?
 - Does the punchline land without needing an explanation?
