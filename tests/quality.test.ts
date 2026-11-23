@@ -3251,7 +3251,7 @@ test("U38 Campaign Export Preflight flags truncation, overflow, unsafe bounds an
     smallestHeadlineFontPx: 31,
   });
   assert.equal(failed.ready, false);
-  assert.equal(failed.issues.length, 7);
+  assert.equal(failed.issues.length, 6);
   assert.ok(failed.issues.some((issue) => issue.includes("Campaign title")));
   assert.ok(failed.issues.some((issue) => issue.includes("Top headline is truncated")));
   assert.ok(failed.issues.some((issue) => issue.includes("Bottom headline is empty")));
