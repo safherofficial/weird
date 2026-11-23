@@ -8,6 +8,7 @@ import ClubChallenges from "./club-challenges";
 import ClubTokenNotice from "./club-token-notice";
 import ClubCampaignDesk from "./club-campaign-desk";
 import ClubCampaignEngineDesk from "./club-campaign-engine-desk";
+import ClubCampaignContinuity from "./club-campaign-continuity";
 import ClubCultureDesk from "./club-culture-desk";
 import ClubWarRoom from "./club-war-room";
 import ClubCommunityIntelligence from "./club-community-intelligence";
@@ -83,6 +84,10 @@ export default function ClubPage() {
 
       <div className="shell">
         <ClubCampaignEngineDesk />
+      </div>
+
+      <div className="shell">
+        <ClubCampaignContinuity />
       </div>
 
       <div className="shell">

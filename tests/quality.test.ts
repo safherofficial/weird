@@ -15,6 +15,7 @@ import { CLUB_MEME_TEMPLATES, CLUB_PUBLIC_CHALLENGES } from "../app/club/club-wa
 import { buildClubCampaignPack, CLUB_CAMPAIGN_ROTATION_LENGTH, CLUB_CAMPAIGN_THEMES, getClubCampaignDrop, getClubCampaignSchedule } from "../app/club/club-campaign-engine";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
 import { getClubCommunityContentInventory, getClubLocalPassportEvidence } from "../app/club/club-community-intelligence-data";
+import { CLUB_FACTION_CAMPAIGN_MISSIONS, getClubCampaignContinuity } from "../app/club/club-campaign-continuity-data";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -2922,3 +2923,72 @@ test("U31 Community Intelligence separates static content inventory, local Passp
 function filesForTestCommunityData() {
   return readFileSync("app/club/club-community-intelligence-data.ts", "utf8");
 }
+
+
+test("U32 campaign continuity assigns a faction-specific editorial role to the live weekly campaign and respects local Passport boundaries", () => {
+  const date = new Date("2026-11-23T12:00:00.000Z");
+  const noPassport = getClubCampaignContinuity(null, date);
+  assert.equal(noPassport.weekKey, "2026-W48");
+  assert.equal(noPassport.campaign.theme.id, "dyor-receipt");
+  assert.equal(noPassport.faction, null);
+  assert.equal(noPassport.mission, null);
+  assert.equal(noPassport.progress.passportEnabled, false);
+  assert.equal(noPassport.progress.membershipInterview, "NOT SAVED");
+  assert.equal(noPassport.progress.factionAssignment, "NOT SAVED");
+  assert.equal(noPassport.progress.completedCoreChallenges, 0);
+  assert.equal(noPassport.progress.currentWeeklyRitualFiled, false);
+
+  const localPassport = makePassport({
+    clubMembershipAnswers: [0, 1, 2, 3, 0],
+    clubChallengeAnswers: { "fault-allocation": 0, "research-receipt": 1 },
+    clubFactionId: CLUB_FACTION_IDS[0],
+    clubWeeklyChallengeAnswers: { "2026-W48": 2 },
+  });
+  const assigned = getClubCampaignContinuity(localPassport, date);
+  assert.equal(assigned.faction?.id, CLUB_FACTION_IDS[0]);
+  assert.equal(assigned.mission?.title, "PRESERVE THE ORIGINAL THESIS");
+  assert.equal(assigned.progress.membershipInterview, "FILED");
+  assert.equal(assigned.progress.factionAssignment, "ASSIGNED");
+  assert.equal(assigned.progress.completedCoreChallenges, 2);
+  assert.equal(assigned.progress.currentWeeklyRitualFiled, true);
+  assert.equal(assigned.campaign.culturePost.id, "dyor-receipt");
+  assert.equal(assigned.campaign.memeTemplate.id, "research-loop");
+  assert.equal(assigned.campaign.challenge.id, "dyor-receipt");
+
+  assert.deepEqual(Object.keys(CLUB_FACTION_CAMPAIGN_MISSIONS).sort(), [...CLUB_FACTION_IDS].sort());
+  const missionTitles = new Set<string>();
+  const instructions = new Set<string>();
+  for (const factionId of CLUB_FACTION_IDS) {
+    const factionPassport = makePassport({ clubFactionId: factionId });
+    const continuity = getClubCampaignContinuity(factionPassport, date);
+    assert.equal(continuity.faction?.id, factionId);
+    assert.ok(continuity.mission?.title);
+    assert.ok(continuity.mission?.instruction.includes(continuity.campaign.theme.title.split(" ")[0]) || continuity.mission?.instruction.length > 40);
+    missionTitles.add(continuity.mission!.title);
+    instructions.add(continuity.mission!.instruction);
+  }
+  assert.equal(missionTitles.size, CLUB_FACTION_IDS.length);
+  assert.equal(instructions.size, CLUB_FACTION_IDS.length);
+
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const component = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const data = readFileSync("app/club/club-campaign-continuity-data.ts", "utf8");
+  const css = readFileSync("app/club/club-campaign-continuity.module.css", "utf8");
+  const readme = readFileSync("README.md", "utf8");
+
+  assert.ok(page.includes("<ClubCampaignEngineDesk />"));
+  assert.ok(page.includes("<ClubCampaignContinuity />"));
+  assert.ok(page.indexOf("<ClubCampaignEngineDesk />") < page.indexOf("<ClubCampaignContinuity />"));
+  assert.ok(page.indexOf("<ClubCampaignContinuity />") < page.indexOf("<ClubCultureDesk />"));
+  assert.ok(component.includes("readPassport()"));
+  assert.ok(component.includes("PASSPORT_UPDATED_EVENT"));
+  assert.ok(component.includes("getClubCampaignContinuity(readPassport(), new Date())"));
+  assert.ok(component.includes("COPY MY FACTION ORDER"));
+  assert.ok(component.includes('href="#club-meme-studio"'));
+  assert.ok(component.includes('href="#club-challenge-board"'));
+  assert.ok(component.includes('href="#club-weekly-ritual"'));
+  assert.ok(component.includes("This panel creates no new stored record"));
+  assert.doesNotMatch(component + data, /fetch\(|sendBeacon|gtag|analytics\\.track|mixpanel|posthog|recordClub|recordPassport/i);
+  assert.ok(css.includes("@media (max-width: 620px)"));
+  assert.ok(readme.includes("U32 — 99% Club Campaign Continuity"));
+});
