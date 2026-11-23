@@ -2401,7 +2401,7 @@ test("U28.2 weekly Club rotation uses ISO UTC weeks and rotates on Monday withou
   const monday = getIsoClubWeekKey(new Date("2026-11-23T00:00:00.000Z"));
   assert.equal(sunday.weekKey, "2026-W47");
   assert.equal(monday.weekKey, "2026-W48");
-  assert.equal(CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, 8);
+  assert.equal(CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, 12);
 
   const beforeBoundary = getCurrentClubWeeklyChallenge(new Date("2026-11-22T23:59:59.000Z"));
   const afterBoundary = getCurrentClubWeeklyChallenge(new Date("2026-11-23T00:00:00.000Z"));
@@ -2409,6 +2409,19 @@ test("U28.2 weekly Club rotation uses ISO UTC weeks and rotates on Monday withou
   assert.equal(afterBoundary.weekKey, "2026-W48");
   assert.notEqual(beforeBoundary.title, afterBoundary.title);
   assert.equal(afterBoundary.options.length, 3);
+  assert.equal(beforeBoundary.title, "THE REVENGE ENTRY");
+  assert.equal(afterBoundary.title, "THE FINAL EXPLANATION");
+  const nextWeek = getCurrentClubWeeklyChallenge(new Date("2026-11-30T12:00:00.000Z"));
+  assert.equal(nextWeek.title, "THE BRIDGE-HOP REVIEW");
+  const twelveWeeks = Array.from({ length: 12 }, (_, index) =>
+    getCurrentClubWeeklyChallenge(new Date(Date.UTC(2026, 9, 5 + index * 7))).title
+  );
+  assert.equal(new Set(twelveWeeks).size, 12, "The 12-week ritual must not repeat a case inside one complete cycle");
+  assert.equal(
+    getCurrentClubWeeklyChallenge(new Date("2026-12-28T12:00:00.000Z")).title,
+    twelveWeeks[0],
+    "The weekly ritual should repeat only after its full 12-week rotation"
+  );
 });
 
 test("U28.2 Passport v4 adds faction affiliation, hidden achievements and three-week attendance without changing legacy counts", () => {
@@ -2624,7 +2637,7 @@ test("U28.7 Community Culture Desk exposes short, reusable cross-chain social dr
   const page = readFileSync("app/club/page.tsx", "utf8");
   const desk = readFileSync("app/club/club-culture-desk.tsx", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
-  assert.equal(CLUB_CULTURE_POSTS.length, 8);
+  assert.equal(CLUB_CULTURE_POSTS.length, 14);
   assert.equal(new Set(CLUB_CULTURE_POSTS.map((post) => post.id)).size, CLUB_CULTURE_POSTS.length);
   assert.deepEqual(new Set(CLUB_CULTURE_POSTS.map((post) => post.category)), new Set(CLUB_CULTURE_CATEGORIES));
   for (const post of CLUB_CULTURE_POSTS) {
@@ -2690,8 +2703,10 @@ test("U28.9 weekly campaign engine coordinates real Club assets on a determinist
   const warRoomData = readFileSync("app/club/club-war-room-data.ts", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
 
-  assert.equal(CLUB_CAMPAIGN_ROTATION_LENGTH, 6);
-  assert.equal(CLUB_CAMPAIGN_THEMES.length, 6);
+  assert.equal(CLUB_CAMPAIGN_ROTATION_LENGTH, 12);
+  assert.equal(CLUB_CAMPAIGN_THEMES.length, 12);
+  assert.equal(CLUB_MEME_TEMPLATES.length, 12);
+  assert.equal(CLUB_PUBLIC_CHALLENGES.length, 12);
   assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.id)).size, 6);
   assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.memeTemplateId)).size, 6);
   assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.culturePostId)).size, 6);
@@ -2797,4 +2812,47 @@ test("U29 homepage presents the 99% Club as cross-chain while retaining Solana a
   assert.match(layout, /99% Club/i);
   assert.match(layout, /across all chains/i);
   assert.match(layout, /Solana is the Department's starting point/i);
+});
+
+
+test("U30 expands Club editorial and participation content into distinct 12-week rotations", () => {
+  const campaign = getClubCampaignDrop(new Date("2026-12-28T12:00:00.000Z"));
+  const campaignIds = CLUB_CAMPAIGN_THEMES.map((item) => item.id);
+  const cultureIds = CLUB_CULTURE_POSTS.map((item) => item.id);
+  const memeIds = CLUB_MEME_TEMPLATES.map((item) => item.id);
+  const challengeIds = CLUB_PUBLIC_CHALLENGES.map((item) => item.id);
+
+  assert.equal(CLUB_CULTURE_POSTS.length, 14);
+  assert.equal(new Set(cultureIds).size, cultureIds.length);
+  assert.equal(new Set(memeIds).size, 12);
+  assert.equal(new Set(challengeIds).size, 12);
+  assert.equal(new Set(campaignIds).size, 12);
+
+  for (const post of CLUB_CULTURE_POSTS) {
+    assert.ok(post.copy.length > 60 && post.copy.length <= 250);
+    assert.ok(post.copy.includes("#The99PercentClub"));
+    assert.ok(post.replyPrompt.length >= 20 && post.replyPrompt.length <= 180);
+  }
+  for (const challenge of CLUB_PUBLIC_CHALLENGES) {
+    assert.ok(challenge.postText.length > 60 && challenge.postText.length <= 280);
+    assert.ok(challenge.postText.includes("#The99PercentClub"));
+    assert.ok(challenge.prompt.length > 40);
+  }
+  for (const meme of CLUB_MEME_TEMPLATES) {
+    assert.ok(meme.topText.length > 0 && meme.topText.length <= 100);
+    assert.ok(meme.bottomText.length > 0 && meme.bottomText.length <= 100);
+  }
+  for (const theme of CLUB_CAMPAIGN_THEMES) {
+    assert.ok(cultureIds.includes(theme.culturePostId), theme.id + " must resolve an editorial post");
+    assert.ok(memeIds.includes(theme.memeTemplateId), theme.id + " must resolve a meme template");
+    assert.ok(challengeIds.includes(theme.challengeId), theme.id + " must resolve a public challenge");
+  }
+
+  assert.equal(campaign.theme.id, "bridge-hop-review", "The first added campaign must follow the original six-week sequence");
+  assert.equal(campaign.weekIndex, 6);
+  assert.equal(
+    getClubCampaignDrop(new Date("2027-02-08T12:00:00.000Z")).theme.id,
+    CLUB_CAMPAIGN_THEMES[0].id,
+    "The campaign should repeat only after the full 12-week rotation"
+  );
 });

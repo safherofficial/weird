@@ -60,7 +60,55 @@ export const CLUB_CAMPAIGN_THEMES: readonly ClubCampaignTheme[] = [
     memeTemplateId: "next-one",
     culturePostId: "the-next-one",
     challengeId: "faction-roll-call",
+  },  {
+    "id": "bridge-hop-review",
+    "title": "THE BRIDGE-HOP EVIDENCE FILE",
+    "brief": "The destination changed. The transaction is pending. The confidence remains cross-chain.",
+    "memeTemplateId": "bridge-receipt",
+    "culturePostId": "bridge-receipt",
+    "challengeId": "bridge-receipt"
   },
+  {
+    "id": "unlock-window",
+    "title": "THE UNLOCK CALENDAR INCIDENT",
+    "brief": "The date was public. The response has been referred to the attention department.",
+    "memeTemplateId": "unlock-calendar",
+    "culturePostId": "unlock-calendar",
+    "challengeId": "unlock-window"
+  },
+  {
+    "id": "airdrop-eligibility",
+    "title": "THE AIRDROP ELIGIBILITY AUDIT",
+    "brief": "Every task was completed. The allocation has declined to confirm the relationship.",
+    "memeTemplateId": "airdrop-checklist",
+    "culturePostId": "airdrop-eligibility",
+    "challengeId": "airdrop-eligibility"
+  },
+  {
+    "id": "governance-quorum",
+    "title": "THE GOVERNANCE VOTE OF ONE",
+    "brief": "The proposal passed. The group chat has requested a separate count.",
+    "memeTemplateId": "governance-vote",
+    "culturePostId": "governance-vote",
+    "challengeId": "governance-quorum"
+  },
+  {
+    "id": "yield-reclassification",
+    "title": "THE YIELD RECLASSIFICATION",
+    "brief": "A passive strategy has generated an unexpectedly active explanation workload.",
+    "memeTemplateId": "yield-relabel",
+    "culturePostId": "yield-reclassification",
+    "challengeId": "yield-reclassification"
+  },
+  {
+    "id": "narrative-migration",
+    "title": "THE NARRATIVE MIGRATION ORDER",
+    "brief": "The thesis has moved networks. Its unresolved questions have been forwarded automatically.",
+    "memeTemplateId": "narrative-rotation",
+    "culturePostId": "narrative-migration",
+    "challengeId": "narrative-migration"
+  }
+
 ] as const;
 
 export const CLUB_CAMPAIGN_ROTATION_LENGTH = CLUB_CAMPAIGN_THEMES.length;

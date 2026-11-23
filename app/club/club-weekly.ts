@@ -87,7 +87,83 @@ const weeklyCases = [
       { label: "THE COMMUNITY IS CONSOLIDATING CONVICTION.", finding: "LOW ACTIVITY HAS BEEN RECORDED AS AN INTERNAL ALIGNMENT EXERCISE." },
       { label: "THE NEXT ONE IS MINE. THIS ONE WAS PRACTICE.", finding: "THE DEPARTMENT HAS OPENED A NEW FILE. THE OLD ONE REMAINS UNRESOLVED." },
     ],
+  },  {
+    "title": "THE BRIDGE-HOP REVIEW",
+    "prompt": "THE CROSS-CHAIN TRANSFER IS STILL PENDING. WHICH OFFICIAL EXPLANATION GOES INTO THE FILE?",
+    "note": "This is a fictional scenario. No actual transfer, address or network is being inspected.",
+    "options": [
+      {
+        "label": "THE ROUTE IS TAKING THE SCENIC PATH.",
+        "finding": "WAITING TIME RECLASSIFIED AS AN UNPLANNED CULTURAL EXPERIENCE."
+      },
+      {
+        "label": "THE DESTINATION NETWORK HAS NOT READ THE BRIEFING.",
+        "finding": "THE HANDOFF HAS BEEN REFERRED TO INTER-DEPARTMENTAL COMMUNICATIONS."
+      },
+      {
+        "label": "I WILL CALL IT A LONG-TERM CROSS-CHAIN POSITION.",
+        "finding": "A PENDING TRANSFER HAS BEEN PROMOTED TO A STRATEGIC HOLDING PERIOD."
+      }
+    ]
   },
+  {
+    "title": "THE UNLOCK CALENDAR REVIEW",
+    "prompt": "THE TOKEN UNLOCK WAS ON THE PUBLIC CALENDAR. WHY IS THE FILE MARKED UNEXPECTED?",
+    "note": "The calendar and the scenario are fictional. The Department does not track real token schedules.",
+    "options": [
+      {
+        "label": "I WAS WATCHING THE COMMUNITY SENTIMENT INSTEAD.",
+        "finding": "PUBLIC INFORMATION HAS BEEN OUTRANKED BY A PINNED BULLISH THREAD."
+      },
+      {
+        "label": "THE DATE WAS CLEAR. MY INTERPRETATION WAS NOT.",
+        "finding": "THE DEPARTMENT HAS ACCEPTED A RARE ADMISSION OF ATTENTION FAILURE."
+      },
+      {
+        "label": "THE UNLOCK IS PART OF THE LONG-TERM STORY.",
+        "finding": "A SCHEDULED EVENT HAS BEEN RECLASSIFIED AS NARRATIVE DEVELOPMENT."
+      }
+    ]
+  },
+  {
+    "title": "THE AIRDROP ELIGIBILITY APPEAL",
+    "prompt": "EVERY FICTIONAL TASK WAS COMPLETED. THE ELIGIBILITY RESULT SAYS OTHERWISE. WHAT IS YOUR APPEAL?",
+    "note": "No actual airdrop, eligibility checker or wallet is involved in this exercise.",
+    "options": [
+      {
+        "label": "THE CHECKLIST AND I HAVE DIFFERENT DEFINITIONS OF COMPLETE.",
+        "finding": "THE DEPARTMENT HAS OPENED A SEMANTIC REVIEW OF THE WORD 'EVERY'."
+      },
+      {
+        "label": "THE ALLOCATION IS PROBABLY STILL PROCESSING.",
+        "finding": "NO ALLOCATION HAS BEEN FOUND. PROCESSING REMAINS A PROMISING THEORY."
+      },
+      {
+        "label": "I WOULD LIKE TO APPEAL THE APPEAL PROCESS.",
+        "finding": "THE CASE HAS ENTERED AN INFINITE ADMINISTRATIVE LOOP."
+      }
+    ]
+  },
+  {
+    "title": "THE GOVERNANCE QUORUM",
+    "prompt": "THE FICTIONAL PROPOSAL PASSED. THE GROUP CHAT DISAGREES. WHICH RESULT IS OFFICIAL?",
+    "note": "The scenario is satire and does not describe any real governance vote or protocol.",
+    "options": [
+      {
+        "label": "THE PUBLISHED RESULT. FILE THE RECEIPT.",
+        "finding": "THE DEPARTMENT HAS RECORDED A RARE DISTINCTION BETWEEN A RESULT AND A REACTION."
+      },
+      {
+        "label": "THE GROUP CHAT NEEDS ONE MORE POLL.",
+        "finding": "THE VOTE HAS BEEN REOPENED IN THE UNOFFICIAL DISCUSSION LAYER."
+      },
+      {
+        "label": "THE RESULT IS VALID UNTIL SOMEONE POSTS A SCREENSHOT.",
+        "finding": "GOVERNANCE FINALITY HAS BEEN PLACED ON A SOCIAL-MEDIA REVIEW PERIOD."
+      }
+    ]
+  }
+
 ] as const;
 
 export function getIsoClubWeekKey(date: Date): { weekKey: string; weekNumber: number; year: number } {
@@ -100,9 +176,23 @@ export function getIsoClubWeekKey(date: Date): { weekKey: string; weekNumber: nu
   return { weekKey: year + "-W" + String(weekNumber).padStart(2, "0"), weekNumber, year };
 }
 
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+// ISO week 41 (5 October 2026) maps to the first case. This keeps the
+// previously active 2026-W48 case in place while the expanded library rolls forward.
+const WEEKLY_ROTATION_ANCHOR_UTC = Date.UTC(2026, 9, 5);
+
+function getWeeklyRotationIndex(date: Date): number {
+  if (!Number.isFinite(date.getTime())) throw new TypeError("A valid Club challenge date is required.");
+  const monday = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const weekday = monday.getUTCDay() || 7;
+  monday.setUTCDate(monday.getUTCDate() - weekday + 1);
+  const elapsedWeeks = Math.floor((monday.getTime() - WEEKLY_ROTATION_ANCHOR_UTC) / WEEK_MS);
+  return ((elapsedWeeks % weeklyCases.length) + weeklyCases.length) % weeklyCases.length;
+}
+
 export function getCurrentClubWeeklyChallenge(now = new Date()): ClubWeeklyChallenge {
   const { weekKey, weekNumber } = getIsoClubWeekKey(now);
-  const current = weeklyCases[(weekNumber - 1) % weeklyCases.length];
+  const current = weeklyCases[getWeeklyRotationIndex(now)];
   return {
     weekKey,
     weekNumber,
