@@ -153,3 +153,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U47 — 99% Club Cross-Chain Routing Consistency: updates the shared Simulator, Museum and Cope journey cards to identify the Club as cross-chain rather than Solana-only. The Department remains Solana-rooted; Club membership remains open across chains and cycles. A regression test protects that distinction in shared routing copy.
 
 - U48 — Archive / 99% Club Editorial Consistency: corrects three Archive links that still described the 99% Club as Solana-only, aligns the membership case with the cross-chain interview, and updates the documented Museum and Archive inventories to their current 19 and 20 records. Regression coverage protects the wording and counts.
+
+- U49 — Live Collection Social Previews: updates the Archive and Museum Open Graph images and accessible alt text to reflect their current curated inventories. Accession ranges, record totals and alt descriptions now derive from the source collections so future additions cannot leave shared previews behind.
