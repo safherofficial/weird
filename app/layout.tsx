@@ -20,19 +20,19 @@ export const metadata: Metadata = {
     template: "%s | THE DYOR DEPARTMENT",
   },
   description:
-    "The fictional aftercare office for Crypto Twitter, Solana trenches and pump.fun degeneracy. FOMO, KOL calls, bonding curves and bagholder behaviour. No token, no alpha, no financial advice.",
+    "The fictional aftercare department for Crypto Twitter, Solana memecoin trenches and pump.fun culture, with the 99% Club satirizing investor behaviour across all chains. FOMO, KOL calls and bagholder behaviour. No token, no alpha, no financial advice.",
   icons: {
     icon: "/icon.svg",
   },
   openGraph: {
     title: "THE DYOR DEPARTMENT",
-    description: "You came for the 100x. You stayed because you can't sell at a loss. Official aftercare for the Solana trenches.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DYOR DEPARTMENT",
-    description: "You came for the 100x. You stayed because you can't sell at a loss. Official aftercare for the Solana trenches.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains.",
     images: ["/opengraph-image"],
   },
 };
