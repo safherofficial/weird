@@ -133,7 +133,7 @@ export const questions: RoadmapQuestion[] = [
 export const classifications: Record<RoadmapArchetypeId, RoadmapArchetype> = {
   "actually-shipping": {
     title: "THE RARELY SHIPPING CTO",
-    subtitle: "The handover has named owners, verified access, an asset register and deliverables with acceptance criteria. The Department is suspicious.",
+    subtitle: "The handover has named owners and deliverables, verified access, an asset register and acceptance criteria. The Department is suspicious.",
     roast: "The takeover contains a real responsibility map and a tested release gate. CT has asked whether the deployer is feeling alright.",
     disposition: "RELEASED UNDER OBSERVATION FOR EXCESSIVE EXECUTION.",
   },
