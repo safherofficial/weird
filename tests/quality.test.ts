@@ -2666,7 +2666,6 @@ test("U28.7 Community Culture Desk exposes short, reusable cross-chain social dr
 test("U28.8 Club War Room creates browser-local meme PNGs and shareable public challenges", () => {
   const page = readFileSync("app/club/page.tsx", "utf8");
   const warRoom = readFileSync("app/club/club-war-room.tsx", "utf8");
-  const globalCss = readFileSync("app/globals.css", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
   assert.ok(CLUB_MEME_TEMPLATES.length >= 6);
   assert.equal(new Set(CLUB_MEME_TEMPLATES.map((template) => template.id)).size, CLUB_MEME_TEMPLATES.length);
@@ -3112,6 +3111,7 @@ test("U35 Campaign Artwork gives each meme export a consistent campaign identity
   }
 
   const warRoom = readFileSync("app/club/club-war-room.tsx", "utf8");
+  const globalCss = readFileSync("app/globals.css", "utf8");
   const engine = readFileSync("app/club/club-campaign-artwork-engine.ts", "utf8");
   assert.ok(warRoom.includes("getClubCampaignDrop(new Date())"));
   assert.ok(warRoom.includes("drawMeme(canvasRef.current, topText, bottomText, campaign, selectedTemplate.name)"));
