@@ -978,7 +978,7 @@ test("U42 99% Club interview measures cross-chain community identity, distinct f
   assert.ok(clubQuestions.every((question) => /COMMUNITY|ECOSYSTEM/i.test(question.prompt)));
   assert.match(clubCopy, /across X, Discord and Telegram/i);
   assert.match(clubCopy, /members.*different time zones/i);
-  assert.match(clubCopy, /changing their minds or leave/i);
+  assert.match(clubCopy, /change their minds or leave/i);
   assert.doesNotMatch(clubCopy, /five-minute chart|deployer stops posting|token graduated|wallet cluster|post-buy drawdown|exit plan/i);
 
   const auditCopy = auditQuestions.map((question) =>
