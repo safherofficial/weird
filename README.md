@@ -147,3 +147,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U41 — 99% Club Live Safe-Area Guide: the Meme Office preview has an optional overlay showing the same horizontal and vertical headline-safe bounds used by the adaptive composition. The guide can be switched on or off while editing and is rendered as a non-interactive interface layer, never onto the PNG canvas or ZIP exports. The preflight and export pipeline remain unchanged.
+
+- U46 — Daily Trenches Editorial Continuity: exposes the briefing's nine-family focus tag, verifies that the 18 themes and nine focus families remain in date-deterministic rotation with no repeat focus in the preceding four UTC issues, and adds direct links to the nearest earlier issue in the same family, the exact Case Atlas entry, its Archive precedent, Museum relic and three assigned offices. The same cross-reference panel appears on today's dispatch and archived issues; it uses existing fictional records only and adds no visitor tracking or live feeds.
