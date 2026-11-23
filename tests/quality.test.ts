@@ -3727,3 +3727,23 @@ test("U48 Archive inventory and Club links stay aligned with the cross-chain ide
     /Museum of Trenches Relics: fifteen fictional curated artifacts|Department Archives: sixteen curated fictional records/,
   );
 });
+
+
+test("U49 Archive and Museum social previews derive accession ranges and counts from their live collections", () => {
+  const museumImage = readFileSync("app/museum/opengraph-image.tsx", "utf8");
+  const archiveImage = readFileSync("app/archives/opengraph-image.tsx", "utf8");
+
+  assert.ok(museumImage.includes('import { exhibits } from "./museum-data";'));
+  assert.ok(museumImage.includes("exhibits[0]?.accession"));
+  assert.ok(museumImage.includes("exhibits[exhibits.length - 1]?.accession"));
+  assert.match(museumImage, /\$\{exhibits\.length\} fictional crypto-trenches artifacts/);
+  assert.ok(museumImage.includes("{exhibits.length} exhibits."));
+  assert.doesNotMatch(museumImage, /Fifteen fictional Solana|BHM-001–015|15 exhibits/i);
+
+  assert.ok(archiveImage.includes('import { archiveRecords } from "./archive-data";'));
+  assert.ok(archiveImage.includes("archiveRecords[0]?.accession"));
+  assert.ok(archiveImage.includes("archiveRecords[archiveRecords.length - 1]?.accession"));
+  assert.match(archiveImage, /\$\{archiveRecords\.length\} fictional crypto-trenches case files/);
+  assert.ok(archiveImage.includes("{archiveRecords.length} fictional case files."));
+  assert.doesNotMatch(archiveImage, /Fifteen fictional Solana|DDA-001–012|15 fictional case files/i);
+});
