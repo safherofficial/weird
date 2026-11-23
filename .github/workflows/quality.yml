@@ -41,7 +41,11 @@ jobs:
     needs: verify
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.VERCEL_DEPLOY_GATE_ENABLED == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      deployments: read
+      statuses: read
     steps:
       - name: Trigger Vercel Production Deploy Hook
         env:
@@ -77,3 +81,35 @@ jobs:
           fi
 
           echo "::notice::Vercel accepted the Production deployment request."
+
+      - name: Wait for Vercel Production deployment
+        id: vercel-deployment
+        uses: vercel/wait-for-deployment-action@0e2b0c5c5cce31f1648108aeec56467187aca037
+        with:
+          environment: production
+          timeout: 600
+          check-interval: 10
+
+      - name: Production HTTP smoke check
+        env:
+          DEPLOYMENT_URL: ${{ steps.vercel-deployment.outputs.deployment-url }}
+          DEPLOYMENT_ID: ${{ steps.vercel-deployment.outputs.deployment-id }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${DEPLOYMENT_URL}" ]]; then
+            echo "::error::Vercel deployment URL was not returned."
+            exit 1
+          fi
+
+          status_code="$(curl --silent --show-error --output /dev/null --write-out "%{http_code}" \
+            --connect-timeout 10 \
+            --max-time 30 \
+            "${DEPLOYMENT_URL%/}/")"
+
+          if [[ ! "${status_code}" =~ ^2[0-9]{2}$ ]]; then
+            echo "::error::Production smoke check failed with HTTP ${status_code}."
+            exit 1
+          fi
+
+          echo "::notice::Vercel deployment ${DEPLOYMENT_ID} is READY; root returned HTTP ${status_code}."
