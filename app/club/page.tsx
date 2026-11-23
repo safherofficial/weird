@@ -12,6 +12,10 @@ import ClubCampaignContinuity from "./club-campaign-continuity";
 import ClubCultureDesk from "./club-culture-desk";
 import ClubWarRoom from "./club-war-room";
 import ClubCommunityIntelligence from "./club-community-intelligence";
+import ClubContributionStudio from "./club-contribution-studio";
+import ClubParticipationLoop from "./club-participation-loop";
+import ClubCampaignContinuityProvider from "./club-campaign-context";
+import journey from "./club-journey.module.css";
 import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
@@ -36,7 +40,10 @@ export default function ClubPage() {
     <main className="audit-page club-page" id="main-content">
       <DepartmentHeader activeSection="club" statusMessage="MEMBERSHIP OFFICE / LIABILITY NOT ACCEPTED" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
 
-      <div className="club-shell shell" id="content-start" tabIndex={-1}>
+      <ClubCampaignContinuityProvider>
+        <section className={journey.stage + " " + journey.identityStage} id="club-journey-identity" aria-label="Stage 1: Membership and identity">
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>01</span><div><strong>MEMBERSHIP &amp; IDENTITY</strong><small>START HERE / APPLICATION AND OFFICIAL CLUB STATUS</small></div></div>
+          <div className="club-shell shell" id="content-start" tabIndex={-1}>
         <aside className="club-intro">
           <div className="audit-intro__meta"><span>FORM 99C-001</span><span>MEMBER BENEFITS / NONE</span></div>
           <p className="eyebrow">CRYPTO MARKETS / ALL CHAINS / 99% SURVIVOR REGISTRY</p>
@@ -57,12 +64,23 @@ export default function ClubPage() {
         <ClubClient />
       </div>
 
-      <div className="shell">
-        <ClubTokenNotice placement="club" />
-      </div>
+          <div className="shell">
+            <ClubTokenNotice placement="club" />
+          </div>
+        </section>
 
-      <div className="shell">
-        <section className="club-faction-directory" aria-labelledby="club-factions-title">
+        <nav className={journey.nav} aria-label="99% Club five-stage journey">
+          <Link href="#club-journey-identity"><span>01</span><strong>MEMBERSHIP &amp; IDENTITY</strong><small>APPLY / CLUB STATUS</small></Link>
+          <Link href="#club-journey-factions"><span>02</span><strong>FACTION CLASSIFICATION</strong><small>CHOOSE YOUR EXCUSE</small></Link>
+          <Link href="#club-journey-campaign"><span>03</span><strong>WEEKLY CAMPAIGN</strong><small>THIS WEEK'S BRIEF</small></Link>
+          <Link href="#club-journey-content"><span>04</span><strong>COMMUNITY CONTENT STUDIO</strong><small>CREATE / EDIT / SHARE</small></Link>
+          <Link href="#club-journey-participation"><span>05</span><strong>PARTICIPATION &amp; PASSPORT</strong><small>CONTRIBUTE / KEEP YOUR FILE</small></Link>
+        </nav>
+
+        <section className={journey.stage} id="club-journey-factions" aria-label="Stage 2: Faction classification">
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>02</span><div><strong>FACTION CLASSIFICATION</strong><small>SIX FICTIONAL IDENTITIES / ONE PRIMARY ARCHETYPE</small></div></div>
+          <div className="shell">
+            <section className="club-faction-directory" aria-labelledby="club-factions-title">
           <header>
             <div><span>THE 99% CLUB / SIX FICTIONAL FACTIONS</span><h2 id="club-factions-title">PICK YOUR <em>EXCUSE.</em></h2></div>
             <p>Your primary membership archetype determines your faction. No wallets, applications, token holdings or real-world groups are involved.</p>
@@ -75,36 +93,31 @@ export default function ClubPage() {
               </article>
             ))}
           </div>
+            </section>
+          </div>
         </section>
-      </div>
 
-      <div className="shell">
-        <ClubCampaignDesk />
-      </div>
+        <section className={journey.stage} id="club-journey-campaign" aria-label="Stage 3: Current weekly campaign">
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>03</span><div><strong>CURRENT WEEKLY CAMPAIGN</strong><small>ONE SHARED BRIEF / SIX FACTION LENSES</small></div></div>
+          <div className="shell"><ClubCampaignDesk /></div>
+          <div className="shell"><ClubCampaignEngineDesk /></div>
+          <div className="shell"><ClubCampaignContinuity /></div>
+        </section>
 
-      <div className="shell">
-        <ClubCampaignEngineDesk />
-      </div>
+        <section className={journey.stage} id="club-journey-content" aria-label="Stage 4: Community content studio">
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>04</span><div><strong>COMMUNITY CONTENT STUDIO</strong><small>WRITE / DESIGN / PACKAGE THE WEEKLY STORY</small></div></div>
+          <div className="shell"><ClubCultureDesk /></div>
+          <div className="shell"><ClubContributionStudio /></div>
+          <div className="shell"><ClubWarRoom /></div>
+        </section>
 
-      <div className="shell">
-        <ClubCampaignContinuity />
-      </div>
-
-      <div className="shell">
-        <ClubCultureDesk />
-      </div>
-
-      <div className="shell">
-        <ClubWarRoom />
-      </div>
-
-      <div className="shell">
-        <ClubChallenges />
-      </div>
-
-      <div className="shell">
-        <ClubCommunityIntelligence />
-      </div>
+        <section className={journey.stage} id="club-journey-participation" aria-label="Stage 5: Participation and Passport">
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>05</span><div><strong>PARTICIPATION &amp; PASSPORT</strong><small>TAKE PART / FILE YOUR RITUALS / SEE WHAT IS ACTUALLY SAVED</small></div></div>
+          <div className="shell"><ClubParticipationLoop /></div>
+          <div className="shell"><ClubChallenges /></div>
+          <div className="shell"><ClubCommunityIntelligence /></div>
+        </section>
+      </ClubCampaignContinuityProvider>
 
       <div className="shell">
         <DepartmentNextSteps currentDepartment="club" />

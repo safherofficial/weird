@@ -1,18 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import {
-  PASSPORT_UPDATED_EVENT,
-  readPassport,
-} from "../passport/passport-store";
-import {
-  getClubCampaignContinuity,
-  type ClubCampaignContinuity as Continuity,
-} from "./club-campaign-continuity-data";
+import { useState } from "react";
+import { useClubCampaignContext } from "./club-campaign-context";
 import styles from "./club-campaign-continuity.module.css";
-import ClubContributionStudio from "./club-contribution-studio";
-import ClubParticipationLoop from "./club-participation-loop";
 
 async function copyText(value: string) {
   if (navigator.clipboard?.writeText) {
@@ -40,26 +31,8 @@ async function copyText(value: string) {
 }
 
 export default function ClubCampaignContinuity() {
-  const [continuity, setContinuity] = useState<Continuity | null>(null);
-  const [passportChecked, setPassportChecked] = useState(false);
+  const { continuity, ready: passportChecked } = useClubCampaignContext();
   const [notice, setNotice] = useState("");
-
-  useEffect(() => {
-    function refresh() {
-      setContinuity(getClubCampaignContinuity(readPassport(), new Date()));
-      setPassportChecked(true);
-    }
-
-    refresh();
-    window.addEventListener("storage", refresh);
-    window.addEventListener(PASSPORT_UPDATED_EVENT, refresh);
-    window.addEventListener("focus", refresh);
-    return () => {
-      window.removeEventListener("storage", refresh);
-      window.removeEventListener(PASSPORT_UPDATED_EVENT, refresh);
-      window.removeEventListener("focus", refresh);
-    };
-  }, []);
 
   async function copyFactionOrder() {
     if (!continuity?.faction || !continuity.mission) return;
@@ -189,15 +162,6 @@ export default function ClubCampaignContinuity() {
               <Link href="#club-weekly-ritual">FILE THIS WEEK'S RESPONSE ↗</Link>
             </article>
           </div>
-
-          <ClubContributionStudio
-            key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
-            continuity={continuity}
-          />
-          <ClubParticipationLoop
-            key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
-            continuity={continuity}
-          />
 
           <p className={styles.privacyNote}>
             {progress?.passportEnabled

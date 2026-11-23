@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useClubCampaignContext } from "./club-campaign-context";
 import type { ClubCampaignContinuity } from "./club-campaign-continuity-data";
 import {
   CLUB_PARTICIPATION_TEXT_BUDGET,
@@ -37,7 +38,26 @@ async function copyText(value: string) {
   if (!copied) throw new Error("Clipboard access is unavailable.");
 }
 
-export default function ClubParticipationLoop({ continuity }: Props) {
+export default function ClubParticipationLoop() {
+  const { continuity, ready } = useClubCampaignContext();
+
+  if (!ready || !continuity) {
+    return (
+      <section className={styles.participation} id="club-participation-loop" aria-label="Club participation loop loading">
+        <p className={styles.loading} role="status">ALIGNING THE PARTICIPATION LOOP WITH THIS WEEK'S CAMPAIGN…</p>
+      </section>
+    );
+  }
+
+  return (
+    <ClubParticipationLoopEditor
+      key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
+      continuity={continuity}
+    />
+  );
+}
+
+function ClubParticipationLoopEditor({ continuity }: Props) {
   const starters = getClubParticipationDrafts(continuity);
   const [drafts, setDrafts] = useState<Record<string, string>>(
     () => Object.fromEntries(starters.map((starter) => [starter.id, starter.text])),

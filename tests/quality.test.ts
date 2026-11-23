@@ -2330,6 +2330,62 @@ test("U44 expands Archives into cross-chain written evidence and Museum into cro
   assert.ok(archiveClient.includes("BRIDGE, AIRDROP, UNLOCKS, QUORUM"));
 });
 
+
+test("U45 organizes the 99% Club into five navigable stages without dropping existing tools", () => {
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const context = readFileSync("app/club/club-campaign-context.tsx", "utf8");
+  const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const contribution = readFileSync("app/club/club-contribution-studio.tsx", "utf8");
+  const participation = readFileSync("app/club/club-participation-loop.tsx", "utf8");
+  const journeyStyles = readFileSync("app/club/club-journey.module.css", "utf8");
+
+  const stages = [
+    'id="club-journey-identity"',
+    'id="club-journey-factions"',
+    'id="club-journey-campaign"',
+    'id="club-journey-content"',
+    'id="club-journey-participation"',
+  ];
+  const positions = stages.map((stage) => page.indexOf(stage));
+  assert.ok(positions.every((position) => position >= 0));
+  assert.deepEqual([...positions].sort((left, right) => left - right), positions, "stage anchors must follow the five-step visitor journey");
+  assert.equal((page.match(/<Link href="#club-journey-/g) || []).length, 5, "all five stages must be reachable from the journey navigation");
+
+  const orderedTools = [
+    "<ClubClient />",
+    '<ClubTokenNotice placement="club" />',
+    '<section className="club-faction-directory"',
+    "<ClubCampaignDesk />",
+    "<ClubCampaignEngineDesk />",
+    "<ClubCampaignContinuity />",
+    "<ClubCultureDesk />",
+    "<ClubContributionStudio />",
+    "<ClubWarRoom />",
+    "<ClubParticipationLoop />",
+    "<ClubChallenges />",
+    "<ClubCommunityIntelligence />",
+  ];
+  const toolPositions = orderedTools.map((tool) => page.indexOf(tool));
+  assert.ok(toolPositions.every((position) => position >= 0), "every existing Club module must remain present");
+  assert.deepEqual([...toolPositions].sort((left, right) => left - right), toolPositions, "modules must follow the five-stage sequence");
+  for (const tool of orderedTools) {
+    assert.equal(page.split(tool).length - 1, 1, tool + " must render exactly once");
+  }
+
+  assert.ok(context.includes("window.addEventListener(PASSPORT_UPDATED_EVENT, refresh)"));
+  assert.ok(context.includes('window.addEventListener("storage", refresh)'));
+  assert.ok(context.includes('window.addEventListener("focus", refresh)'));
+  assert.ok(continuity.includes("useClubCampaignContext()"));
+  assert.doesNotMatch(continuity, /ClubContributionStudio|ClubParticipationLoop/);
+  assert.ok(contribution.includes("useClubCampaignContext()"));
+  assert.ok(contribution.includes("key={continuity.weekKey"));
+  assert.ok(participation.includes("useClubCampaignContext()"));
+  assert.ok(participation.includes("key={continuity.weekKey"));
+  assert.ok(journeyStyles.includes(".nav"));
+  assert.ok(journeyStyles.includes("@media"));
+  assert.ok(journeyStyles.includes("scroll-margin-top"));
+});
+
 test("U27.6 production experience keeps collection counts, filter semantics and responsive navigation accurate", () => {
   const archivePage = readFileSync("app/archives/page.tsx", "utf8");
   const museumPage = readFileSync("app/museum/page.tsx", "utf8");
@@ -3124,6 +3180,7 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
 
   const page = readFileSync("app/club/page.tsx", "utf8");
   const component = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const provider = readFileSync("app/club/club-campaign-context.tsx", "utf8");
   const weeklyRitual = readFileSync("app/club/club-weekly-ritual.tsx", "utf8");
   const coreChallenges = readFileSync("app/club/club-challenges.tsx", "utf8");
   const data = readFileSync("app/club/club-campaign-continuity-data.ts", "utf8");
@@ -3134,9 +3191,11 @@ test("U32 campaign continuity assigns a faction-specific editorial role to the l
   assert.ok(page.includes("<ClubCampaignContinuity />"));
   assert.ok(page.indexOf("<ClubCampaignEngineDesk />") < page.indexOf("<ClubCampaignContinuity />"));
   assert.ok(page.indexOf("<ClubCampaignContinuity />") < page.indexOf("<ClubCultureDesk />"));
-  assert.ok(component.includes("readPassport()"));
-  assert.ok(component.includes("PASSPORT_UPDATED_EVENT"));
-  assert.ok(component.includes("getClubCampaignContinuity(readPassport(), new Date())"));
+  assert.ok(page.includes("<ClubCampaignContinuityProvider>"));
+  assert.ok(provider.includes("readPassport()"));
+  assert.ok(provider.includes("PASSPORT_UPDATED_EVENT"));
+  assert.ok(provider.includes("getClubCampaignContinuity(readPassport(), new Date())"));
+  assert.ok(component.includes("useClubCampaignContext()"));
   assert.ok(component.includes("COPY MY FACTION ORDER"));
   assert.ok(component.includes('href="#club-meme-studio"'));
   assert.ok(component.includes('href="#club-challenge-board"'));
@@ -3177,12 +3236,17 @@ test("U33 Contribution Studio builds editable faction-aware public drafts withou
 
   const component = readFileSync("app/club/club-contribution-studio.tsx", "utf8");
   const engine = readFileSync("app/club/club-contribution-engine.ts", "utf8");
-  const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const context = readFileSync("app/club/club-campaign-context.tsx", "utf8");
   const css = readFileSync("app/club/club-campaign-continuity.module.css", "utf8");
   const readme = readFileSync("README.md", "utf8");
 
-  assert.ok(continuity.includes("<ClubContributionStudio"));
-  assert.ok(continuity.includes("key={continuity.weekKey"));
+  assert.ok(page.includes("<ClubContributionStudio />"));
+  assert.ok(page.indexOf("<ClubCultureDesk />") < page.indexOf("<ClubContributionStudio />"));
+  assert.ok(page.indexOf("<ClubContributionStudio />") < page.indexOf("<ClubWarRoom />"));
+  assert.ok(component.includes("key={continuity.weekKey"));
+  assert.ok(component.includes("useClubCampaignContext()"));
+  assert.ok(context.includes("PASSPORT_UPDATED_EVENT"));
   assert.ok(component.includes("value={draft}"));
   assert.ok(component.includes("onChange={(event) => setDraft(event.currentTarget.value)}"));
   assert.ok(component.includes("NEW STARTER"));
@@ -3219,12 +3283,14 @@ test("U34 Participation Loop builds a three-step campaign relay without collecti
 
   const component = readFileSync("app/club/club-participation-loop.tsx", "utf8");
   const engine = readFileSync("app/club/club-participation-loop-engine.ts", "utf8");
-  const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
+  const page = readFileSync("app/club/page.tsx", "utf8");
   const css = readFileSync("app/club/club-campaign-continuity.module.css", "utf8");
   const readme = readFileSync("README.md", "utf8");
 
-  assert.ok(continuity.includes("<ClubParticipationLoop"));
-  assert.ok(continuity.indexOf("<ClubContributionStudio") < continuity.indexOf("<ClubParticipationLoop"));
+  assert.ok(page.includes("<ClubParticipationLoop />"));
+  assert.ok(page.indexOf("<ClubParticipationLoop />") < page.indexOf("<ClubChallenges />"));
+  assert.ok(page.indexOf("<ClubChallenges />") < page.indexOf("<ClubCommunityIntelligence />"));
+  assert.ok(component.includes("useClubCampaignContext()"));
   assert.ok(component.includes("value={value}"));
   assert.ok(component.includes("setDrafts((current) => ({ ...current, [id]: value }))"));
   assert.ok(component.includes("COPY TEXT"));

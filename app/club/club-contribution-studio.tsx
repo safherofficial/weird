@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useClubCampaignContext } from "./club-campaign-context";
 import type { ClubCampaignContinuity } from "./club-campaign-continuity-data";
 import {
   CLUB_CONTRIBUTION_CHARACTER_BUDGET,
@@ -38,7 +39,26 @@ async function copyText(value: string) {
   if (!copied) throw new Error("Clipboard access is unavailable.");
 }
 
-export default function ClubContributionStudio({ continuity }: Props) {
+export default function ClubContributionStudio() {
+  const { continuity, ready } = useClubCampaignContext();
+
+  if (!ready || !continuity) {
+    return (
+      <section className={styles.contribution} id="club-contribution-studio" aria-label="Club contribution studio loading">
+        <p className={styles.loading} role="status">ALIGNING THE CONTENT STUDIO WITH THIS WEEK'S CAMPAIGN…</p>
+      </section>
+    );
+  }
+
+  return (
+    <ClubContributionStudioEditor
+      key={continuity.weekKey + ":" + continuity.campaign.theme.id + ":" + (continuity.faction?.id ?? "unassigned")}
+      continuity={continuity}
+    />
+  );
+}
+
+function ClubContributionStudioEditor({ continuity }: Props) {
   const starters = getClubContributionStarters(continuity);
   const [starterIndex, setStarterIndex] = useState(0);
   const [draft, setDraft] = useState(starters[0].text);
