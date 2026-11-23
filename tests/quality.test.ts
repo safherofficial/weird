@@ -2776,3 +2776,25 @@ test("R3 Case Atlas leaves deep evidence unmounted until its disclosure is opene
   assert.ok(accessibilityStyles.includes(".department-case-atlas__division > button"));
   assert.ok(accessibilityStyles.includes("min-height: 24px"));
 });
+
+
+test("U29 homepage presents the 99% Club as cross-chain while retaining Solana as the Department's starting point", () => {
+  const home = readFileSync("app/page.tsx", "utf8");
+  const layout = readFileSync("app/layout.tsx", "utf8");
+  const division = departments.find((item) => item.section === "club");
+
+  assert.ok(home.includes("COMMUNITY / ALL CHAINS"));
+  assert.ok(home.includes("Born in the Solana trenches. Open to every chain and every cycle."));
+  assert.ok(home.includes("Find your fictional crypto archetype"));
+  assert.ok(home.includes("MEMBERSHIP / ALL CHAINS"));
+  assert.doesNotMatch(home, /fictional Solana trenches archetype/i);
+
+  assert.ok(division, "The 99% Club must retain its operational division");
+  assert.equal(division.title, "CROSS-CHAIN TRENCHES");
+  assert.match(division.category, /CROSS-CHAIN/);
+  assert.match(division.description, /every chain and cycle/i);
+
+  assert.match(layout, /99% Club/i);
+  assert.match(layout, /across all chains/i);
+  assert.match(layout, /Solana is the Department's starting point/i);
+});
