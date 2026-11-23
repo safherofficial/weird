@@ -2707,10 +2707,10 @@ test("U28.9 weekly campaign engine coordinates real Club assets on a determinist
   assert.equal(CLUB_CAMPAIGN_THEMES.length, 12);
   assert.equal(CLUB_MEME_TEMPLATES.length, 12);
   assert.equal(CLUB_PUBLIC_CHALLENGES.length, 12);
-  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.id)).size, 6);
-  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.memeTemplateId)).size, 6);
-  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.culturePostId)).size, 6);
-  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.challengeId)).size, 6);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.id)).size, 12);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.memeTemplateId)).size, 12);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.culturePostId)).size, 12);
+  assert.equal(new Set(CLUB_CAMPAIGN_THEMES.map((item) => item.challengeId)).size, 12);
 
   for (const theme of CLUB_CAMPAIGN_THEMES) {
     assert.ok(CLUB_MEME_TEMPLATES.some((item) => item.id === theme.memeTemplateId), theme.id + " must reference an existing meme template");
