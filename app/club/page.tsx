@@ -10,6 +10,7 @@ import ClubCampaignDesk from "./club-campaign-desk";
 import ClubCampaignEngineDesk from "./club-campaign-engine-desk";
 import ClubCultureDesk from "./club-culture-desk";
 import ClubWarRoom from "./club-war-room";
+import ClubCommunityIntelligence from "./club-community-intelligence";
 import { factions } from "./club-engine";
 
 export const metadata: Metadata = {
@@ -94,6 +95,10 @@ export default function ClubPage() {
 
       <div className="shell">
         <ClubChallenges />
+      </div>
+
+      <div className="shell">
+        <ClubCommunityIntelligence />
       </div>
 
       <div className="shell">

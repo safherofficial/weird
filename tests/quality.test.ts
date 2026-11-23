@@ -14,6 +14,7 @@ import { CLUB_CULTURE_CATEGORIES, CLUB_CULTURE_POSTS } from "../app/club/club-cu
 import { CLUB_MEME_TEMPLATES, CLUB_PUBLIC_CHALLENGES } from "../app/club/club-war-room-data";
 import { buildClubCampaignPack, CLUB_CAMPAIGN_ROTATION_LENGTH, CLUB_CAMPAIGN_THEMES, getClubCampaignDrop, getClubCampaignSchedule } from "../app/club/club-campaign-engine";
 import { CLUB_WEEKLY_CHALLENGE_ROTATION_LENGTH, getCurrentClubWeeklyChallenge, getIsoClubWeekKey } from "../app/club/club-weekly";
+import { getClubCommunityContentInventory, getClubLocalPassportEvidence } from "../app/club/club-community-intelligence-data";
 import { profiles as copeClassifications, questions as copeQuestions, COPE_QUESTIONS, buildPersonalCopeResult, buildDailyCopeIndex, decodeCopeCode, encodeCopeCode, isValidCopeAnswers } from "../app/cope-index/cope-engine";
 import { buildDailyOfficeDispatch, getDailyEditorialCase } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas, getDepartmentCaseReferences, selectDepartmentCaseAtlasWindow } from "../app/daily-office/case-atlas";
@@ -2856,3 +2857,68 @@ test("U30 expands Club editorial and participation content into distinct 12-week
     "The campaign should repeat only after the full 12-week rotation"
   );
 });
+
+
+test("U31 Community Intelligence separates static content inventory, local Passport evidence and unavailable global engagement", () => {
+  const inventory = getClubCommunityContentInventory();
+  assert.deepEqual(inventory, {
+    socialDrafts: 14,
+    memeTemplates: 12,
+    publicChallenges: 12,
+    weeklyCampaigns: 12,
+    weeklyRitualCases: 12,
+  });
+
+  const disabled = getClubLocalPassportEvidence(null);
+  assert.equal(disabled.passportEnabled, false);
+  assert.equal(disabled.membershipInterviewFiled, false);
+  assert.equal(disabled.completedChallengeFiles, 0);
+  assert.equal(disabled.weeklyRitualWeeksFiled, 0);
+  assert.equal(disabled.clubBadgesEarned, 0);
+  assert.equal(disabled.factionAssigned, false);
+
+  const localPassport = makePassport({
+    clubMembershipAnswers: [0, 1, 2, 3, 0],
+    clubChallengeAnswers: {
+      "fault-allocation": 0,
+      "research-receipt": 2,
+    },
+    clubWeeklyChallengeAnswers: {
+      "2026-W47": 1,
+      "2026-W48": 2,
+      "2026-W49": 0,
+    },
+    clubBadgeIds: ["club-not-my-fault", "club-next-one-is-mine", "club-faction-aligned"],
+    clubFactionId: CLUB_FACTION_IDS[0],
+  });
+  assert.deepEqual(getClubLocalPassportEvidence(localPassport), {
+    passportEnabled: true,
+    membershipInterviewFiled: true,
+    completedChallengeFiles: 2,
+    weeklyRitualWeeksFiled: 3,
+    clubBadgesEarned: 3,
+    factionAssigned: true,
+  });
+
+  const page = readFileSync("app/club/page.tsx", "utf8");
+  const component = readFileSync("app/club/club-community-intelligence.tsx", "utf8");
+  const css = readFileSync("app/club/club-community-intelligence.module.css", "utf8");
+  const privacy = readFileSync("app/privacy/page.tsx", "utf8");
+  const readme = readFileSync("README.md", "utf8");
+
+  assert.ok(page.includes("<ClubCommunityIntelligence />"));
+  assert.ok(component.includes("readPassport()"));
+  assert.ok(component.includes("PASSPORT_UPDATED_EVENT"));
+  assert.ok(component.includes("NOT COLLECTED"));
+  assert.ok(component.includes("NOT VERIFIED"));
+  assert.ok(component.includes("Opening an X draft") || component.includes("OPENING AN X DRAFT"));
+  assert.ok(component.includes("This panel creates no new stored record"));
+  assert.doesNotMatch(component + filesForTestCommunityData(), /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog/i);
+  assert.ok(css.includes("@media (max-width: 640px)"));
+  assert.ok(privacy.includes("reads existing Club fields from this opted-in local Passport"));
+  assert.ok(readme.includes("does not collect or verify"));
+});
+
+function filesForTestCommunityData() {
+  return readFileSync("app/club/club-community-intelligence-data.ts", "utf8");
+}

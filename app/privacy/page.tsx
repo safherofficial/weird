@@ -35,7 +35,7 @@ const sections = [
     title: "04 / DEPARTMENT PASSPORT",
     paragraphs: [
       "The optional Department Passport uses browser localStorage only after the visitor explicitly enables it. It records visited Department sections, UTC dates on which The Trenches Desk is opened, and which interactive experiences or collection records have been completed for local Stamps and Achievement Badges.",
-      "Passport information is not uploaded to an application database, does not create an account or public profile, is not synchronized across devices and is not used for a leaderboard. Visitors can delete the complete Passport from its page or clear this site's browser data. Existing Passport records are migrated in the browser to the current format while preserving their visit stamps and Trenches Desk streak; earlier visits are not converted into completion badges.",
+      "Passport information is not uploaded to an application database, does not create an account or public profile, is not synchronized across devices and is not used for a leaderboard. The 99% Club Community Intelligence desk reads existing Club fields from this opted-in local Passport to show a personal on-device summary; it does not create additional records or transmit them. Visitors can delete the complete Passport from its page or clear this site's browser data. Existing Passport records are migrated in the browser to the current format while preserving their visit stamps and Trenches Desk streak; earlier visits are not converted into completion badges.",
     ],
   },
   {

@@ -111,3 +111,6 @@ The project is configured for the Vercel Next.js framework. Git-triggered Produc
 ## Disclaimer
 
 THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, scenarios and simulated market events are fictional. Nothing on this site is investment advice, a recommendation, or a representation of real market data.
+
+
+- U31 — 99% Club Community Intelligence: a transparent content inventory, a personal summary derived only from the visitor's already-enabled local Passport, and an explicit register of global signals the site does not collect or verify. It creates no new local record, analytics event, account, network request, leaderboard or server-side engagement counter. Opening an X draft is never treated as a published post.
