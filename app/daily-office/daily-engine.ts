@@ -513,7 +513,7 @@ type EditorialDepthPool = {
  * a recognisable trenches incident rather than a generic crypto paragraph.
  * Every item is illustrative copy, not a claim about a real token or actor.
  */
-const editorialDepthPools: Record<EditorialFocus, EditorialDepthPool> = {
+const editorialDepthPools: Record<DailyOfficeFocusType, EditorialDepthPool> = {
   launch: {
     incident: [
       "The intake record contains a mint address and a posting time, but no traceable path from the original announcement to the accounts repeating it.",
@@ -799,7 +799,7 @@ type EditorialClosurePool = {
  * wallet-label dispute or CTO handover from receiving an unrelated generic
  * post-mortem selected from a shared phrase bucket.
  */
-const editorialClosurePools: Record<EditorialFocus, EditorialClosurePool> = {
+const editorialClosurePools: Record<DailyOfficeFocusType, EditorialClosurePool> = {
   launch: {
     riskReframe: [
       "an unresolved source-verification gap around the original mint announcement",
