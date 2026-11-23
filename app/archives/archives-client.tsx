@@ -18,7 +18,7 @@ export default function ArchivesClient() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="TRY: SOON, LIQUIDITY, APPENDIX..."
+            placeholder="TRY: BRIDGE, AIRDROP, UNLOCKS, QUORUM..."
           />
         </label>
         <div className="archives-categories" role="group" aria-label="Filter archive category">
