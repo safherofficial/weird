@@ -4,6 +4,7 @@ import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import DailyOfficeClient from "./daily-client";
+import DailyOfficeRelatedLinks from "./daily-office-related-links";
 import { buildDailyOfficeDispatch } from "./daily-engine";
 
 export const dynamic = "force-dynamic";
