@@ -8,8 +8,10 @@ test("R5 README inventory matches the current routes, Passport count and quality
   const readme = read("README.md");
 
   assert.match(readme, /26 distinct achievement badges/);
-  assert.match(readme, /sixteen curated fictional records across five categories/);
-  assert.doesNotMatch(readme, /fifteen curated fictional records across five categories/i);
+  assert.match(readme, /twenty curated fictional records across five categories/);
+  assert.doesNotMatch(readme, /sixteen curated fictional records across five categories/i);
+  assert.match(readme, /nineteen fictional curated artifacts across four collections/);
+  assert.doesNotMatch(readme, /fifteen fictional curated artifacts across four collections/i);
   assert.doesNotMatch(readme, /eleven distinct achievement badges/i);
   for (const route of [
     "app/simulator/page.tsx",
