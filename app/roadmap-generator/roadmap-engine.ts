@@ -133,62 +133,62 @@ export const questions: RoadmapQuestion[] = [
 export const classifications: Record<RoadmapArchetypeId, RoadmapArchetype> = {
   "actually-shipping": {
     title: "THE RARELY SHIPPING CTO",
-    subtitle: "The handover has named owners, verified access, an asset register and deliverables with acceptance criteria. The Department is suspicious."
-    roast: "The takeover contains a real responsibility map and a tested release gate. CT has asked whether the deployer is feeling alright."
+    subtitle: "The handover has named owners, verified access, an asset register and deliverables with acceptance criteria. The Department is suspicious.",
+    roast: "The takeover contains a real responsibility map and a tested release gate. CT has asked whether the deployer is feeling alright.",
     disposition: "RELEASED UNDER OBSERVATION FOR EXCESSIVE EXECUTION.",
   },
   "forever-beta": {
     title: "THE FOREVER COMMUNITY TAKEOVER",
-    subtitle: "The transition is moving, but some permissions, custodians or acceptance checks remain in an interim state."
-    roast: "Your handover is technically progressing. It is just progressing through a new access checklist every week."
+    subtitle: "The transition is moving, but some permissions, custodians or acceptance checks remain in an interim state.",
+    roast: "Your handover is technically progressing. It is just progressing through a new access checklist every week.",
     disposition: "PLACED IN PERMANENT HANDOVER REVIEW.",
   },
   "soon-architect": {
     title: "THE SOON™ CTO",
-    subtitle: "Access, credentials and operational ownership are expected after the next announcement. The keys remain elsewhere."
-    roast: "You have turned a missing permission into a seven-stage transfer methodology."
+    subtitle: "Access, credentials and operational ownership are expected after the next announcement. The keys remain elsewhere.",
+    roast: "You have turned a missing permission into a seven-stage transfer methodology.",
     disposition: "REFERRED TO THE OFFICE OF DEPLOYER SILENCE.",
   },
   "ticker-decoration": {
     title: "THE TICKER WITH A FUTURE JOB",
-    subtitle: "The takeover has a new identity and banner. Operational control still needs an owner, a scope and evidence."
-    roast: "The new account has admin energy. The actual admin permissions have declined to confirm."
+    subtitle: "The takeover has a new identity and banner. Operational control still needs an owner, a scope and evidence.",
+    roast: "The new account has admin energy. The actual admin permissions have declined to confirm.",
     disposition: "REQUESTED TO PROVIDE A TOKEN PURPOSE BEFORE THE NEXT CTO SPACE.",
   },
   "partnership-vaporist": {
     title: "THE STRATEGIC KOL ALLIANCE",
-    subtitle: "A council or informal group is expected to own the transition, but its members, authority and deliverables are not documented."
-    roast: "You have announced the pre-announcement of an accountability matrix with the possibility of a future signature."
+    subtitle: "A council or informal group is expected to own the transition, but its members, authority and deliverables are not documented.",
+    roast: "You have announced the pre-announcement of an accountability matrix with the possibility of a future signature.",
     disposition: "REFERRED TO THE OFFICE OF INDEPENDENT SOURCE VALIDATION.",
   },
   "community-amplifier": {
     title: "THE TELEGRAM REPLY FARM",
-    subtitle: "The group chat is active and the new checklist is pinned. No individual has confirmed the permission changes."
-    roast: "Your handover has a very active announcement layer and an access-control layer currently set to private."
+    subtitle: "The group chat is active and the new checklist is pinned. No individual has confirmed the permission changes.",
+    roast: "Your handover has a very active announcement layer and an access-control layer currently set to private.",
     disposition: "ASSIGNED TO THE DEPARTMENT OF COMMUNITY-BASED RECOVERY.",
   },
   "global-adoption-intern": {
     title: "THE 100X REBRAND INTERN",
-    subtitle: "You have been asked to scale the new operating structure everywhere before the first transfer record is signed."
-    roast: "Your final milestone serves every chain on the planet. The first admin permission is still awaiting an owner."
+    subtitle: "You have been asked to scale the new operating structure everywhere before the first transfer record is signed.",
+    roast: "Your final milestone serves every chain on the planet. The first admin permission is still awaiting an owner.",
     disposition: "PROMOTED TO VICE PRESIDENT OF THE ENTIRE TIMELINE.",
   },
   "multiverse-expansionist": {
     title: "THE NARRATIVE MULTIVERSE EXPANSIONIST",
-    subtitle: "One takeover. Twelve workstreams. Three new operating groups. No agreed boundary for the first release."
-    roast: "You are transferring every system on every chain, including several that only exist in the pinned thread."
+    subtitle: "One takeover. Twelve workstreams. Three new operating groups. No agreed boundary for the first release.",
+    roast: "You are transferring every system on every chain, including several that only exist in the pinned thread.",
     disposition: "REFERRED TO THE OFFICE OF INTERGALACTIC CTO COORDINATION.",
   },
   "documentation-empire": {
     title: "THE PINNED-THREAD EMPIRE",
-    subtitle: "The handover has a table of contents, a checklist and three appendices. The actual permissions remain unverified."
-    roast: "Your CTO has shipped three pinned posts. The first credential rotation is still waiting for a calendar invite."
+    subtitle: "The handover has a table of contents, a checklist and three appendices. The actual permissions remain unverified.",
+    roast: "Your CTO has shipped three pinned posts. The first credential rotation is still waiting for a calendar invite.",
     disposition: "ARCHIVED UNDER: HANDOVER DOCUMENTED / CONTROL NOT VERIFIED.",
   },
   "milestone-matryoshka": {
     title: "THE PHASE TWO MATRYOSHKA",
-    subtitle: "Every acceptance phase unlocks another acceptance phase that explains why the previous phase remains open."
-    roast: "Your Phase 2 is a roadmap for Phase 2. Phase 2.1 will explain who signs off Phase 2."
+    subtitle: "Every acceptance phase unlocks another acceptance phase that explains why the previous phase remains open.",
+    roast: "Your Phase 2 is a roadmap for Phase 2. Phase 2.1 will explain who signs off Phase 2.",
     disposition: "PLACED INSIDE THE TAKEOVER ROADMAP FOR FURTHER REVIEW.",
   },
 };
