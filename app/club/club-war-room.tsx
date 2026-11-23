@@ -11,6 +11,8 @@ import { getClubCampaignDrop, type ClubCampaignDrop } from "./club-campaign-engi
 import {
   buildClubCampaignArtworkCaption,
   buildClubCampaignArtworkFilename,
+  buildClubCampaignArtworkPackFilename,
+  buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   getClubCampaignArtworkFormat,
   type ClubCampaignArtworkFormatId,
@@ -266,6 +268,38 @@ export default function ClubWarRoom() {
     }
   }
 
+
+  async function downloadArtworkPack() {
+    if (!campaign) return;
+    setBusy(true);
+    try {
+      const entries = await Promise.all(CLUB_CAMPAIGN_ARTWORK_FORMATS.map(async (format) => {
+        const exportCanvas = document.createElement("canvas");
+        drawMeme(exportCanvas, topText, bottomText, campaign, selectedTemplate.name, format);
+        const png = await canvasBlob(exportCanvas);
+        return {
+          name: buildClubCampaignArtworkFilename(campaign, format.id),
+          bytes: new Uint8Array(await png.arrayBuffer()),
+        };
+      }));
+      const archive = buildClubCampaignArtworkZip(entries);
+      const file = new Blob([archive], { type: "application/zip" });
+      const url = URL.createObjectURL(file);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = buildClubCampaignArtworkPackFilename(campaign);
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+      setNotice("CAMPAIGN PACK EXPORTED. ONE ZIP, THREE PNG FORMATS. ALL GENERATED LOCALLY.");
+    } catch {
+      setNotice("CAMPAIGN PACK EXPORT FAILED. THE INDIVIDUAL PNG DOWNLOADS REMAIN AVAILABLE.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function shareMeme() {
     setBusy(true);
     try {
@@ -375,6 +409,7 @@ export default function ClubWarRoom() {
             </label>
             <div className="club-meme-studio__actions">
               <button type="button" className="button button--primary" onClick={() => void downloadMeme()} disabled={busy || !campaign}>DOWNLOAD PNG ↓</button>
+              <button type="button" className="button button--outline" onClick={() => void downloadArtworkPack()} disabled={busy || !campaign}>DOWNLOAD ALL 3 / ZIP ↓</button>
               <button type="button" className="button button--outline" onClick={() => void shareMeme()} disabled={busy || !campaign}>SHARE IMAGE ↗</button>
               <button type="button" className="button button--quiet" onClick={() => void copyCaption()}>COPY CAPTION</button>
               <button type="button" className="button button--x" onClick={openMemeOnX} disabled={!campaign}>OPEN X DRAFT ↗</button>

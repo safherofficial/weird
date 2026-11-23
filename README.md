@@ -125,3 +125,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U36 — 99% Club Multi-Format Campaign Export: the Meme Office exports the same active weekly campaign in three platform-ready PNG canvases: square feed (1200 × 1200), portrait feed (1080 × 1350) and story (1080 × 1920). The preview follows the selected aspect ratio, each filename identifies its format, and the original square filename contract remains compatible for existing callers. Rendering stays local in the browser.
+
+
+- U37 — 99% Club Campaign Export Pack: one action generates the active campaign's square feed, portrait feed and story PNGs in separate correctly named files, then bundles them into a single ZIP for download. The archive is assembled locally in the browser with a small ZIP32 STORE writer; no third-party dependency, server upload, database or tracking is added. Individual PNG downloads remain available.

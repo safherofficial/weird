@@ -38,3 +38,115 @@ export function buildClubCampaignArtworkFilename(
   const base = "the-99-percent-club-" + campaign.weekKey.toLowerCase() + "-" + campaign.theme.id;
   return base + (formatId ? "-" + formatId : "") + ".png";
 }
+
+
+export type ClubCampaignArtworkZipEntry = {
+  name: string;
+  bytes: Uint8Array;
+};
+
+function crc32(bytes: Uint8Array): number {
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit += 1) {
+      crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+    }
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+/**
+ * Builds a standards-compliant ZIP archive using the STORE method.
+ * Keeping this tiny writer local avoids a third-party runtime dependency;
+ * PNG files are already compressed by the PNG encoder.
+ */
+export function buildClubCampaignArtworkZip(entries: ClubCampaignArtworkZipEntry[]): Uint8Array {
+  if (entries.length === 0 || entries.length > 0xffff) {
+    throw new Error("The artwork pack must contain between 1 and 65535 files.");
+  }
+
+  const encoder = new TextEncoder();
+  const prepared = entries.map((entry) => {
+    if (!entry.name || entry.name.startsWith("/") || entry.name.includes("\\")
+      || entry.name.split("/").some((part) => part === ".." || part === "")) {
+      throw new Error("The artwork pack contains an invalid file name.");
+    }
+    const name = encoder.encode(entry.name);
+    if (name.length > 0xffff || entry.bytes.byteLength > 0xffffffff) {
+      throw new Error("An artwork pack entry exceeds the supported ZIP size.");
+    }
+    return { name, bytes: entry.bytes, crc: crc32(entry.bytes) };
+  });
+
+  if (new Set(prepared.map((entry) => Array.from(entry.name).join(","))).size !== prepared.length) {
+    throw new Error("The artwork pack contains duplicate file names.");
+  }
+
+  const localLength = prepared.reduce((total, entry) => total + 30 + entry.name.length + entry.bytes.length, 0);
+  const centralLength = prepared.reduce((total, entry) => total + 46 + entry.name.length, 0);
+  const totalLength = localLength + centralLength + 22;
+  if (totalLength > 0xffffffff) throw new Error("The artwork pack exceeds the ZIP32 size limit.");
+
+  const output = new Uint8Array(totalLength);
+  const view = new DataView(output.buffer);
+  let cursor = 0;
+  const centralRecords: Array<{ name: Uint8Array; crc: number; size: number; offset: number }> = [];
+
+  for (const entry of prepared) {
+    const offset = cursor;
+    view.setUint32(cursor, 0x04034b50, true); cursor += 4;
+    view.setUint16(cursor, 20, true); cursor += 2;
+    view.setUint16(cursor, 0x0800, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0x0021, true); cursor += 2;
+    view.setUint32(cursor, entry.crc, true); cursor += 4;
+    view.setUint32(cursor, entry.bytes.length, true); cursor += 4;
+    view.setUint32(cursor, entry.bytes.length, true); cursor += 4;
+    view.setUint16(cursor, entry.name.length, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    output.set(entry.name, cursor); cursor += entry.name.length;
+    output.set(entry.bytes, cursor); cursor += entry.bytes.length;
+    centralRecords.push({ name: entry.name, crc: entry.crc, size: entry.bytes.length, offset });
+  }
+
+  const centralOffset = cursor;
+  for (const entry of centralRecords) {
+    view.setUint32(cursor, 0x02014b50, true); cursor += 4;
+    view.setUint16(cursor, 20, true); cursor += 2;
+    view.setUint16(cursor, 20, true); cursor += 2;
+    view.setUint16(cursor, 0x0800, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0x0021, true); cursor += 2;
+    view.setUint32(cursor, entry.crc, true); cursor += 4;
+    view.setUint32(cursor, entry.size, true); cursor += 4;
+    view.setUint32(cursor, entry.size, true); cursor += 4;
+    view.setUint16(cursor, entry.name.length, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint16(cursor, 0, true); cursor += 2;
+    view.setUint32(cursor, 0, true); cursor += 4;
+    view.setUint32(cursor, entry.offset, true); cursor += 4;
+    output.set(entry.name, cursor); cursor += entry.name.length;
+  }
+
+  const centralSize = cursor - centralOffset;
+  view.setUint32(cursor, 0x06054b50, true); cursor += 4;
+  view.setUint16(cursor, 0, true); cursor += 2;
+  view.setUint16(cursor, 0, true); cursor += 2;
+  view.setUint16(cursor, centralRecords.length, true); cursor += 2;
+  view.setUint16(cursor, centralRecords.length, true); cursor += 2;
+  view.setUint32(cursor, centralSize, true); cursor += 4;
+  view.setUint32(cursor, centralOffset, true); cursor += 4;
+  view.setUint16(cursor, 0, true); cursor += 2;
+
+  if (cursor !== totalLength) throw new Error("The artwork ZIP archive could not be assembled.");
+  return output;
+}
+
+export function buildClubCampaignArtworkPackFilename(campaign: ClubCampaignDrop): string {
+  return "the-99-percent-club-" + campaign.weekKey.toLowerCase() + "-" + campaign.theme.id + "-artwork-pack.zip";
+}

@@ -21,6 +21,8 @@ import { CLUB_PARTICIPATION_TEXT_BUDGET, getClubParticipationDrafts } from "../a
 import {
   buildClubCampaignArtworkCaption,
   buildClubCampaignArtworkFilename,
+  buildClubCampaignArtworkPackFilename,
+  buildClubCampaignArtworkZip,
   CLUB_CAMPAIGN_ARTWORK_FORMATS,
   getClubCampaignArtworkFormat,
 } from "../app/club/club-campaign-artwork-engine";
@@ -3164,5 +3166,57 @@ test("U36 Multi-Format Campaign Export provides correctly sized, campaign-stampe
   assert.ok(engine.includes('id: "story"'));
   assert.ok(css.includes(".club-meme-studio__formats"));
   assert.ok(css.includes("@media (max-width:560px)"));
+  assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
+});
+
+
+test("U37 Campaign Export Pack creates a valid local ZIP containing three named PNG variants", () => {
+  const campaign = getClubCampaignDrop(new Date("2026-11-23T12:00:00.000Z"));
+  const samplePngBytes = new TextEncoder().encode("PNG_SAMPLE_BYTES");
+  const archive = buildClubCampaignArtworkZip([
+    { name: buildClubCampaignArtworkFilename(campaign, "square"), bytes: samplePngBytes },
+    { name: buildClubCampaignArtworkFilename(campaign, "portrait"), bytes: samplePngBytes },
+    { name: buildClubCampaignArtworkFilename(campaign, "story"), bytes: samplePngBytes },
+  ]);
+  const view = new DataView(archive.buffer, archive.byteOffset, archive.byteLength);
+  assert.equal(view.getUint32(0, true), 0x04034b50, "ZIP local file header signature");
+  const endOffset = archive.length - 22;
+  assert.equal(view.getUint32(endOffset, true), 0x06054b50, "ZIP end of central directory signature");
+  assert.equal(view.getUint16(endOffset + 10, true), 3, "three packed PNG entries");
+  assert.equal(view.getUint16(endOffset + 8, true), 3, "three entries on this disk");
+  const directoryOffset = view.getUint32(endOffset + 16, true);
+  assert.equal(view.getUint32(directoryOffset, true), 0x02014b50, "central directory signature");
+  const packedNames = [
+    "the-99-percent-club-2026-w48-dyor-receipt-square.png",
+    "the-99-percent-club-2026-w48-dyor-receipt-portrait.png",
+    "the-99-percent-club-2026-w48-dyor-receipt-story.png",
+  ];
+  let cursor = directoryOffset;
+  const decoder = new TextDecoder();
+  for (const expectedName of packedNames) {
+    assert.equal(view.getUint32(cursor, true), 0x02014b50);
+    const nameLength = view.getUint16(cursor + 28, true);
+    const extraLength = view.getUint16(cursor + 30, true);
+    const commentLength = view.getUint16(cursor + 32, true);
+    const actualName = decoder.decode(archive.slice(cursor + 46, cursor + 46 + nameLength));
+    assert.equal(actualName, expectedName);
+    cursor += 46 + nameLength + extraLength + commentLength;
+  }
+  assert.equal(buildClubCampaignArtworkPackFilename(campaign), "the-99-percent-club-2026-w48-dyor-receipt-artwork-pack.zip");
+  assert.throws(
+    () => buildClubCampaignArtworkZip([{ name: "../outside.png", bytes: samplePngBytes }]),
+    /invalid file name/i,
+  );
+  assert.throws(
+    () => buildClubCampaignArtworkZip([{ name: "duplicate.png", bytes: samplePngBytes }, { name: "duplicate.png", bytes: samplePngBytes }]),
+    /duplicate file names/i,
+  );
+
+  const component = readFileSync("app/club/club-war-room.tsx", "utf8");
+  assert.ok(component.includes("async function downloadArtworkPack()"));
+  assert.ok(component.includes("CLUB_CAMPAIGN_ARTWORK_FORMATS.map(async (format)"));
+  assert.ok(component.includes("new Blob([archive], { type: \"application/zip\" })"));
+  assert.ok(component.includes("DOWNLOAD ALL 3 / ZIP"));
+  assert.ok(component.includes("document.createElement(\"canvas\")"));
   assert.doesNotMatch(component, /fetch\(|sendBeacon|gtag|analytics\.track|mixpanel|posthog|localStorage|sessionStorage/i);
 });
