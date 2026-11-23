@@ -12,7 +12,7 @@ export function buildClubCampaignText(): string {
   return [
     "THE 99% CLUB.",
     "Six fictional crypto factions.",
-    "WHEN WE LOSE, IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.",
+    "IT'S NEVER OUR FAULT WHEN WE LOSE. THE NEXT ONE IS MINE.",
     "I DID MY OWN RESEARCH.",
     CLUB_SOCIAL_HASHTAGS,
     "SATIRE / ALL CHAINS.",

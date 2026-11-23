@@ -46,7 +46,7 @@ export default function ClubPage() {
           </p>
           <div className="club-intro__stamp">
             <span>OFFICIAL CLUB MOTTO</span>
-            <strong>IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE.</strong>
+            <strong>IT'S NEVER OUR FAULT WHEN WE LOSE. THE NEXT ONE IS MINE.</strong>
             <small>I DID MY OWN RESEARCH. I KNOW EXACTLY WHAT I'M DOING.</small>
           </div>
           <div className="club-intro__fineprint">

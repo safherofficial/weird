@@ -2384,7 +2384,7 @@ test("U28.1 Club challenge desk uses only the optional local Passport and expose
   assert.ok(challenges.includes("club-badge-case__grid"));
   assert.ok(challenges.includes("BADGE CASE."));
   assert.ok(clubPage.includes("<ClubChallenges />"));
-  assert.ok(clubPage.includes("IT'S NEVER OUR FAULT. THE NEXT ONE IS MINE."));
+  assert.ok(clubPage.includes("IT'S NEVER OUR FAULT WHEN WE LOSE. THE NEXT ONE IS MINE."));
   const clubBadgeArt = badgeAssets.split("export const CLUB_BADGE_MARKS")[1] ?? "";
   assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 15);
   assert.ok(passportClient.includes("badgeCollectionSvgHeight(statuses)"));
@@ -2603,7 +2603,7 @@ test("U28.6 Club social identity uses one consistent cross-chain campaign voice 
   const campaign = buildClubCampaignText();
   assert.ok(campaign.includes("THE 99% CLUB"));
   assert.ok(campaign.includes("Six fictional crypto factions"));
-  assert.ok(campaign.includes("IT'S NEVER OUR FAULT."));
+  assert.ok(campaign.includes("IT'S NEVER OUR FAULT WHEN WE LOSE."));
   assert.ok(campaign.includes("THE NEXT ONE IS MINE."));
   assert.ok(campaign.includes("I DID MY OWN RESEARCH."));
   assert.ok(campaign.includes(CLUB_SOCIAL_HASHTAGS));
