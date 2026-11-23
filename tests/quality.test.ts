@@ -3691,3 +3691,39 @@ test("U41 safe-area guide is derived from the export composition and remains pre
   assert.ok(css.includes(".club-meme-studio__safe-area-guide"));
   assert.ok(css.includes("pointer-events:none"));
 });
+
+
+test("U48 Archive inventory and Club links stay aligned with the cross-chain identity", () => {
+  assert.equal(archiveRecords.length, 20, "The Archive must retain all twenty curated records.");
+  assert.equal(exhibits.length, 19, "The Museum must retain all nineteen curated exhibits.");
+
+  const clubLinks = [
+    ["dao-button-outcome", "OPEN THE CROSS-CHAIN TRENCHES / 99% CLUB"],
+    ["membership-privileges-denied", "APPLY TO THE CROSS-CHAIN TRENCHES / 99% CLUB"],
+    ["the-cto-handover-file", "APPLY TO THE CROSS-CHAIN TRENCHES / 99% CLUB"],
+  ];
+
+  for (const [slug, expectedLabel] of clubLinks) {
+    const record = archiveRecords.find((item) => item.slug === slug);
+    assert.ok(record, "The Archive record " + slug + " must exist.");
+    assert.equal(record.relatedLabel, expectedLabel, slug + " must route to the cross-chain Club identity.");
+    assert.equal(record.relatedHref, "/club");
+    assert.doesNotMatch(record.relatedLabel, /SOLANA TRENCHES/i);
+  }
+
+  const membership = archiveRecords.find((item) => item.slug === "membership-privileges-denied");
+  assert.ok(membership);
+  assert.match(membership.department, /^CROSS-CHAIN TRENCHES \/ 99% SURVIVOR REGISTRY$/);
+  assert.match(
+    membership.sections.flatMap((section) => section.paragraphs).join(" "),
+    /five-question cross-chain Club interview/i,
+  );
+
+  const readme = readFileSync("README.md", "utf8");
+  assert.match(readme, /Museum of Trenches Relics: nineteen fictional curated artifacts/);
+  assert.match(readme, /Department Archives: twenty curated fictional records/);
+  assert.doesNotMatch(
+    readme,
+    /Museum of Trenches Relics: fifteen fictional curated artifacts|Department Archives: sixteen curated fictional records/,
+  );
+});
