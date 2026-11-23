@@ -69,6 +69,7 @@ export default async function InstitutionalMemoryRecordPage({ params }: Institut
           <span>{dispatch.issueDate} / UTC · {dispatch.reference}</span>
         </div>
         <DailyOfficeClient dispatch={dispatch} pagePath={route} headlineLevel="h1" />
+        <DailyOfficeRelatedLinks dispatch={dispatch} />
         <nav className="institutional-memory-adjacent" aria-label="Adjacent daily records">
           <Link href={"/daily-office/archive/" + previousDate}>
             <span>PRECEDING UTC RECORD</span>
