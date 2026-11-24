@@ -81,7 +81,7 @@ export default function PrivacyPage() {
     <main className="audit-page legal-page" id="main-content">
       <DepartmentHeader statusMessage="PRIVACY / OPERATIONAL TRANSPARENCY" ctaHref="/" ctaLabel="BACK TO HQ" />
       <article className="legal-document shell" id="content-start" tabIndex={-1}>
-        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / POLICY FILE</span><span>LAST REVIEWED / 22 NOV 2026</span></div>
+        <div className="legal-document__meta"><span>THE DYOR DEPARTMENT / POLICY FILE</span><span>LAST REVIEWED / 25 NOV 2026</span></div>
         <p className="eyebrow">DEPARTMENT OF DATA MINIMIZATION</p>
         <h1>PRIVACY<br /><span>NOTICE.</span></h1>
         <p className="legal-document__lead">We built a department for questionable research. We do not need your identity to do it.</p>
