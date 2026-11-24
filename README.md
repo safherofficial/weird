@@ -172,3 +172,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U58 — Branded Not-Found Route: replaces the framework fallback with an accessible Department 404, keeping the institutional identity intact and routing visitors back to Headquarters, the DYOR Audit or the division directory. It introduces no tracking, storage, network calls or new dependencies.
 
 - U59 — Front-Loaded 99% Club Journey Navigation: moves the existing five-stage route navigator directly below the Department header, before the membership interview. Visitors can reach faction classification, the weekly campaign, the community content studio or participation tools immediately, without scrolling through Stage 1 first. All five stage anchors and their order remain unchanged; no content logic, storage, tracking or publishing behaviour is added.
+
+
+- U60 — Readable 99% Club Navigation: increases the five-stage navigator and stage-marker typography on desktop and mobile. The stage routes, card layout, navigation order and interaction remain unchanged; regression coverage protects the new minimum type sizes across both responsive layouts.
