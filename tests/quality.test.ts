@@ -1267,7 +1267,7 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
 test("U51 Department journeys form a connected editorial loop across all ten divisions", () => {
   const departmentSections = departments.map((department) => department.section).sort();
   const component = readFileSync("app/components/department-next-steps.tsx", "utf8");
-  const targetSectionByHref = new Map(departments.map((department) => [department.href, department.section]));
+  const targetSectionByHref = new Map<string, string>(departments.map((department) => [department.href, department.section] as const));
   const graph = new Map<string, string[]>();
 
   assert.deepEqual(Object.keys(departmentJourneys).sort(), departmentSections);
