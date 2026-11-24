@@ -154,3 +154,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 
 - U50 — Daily Cope Index Social Preview: forces the generated Open Graph image to render dynamically, using the same current UTC issue date and date-selected editorial case as the page. A regression test prevents the share card from becoming build-time frozen while the visible index advances.
+
+- U51 — Connected Department Journeys: consolidates the ten divisions' curated next-step routes into one typed source of truth and closes the editorial navigation loop, so every division can reach every other through meaningful handoffs. Each page still shows two destinations; route validity, no-self-link rules and full graph reachability are covered by a regression test. No tracking, database, new external service or automatic publishing is introduced.
