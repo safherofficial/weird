@@ -26,7 +26,7 @@ export default function NotFound() {
           </div>
 
           <div className={styles.layout}>
-            <div className={styles.signal} aria-label="Error 404">
+            <div className={styles.signal} role="img" aria-label="Error 404: public record not located">
               <span aria-hidden="true">404</span>
               <small>RECORD STATUS / NOT LOCATED</small>
             </div>

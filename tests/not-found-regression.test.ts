@@ -7,6 +7,7 @@ test("U58 root not-found route preserves Department identity and gives visitors 
   const styles = readFileSync("app/not-found.module.css", "utf8");
 
   assert.ok(page.includes("DepartmentHeader"));
+  assert.ok(page.includes('role="img" aria-label="Error 404: public record not located"'));
   assert.ok(page.includes("DepartmentFooter"));
   assert.ok(page.includes('id="main-content"'));
   assert.ok(page.includes('id="content-start"'));
