@@ -416,3 +416,31 @@ test("Case Atlas and Memory Ledger publish route-specific, current large-image s
   assert.ok(ledgerImage.includes("latestRecord.headline"), "Ledger preview identifies the latest fictional file");
   assert.ok(ledgerImage.includes("oldestRecord.issueDate") && ledgerImage.includes("latestRecord.issueDate"), "Ledger preview derives its visible date window from the generated records");
 });
+
+test("dated Trenches Desk archive records expose their own large social preview", () => {
+  const page = readRepoFile("app/daily-office/archive/[date]/page.tsx");
+  const image = readRepoFile("app/daily-office/archive/[date]/opengraph-image.tsx");
+
+  assert.ok(page.includes("export async function generateMetadata"), "dated archive metadata remains route-specific");
+  assert.ok(page.includes("isValidInstitutionalMemoryDate(date)"), "invalid dates are rejected before metadata is built");
+  assert.ok(page.includes('const route = "/daily-office/archive/" + date'), "each archived issue keeps its date-specific canonical route");
+  assert.ok(page.includes('const image = route + "/opengraph-image"'), "each archived issue points to its own preview endpoint");
+  assert.ok(page.includes("robots: { index: false, follow: true }"), "dated archive pages remain intentionally noindex");
+  assert.ok(page.includes('type: "article"'), "dated records remain article metadata");
+  assert.ok(page.includes("images: [{ url: image, width: 1200, height: 630"), "Open Graph uses a full-size dated image");
+  assert.ok(page.includes('card: "summary_large_image"'), "X uses a large image card");
+  assert.ok(page.includes("images: [image]"), "X points to the same issue-specific image");
+
+  assert.ok(image.includes('from "next/og"'), "dated social images use Next ImageResponse");
+  assert.ok(image.includes('export const dynamic = "force-dynamic"'), "dated social images are rendered on demand");
+  assert.ok(image.includes("await params"), "the preview awaits its issue date");
+  assert.ok(image.includes("isValidInstitutionalMemoryDate(date)"), "invalid image dates are rejected");
+  assert.ok(image.includes("if (!isValidInstitutionalMemoryDate(date)) notFound()"), "invalid image dates return not found");
+  assert.ok(image.includes("buildDailyOfficeDispatch(date)"), "the social image uses the same deterministic dispatch engine");
+  assert.ok(image.includes("dispatch.headline"), "the image includes the actual issue headline");
+  assert.ok(image.includes("dispatch.bulletin"), "the image includes the actual issue bulletin");
+  assert.ok(image.includes("dispatch.quote"), "the image includes the actual issue quote");
+  assert.ok(image.includes("export const size = { width: 1200, height: 630 }"), "the image uses standard large-card dimensions");
+  assert.ok(image.includes('export const contentType = "image/png"'), "the image is a PNG");
+  assert.ok(image.includes("FICTIONAL DAILY SATIRE"), "the preview preserves the fictional-content warning");
+});
