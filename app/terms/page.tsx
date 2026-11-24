@@ -34,7 +34,7 @@ const sections = [
   {
     title: "04 / PUBLIC CASES AND PROJECT LABELS",
     paragraphs: [
-      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, Solana Trenches 99% Club membership and Copium Administration personal calibration. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's sanitized project designation in the shareable URL.",
+      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, cross-chain 99% Club membership and Copium Administration personal calibration. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's sanitized project designation in the shareable URL.",
       "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. Visitors are responsible for deciding whether to publish or share a case link.",
     ],
   },
