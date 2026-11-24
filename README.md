@@ -155,3 +155,6 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U48 — Archive / 99% Club Editorial Consistency: corrects three Archive links that still described the 99% Club as Solana-only, aligns the membership case with the cross-chain interview, and updates the documented Museum and Archive inventories to their current 19 and 20 records. Regression coverage protects the wording and counts.
 
 - U49 — Live Collection Social Previews: updates the Archive and Museum Open Graph images and accessible alt text to reflect their current curated inventories. Accession ranges, record totals and alt descriptions now derive from the source collections so future additions cannot leave shared previews behind.
+
+
+- U50 — Daily Cope Index Social Preview: forces the generated Open Graph image to render dynamically, using the same current UTC issue date and date-selected editorial case as the page. A regression test prevents the share card from becoming build-time frozen while the visible index advances.
