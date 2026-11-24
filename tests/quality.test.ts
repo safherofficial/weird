@@ -40,6 +40,7 @@ import { buildDepartmentNarrative, departmentCaseThreads } from "../app/lib/depa
 import { archiveRecords, filterArchiveRecords } from "../app/archives/archive-data";
 import { exhibits, searchExhibits } from "../app/museum/museum-data";
 import { departmentGroups, departments, divisionNavigationGroups } from "../app/divisions";
+import { departmentJourneys } from "../app/lib/department-journeys";
 import { CLUB_BADGE_IDS, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
 type ResultRecord = Record<string, unknown>;
@@ -1263,38 +1264,65 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
 });
 
 
-test("U24 journey routing is mapped once across all ten divisions without self-links or duplicate result panels", () => {
-  const routes: Record<string, { page: string; destinations: string[] }> = {
-    audit: { page: "audit", destinations: ["/simulator", "/cope-index"] },
-    simulator: { page: "simulator", destinations: ["/audit", "/club"] },
-    utility: { page: "utility-inspector", destinations: ["/roadmap-generator", "/whitepaper-factory"] },
-    roadmap: { page: "roadmap-generator", destinations: ["/whitepaper-factory", "/utility-inspector"] },
-    whitepaper: { page: "whitepaper-factory", destinations: ["/utility-inspector", "/museum"] },
-    club: { page: "club", destinations: ["/cope-index", "/archives"] },
-    cope: { page: "cope-index", destinations: ["/daily-office", "/club"] },
-    daily: { page: "daily-office", destinations: ["/archives", "/cope-index"] },
-    archives: { page: "archives", destinations: ["/daily-office", "/museum"] },
-    museum: { page: "museum", destinations: ["/archives", "/club"] },
-  };
+test("U51 Department journeys form a connected editorial loop across all ten divisions", () => {
+  const departmentSections = departments.map((department) => department.section).sort();
   const component = readFileSync("app/components/department-next-steps.tsx", "utf8");
-  assert.equal(Object.keys(routes).length, 10);
+  const targetSectionByHref = new Map(departments.map((department) => [department.href, department.section]));
+  const graph = new Map<string, string[]>();
 
-  for (const [department, route] of Object.entries(routes)) {
-    const page = readFileSync("app/" + route.page + "/page.tsx", "utf8");
+  assert.deepEqual(Object.keys(departmentJourneys).sort(), departmentSections);
+  assert.ok(component.includes("departmentJourneys[currentDepartment]"));
+  assert.ok(component.includes('String(destinations.length).padStart(2, "0")'));
+  assert.ok(component.includes("DepartmentCaseChain currentDepartment={currentDepartment}"));
+
+  for (const [department, destinations] of Object.entries(departmentJourneys)) {
+    const source = departments.find((item) => item.section === department);
+    assert.ok(source, department + " must map to an existing Department division");
+    assert.equal(destinations.length, 2, department + " must retain two curated next steps");
+    assert.equal(new Set(destinations.map((destination) => destination.href)).size, 2, department + " destinations must be unique");
+
+    const targetSections = destinations.map((destination) => {
+      const target = targetSectionByHref.get(destination.href);
+      assert.ok(target, department + " destination " + destination.href + " must resolve to a real division route");
+      assert.notEqual(target, department, department + " must not route to itself");
+      assert.ok(destination.title.length > 12, department + " destination title must be descriptive");
+      assert.ok(destination.description.length > 60, department + " destination must explain the editorial handoff");
+      return target;
+    });
+    graph.set(department, targetSections);
+
+    const page = readFileSync("app" + source.href + "/page.tsx", "utf8");
     const pageInstance = 'DepartmentNextSteps currentDepartment="' + department + '"';
     assert.equal(page.split(pageInstance).length - 1, 1, department + " must render exactly one page-level journey section");
-    assert.ok(page.includes('<div className="shell">\n        <' + pageInstance + ' />\n      </div>'), department + " journey panel must respect the shared content-width shell");
-
-    const routeStart = component.indexOf("  " + department + ": [");
-    assert.ok(routeStart >= 0, department + " must have an explicit routing block");
-    const routeEnd = component.indexOf("\n  ],", routeStart);
-    assert.ok(routeEnd >= 0, department + " routing block must close cleanly");
-    const routeBlock = component.slice(routeStart, routeEnd);
-    const actualDestinations = Array.from(routeBlock.matchAll(/href: "([^"]+)"/g), (match) => match[1]);
-    assert.deepEqual(actualDestinations, route.destinations, department + " must retain its two curated destinations");
-    assert.equal(new Set(actualDestinations).size, 2, department + " destinations must be unique");
-    assert.ok(!actualDestinations.includes("/" + route.page), department + " must not route to itself");
+    assert.ok(
+      page.includes('<div className="shell">\n        <' + pageInstance + ' />\n      </div>'),
+      department + " journey panel must respect the shared content-width shell",
+    );
   }
+
+  for (const start of departmentSections) {
+    const visited = new Set<string>([start]);
+    const pending = [start];
+    while (pending.length > 0) {
+      const current = pending.shift()!;
+      for (const destination of graph.get(current) ?? []) {
+        if (!visited.has(destination)) {
+          visited.add(destination);
+          pending.push(destination);
+        }
+      }
+    }
+    assert.equal(
+      visited.size,
+      departmentSections.length,
+      start + " must be able to reach every Department division through curated next steps",
+    );
+  }
+
+  assert.ok(departmentJourneys.audit.some((destination) => destination.href === "/utility-inspector"),
+    "the DYOR Audit must hand off to token-purpose inspection");
+  assert.ok(departmentJourneys.museum.some((destination) => destination.href === "/simulator"),
+    "the Museum must hand the visitor back to the launch simulator");
 
   const interactiveClients = [
     "app/audit/audit-client.tsx",
