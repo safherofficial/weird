@@ -13,6 +13,23 @@ export const metadata: Metadata = {
   description: "A chronological register of recent fictional Trenches Desk dispatches, connected by date, reference and deliberately unresolved institutional paperwork.",
   alternates: { canonical: "/daily-office/ledger" },
   robots: { index: false, follow: true },
+  openGraph: {
+    type: "website",
+    title: "THE DYOR DEPARTMENT / INSTITUTIONAL MEMORY LEDGER",
+    description: "Fourteen consecutive fictional Trenches Desk dispatches, connected by UTC dates and unfinished institutional paperwork.",
+    images: [{
+      url: "/daily-office/ledger/opengraph-image",
+      width: 1200,
+      height: 630,
+      alt: "THE DYOR DEPARTMENT / INSTITUTIONAL MEMORY LEDGER — fourteen consecutive fictional Trenches Desk dispatches connected by a date-based paper trail.",
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "THE DYOR DEPARTMENT / INSTITUTIONAL MEMORY LEDGER",
+    description: "Fourteen fictional dispatches. The paper trail remembers. The Department does not learn.",
+    images: ["/daily-office/ledger/opengraph-image"],
+  },
 };
 
 export default function InstitutionalMemoryLedgerPage() {

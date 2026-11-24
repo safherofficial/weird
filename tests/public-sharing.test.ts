@@ -363,3 +363,56 @@ test("U54 Case Atlas and Institutional Memory Ledger use concise route-specific 
   assert.match(ledgerCopy, /14 consecutive fictional dispatches/);
   assert.match(ledgerCopy, /Fourteen dates later/);
 });
+
+test("Case Atlas and Memory Ledger publish route-specific, current large-image social previews", () => {
+  const references = [
+    {
+      name: "Case Atlas",
+      route: "/daily-office/atlas",
+      page: "app/daily-office/atlas/page.tsx",
+      image: "app/daily-office/atlas/opengraph-image.tsx",
+      metadataImage: "/daily-office/atlas/opengraph-image",
+      builder: "buildDepartmentCaseAtlas",
+    },
+    {
+      name: "Institutional Memory Ledger",
+      route: "/daily-office/ledger",
+      page: "app/daily-office/ledger/page.tsx",
+      image: "app/daily-office/ledger/opengraph-image.tsx",
+      metadataImage: "/daily-office/ledger/opengraph-image",
+      builder: "buildInstitutionalMemory",
+    },
+  ];
+
+  for (const item of references) {
+    const page = readRepoFile(item.page);
+    const image = readRepoFile(item.image);
+
+    assert.ok(page.includes('alternates: { canonical: "' + item.route + '" }'), item.name + " keeps its canonical route");
+    assert.ok(page.includes("robots: { index: false, follow: true }"), item.name + " remains intentionally noindex");
+    assert.ok(page.includes("openGraph:"), item.name + " exposes Open Graph metadata");
+    assert.ok(page.includes('url: "' + item.metadataImage + '"'), item.name + " points metadata to its dedicated image");
+    assert.ok(page.includes("twitter:"), item.name + " exposes X/Twitter metadata");
+    assert.ok(page.includes('card: "summary_large_image"'), item.name + " requests a large social preview");
+    assert.ok(page.includes('images: ["' + item.metadataImage + '"]'), item.name + " uses the same image for X");
+
+    assert.ok(image.includes('from "next/og"'), item.name + " uses Next's Open Graph image renderer");
+    assert.ok(image.includes('export const dynamic = "force-dynamic"'), item.name + " refreshes its date-based preview on demand");
+    assert.ok(image.includes("export const alt ="), item.name + " exposes descriptive image alternative text");
+    assert.ok(image.includes("export const size = { width: 1200, height: 630 }"), item.name + " uses standard large-card dimensions");
+    assert.ok(image.includes('export const contentType = "image/png"'), item.name + " declares PNG output");
+    assert.ok(image.includes(item.builder + "("), item.name + " renders from its existing source engine");
+    assert.ok(image.includes("new ImageResponse("), item.name + " renders a dedicated preview");
+    assert.ok(image.includes('new Date().toISOString().slice(0, 10)'), item.name + " uses the current UTC date");
+  }
+
+  const atlasImage = readRepoFile("app/daily-office/atlas/opengraph-image.tsx");
+  assert.ok(atlasImage.includes("buildDepartmentCaseAtlas(asOfDate, 240)"), "Case Atlas uses the same 240-issue reference window");
+  assert.ok(atlasImage.includes("atlas.entries.length"), "Case Atlas preview derives its theme count from current data");
+  assert.ok(atlasImage.includes("atlas.divisions.length"), "Case Atlas preview derives its office count from current data");
+
+  const ledgerImage = readRepoFile("app/daily-office/ledger/opengraph-image.tsx");
+  assert.ok(ledgerImage.includes("buildInstitutionalMemory(issueDate, 14)"), "Ledger preview uses the same fourteen-day register");
+  assert.ok(ledgerImage.includes("latestRecord.headline"), "Ledger preview identifies the latest fictional file");
+  assert.ok(ledgerImage.includes("oldestRecord.issueDate") && ledgerImage.includes("latestRecord.issueDate"), "Ledger preview derives its visible date window from the generated records");
+});
