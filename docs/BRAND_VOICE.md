@@ -108,6 +108,13 @@ The bonding curve completed. The community called it a historic milestone. The s
 
 Reject generic filler such as "crypto is volatile" or "the market is unpredictable" unless transformed into a specific, characterful incident.
 
+## Share-copy rules
+- Public result, Archive and Museum posts should read as a complete miniature case: institutional hook, specific finding and one memorable punchline.
+- Keep copy designed for X at or below 235 characters before the canonical public URL is added. The reserved space prevents the link from pushing the post over the platform limit.
+- Keep the finding and punchline ahead of optional score detail or calls to action. Remove optional material before cutting the central joke.
+- Never claim that a share action means a post was published. The visitor chooses whether to publish from the platform composer.
+- Keep the fictional / entertainment context clear. Scores remain labels inside a fictional case, not verified assessments or market data.
+
 ## Language rules
 - Public-facing site copy and generated content are written in English.
 - Use CT slang in context; do not force it into every sentence.

@@ -1,4 +1,5 @@
 import type { ClubFaction, ClubResult } from "./club-engine";
+import { buildDepartmentShareText } from "../lib/department-share-copy";
 
 export const CLUB_SOCIAL_HASHTAGS = "#The99PercentClub #ItsNeverOurFault #TheNextOneIsMine";
 export const CLUB_SOCIAL_MANIFESTO = [
@@ -29,14 +30,13 @@ export function buildClubFactionShareText(faction: ClubFaction): string {
 }
 
 export function buildClubMemberShareText(result: ClubResult): string {
-  return [
-    "THE 99% CLUB / MEMBER " + result.memberNumber + ".",
-    result.profile.title + ".",
-    "FACTION: " + result.faction.code + ".",
-    "\"" + result.faction.motto + "\"",
-    "THE NEXT ONE IS MINE.",
-    CLUB_SOCIAL_HASHTAGS,
-  ].join(" ");
+  return buildDepartmentShareText({
+    opening: "THE 99% CLUB / MEMBER " + result.memberNumber + ".",
+    finding: result.profile.title + ". Faction: " + result.faction.code + ".",
+    evidence: "\"" + result.faction.motto + "\"",
+    punchline: "THE NEXT ONE IS MINE.",
+    invitation: CLUB_SOCIAL_HASHTAGS,
+  });
 }
 
 export function buildClubNominationText(result: ClubResult): string {

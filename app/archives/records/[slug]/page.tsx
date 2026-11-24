@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import RecordPassportActivity from "../../../components/record-passport-activity";
 import DepartmentFooter from "../../../components/department-footer";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import DepartmentCaseReferences from "../../../components/department-case-references";
 import { archiveRecords, getArchiveRecord } from "../../archive-data";
@@ -54,12 +55,13 @@ export default async function ArchiveRecordPage({ params }: ArchiveRecordPagePro
   if (!record) notFound();
 
   const route = "/archives/records/" + record.slug;
-  const xText = [
-    "THE DYOR DEPARTMENT ARCHIVES / " + record.accession,
-    record.title + ".",
-    record.finding,
-    "A fictional Department record. Filed for entertainment purposes.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT ARCHIVES / " + record.accession + ".",
+    finding: record.title + ".",
+    evidence: record.summary,
+    punchline: record.finding,
+    invitation: "A fictional case file.",
+  });
 
   return (
     <main className="audit-page archive-record-page" id="main-content">

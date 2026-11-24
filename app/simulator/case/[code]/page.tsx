@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentCrossRead from "../../../components/department-cross-read";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode } from "../../simulator-engine";
 
@@ -60,14 +61,13 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
   const canonicalCode = encodeSimulatorCode(decisions);
   const caseUrl = "/simulator/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/simulator?challenge=" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT has filed my Pump.fun Paper Market case.",
-    "Classification: " + result.profile.title + ".",
-    "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.roast.length > 76 ? result.profile.roast.slice(0, 72) + "…" : result.profile.roast,
-    "Your turn. Hold the imaginary bag.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT filed my fictional Pump.fun Paper Market case.",
+    finding: "Classification: " + result.profile.title + ". Cross-read: " + result.crossRead.headline + ".",
+    evidence: "Paper P/L: " + (result.paperPnl >= 0 ? "+" : "") + result.paperPnl.toFixed(2) + " DPC.",
+    punchline: result.profile.roast,
+    invitation: "Run the paper market.",
+  });
 
   return (
     <main className="audit-page simulator-case-page" id="main-content">

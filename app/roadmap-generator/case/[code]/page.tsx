@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentCrossRead from "../../../components/department-cross-read";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode } from "../../roadmap-engine";
 
@@ -60,14 +61,13 @@ export default async function RoadmapCasePage({ params }: RoadmapCasePageProps) 
   const canonicalCode = encodeRoadmapCode(decoded.answers, decoded.projectSlug);
   const caseUrl = "/roadmap-generator/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/roadmap-generator?challenge=" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT generated a fictional CTO recovery plan for " + result.projectLabel + ".",
-    "Classification: " + result.profile.title + ".",
-    "Delivery: " + result.delivery + "/100. Timeline realism: " + result.realism + "/100. Promise inflation: " + result.inflation + "/100.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.roast.length > 65 ? result.profile.roast.slice(0, 61) + "…" : result.profile.roast,
-    "Your turn. Put your milestones on paper.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "CTO EMERGENCY OFFICE filed a fictional recovery plan for " + result.projectLabel + ".",
+    finding: "Classification: " + result.profile.title + ". Cross-read: " + result.crossRead.headline + ".",
+    evidence: "Delivery: " + result.delivery + "/100. Timeline realism: " + result.realism + "/100. Promise inflation: " + result.inflation + "/100.",
+    punchline: result.profile.roast,
+    invitation: "Put your milestones on paper.",
+  });
 
   return (
     <main className="audit-page roadmap-case-page" id="main-content">

@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentCrossRead from "../../../components/department-cross-read";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildWhitepaperResult, decodeWhitepaperCode, encodeWhitepaperCode } from "../../whitepaper-engine";
 import WhitepaperPublicActions from "../../whitepaper-public-actions";
@@ -61,14 +62,13 @@ export default async function WhitepaperCasePage({ params }: WhitepaperCasePageP
   const canonicalCode = encodeWhitepaperCode(decoded.answers, decoded.projectSlug);
   const caseUrl = "/whitepaper-factory/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/whitepaper-factory?challenge=" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT issued a fictional token dossier for " + result.projectLabel + ".",
-    result.profile.title + ".",
-    "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.roast.length > 62 ? result.profile.roast.slice(0, 58) + "…" : result.profile.roast,
-    "Your turn. Submit your token narrative.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "EXIT LIQUIDITY DEPARTMENT issued a fictional token dossier for " + result.projectLabel + ".",
+    finding: result.profile.title + ". Cross-read: " + result.crossRead.headline + ".",
+    evidence: "Technical density: " + result.technicalDensity + "/100. Buzzword density: " + result.buzzwordDensity + "/100. Product clarity: " + result.productClarity + "/100.",
+    punchline: result.profile.roast,
+    invitation: "Submit your token narrative.",
+  });
 
   return (
     <main className="audit-page whitepaper-case-page" id="main-content">

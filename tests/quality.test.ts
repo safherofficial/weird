@@ -2309,20 +2309,26 @@ test("U25.14 Case Atlas exposes collapsible source evidence for current and prev
 
 
 test("U47 preserves the 99% Club cross-chain identity in every shared department hand-off", () => {
-  const nextSteps = readFileSync("app/components/department-next-steps.tsx", "utf8");
   const homePage = readFileSync("app/page.tsx", "utf8");
   const clubIdentity = departments.find((department) => department.section === "club");
+  const routedClubDestinations = Object.values(departmentJourneys).flat()
+    .filter((destination) => destination.href === "/club");
+  const sharedRoutingCopy = Object.values(departmentJourneys).flat()
+    .map((destination) => destination.title + " " + destination.description)
+    .join(" ");
 
   assert.ok(clubIdentity, "The Club must remain a registered Department division.");
   assert.equal(clubIdentity.title, "CROSS-CHAIN TRENCHES");
   assert.match(clubIdentity.description, /Across every chain and cycle/i);
-  assert.equal(
-    (nextSteps.match(/CROSS-CHAIN TRENCHES \/ 99% CLUB/g) ?? []).length,
-    3,
-    "Simulator, Museum and Cope journeys must all identify the Club as cross-chain.",
+  assert.ok(routedClubDestinations.length > 0, "The shared journey graph must retain links to the 99% Club.");
+  assert.ok(
+    routedClubDestinations.every((destination) =>
+      destination.title === "CROSS-CHAIN TRENCHES / 99% CLUB" && /cross-chain/i.test(destination.description)
+    ),
+    "Every journey that routes to the Club must identify its cross-chain scope.",
   );
   assert.doesNotMatch(
-    nextSteps,
+    sharedRoutingCopy,
     /SOLANA TRENCHES \/ 99% CLUB|fictional Solana trenches survivor registry/i,
     "Shared routing copy must not position Club membership as Solana-only.",
   );
@@ -2345,7 +2351,7 @@ test("U25 audit correction marks a viewing division clearly when it is outside t
   const nextSteps = readFileSync("app/components/department-next-steps.tsx", "utf8");
   const chainClient = readFileSync("app/components/department-case-chain.tsx", "utf8");
 
-  assert.ok(nextSteps.includes("<DepartmentCaseChain currentDepartment={currentDepartment as DepartmentSection} />"));
+  assert.ok(nextSteps.includes("<DepartmentCaseChain currentDepartment={currentDepartment} />"));
   assert.ok(chainClient.includes("const currentOfficeIsRouted = narrative.offices.some((office) => office.isCurrent)"));
   assert.ok(chainClient.includes("CURRENT OFFICE / ROUTED TODAY"));
   assert.ok(chainClient.includes("VIEWING OFFICE / NOT ON THIS ROUTE"));
