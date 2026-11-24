@@ -94,17 +94,13 @@ npm run test:quality
 npm run build
 ```
 
-GitHub Actions runs all three quality commands on pushes to `main`, `feat/**`, `fix/**` and `chore/**`, and on pull requests targeting `main` or `feat/**`. These checks do not create Vercel deployments. The workflow uses the committed npm lockfile and `npm ci` to keep installs reproducible.
+These commands are intended for manual use before a release. GitHub Actions does not run on pushes or pull requests. An optional manual workflow is available under **Actions → Manual quality checks → Run workflow**; it runs the same type check, regression tests and production build, and never deploys the site. The workflow uses the committed npm lockfile and `npm ci` to keep installs reproducible.
 
 ## Deployment
 
-The project is configured for the Vercel Next.js framework. `main` remains the only Production branch; automatic Vercel deployments from all other branches are disabled. Pull requests run GitHub Actions quality checks, but Preview deployments are not part of the release flow.
+The project is configured for the Vercel Next.js framework. Automatic Git deployments are disabled for every branch in `vercel.json`; pushes and pull requests do not deploy the site. GitHub Actions has no deployment job and cannot publish to Production.
 
-The GitHub Actions workflow has two jobs: `verify` runs dependency installation, type checking, regression tests and the Production build; `deploy-production` depends on `verify` and can run only after a successful push to `main`. When the deployment gate is activated, it sends a POST request to the Vercel Deploy Hook stored in the repository Actions secret `VERCEL_DEPLOY_HOOK`. The URL is never committed to the repository or printed in workflow logs.
-
-**Deployment gate rollout is intentionally staged.** Until the Vercel Deploy Hook exists and its URL is stored as `VERCEL_DEPLOY_HOOK`, the existing native Vercel Git deployment for `main` must remain enabled. The workflow's deployment job stays dormant unless the repository Actions variable `VERCEL_DEPLOY_GATE_ENABLED` is exactly `true`. Do not enable that variable until the hook secret is saved and the final configuration change disables native automatic Git deployments.
-
-Final activation will set `git.deploymentEnabled` to `false` in `vercel.json` and enable the workflow variable together. This leaves GitHub Actions as the quality gate and the Deploy Hook as the only Production deployment trigger. Do not use the legacy `github.enabled: false` setting: Vercel documents that it prevents Deploy Hooks from triggering.
+Releases are deliberately manual: review the intended commit, run the checks locally when appropriate (or start **Actions → Manual quality checks**), inspect the result, and deploy to Production only after an explicit release decision. Use the Vercel dashboard or an explicitly requested deployment action for that release. Preview deployments are not part of the routine release flow.
 
 ## Technology
 
