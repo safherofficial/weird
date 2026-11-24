@@ -25,20 +25,26 @@ export async function generateMetadata({ params }: InstitutionalMemoryRecordPage
 
   const dispatch = buildDailyOfficeDispatch(date);
   const route = "/daily-office/archive/" + date;
+  const image = route + "/opengraph-image";
+  const imageAlt = "THE DYOR DEPARTMENT / " + dispatch.reference + " — " + dispatch.headline + " Fictional daily Trenches Desk dispatch dated " + date + " UTC.";
+  const socialTitle = dispatch.headline + " | THE DYOR DEPARTMENT";
   return {
     title: dispatch.headline + " | INSTITUTIONAL MEMORY",
     description: dispatch.bulletin,
     alternates: { canonical: route },
     robots: { index: false, follow: true },
     openGraph: {
-      title: dispatch.headline,
+      title: socialTitle,
       description: dispatch.bulletin,
       type: "article",
+      url: route,
+      images: [{ url: image, width: 1200, height: 630, alt: imageAlt }],
     },
     twitter: {
-      card: "summary",
-      title: dispatch.headline,
+      card: "summary_large_image",
+      title: socialTitle,
       description: dispatch.bulletin,
+      images: [image],
     },
   };
 }
