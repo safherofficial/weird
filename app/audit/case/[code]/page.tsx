@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildResult, decodeCaseCode, encodeCaseCode } from "../../audit-engine";
 
@@ -62,14 +63,13 @@ export default async function PublicCasePage({ params }: CasePageProps) {
   const canonicalCode = encodeCaseCode(answers);
   const challengeUrl = "/audit?challenge=" + encodeURIComponent(canonicalCode);
   const caseUrl = "/audit/case/" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT has reviewed my case.",
-    "Classification: " + result.profile.title + ".",
-    "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.roast.length > 82 ? result.profile.roast.slice(0, 78) + "…" : result.profile.roast,
-    "Your turn. Submit your own audit.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT filed my fictional DYOR Audit case.",
+    finding: "Classification: " + result.profile.title + ". Cross-read: " + result.crossRead.headline + ".",
+    evidence: "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
+    punchline: result.profile.roast,
+    invitation: "Run your own audit.",
+  });
 
   return (
     <main className="audit-page public-case-page" id="main-content">
