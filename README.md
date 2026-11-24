@@ -180,4 +180,4 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 
 - U62 — Cross-Chain Club Legal Copy: aligns the Privacy Notice and Terms case-link inventories with the 99% Club's cross-chain scope. The Department remains Solana-rooted; the Club membership classification is not described as Solana-only. No application behaviour, data handling or token status changes.
 
-- U63 — Legal Review-Date Alignment: updates the Privacy Notice and Terms review stamps to 25 November 2026 following the U62 legal-copy revision, with regression coverage keeping both documents and their recorded review date aligned. This is a documentation metadata update only; it does not assert jurisdiction-specific legal compliance or change data handling.
+- U63 — Legal Review-Date Alignment: updates every visible review-date reference in the Privacy Notice and Terms to 25 November 2026 following the U62 legal-copy revision, with regression coverage preventing stale dates from returning. This is a documentation metadata update only; it does not assert jurisdiction-specific legal compliance or change data handling.
