@@ -62,7 +62,7 @@ const sections = [
     title: "08 / OPERATOR DETAILS",
     paragraphs: [
       "The legal identity and contact details for the site operator have not been supplied in this release. They must be added by the operator before these terms are treated as a complete legal agreement.",
-      "Last reviewed: 22 November 2026.",
+      "Last reviewed: 25 November 2026.",
     ],
   },
 ];
