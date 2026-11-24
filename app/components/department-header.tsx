@@ -47,6 +47,9 @@ export default function DepartmentHeader({
   const departmentsHref = isHomePage ? "#departments" : "/#departments";
   const manifestoHref = isHomePage ? "#manifesto" : "/#manifesto";
   const activeDivision = activeSection ? divisionIdentityBySection[activeSection] : undefined;
+  const toplineLabel = activeSection === "club"
+    ? "THE CROSS-CHAIN SURVIVOR REGISTRY / ALL CHAINS & CYCLES"
+    : "THE OFFICIAL AFTERCARE DESK FOR THE SOLANA TRENCHES";
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -93,7 +96,7 @@ export default function DepartmentHeader({
     <>
       <a className="skip-link" href="#content-start">SKIP TO CONTENT</a>
       <div className="topline">
-        <span>THE OFFICIAL AFTERCARE DESK FOR THE SOLANA TRENCHES</span>
+        <span>{toplineLabel}</span>
         <span className="topline__right">
           <i aria-hidden="true" />
           <span>{statusMessage}</span>
