@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
 import { buildDepartmentShareText, DEPARTMENT_SHARE_TEXT_LIMIT } from "../app/lib/department-share-copy";
+import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
 
 function readRepoFile(path: string): string {
   return readFileSync(resolve(process.cwd(), path), "utf8");
@@ -271,5 +272,40 @@ test("U52 share copy removes empty fields and collapses accidental whitespace", 
   });
 
   assert.equal(copy, "THE 99% CLUB filed a fictional member record. THE NEXT ONE IS MINE.");
+});
+
+test("U53 Daily Trenches Desk uses concise X-ready copy for current and archived dispatches", () => {
+  const client = readRepoFile("app/daily-office/daily-client.tsx");
+  assert.ok(
+    client.includes('import { buildDepartmentShareText } from "../lib/department-share-copy";'),
+    "Daily Trenches Desk must use the shared editorial share-copy builder",
+  );
+  assert.ok(client.includes("const xText = buildDepartmentShareText({"), "dispatch share copy must use the common X budget");
+  assert.ok(client.includes("shareText={xText}"), "the same composed copy must reach the public share controls");
+
+  // The full-dispatch clipboard action remains deliberately unabridged.
+  const fullCopy = client.slice(client.indexOf("async function copyDispatch()"), client.indexOf("function downloadCard()"));
+  assert.ok(fullCopy.includes("const text = ["), "the full briefing copy remains available");
+  assert.ok(fullCopy.includes("dispatch.convictionIndex.readings.map"), "full copy retains all index readings");
+  assert.ok(fullCopy.includes("dispatch.sections.flatMap"), "full copy retains every dispatch section");
+  assert.ok(fullCopy.includes("dispatch.methodology"), "full copy retains the methodology");
+  assert.ok(fullCopy.includes("pageUrl"), "full copy retains the canonical dispatch URL");
+
+  for (const issueDate of ["2026-11-24", "2026-11-17", "2026-10-01", "2026-09-01"]) {
+    const dispatch = buildDailyOfficeDispatch(issueDate);
+    const shareText = buildDepartmentShareText({
+      opening: "THE DYOR DEPARTMENT / TRENCHES DESK.",
+      finding: dispatch.headline + " " + dispatch.bulletin,
+      evidence: "CONVICTION INDEX: " + dispatch.convictionIndex.score + "/100 — " + dispatch.convictionIndex.classification + ".",
+      punchline: dispatch.quote,
+      invitation: "A fictional daily dispatch. Not real news or market data.",
+    });
+
+    assert.ok(shareText.length <= DEPARTMENT_SHARE_TEXT_LIMIT, issueDate + " dispatch must fit the X text budget");
+    assert.ok(shareText.length + 1 + 23 <= 280, issueDate + " dispatch must reserve room for X's short URL");
+    assert.ok(shareText.startsWith("THE DYOR DEPARTMENT / TRENCHES DESK."), issueDate + " must retain the institutional hook");
+    assert.ok(shareText.includes(dispatch.headline.slice(0, 24)), issueDate + " must retain the dispatch headline");
+    assert.ok(shareText.includes(dispatch.quote.slice(0, 24)), issueDate + " must retain the quote's central line");
+  }
 });
 
