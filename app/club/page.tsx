@@ -77,8 +77,6 @@ export default function ClubPage() {
           </div>
         </section>
 
-
-
         <section className={journey.stage} id="club-journey-factions" aria-label="Stage 2: Faction classification">
           <div className={journey.stageMarker}><span className={journey.stageNumber}>02</span><div><strong>FACTION CLASSIFICATION</strong><small>SIX FICTIONAL IDENTITIES / ONE PRIMARY ARCHETYPE</small></div></div>
           <div className="shell">
