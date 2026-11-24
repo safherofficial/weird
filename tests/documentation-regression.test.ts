@@ -64,3 +64,13 @@ test("R5 editorial guidance keeps the daily archive and Case Atlas explicitly fi
   assert.match(brandVoice, /eighteen fictional themes/);
   assert.match(brandVoice, /not evidence gathered from real projects, people or wallets/);
 });
+
+test("U62 legal disclosures identify 99% Club membership as cross-chain", () => {
+  const privacy = read("app/privacy/page.tsx");
+  const terms = read("app/terms/page.tsx");
+
+  for (const page of [privacy, terms]) {
+    assert.match(page, /cross-chain 99% Club membership/i);
+    assert.doesNotMatch(page, /Solana Trenches 99% Club membership/i);
+  }
+});
