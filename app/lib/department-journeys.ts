@@ -35,7 +35,7 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
     {
       href: "/club",
       title: "CROSS-CHAIN TRENCHES / 99% CLUB",
-      description: "Apply for fictional survivor status after missed calls, late entries, deployer silence and bagholder rehabilitation.",
+      description: "Apply to the fictional cross-chain survivor registry after missed calls, late entries, deployer silence and bagholder rehabilitation.",
     },
   ],
   utility: [
