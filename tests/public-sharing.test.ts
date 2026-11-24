@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
 import { buildDepartmentShareText, DEPARTMENT_SHARE_TEXT_LIMIT } from "../app/lib/department-share-copy";
+import { archiveCategories, archiveRecords } from "../app/archives/archive-data";
+import { exhibits, museumCategories } from "../app/museum/museum-data";
 import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
 import { buildDepartmentCaseAtlas } from "../app/daily-office/case-atlas";
 import { buildInstitutionalMemory } from "../app/daily-office/institutional-memory";
@@ -443,4 +445,65 @@ test("dated Trenches Desk archive records expose their own large social preview"
   assert.ok(image.includes("export const size = { width: 1200, height: 630 }"), "the image uses standard large-card dimensions");
   assert.ok(image.includes('export const contentType = "image/png"'), "the image is a PNG");
   assert.ok(image.includes("FICTIONAL DAILY SATIRE"), "the preview preserves the fictional-content warning");
+});
+
+
+test("U57 Archives and Museum collection pages expose concise public sharing", () => {
+  const collections = [
+    {
+      name: "Department Archives",
+      page: readRepoFile("app/archives/page.tsx"),
+      route: "/archives",
+      label: "ARCHIVES",
+      title: "THE DYOR DEPARTMENT / DEPARTMENT ARCHIVES.",
+      finding: archiveRecords.length + " fictional case files across " + (archiveCategories.length - 1) + " categories.",
+      evidence: "Bridge transfers, airdrop eligibility, unlock schedules and governance handovers.",
+      punchline: "The paper trail is immaculate. The thesis remains under investigation.",
+      invitation: "Search the fictional register.",
+      count: archiveRecords.length,
+      categoryCount: archiveCategories.length - 1,
+      metadataImage: "/archives/opengraph-image",
+    },
+    {
+      name: "Trenches Relic Museum",
+      page: readRepoFile("app/museum/page.tsx"),
+      route: "/museum",
+      label: "MUSEUM",
+      title: "THE DYOR DEPARTMENT / TRENCHES RELIC MUSEUM.",
+      finding: exhibits.length + " fictional relics across " + (museumCategories.length - 1) + " collections.",
+      evidence: "Bridge receipts, airdrop stamps, unlock clocks and governance artifacts.",
+      punchline: "Every exhibit is priceless. None is redeemable.",
+      invitation: "Visit the collection.",
+      count: exhibits.length,
+      categoryCount: museumCategories.length - 1,
+      metadataImage: "/museum/opengraph-image",
+    },
+  ] as const;
+
+  for (const item of collections) {
+    assert.ok(item.page.includes('alternates: { canonical: "' + item.route + '" }'), item.name + " retains its canonical route");
+    assert.ok(item.page.includes("openGraph:"), item.name + " retains Open Graph metadata");
+    assert.ok(item.page.includes('images: ["' + item.metadataImage + '"]'), item.name + " retains its dedicated collection preview");
+    assert.ok(item.page.includes("twitter:"), item.name + " retains X metadata");
+    assert.ok(item.page.includes('card: "summary_large_image"'), item.name + " retains its large social card");
+    assert.ok(item.page.includes("DepartmentPublicShare"), item.name + " exposes public collection share controls");
+    assert.ok(item.page.includes("buildDepartmentShareText({"), item.name + " uses the shared X character-budget composer");
+    assert.ok(item.page.includes('casePath="' + item.route + '"'), item.name + " shares its canonical collection URL");
+    assert.ok(item.page.includes('resourceLabel="' + item.label + '"'), item.name + " identifies the collection in share actions");
+    assert.ok(item.page.includes("department-reference-share"), item.name + " uses the existing responsive reference-share treatment");
+
+    const shareText = buildDepartmentShareText({
+      opening: item.title,
+      finding: item.finding,
+      evidence: item.evidence,
+      punchline: item.punchline,
+      invitation: item.invitation,
+    });
+    assert.ok(shareText.length <= DEPARTMENT_SHARE_TEXT_LIMIT, item.name + " copy fits the shared text budget");
+    assert.ok(shareText.length + 1 + 23 <= 280, item.name + " copy reserves room for X's short URL");
+    assert.ok(shareText.startsWith(item.title), item.name + " copy starts with the Department identity");
+    assert.ok(shareText.includes(String(item.count)), item.name + " copy uses the current collection count");
+    assert.ok(shareText.includes(String(item.categoryCount)), item.name + " copy uses the current category count");
+    assert.ok(shareText.includes(item.punchline), item.name + " copy preserves its collection-specific punchline");
+  }
 });

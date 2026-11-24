@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentPublicShare from "../components/department-public-share";
+import { buildDepartmentShareText } from "../lib/department-share-copy";
 import MuseumClient from "./museum-client";
-import { exhibits } from "./museum-data";
+import { exhibits, museumCategories } from "./museum-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/museum" },
@@ -23,6 +25,14 @@ export const metadata: Metadata = {
 };
 
 export default function MuseumPage() {
+  const shareText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / TRENCHES RELIC MUSEUM.",
+    finding: exhibits.length + " fictional relics across " + (museumCategories.length - 1) + " collections.",
+    evidence: "Bridge receipts, airdrop stamps, unlock clocks and governance artifacts.",
+    punchline: "Every exhibit is priceless. None is redeemable.",
+    invitation: "Visit the collection.",
+  });
+
   return (
     <main className="audit-page museum-page" id="main-content">
       <DepartmentHeader activeSection="museum" statusMessage="COLLECTION OPEN / ARTIFACTS ENTIRELY FICTIONAL" ctaHref="/museum" ctaLabel="VISIT THE COLLECTION" />
@@ -46,6 +56,18 @@ export default function MuseumPage() {
             <div><strong>∞</strong><span>EMOTIONAL DAMAGE</span></div>
           </div>
         </header>
+
+        <section className="department-reference-share" aria-label="Share the Trenches Relic Museum">
+          <span>PUBLIC COLLECTION / X-READY SUMMARY</span>
+          <div className="department-reference-share__actions">
+            <DepartmentPublicShare
+              title="THE DYOR DEPARTMENT / Trenches Relic Museum"
+              shareText={shareText}
+              casePath="/museum"
+              resourceLabel="MUSEUM"
+            />
+          </div>
+        </section>
 
         <MuseumClient />
       </div>

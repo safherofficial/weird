@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
+import DepartmentPublicShare from "../components/department-public-share";
+import { buildDepartmentShareText } from "../lib/department-share-copy";
 import ArchivesClient from "./archives-client";
-import { archiveRecords } from "./archive-data";
+import { archiveCategories, archiveRecords } from "./archive-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/archives" },
@@ -23,6 +25,14 @@ export const metadata: Metadata = {
 };
 
 export default function ArchivesPage() {
+  const shareText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / DEPARTMENT ARCHIVES.",
+    finding: archiveRecords.length + " fictional case files across " + (archiveCategories.length - 1) + " categories.",
+    evidence: "Bridge transfers, airdrop eligibility, unlock schedules and governance handovers.",
+    punchline: "The paper trail is immaculate. The thesis remains under investigation.",
+    invitation: "Search the fictional register.",
+  });
+
   return (
     <main className="audit-page archives-page" id="main-content">
       <DepartmentHeader activeSection="archives" statusMessage="ARCHIVE OPEN / ALL FILES FICTIONAL" ctaHref="/archives" ctaLabel="SEARCH THE ARCHIVE" />
@@ -41,6 +51,18 @@ export default function ArchivesPage() {
             <small>ALL RECORDS ARE ORIGINAL FICTIONAL SATIRE. NO REAL EVENTS OR ENTITIES ARE DEPICTED.</small>
           </div>
         </header>
+
+        <section className="department-reference-share" aria-label="Share the Department Archives">
+          <span>PUBLIC COLLECTION / X-READY SUMMARY</span>
+          <div className="department-reference-share__actions">
+            <DepartmentPublicShare
+              title="THE DYOR DEPARTMENT / Department Archives"
+              shareText={shareText}
+              casePath="/archives"
+              resourceLabel="ARCHIVES"
+            />
+          </div>
+        </section>
 
         <ArchivesClient />
       </div>
