@@ -15204,3 +15204,25 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   letter-spacing:.08em;
   overflow-wrap:anywhere;
 }
+
+
+/* U54 — concise public sharing for the Case Atlas and Memory Ledger. */
+.department-reference-share {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 28px;
+  padding: 14px 16px;
+  border: 1px solid #354034;
+  background: rgba(16, 21, 16, .76);
+}
+.department-reference-share > span {
+  color: #9ba894;
+  font: 700 10px/1.5 var(--mono);
+  letter-spacing: .12em;
+}
+.department-reference-share__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
