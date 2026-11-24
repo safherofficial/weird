@@ -168,3 +168,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U56 — Archived Daily Issue Social Cards: gives every date-specific Trenches Desk archive record its own dynamic 1200 × 630 Open Graph and X image, rebuilt from the same UTC-date dispatch engine as the page. Each card carries that issue's reference, headline, bulletin, fictional Conviction Index and quote. Invalid dates remain unavailable, canonical routes and noindex policy remain unchanged.
 
 - U57 — Collection Sharing: adds concise X-ready share, native share and copy-link controls to the Department Archives and Trenches Relic Museum collection landing pages. Their existing indexable canonical URLs and dedicated large social previews remain unchanged; share copy derives its record / exhibit and category / collection counts from the current source collections.
+
+- U58 — Branded Not-Found Route: replaces the framework fallback with an accessible Department 404, keeping the institutional identity intact and routing visitors back to Headquarters, the DYOR Audit or the division directory. It introduces no tracking, storage, network calls or new dependencies.
