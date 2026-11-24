@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import DepartmentPublicShare from "../components/department-public-share";
+import { buildDepartmentShareText } from "../lib/department-share-copy";
 import type { DailyOfficeDispatch } from "./daily-engine";
 
 type DailyOfficeClientProps = {
@@ -91,14 +92,13 @@ export default function DailyOfficeClient({
   const SupportingHeadingTag = headlineLevel === "h1" ? "h2" : "h3";
   const [notice, setNotice] = useState("");
   const dispatchLabel = pagePath === "/daily-office" ? "TODAY'S" : "ARCHIVED";
-  const xText = [
-    "THE DYOR DEPARTMENT / TRENCHES DESK",
-    dispatch.headline,
-    dispatch.bulletin,
-    "CONVICTION INDEX: " + dispatch.convictionIndex.score + "/100 — " + dispatch.convictionIndex.classification,
-    dispatch.quote,
-    "A fictional daily dispatch. Not real news or market data.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / TRENCHES DESK.",
+    finding: dispatch.headline + " " + dispatch.bulletin,
+    evidence: "CONVICTION INDEX: " + dispatch.convictionIndex.score + "/100 — " + dispatch.convictionIndex.classification + ".",
+    punchline: dispatch.quote,
+    invitation: "A fictional daily dispatch. Not real news or market data.",
+  });
 
   async function copyDispatch() {
     const pageUrl = new URL(pagePath, window.location.origin).toString();
