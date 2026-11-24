@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DepartmentHeader from "../../../components/department-header";
 import RecordPassportActivity from "../../../components/record-passport-activity";
 import DepartmentFooter from "../../../components/department-footer";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import DepartmentCaseReferences from "../../../components/department-case-references";
 import { exhibits, getExhibit } from "../../museum-data";
@@ -53,12 +54,13 @@ export default async function MuseumExhibitPage({ params }: ExhibitPageProps) {
   if (!exhibit) notFound();
 
   const path = "/museum/exhibits/" + exhibit.slug;
-  const xText = [
-    "I visited the Museum of Trenches Relics.",
-    "Exhibit " + exhibit.accession + ": " + exhibit.title + ".",
-    exhibit.plaque,
-    "A fictional artifact from the archive of questionable conviction.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "MUSEUM OF TRENCHES RELICS / " + exhibit.accession + ".",
+    finding: exhibit.title + ".",
+    evidence: exhibit.description,
+    punchline: exhibit.plaque,
+    invitation: "A fictional artifact.",
+  });
 
   return (
     <main className="audit-page museum-exhibit-page" id="main-content">
