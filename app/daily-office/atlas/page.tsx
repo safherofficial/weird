@@ -13,6 +13,23 @@ export const metadata: Metadata = {
   description: "An interactive index of 18 fictional case themes, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and matched-period comparisons across selectable 14-to-120-day windows.",
   alternates: { canonical: "/daily-office/atlas" },
   robots: { index: false, follow: true },
+  openGraph: {
+    type: "website",
+    title: "THE DYOR DEPARTMENT / CASE ATLAS",
+    description: "Eighteen fictional themes across ten Department offices, with date-seeded recurrence and matched-period comparisons. No live market activity.",
+    images: [{
+      url: "/daily-office/atlas/opengraph-image",
+      width: 1200,
+      height: 630,
+      alt: "THE DYOR DEPARTMENT / CASE ATLAS — an index of fictional crypto-trenches themes across ten offices, with date-seeded recurrence and matched-period comparisons.",
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "THE DYOR DEPARTMENT / CASE ATLAS",
+    description: "Eighteen fictional themes across ten offices. Recurrence and matched-period comparisons, not market insight.",
+    images: ["/daily-office/atlas/opengraph-image"],
+  },
 };
 
 export default function DepartmentCaseAtlasPage() {
