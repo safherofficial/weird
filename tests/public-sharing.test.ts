@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
+import { buildDepartmentShareText, DEPARTMENT_SHARE_TEXT_LIMIT } from "../app/lib/department-share-copy";
 
 function readRepoFile(path: string): string {
   return readFileSync(resolve(process.cwd(), path), "utf8");
@@ -207,3 +208,68 @@ test("global metadata provides an absolute base for canonical and social URLs", 
   assert.ok(layout.includes('card: "summary_large_image"'));
   assert.ok(layout.includes('images: ["/opengraph-image"]'));
 });
+
+test("U52 public case and editorial resource posts use one X-safe copy builder", () => {
+  const casePages = publicCases
+    .filter((item) => item.name !== "99% Club")
+    .map((item) => ({ name: item.name, path: item.page }));
+
+  const resourcePages = [
+    { name: "Department Archives", path: "app/archives/records/[slug]/page.tsx" },
+    { name: "Museum of Trenches Relics", path: "app/museum/exhibits/[slug]/page.tsx" },
+  ];
+
+  for (const item of [...casePages, ...resourcePages]) {
+    const page = readRepoFile(item.path);
+    assert.ok(page.includes("buildDepartmentShareText({"), item.name + " must use the shared character-safe copy builder");
+    assert.ok(page.includes("shareText={xText}"), item.name + " must send the composed copy to the share controls");
+  }
+
+  const clubPage = readRepoFile("app/club/member/[code]/page.tsx");
+  const clubSocial = readRepoFile("app/club/club-social.ts");
+  assert.ok(clubPage.includes("buildClubMemberShareText(result)"), "Club public member pages must use their Club-specific copy");
+  assert.ok(clubSocial.includes("buildDepartmentShareText({"), "Club member copy must use the shared character budget");
+});
+
+test("U52 share copy preserves the finding and punchline within the X URL-safe character budget", () => {
+  const complete = buildDepartmentShareText({
+    opening: "THE DEPARTMENT filed a fictional case.",
+    finding: "Classification: THE LATE-ENTRY SPECIALIST.",
+    evidence: "Research: 82/100. Crowd dependency: 94/100.",
+    punchline: "The exit plan was still waiting for the next update.",
+    invitation: "Run your own audit.",
+  });
+
+  assert.match(complete, /THE DEPARTMENT filed a fictional case/);
+  assert.match(complete, /THE LATE-ENTRY SPECIALIST/);
+  assert.match(complete, /The exit plan was still waiting/);
+  assert.ok(complete.length <= DEPARTMENT_SHARE_TEXT_LIMIT);
+  assert.ok(complete.length + 1 + 23 <= 280, "copy plus X's reserved short URL must remain under 280 characters");
+
+  const constrained = buildDepartmentShareText({
+    opening: "THE DEPARTMENT filed a fictional case for an exceptionally long project label that would otherwise consume the whole post.",
+    finding: "Classification: THE PERMANENTLY DEFERRED COMMUNITY TAKEOVER ROADMAP SPECIALIST.",
+    evidence: "Delivery: 98/100. Timeline realism: 2/100. Promise inflation: 100/100. A detailed set of optional fictional scores for this public case.",
+    punchline: "The milestones have been rescheduled until after the next milestone review.",
+    invitation: "Submit your own fictional recovery plan.",
+  });
+
+  assert.ok(constrained.length <= DEPARTMENT_SHARE_TEXT_LIMIT);
+  assert.match(constrained, /THE DEPARTMENT filed/);
+  assert.match(constrained, /The milestones/);
+  assert.doesNotMatch(constrained, /\\s+…/);
+  assert.doesNotMatch(constrained, /undefined|null/);
+});
+
+test("U52 share copy removes empty fields and collapses accidental whitespace", () => {
+  const copy = buildDepartmentShareText({
+    opening: "  THE 99% CLUB   filed a fictional member record. ",
+    finding: "",
+    evidence: "   ",
+    punchline: " THE NEXT ONE IS MINE.  ",
+    invitation: "",
+  });
+
+  assert.equal(copy, "THE 99% CLUB filed a fictional member record. THE NEXT ONE IS MINE.");
+});
+
