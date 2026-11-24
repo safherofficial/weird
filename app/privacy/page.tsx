@@ -71,7 +71,7 @@ const sections = [
     title: "09 / OPERATOR CONTACT",
     paragraphs: [
       "The legal identity and a dedicated contact channel for the site operator have not been supplied in this release. They must be added by the operator before this notice is treated as a complete statutory privacy notice or used as legal assurance.",
-      "This page was last reviewed on 22 November 2026. It should be reviewed whenever application behaviour, providers or data flows change.",
+      "This page was last reviewed on 25 November 2026. It should be reviewed whenever application behaviour, providers or data flows change.",
     ],
   },
 ];
