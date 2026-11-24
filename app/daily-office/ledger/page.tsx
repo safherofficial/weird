@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import DepartmentHeader from "../../components/department-header";
 import DepartmentFooter from "../../components/department-footer";
+import DepartmentPublicShare from "../../components/department-public-share";
+import { buildDepartmentShareText } from "../../lib/department-share-copy";
 import { buildInstitutionalMemory } from "../institutional-memory";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +18,15 @@ export const metadata: Metadata = {
 export default function InstitutionalMemoryLedgerPage() {
   const issueDate = new Date().toISOString().slice(0, 10);
   const records = buildInstitutionalMemory(issueDate, 14).slice().reverse();
+  const latestRecord = records[0];
+  const oldestRecord = records[records.length - 1];
+  const shareText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / INSTITUTIONAL MEMORY.",
+    finding: records.length + " consecutive fictional dispatches, " + oldestRecord.issueDate + " to " + latestRecord.issueDate + " UTC.",
+    evidence: "Latest file: " + latestRecord.headline + " " + latestRecord.bulletin,
+    punchline: "Fourteen dates later, the paperwork is still pending.",
+    invitation: "Review the paper trail.",
+  });
 
   return (
     <main className="audit-page institutional-memory-page" id="main-content">
@@ -43,6 +54,18 @@ export default function InstitutionalMemoryLedgerPage() {
             <small>NO REAL INCIDENTS, ACCOUNTS, WALLETS OR MARKET EVENTS ARE FOLLOWED. NO VISITOR DATA IS STORED.</small>
           </div>
         </header>
+
+        <section className="department-reference-share" aria-label="Share the Institutional Memory Ledger">
+          <span>PUBLIC REFERENCE / X-READY SUMMARY</span>
+          <div className="department-reference-share__actions">
+            <DepartmentPublicShare
+              title="THE DYOR DEPARTMENT / Institutional Memory Ledger"
+              shareText={shareText}
+              casePath="/daily-office/ledger"
+              resourceLabel="MEMORY LEDGER"
+            />
+          </div>
+        </section>
 
         <section className="institutional-memory-list" aria-label="Fourteen most recent fictional daily records">
           {records.map((record, index) => (

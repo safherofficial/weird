@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import DepartmentHeader from "../../components/department-header";
 import DepartmentFooter from "../../components/department-footer";
+import DepartmentPublicShare from "../../components/department-public-share";
+import { buildDepartmentShareText } from "../../lib/department-share-copy";
 import DepartmentCaseAtlasClient from "../department-case-atlas-client";
 import { buildDepartmentCaseAtlas } from "../case-atlas";
 
@@ -16,6 +18,13 @@ export const metadata: Metadata = {
 export default function DepartmentCaseAtlasPage() {
   const asOfDate = new Date().toISOString().slice(0, 10);
   const atlas = buildDepartmentCaseAtlas(asOfDate, 240);
+  const shareText = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / CASE ATLAS.",
+    finding: atlas.entries.length + " fictional themes routed across " + atlas.divisions.length + " offices.",
+    evidence: atlas.lookbackDays + " date-seeded UTC issues; recurrence and matched-period comparisons.",
+    punchline: "Every route leads to a record. None leads to market insight.",
+    invitation: "Search the fictional register.",
+  });
 
   return (
     <main className="audit-page department-case-atlas-page" id="main-content">
@@ -42,6 +51,17 @@ export default function DepartmentCaseAtlasPage() {
             <small>COUNTS, RECURRENCE GAPS AND MATCHED-PERIOD COMPARISONS USE ONLY FICTIONAL UTC BRIEFINGS, NOT LIVE MARKET ACTIVITY.</small>
           </div>
         </header>
+        <section className="department-reference-share" aria-label="Share the Department Case Atlas">
+          <span>PUBLIC REFERENCE / X-READY SUMMARY</span>
+          <div className="department-reference-share__actions">
+            <DepartmentPublicShare
+              title="THE DYOR DEPARTMENT / Case Atlas"
+              shareText={shareText}
+              casePath="/daily-office/atlas"
+              resourceLabel="CASE ATLAS"
+            />
+          </div>
+        </section>
         <DepartmentCaseAtlasClient atlas={atlas} />
       </div>
       <DepartmentFooter message={["THE CASES HAVE BEEN CROSS-REFERENCED.", "THE DEPARTMENT HAS NOT LEARNED FROM THEM."]} />

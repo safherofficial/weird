@@ -4,6 +4,8 @@ import { resolve } from "node:path";
 import { test } from "node:test";
 import { buildDepartmentShareText, DEPARTMENT_SHARE_TEXT_LIMIT } from "../app/lib/department-share-copy";
 import { buildDailyOfficeDispatch } from "../app/daily-office/daily-engine";
+import { buildDepartmentCaseAtlas } from "../app/daily-office/case-atlas";
+import { buildInstitutionalMemory } from "../app/daily-office/institutional-memory";
 
 function readRepoFile(path: string): string {
   return readFileSync(resolve(process.cwd(), path), "utf8");
@@ -309,3 +311,55 @@ test("U53 Daily Trenches Desk uses concise X-ready copy for current and archived
   }
 });
 
+
+
+test("U54 Case Atlas and Institutional Memory Ledger use concise route-specific share copy", () => {
+  const atlasPage = readRepoFile("app/daily-office/atlas/page.tsx");
+  const ledgerPage = readRepoFile("app/daily-office/ledger/page.tsx");
+  const styles = readRepoFile("app/globals.css");
+  assert.ok(styles.includes(".department-reference-share {"), "both reference routes must receive the shared visual treatment");
+  assert.ok(styles.includes(".department-reference-share__actions {"), "share actions must wrap on narrow screens");
+
+  for (const [name, page, route, label] of [
+    ["Case Atlas", atlasPage, "/daily-office/atlas", "CASE ATLAS"],
+    ["Institutional Memory Ledger", ledgerPage, "/daily-office/ledger", "MEMORY LEDGER"],
+  ] as const) {
+    assert.ok(page.includes("buildDepartmentShareText({"), name + " must use the shared 235-character composer");
+    assert.ok(page.includes("DepartmentPublicShare"), name + " must expose the existing public share controls");
+    assert.ok(page.includes("shareText={shareText}"), name + " must pass the composed copy to the share controls");
+    assert.ok(page.includes('casePath="' + route + '"'), name + " must share its canonical public route");
+    assert.ok(page.includes('resourceLabel="' + label + '"'), name + " must identify the correct resource in share actions");
+  }
+
+  const atlas = buildDepartmentCaseAtlas("2026-11-24", 240);
+  const atlasCopy = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / CASE ATLAS.",
+    finding: atlas.entries.length + " fictional themes routed across " + atlas.divisions.length + " offices.",
+    evidence: atlas.lookbackDays + " date-seeded UTC issues; recurrence and matched-period comparisons.",
+    punchline: "Every route leads to a record. None leads to market insight.",
+    invitation: "Search the fictional register.",
+  });
+
+  assert.ok(atlasCopy.length <= DEPARTMENT_SHARE_TEXT_LIMIT, "Atlas copy must fit the shared text budget");
+  assert.ok(atlasCopy.length + 1 + 23 <= 280, "Atlas copy must reserve room for X's short URL");
+  assert.ok(atlasCopy.startsWith("THE DYOR DEPARTMENT / CASE ATLAS."));
+  assert.match(atlasCopy, /18 fictional themes routed across 10 offices/);
+  assert.match(atlasCopy, /Every route leads to a record/);
+
+  const records = buildInstitutionalMemory("2026-11-24", 14).slice().reverse();
+  const latestRecord = records[0];
+  const oldestRecord = records[records.length - 1];
+  const ledgerCopy = buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT / INSTITUTIONAL MEMORY.",
+    finding: records.length + " consecutive fictional dispatches, " + oldestRecord.issueDate + " to " + latestRecord.issueDate + " UTC.",
+    evidence: "Latest file: " + latestRecord.headline + " " + latestRecord.bulletin,
+    punchline: "Fourteen dates later, the paperwork is still pending.",
+    invitation: "Review the paper trail.",
+  });
+
+  assert.ok(ledgerCopy.length <= DEPARTMENT_SHARE_TEXT_LIMIT, "Ledger copy must fit the shared text budget");
+  assert.ok(ledgerCopy.length + 1 + 23 <= 280, "Ledger copy must reserve room for X's short URL");
+  assert.ok(ledgerCopy.startsWith("THE DYOR DEPARTMENT / INSTITUTIONAL MEMORY."));
+  assert.match(ledgerCopy, /14 consecutive fictional dispatches/);
+  assert.match(ledgerCopy, /Fourteen dates later/);
+});
