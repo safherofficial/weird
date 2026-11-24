@@ -41,6 +41,14 @@ export default function ClubPage() {
       <DepartmentHeader activeSection="club" statusMessage="MEMBERSHIP OFFICE / LIABILITY NOT ACCEPTED" ctaHref="/club" ctaLabel="APPLY FOR MEMBERSHIP" />
 
       <ClubCampaignContinuityProvider>
+        <nav className={journey.nav} aria-label="99% Club five-stage journey">
+          <Link href="#club-journey-identity"><span>01</span><strong>MEMBERSHIP &amp; IDENTITY</strong><small>APPLY / CLUB STATUS</small></Link>
+          <Link href="#club-journey-factions"><span>02</span><strong>FACTION CLASSIFICATION</strong><small>CHOOSE YOUR EXCUSE</small></Link>
+          <Link href="#club-journey-campaign"><span>03</span><strong>WEEKLY CAMPAIGN</strong><small>THIS WEEK'S BRIEF</small></Link>
+          <Link href="#club-journey-content"><span>04</span><strong>COMMUNITY CONTENT STUDIO</strong><small>CREATE / EDIT / SHARE</small></Link>
+          <Link href="#club-journey-participation"><span>05</span><strong>PARTICIPATION &amp; PASSPORT</strong><small>CONTRIBUTE / KEEP YOUR FILE</small></Link>
+        </nav>
+
         <section className={journey.stage + " " + journey.identityStage} id="club-journey-identity" aria-label="Stage 1: Membership and identity">
           <div className={journey.stageMarker}><span className={journey.stageNumber}>01</span><div><strong>MEMBERSHIP &amp; IDENTITY</strong><small>START HERE / APPLICATION AND OFFICIAL CLUB STATUS</small></div></div>
           <div className="club-shell shell" id="content-start" tabIndex={-1}>
@@ -68,14 +76,6 @@ export default function ClubPage() {
             <ClubTokenNotice placement="club" />
           </div>
         </section>
-
-        <nav className={journey.nav} aria-label="99% Club five-stage journey">
-          <Link href="#club-journey-identity"><span>01</span><strong>MEMBERSHIP &amp; IDENTITY</strong><small>APPLY / CLUB STATUS</small></Link>
-          <Link href="#club-journey-factions"><span>02</span><strong>FACTION CLASSIFICATION</strong><small>CHOOSE YOUR EXCUSE</small></Link>
-          <Link href="#club-journey-campaign"><span>03</span><strong>WEEKLY CAMPAIGN</strong><small>THIS WEEK'S BRIEF</small></Link>
-          <Link href="#club-journey-content"><span>04</span><strong>COMMUNITY CONTENT STUDIO</strong><small>CREATE / EDIT / SHARE</small></Link>
-          <Link href="#club-journey-participation"><span>05</span><strong>PARTICIPATION &amp; PASSPORT</strong><small>CONTRIBUTE / KEEP YOUR FILE</small></Link>
-        </nav>
 
         <section className={journey.stage} id="club-journey-factions" aria-label="Stage 2: Faction classification">
           <div className={journey.stageMarker}><span className={journey.stageNumber}>02</span><div><strong>FACTION CLASSIFICATION</strong><small>SIX FICTIONAL IDENTITIES / ONE PRIMARY ARCHETYPE</small></div></div>
