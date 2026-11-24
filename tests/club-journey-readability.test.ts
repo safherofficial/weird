@@ -5,10 +5,12 @@ import { test } from "node:test";
 const styles = readFileSync("app/club/club-journey.module.css", "utf8");
 
 function rule(source: string, selector: string) {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = source.match(new RegExp(escaped + "\\s*\\{([^}]*)\\}"));
-  assert.ok(match, "Missing style rule: " + selector);
-  return match[1];
+  const start = source.indexOf(selector);
+  assert.ok(start >= 0, "Missing style rule: " + selector);
+  const open = source.indexOf("{", start);
+  const close = source.indexOf("}", open);
+  assert.ok(open > start && close > open, "Malformed style rule: " + selector);
+  return source.slice(open + 1, close);
 }
 
 test("U60 Club journey navigation and stage labels remain readable on desktop and mobile", () => {
