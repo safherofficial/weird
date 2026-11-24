@@ -179,3 +179,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U61 — Cross-Chain 99% Club Masthead: switches the shared Department masthead to an all-chains survivor-registry label on the 99% Club landing page, faction dossiers and member files. The Department remains explicitly Solana-rooted on its other routes; no navigation, page content, membership logic, storage, analytics or tracking behaviour changes.
 
 - U62 — Cross-Chain Club Legal Copy: aligns the Privacy Notice and Terms case-link inventories with the 99% Club's cross-chain scope. The Department remains Solana-rooted; the Club membership classification is not described as Solana-only. No application behaviour, data handling or token status changes.
+
+- U63 — Legal Review-Date Alignment: updates every visible review-date reference in the Privacy Notice and Terms to 25 November 2026 following the U62 legal-copy revision, with regression coverage preventing stale dates from returning. This is a documentation metadata update only; it does not assert jurisdiction-specific legal compliance or change data handling.
