@@ -1,20 +1,18 @@
-name: Quality checks
+name: Manual quality checks
 
 on:
-  push:
-    branches: ["main", "feat/**", "fix/**", "chore/**"]
-  pull_request:
-    branches: ["main", "feat/**"]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: quality-${{ github.workflow }}-${{ github.ref }}
+  group: manual-quality-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   verify:
+    name: Manual verification
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -35,114 +33,3 @@ jobs:
         run: npm run test:quality
       - name: Production build
         run: npm run build
-
-  deploy-production:
-    name: Deploy Production
-    needs: verify
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.VERCEL_DEPLOY_GATE_ENABLED == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      statuses: read
-    steps:
-      - name: Trigger Vercel Production Deploy Hook
-        env:
-          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
-        run: |
-          set -euo pipefail
-
-          if [[ -z "${VERCEL_DEPLOY_HOOK}" ]]; then
-            echo "::error::VERCEL_DEPLOY_HOOK is required when the Production deployment gate is enabled."
-            exit 1
-          fi
-
-          response_file="$(mktemp)"
-          trap 'rm -f "$response_file"' EXIT
-
-          http_code="$(curl --silent --show-error --output "$response_file" --write-out "%{http_code}" \
-            --request POST \
-            --connect-timeout 10 \
-            --max-time 30 \
-            --retry 2 \
-            --retry-delay 3 \
-            --retry-all-errors \
-            "$VERCEL_DEPLOY_HOOK")"
-
-          if [[ ! "$http_code" =~ ^2[0-9]{2}$ ]]; then
-            echo "::error::Vercel Deploy Hook returned HTTP $http_code."
-            exit 1
-          fi
-
-          if ! jq -e '.job.id | type == "string" and length > 0' "$response_file" >/dev/null; then
-            echo "::error::Vercel accepted an unexpected Deploy Hook response."
-            exit 1
-          fi
-
-          echo "::notice::Vercel accepted the Production deployment request."
-
-      - name: Wait for Vercel Production deployment status
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          api_url="https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/status"
-          deadline=$((SECONDS + 600))
-
-          while (( SECONDS < deadline )); do
-            status_payload="$(curl --fail --silent --show-error \
-              --connect-timeout 10 \
-              --max-time 30 \
-              --retry 2 \
-              --retry-delay 2 \
-              --retry-all-errors \
-              --header "Accept: application/vnd.github+json" \
-              --header "Authorization: Bearer ${GH_TOKEN}" \
-              --header "X-GitHub-Api-Version: 2022-11-28" \
-              "${api_url}")"
-
-            vercel_state="$(jq -r '([.statuses[]? | select(.context == "Vercel")][0].state) // empty' <<< "${status_payload}")"
-            vercel_description="$(jq -r '([.statuses[]? | select(.context == "Vercel")][0].description) // empty' <<< "${status_payload}")"
-            vercel_target="$(jq -r '([.statuses[]? | select(.context == "Vercel")][0].target_url) // empty' <<< "${status_payload}")"
-
-            case "${vercel_state}" in
-              success)
-                echo "::notice::Vercel reports the deployment completed. ${vercel_description}"
-                if [[ -n "${vercel_target}" ]]; then
-                  echo "Vercel deployment inspector: ${vercel_target}"
-                fi
-                exit 0
-                ;;
-              failure|error)
-                echo "::error::Vercel Production deployment failed: ${vercel_description}"
-                [[ -z "${vercel_target}" ]] || echo "Vercel deployment inspector: ${vercel_target}"
-                exit 1
-                ;;
-              *)
-                echo "Waiting for Vercel Production status (current state: ${vercel_state:-not reported})."
-                sleep 10
-                ;;
-            esac
-          done
-
-          echo "::error::Timed out after 600 seconds waiting for Vercel Production deployment status."
-          exit 1
-
-      - name: Production HTTP smoke check
-        env:
-          PRODUCTION_URL: "https://weird-zeta.vercel.app"
-        run: |
-          set -euo pipefail
-
-          status_code="$(curl --silent --show-error --output /dev/null --write-out "%{http_code}" \
-            --connect-timeout 10 \
-            --max-time 30 \
-            "${PRODUCTION_URL%/}/")"
-
-          if [[ ! "${status_code}" =~ ^2[0-9]{2}$ ]]; then
-            echo "::error::Production smoke check failed with HTTP ${status_code}."
-            exit 1
-          fi
-
-          echo "::notice::Production domain ${PRODUCTION_URL} returned HTTP ${status_code}."
