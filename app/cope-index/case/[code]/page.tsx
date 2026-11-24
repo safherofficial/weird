@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentCrossRead from "../../../components/department-cross-read";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildPersonalCopeResult, decodeCopeCode, encodeCopeCode } from "../../cope-engine";
 
@@ -59,14 +60,13 @@ export default async function CopeCasePage({ params }: CopeCasePageProps) {
   const canonicalCode = encodeCopeCode(answers);
   const caseUrl = "/cope-index/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/cope-index?challenge=" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT issued my fictional Solana Trenches cope reading.",
-    result.profile.title + ".",
-    "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.roast.length > 70 ? result.profile.roast.slice(0, 66) + "…" : result.profile.roast,
-    "Your turn.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "COPIUM ADMINISTRATION filed my fictional Solana Trenches reading.",
+    finding: result.profile.title + ". Cross-read: " + result.crossRead.headline + ".",
+    evidence: "Cope: " + result.copeScore + "/100. Patience: " + result.patienceScore + "/100. Chat dependency: " + result.chatDependency + "/100.",
+    punchline: result.profile.roast,
+    invitation: "Check your own cope reading.",
+  });
 
   return (
     <main className="audit-page cope-case-page" id="main-content">
