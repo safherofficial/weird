@@ -52,7 +52,10 @@ test("R5 legal pages carry the current review date and do not invent operator de
 
   for (const page of [privacy, terms]) {
     assert.match(page, /LAST REVIEWED \/ 25 NOV 2026/);
+    assert.doesNotMatch(page, /22 NOV 2026|22 November 2026/);
   }
+  assert.match(privacy, /This page was last reviewed on 25 November 2026\./);
+  assert.match(terms, /Last reviewed: 25 November 2026\./);
   assert.match(privacy, /legal identity and a dedicated contact channel .* have not been supplied/);
   assert.match(terms, /legal identity and contact details .* have not been supplied/);
 });
