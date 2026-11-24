@@ -3747,3 +3747,15 @@ test("U49 Archive and Museum social previews derive accession ranges and counts 
   assert.ok(archiveImage.includes("{archiveRecords.length} fictional case files."));
   assert.doesNotMatch(archiveImage, /Fifteen fictional Solana|DDA-001–012|15 fictional case files/i);
 });
+
+
+test("U50 Cope Index social preview follows the same daily UTC issue as the page", () => {
+  const page = readFileSync("app/cope-index/page.tsx", "utf8");
+  const image = readFileSync("app/cope-index/opengraph-image.tsx", "utf8");
+
+  assert.ok(page.includes('export const dynamic = "force-dynamic";'), "The Cope Index page must render its daily issue dynamically.");
+  assert.ok(image.includes('export const dynamic = "force-dynamic";'), "The social image must not be build-time frozen.");
+  assert.ok(image.includes('new Date().toISOString().slice(0, 10)'), "The social image must use the current UTC issue date.");
+  assert.ok(image.includes("buildDailyCopeIndex(issueDate, getDailyEditorialCase(issueDate))"), "The social image must share the page's date-selected editorial case.");
+  assert.ok(page.includes('images: ["/cope-index/opengraph-image"]'), "The page must publish this generated image as its social preview.");
+});
