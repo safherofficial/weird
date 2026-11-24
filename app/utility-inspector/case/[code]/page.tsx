@@ -5,6 +5,7 @@ import DepartmentHeader from "../../../components/department-header";
 import DepartmentFooter from "../../../components/department-footer";
 import DepartmentNextSteps from "../../../components/department-next-steps";
 import DepartmentCrossRead from "../../../components/department-cross-read";
+import { buildDepartmentShareText } from "../../../lib/department-share-copy";
 import DepartmentPublicShare from "../../../components/department-public-share";
 import { buildUtilityResult, decodeUtilityCode, encodeUtilityCode } from "../../utility-engine";
 
@@ -60,14 +61,13 @@ export default async function UtilityCasePage({ params }: UtilityCasePageProps) 
   const canonicalCode = encodeUtilityCode(answers);
   const caseUrl = "/utility-inspector/case/" + encodeURIComponent(canonicalCode);
   const challengeUrl = "/utility-inspector?challenge=" + encodeURIComponent(canonicalCode);
-  const xText = [
-    "THE DYOR DEPARTMENT reviewed my fictional Solana token-purpose claims.",
-    "Verdict: " + result.profile.title + ".",
-    "Utility: " + result.evidence + "/100. Fog: " + result.fog + "/100. Token fit: " + result.tokenFit + "/100.",
-    "Cross-read: " + result.crossRead.headline + ".",
-    result.profile.roast.length > 60 ? result.profile.roast.slice(0, 56) + "…" : result.profile.roast,
-    "Inspect yours.",
-  ].join(" ");
+  const xText = buildDepartmentShareText({
+    opening: "THE 100X RESEARCH BUREAU filed my fictional token-purpose inspection.",
+    finding: "Verdict: " + result.profile.title + ". Cross-read: " + result.crossRead.headline + ".",
+    evidence: "Utility: " + result.evidence + "/100. Fog: " + result.fog + "/100. Token fit: " + result.tokenFit + "/100.",
+    punchline: result.profile.roast,
+    invitation: "Inspect your own token narrative.",
+  });
 
   return (
     <main className="audit-page utility-case-page" id="main-content">
