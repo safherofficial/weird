@@ -1302,7 +1302,7 @@ test("U51 Department journeys form a connected editorial loop across all ten div
 
   for (const start of departmentSections) {
     const visited = new Set<string>([start]);
-    const pending = [start];
+    const pending: string[] = [start];
     while (pending.length > 0) {
       const current = pending.shift()!;
       for (const destination of graph.get(current) ?? []) {
