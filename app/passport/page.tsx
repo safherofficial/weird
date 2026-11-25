@@ -30,7 +30,7 @@ export default function DepartmentPassportPage() {
         <header className="passport-intro">
           <div className="audit-intro__meta">
             <span>REGISTER DPP-001</span>
-            <span>10 VISIT STAMPS / 26 ACHIEVEMENT BADGES</span>
+            <span>11 VISIT STAMPS / 27 ACHIEVEMENT BADGES</span>
           </div>
           <p className="eyebrow">OFFICE OF DEPARTMENTAL VISITS & ACHIEVEMENTS</p>
           <h1>THE DEPARTMENT<br /><span>PASSPORT.</span></h1>
@@ -59,7 +59,7 @@ export default function DepartmentPassportPage() {
             <article className="passport-guide__step">
               <span>02 / COMPLETE THE TASK</span>
               <h3>FINISH, DON’T JUST OPEN</h3>
-              <p>Answer every question and reach the final result, or complete the CTO Emergency Office roadmap and the Exit Liquidity Department token dossier. The seven core experiences count only when finished.</p>
+              <p>Answer every question and reach the final result, or complete the CTO Emergency Office roadmap and the Exit Liquidity Department token dossier. The eight core experiences count only when finished.</p>
             </article>
             <article className="passport-guide__step">
               <span>03 / AUTOMATIC REWARD</span>
@@ -79,7 +79,7 @@ export default function DepartmentPassportPage() {
               <p>Complete the experience or special challenge written on the badge. For example: finish the DYOR Audit, complete both a Museum exhibit and an Archive record, or build a seven-day Trenches Desk streak.</p>
             </article>
           </div>
-          <p className="passport-guide__fineprint">SPECIAL RULES: SEVEN-DAY DESK DUTY requires a visit on seven consecutive UTC calendar dates. THE COMPLETE CIRCUIT requires all seven core experiences. Your record stays in this browser only and is not synchronized across devices.</p>
+          <p className="passport-guide__fineprint">SPECIAL RULES: SEVEN-DAY DESK DUTY requires a visit on seven consecutive UTC calendar dates. THE COMPLETE CIRCUIT requires all eight core experiences. Your record stays in this browser only and is not synchronized across devices.</p>
         </section>
 
         <PassportClient />

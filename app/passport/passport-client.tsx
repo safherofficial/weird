@@ -5,6 +5,7 @@ import AchievementEmblem from "./achievement-emblem";
 import { ACHIEVEMENT_BADGE_ASSETS, CLUB_BADGE_MARKS } from "./badge-assets";
 import {
   DEPARTMENT_STAMPS,
+  CORE_ACTIVITIES,
   PASSPORT_STORAGE_KEY,
   PASSPORT_ACHIEVEMENTS,
   getPassportAchievementStatuses,
@@ -76,8 +77,8 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
   const visited = new Set(data.visitedDepartments);
   const unlockedCount = statuses.filter((item) => item.earned).length;
   const stampLines = DEPARTMENT_STAMPS.map((stamp, index) => {
-    const column = index < 5 ? 0 : 1;
-    const row = index % 5;
+    const column = index < 6 ? 0 : 1;
+    const row = index < 6 ? index : index - 6;
     const x = column === 0 ? 72 : 720;
     const y = 256 + row * 55;
     const earned = visited.has(stamp.id);
@@ -112,7 +113,7 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     '<text x="72" y="76" fill="#b6ff65" font-family="monospace" font-size="24" font-weight="bold">THE DYOR DEPARTMENT</text>' +
     '<text x="1328" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="13">PERSONAL DEPARTMENT PASSPORT</text>' +
     '<text x="72" y="166" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="43" font-weight="900">THE DEPARTMENT PASSPORT</text>' +
-    '<text x="72" y="193" fill="#8d968a" font-family="monospace" font-size="12">' + visited.size + ' / 10 DEPARTMENTS VISITED  •  ' + unlockedCount + ' / ' + statuses.length + ' ACHIEVEMENT BADGES UNLOCKED</text>' +
+    '<text x="72" y="193" fill="#8d968a" font-family="monospace" font-size="12">' + visited.size + ' / ' + DEPARTMENT_STAMPS.length + ' DEPARTMENTS VISITED  •  ' + unlockedCount + ' / ' + statuses.length + ' ACHIEVEMENT BADGES UNLOCKED</text>' +
     '<text x="72" y="246" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">01 / DEPARTMENT STAMPS — VISITS</text>' + stampLines +
     '<text x="72" y="620" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">02 / ACHIEVEMENT BADGES — COMPLETED EXPERIENCES &amp; CHALLENGES</text>' + badgeLines +
     '<text x="1328" y="' + footerY + '" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">LOCAL RECORD / FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE</text>' +
@@ -282,10 +283,8 @@ export default function PassportClient() {
   const statuses = getPassportAchievementStatuses(passport);
   const achievements = statuses.filter((item) => item.earned);
   const progress = Math.round((visited.size / DEPARTMENT_STAMPS.length) * 100);
-  const activityCount = passport.completedActivities.filter((id) =>
-    ["audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope"].includes(id)
-  ).length;
-  const activityProgress = Math.round((activityCount / 7) * 100);
+  const activityCount = passport.completedActivities.filter((id) => CORE_ACTIVITIES.includes(id)).length;
+  const activityProgress = Math.round((activityCount / CORE_ACTIVITIES.length) * 100);
   const streak = passport.bestDailyStreak;
 
   const currentPassport: PassportData = passport;
@@ -319,13 +318,13 @@ export default function PassportClient() {
 
       <div className="passport-progress">
         <div className="passport-progress__top"><span>DEPARTMENT VISITS / STAMPS</span><strong>{visited.size} / {DEPARTMENT_STAMPS.length}</strong></div>
-        <div className="passport-progress__bar" role="progressbar" aria-label="Department visit stamps" aria-valuemin={0} aria-valuemax={10} aria-valuenow={visited.size}><span style={{ width: progress + "%" }} /></div>
+        <div className="passport-progress__bar" role="progressbar" aria-label="Department visit stamps" aria-valuemin={0} aria-valuemax={DEPARTMENT_STAMPS.length} aria-valuenow={visited.size}><span style={{ width: progress + "%" }} /></div>
         <div className="passport-progress__bottom"><span>{progress}% OF THE DIRECTORY VISITED</span><span>TRENCHES DESK DUTY / BEST {streak}-DAY STREAK</span></div>
       </div>
 
       <div className="passport-activity-progress">
-        <div className="passport-progress__top"><span>COMPLETED EXPERIENCES / BADGE ELIGIBILITY</span><strong>{activityCount} / 7</strong></div>
-        <div className="passport-progress__bar" role="progressbar" aria-label="Completed interactive experiences" aria-valuemin={0} aria-valuemax={7} aria-valuenow={activityCount}><span style={{ width: activityProgress + "%" }} /></div>
+        <div className="passport-progress__top"><span>COMPLETED EXPERIENCES / BADGE ELIGIBILITY</span><strong>{activityCount} / {CORE_ACTIVITIES.length}</strong></div>
+        <div className="passport-progress__bar" role="progressbar" aria-label="Completed interactive experiences" aria-valuemin={0} aria-valuemax={CORE_ACTIVITIES.length} aria-valuenow={activityCount}><span style={{ width: activityProgress + "%" }} /></div>
         <div className="passport-progress__bottom"><span>{activityProgress}% OF THE INTERACTIVE CIRCUIT COMPLETE</span><span>VISITS ALONE DO NOT UNLOCK EXPERIENCE BADGES</span></div>
       </div>
 

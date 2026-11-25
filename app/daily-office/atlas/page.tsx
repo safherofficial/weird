@@ -54,7 +54,7 @@ export default function DepartmentCaseAtlasPage() {
       <div className="department-case-atlas-shell shell" id="content-start" tabIndex={-1}>
         <header className="department-case-atlas-intro">
           <div className="audit-intro__meta">
-            <span>INSTITUTIONAL REFERENCE / 18 THEMATIC THREADS</span>
+            <span>INSTITUTIONAL REFERENCE / 19 THEMATIC THREADS</span>
             <span>240 UTC ISSUES AVAILABLE / THROUGH {asOfDate}</span>
           </div>
           <p className="eyebrow">THE DYOR DEPARTMENT / CROSS-DIVISION INDEX</p>

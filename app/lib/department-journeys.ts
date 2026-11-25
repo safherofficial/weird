@@ -76,14 +76,14 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
   ],
   club: [
     {
+      href: "/airdrop-office",
+      title: "AIRDROP ENTITLEMENT OFFICE / THE SNAPSHOT TRIBUNAL",
+      description: "Review the fictional snapshot rules, point-farming receipts and allocation expectations attached to cross-chain activity.",
+    },
+    {
       href: "/cope-index",
       title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX",
       description: "Check your personal fictional cope profile alongside the synthetic daily trenches index.",
-    },
-    {
-      href: "/archives",
-      title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
-      description: "Browse fictional bundle-wallet dossiers, mystery-whale theories, copied CA calls and pump.fun incident reports.",
     },
   ],
   daily: [
@@ -100,9 +100,9 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
   ],
   archives: [
     {
-      href: "/daily-office",
-      title: "THE TRENCHES DESK / DAILY CT BRIEFING",
-      description: "Return to the date-seeded fictional report behind the Department's latest trench incident.",
+      href: "/airdrop-office",
+      title: "AIRDROP ENTITLEMENT OFFICE / THE SNAPSHOT TRIBUNAL",
+      description: "Move from archived eligibility appeals to a seven-question fictional review of qualifying actions, snapshot timing and claim expectations.",
     },
     {
       href: "/museum",
@@ -120,6 +120,18 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
       href: "/simulator",
       title: "PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR",
       description: "Return to the launch cycle in a paper-only simulation: CA discovery, bonding-curve graduation, migration and the exit that never arrived.",
+    },
+  ],
+  airdrop: [
+    {
+      href: "/archives",
+      title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
+      description: "Read the preserved snapshot eligibility appeal and compare the claim with its fictional criteria, source record and cross-chain assumptions.",
+    },
+    {
+      href: "/club",
+      title: "CROSS-CHAIN TRENCHES / 99% CLUB",
+      description: "Take the eligibility paperwork back to the fictional cross-chain survivor registry. Points are not a membership benefit or allocation.",
     },
   ],
   cope: [

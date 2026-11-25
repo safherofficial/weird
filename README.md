@@ -21,9 +21,9 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 
 ## Current release
 
-- Ten numbered operational divisions now organize the existing experiences: Pump.fun Intelligence, Cross-Chain Trenches, FOMO Control Unit, KOL Surveillance, Whale & Wallet Investigation, CTO Emergency Office, Exit Liquidity Department, 100X Research Bureau, Bagholder Rehabilitation and Copium Administration. These are editorial identities over existing routes, not ten newly built products.
+- Eleven numbered operational divisions now organize the existing experiences: Pump.fun Intelligence, Cross-Chain Trenches, FOMO Control Unit, KOL Surveillance, Whale & Wallet Investigation, CTO Emergency Office, Exit Liquidity Department, 100X Research Bureau, Bagholder Rehabilitation, Copium Administration and the Airdrop Entitlement Office. These are editorial identities over the original ten routes plus one new interactive experience.
 
-- Institutional-style landing page with a ten-division directory and shared division identity in navigation and page mastheads.
+- Institutional-style landing page with an eleven-division directory and shared division identity in navigation and page mastheads.
 - DYOR Audit 2.0 with ten questions on CA discovery, deployer history, bundle theories, KOL influence, late entries and exit plans; 17 satirical archetypes and deterministic scoring.
 - Three fictional dimensions: Research Effort, Cope Index and Crowd Dependency.
 - Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
@@ -33,6 +33,7 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 - Public simulator case pages with dynamic social previews, share links and challenge-a-friend actions.
 - The 100X Research Bureau: seven self-reported multiple-choice questions, three fictional scores, ten satirical archetypes and a shareable inspection dossier.
 - Public utility inspection case pages with dynamic social previews and challenge-a-friend links.
+- The Airdrop Entitlement Office / Snapshot Tribunal: a seven-question fictional interview about airdrop receipts, snapshot assumptions, cross-chain activity, published eligibility rules and allocation expectations; three answer-derived scores, eight satirical archetypes, challenge links and a shareable public case file with a dynamic 1200 × 630 social preview. No wallet, live programme, points dashboard, snapshot or real eligibility is checked.
 - The CTO Emergency Office roadmap: six self-reported multiple-choice questions, seven fictional milestones, three satirical scores and ten roadmap archetypes.
 - Public roadmap case pages with dynamic social previews, copy/share tools and challenge-a-friend links.
 - The Exit Liquidity Department token dossier: seven self-reported choices, nine generated document sections, three fictional scores, ten satirical archetypes and a fictional token allocation model.
@@ -43,15 +44,15 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 - Whale & Wallet Investigation / Department Archives: twenty curated fictional records across five categories, including post-graduation, CTO handover, bridge-transfer and airdrop-eligibility case files; searchable library and static detail pages. No user uploads or real event claims.
 - The Trenches Desk: UTC-date-seeded fictional CT briefing combining a public bulletin, pump.fun incident report, KOL Intelligence, wallet theories, risk notes, internal memos and a Bagholder post-mortem. Includes a synthetic six-signal Conviction Index, universal sharing, full-dispatch copy and downloadable dispatch cards. The engine recombines original editorial templates; it does not use AI factual research, live market data or external feeds.
 - Shared Department Case Thread: division pages can request a same-origin generated narrative that routes one fictional case through three offices and links existing Archive and Museum references. Its only input is the current division identifier; it does not inspect visitor answers or store a case history.
-- Department Case Atlas: an interactive index of 18 fictional themes across 10 divisions, with links to existing Archive and Museum records, recurrence intervals and matched-period comparisons. Its source chronology is generated from 240 UTC dates; selectable comparison windows range from 14 to 120 days.
+- Department Case Atlas: an interactive index of 19 fictional case threads across 11 divisions (the 18 date-rotating Trenches Desk themes plus a static Airdrop Snapshot / Eligibility Appeal thread), with links to existing Archive and Museum records, recurrence intervals and matched-period comparisons. Its source chronology is generated from 240 UTC dates; selectable comparison windows range from 14 to 120 days.
 - Institutional Memory Ledger: a rolling chronological register of 14 consecutive UTC-date-seeded fictional Trenches Desk dispatches, linked to their preceding and following records. It is generated editorial continuity, not a log of real-world events.
 - Privacy Notice and entertainment Terms pages, including transparent disclosures for local Audit storage, public case URLs, Google Fonts and hosting-provider processing.
 - Shared legal links in the site footer and security response headers, including a Content Security Policy for first-party application resources, the required Google Fonts origins, blocked framing and embedded objects, and disabled inline event-handler attributes. The policy keeps Next.js inline hydration bootstrap scripts working but does not enable dynamic `eval` execution.
-- Optional Department Passport with ten visit stamps and 26 distinct achievement badges. Stamps record Department visits; badges are awarded for completing interactive experiences and defined challenges. Badge rarity, local unlock notifications, completion progress and downloadable Passport / badge collection cards are included. Existing Passport records are migrated in the browser while preserving visit stamps, streaks and completed activities; visits are not retroactively counted as completed experiences.
+- Optional Department Passport with eleven visit stamps and 27 distinct achievement badges. Stamps record Department visits; badges are awarded for completing interactive experiences and defined challenges. Badge rarity, local unlock notifications, completion progress and downloadable Passport / badge collection cards are included. Existing Passport records are migrated in the browser while preserving visit stamps, streaks and completed activities; visits are not retroactively counted as completed experiences.
 - Technical SEO discovery through `/robots.txt` and `/sitemap.xml`, including canonical landing pages and curated Museum / Archive detail records. Generated personal case URLs remain excluded from the sitemap and marked `noindex`.
 - Responsive layout and reduced-motion support.
 
-All ten currently listed Department experiences are available. Further Departments remain planned.
+All eleven currently listed Department experiences are available. Further Departments remain planned.
 
 ## Primary routes
 
@@ -67,6 +68,7 @@ All ten currently listed Department experiences are available. Further Departmen
 | 100X Research Bureau / Token-Purpose Inspector | [`/utility-inspector`](app/utility-inspector/page.tsx) |
 | Bagholder Rehabilitation / Relic Museum | [`/museum`](app/museum/page.tsx) |
 | Copium Administration / Global Cope Index | [`/cope-index`](app/cope-index/page.tsx) |
+| Airdrop Entitlement Office / Snapshot Tribunal | [`/airdrop-office`](app/airdrop-office/page.tsx) |
 
 Supporting routes: [`/daily-office/atlas`](app/daily-office/atlas/page.tsx) (Case Atlas), [`/daily-office/ledger`](app/daily-office/ledger/page.tsx) (14-day Memory Ledger), [`/passport`](app/passport/page.tsx) (optional local Passport), [`/privacy`](app/privacy/page.tsx) and [`/terms`](app/terms/page.tsx). Public result routes are generated by the corresponding interactive experiences.
 
@@ -181,3 +183,5 @@ THE DYOR DEPARTMENT is an entertainment project. All scores, classifications, sc
 - U62 — Cross-Chain Club Legal Copy: aligns the Privacy Notice and Terms case-link inventories with the 99% Club's cross-chain scope. The Department remains Solana-rooted; the Club membership classification is not described as Solana-only. No application behaviour, data handling or token status changes.
 
 - U63 — Legal Review-Date Alignment: updates every visible review-date reference in the Privacy Notice and Terms to 25 November 2026 following the U62 legal-copy revision, with regression coverage preventing stale dates from returning. This is a documentation metadata update only; it does not assert jurisdiction-specific legal compliance or change data handling.
+
+- U64 — Airdrop Entitlement Office: adds the Snapshot Tribunal as the eleventh interactive division, with a deterministic seven-answer interview, three fictional scores, eight archetypes, URL-encoded public case files, challenge/share links and dynamic social cards. Integrates the division into navigation, homepage directory, connected journeys, Case Thread / Atlas, Archive and Museum references, Sitemap and local Passport stamps / completion badges. It uses no wallet connection, real airdrop data, points API, snapshot checker, external feed, database or visitor tracking.

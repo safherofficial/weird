@@ -89,6 +89,11 @@ const officeEvidenceProfiles: Record<OfficeSection, OfficeEvidenceProfile> = {
     outputLabel: "SYNTHETIC CONFIDENCE READING",
     reviewQuestion: "How much of the reading is confidence theatre rather than evidence about the fictional case?",
   },
+  airdrop: {
+    source: "RISK DEPARTMENT",
+    outputLabel: "SNAPSHOT / ELIGIBILITY DUE-PROCESS REVIEW",
+    reviewQuestion: "Are qualifying actions, snapshot timing, wallet attribution and appeal conditions actually stated in the fictional record?",
+  },
   utility: {
     source: "INCIDENT REPORT",
     outputLabel: "TOKEN-PURPOSE CLAIM REVIEW",
@@ -287,6 +292,18 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
     archiveSlug: "the-curve-completed-the-thesis-did-not",
     exhibitSlug: "the-bonding-curve-progress-bar",
   },
+
+  "AIRDROP SNAPSHOT / ELIGIBILITY APPEAL": {
+    narrative: "The applicant spread activity across networks, collected points and expected every task to qualify. The Snapshot Tribunal checks the published-rule assumptions, the Archive preserves the appeal and the 99% Club records the cross-chain aftercare story without turning activity into an entitlement.",
+    offices: [
+      { section: "airdrop", responsibility: "Reviews the fictional qualifying actions, snapshot window, attribution rules and expectation of an allocation." },
+      { section: "archives", responsibility: "Preserves the eligibility notice and separates recorded evidence from retrospective assumptions." },
+      { section: "club", responsibility: "Records the cross-chain survivor narrative without treating points or activity as a promised reward." },
+    ],
+    archiveSlug: "airdrop-snapshot-eligibility-appeal",
+    exhibitSlug: "the-airdrop-passport-stamp-book",
+  },
+
   "BAGHOLDER ENTRY HISTORY": {
     narrative: "The entry price has been promoted to a historical event. FOMO Control reconstructs the original decision, the survivor registry records the aftercare paperwork, and the Museum preserves the artifact that the subject refuses to call an exit warning.",
     offices: [

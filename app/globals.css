@@ -12027,7 +12027,7 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 }
 
 
-/* U25.3 — Shared fictional case continuity across all ten Department offices. */
+/* U25.3 — Shared fictional case continuity across all eleven Department offices. */
 .department-case-chain {
   display: grid;
   gap: 15px;
@@ -15225,4 +15225,120 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
   flex-wrap: wrap;
   gap: 8px;
   min-width: 0;
+}
+
+/* U64 — Airdrop Entitlement Office / Snapshot Tribunal. */
+main.audit-page.airdrop-page {
+  --department-accent: #e4bd76;
+  --department-accent-rgb: 228, 189, 118;
+  --department-accent-soft: rgba(228, 189, 118, .085);
+  --department-accent-line: rgba(228, 189, 118, .34);
+  background-image:
+    radial-gradient(ellipse at 88% 8%, rgba(228, 189, 118, .075), transparent 36%),
+    linear-gradient(180deg, rgba(228, 189, 118, .018), transparent 52%);
+}
+.airdrop-page .utility-intro__stamp,
+.airdrop-page .utility-panel {
+  border-color: var(--department-accent-line);
+}
+.airdrop-page .utility-intro__stamp {
+  border-left: 3px solid var(--department-accent);
+  background:
+    linear-gradient(rgba(228, 189, 118, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(228, 189, 118, .035) 1px, transparent 1px),
+    linear-gradient(120deg, #1d1a13, #10110e);
+  background-size: 18px 18px, 18px 18px, auto;
+}
+.airdrop-page .utility-intro__stamp strong,
+.airdrop-page .utility-intro__stamp span,
+.airdrop-page .utility-intro h1 span,
+.airdrop-page .utility-briefing__body h2 span,
+.airdrop-page .utility-question__number,
+.airdrop-page .utility-status,
+.airdrop-page .utility-live-scores strong,
+.airdrop-page .utility-answer > span {
+  color: var(--department-accent);
+}
+.airdrop-page .utility-status i,
+.airdrop-page .utility-progress > div {
+  background: var(--department-accent);
+}
+.airdrop-page .utility-status i { box-shadow: 0 0 10px rgba(228, 189, 118, .55); }
+.airdrop-page .utility-panel {
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(228, 189, 118, .026) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(228, 189, 118, .026) 50%, transparent 50.2%),
+    linear-gradient(155deg, #19170f, #0d100d 72%);
+  background-size: 38px 38px, 38px 38px, auto;
+}
+.airdrop-page .utility-answer:hover,
+.airdrop-page .utility-answer:focus-visible,
+.airdrop-page .utility-answer.is-selected {
+  border-color: var(--department-accent);
+  background: var(--department-accent-soft);
+}
+.airdrop-page .utility-finding {
+  border-color: rgba(228, 189, 118, .28);
+  border-left-color: var(--department-accent);
+  background: linear-gradient(100deg, rgba(64, 48, 24, .48), #141511 75%);
+}
+.airdrop-page .utility-finding span,
+.airdrop-page .utility-finding small { color: #bda77e; }
+.airdrop-page .utility-finding strong { color: #f0ce91; }
+.airdrop-page .utility-metrics > div { border-color: rgba(228, 189, 118, .18); }
+.airdrop-page .airdrop-metrics > div:first-child strong { color: #e4bd76; }
+.airdrop-page .airdrop-metrics > div:nth-child(2) strong { color: #a7c2b2; }
+.airdrop-page .airdrop-metrics > div:nth-child(3) strong { color: #c8b5ff; }
+.airdrop-warning { border-left-color: var(--department-accent); }
+.airdrop-reference {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: 28px;
+  align-items: center;
+  margin: 8px auto 64px;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid rgba(228, 189, 118, .26);
+  background: linear-gradient(115deg, rgba(53, 42, 25, .48), rgba(13, 16, 13, .9) 68%);
+}
+.airdrop-reference > div:first-child > span {
+  color: #bca47a;
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .1em;
+}
+.airdrop-reference h2 {
+  margin: 11px 0;
+  color: #f0eee8;
+  font: 700 clamp(25px, 3vw, 38px)/1 var(--sans);
+  letter-spacing: -.05em;
+}
+.airdrop-reference p {
+  max-width: 540px;
+  color: #9c9a8f;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.airdrop-reference__links { display: grid; gap: 9px; }
+.airdrop-reference__links a {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 15px;
+  border: 1px solid rgba(228, 189, 118, .22);
+  background: rgba(10, 12, 10, .62);
+  color: #e2c995;
+  font: 8px/1.55 var(--mono);
+  text-decoration: none;
+  transition: border-color .2s ease, background .2s ease;
+}
+.airdrop-reference__links a:hover,
+.airdrop-reference__links a:focus-visible {
+  border-color: #e4bd76;
+  background: rgba(228, 189, 118, .08);
+  outline: none;
+}
+.airdrop-actions { flex-wrap: wrap; }
+.airdrop-public-result { min-width: 0; }
+@media (max-width: 760px) {
+  .airdrop-reference { grid-template-columns: minmax(0, 1fr); }
+  .airdrop-reference__links a { overflow-wrap: anywhere; }
 }

@@ -13,6 +13,7 @@ const publicRoutes = [
   "/whitepaper-factory",
   "/club",
   "/cope-index",
+  "/airdrop-office",
   "/daily-office",
   "/museum",
   "/archives",
