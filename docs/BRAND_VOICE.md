@@ -9,7 +9,7 @@ The visitor is not an outsider who needs crypto explained. The visitor is one of
 
 **Core line:** You came for the 100x. You stayed because you can't sell at a loss.
 
-## The eleven operational divisions
+## The twelve operational divisions
 
 Each division is an editorial identity wrapped around an existing experience. The division name is the public-facing identity; the experience label tells visitors what the existing interaction actually does. Do not imply that the site has a live service, analyst team, feed, or data source where none exists.
 
@@ -26,14 +26,15 @@ Each division is an editorial identity wrapped around an existing experience. Th
 | 09. Bagholder Rehabilitation | Museum of Trenches Relics | Preserved relics, missed exits, abandoned roadmaps and long-term conviction artifacts. |
 | 10. Copium Administration | Global Cope Index | Synthetic readings of CT echo, launch FOMO, Telegram reassurance and post-graduation denial. |
 | 11. Airdrop Entitlement Office | The Snapshot Tribunal | Fictional airdrop receipts, points farming, snapshot timing, cross-chain eligibility assumptions, claim windows and allocation expectations. |
+| 12. Bridge Incident Office | Interchain Transfer Review | Fictional source receipts, route references, destination status, confirmation stages, support tickets and settlement assumptions. |
 
-The division identities organize the Department routes and experiences; Division 11 adds the Airdrop Entitlement Office as a new interactive experience. The Department remains rooted in its Solana / Crypto Twitter editorial world; the 99% Club is the explicit cross-chain exception and must never be framed as Solana-only.
+The division identities organize the Department routes and experiences; Divisions 11 and 12 add the Airdrop Entitlement Office and Bridge Incident Office as new interactive experiences. The Department remains rooted in its Solana / Crypto Twitter editorial world; the 99% Club is the explicit cross-chain exception and must never be framed as Solana-only.
 
 ## Daily editorial system
 
-- **The Trenches Desk** is the current UTC-date-seeded fictional briefing. Its reports, signals, wallet theories and incident language are editorial constructions, not research into live markets or real accounts. The Snapshot Tribunal is a separate answer-derived fictional interview; it does not verify programme rules, wallet activity or real eligibility.
+- **The Trenches Desk** is the current UTC-date-seeded fictional briefing. Its reports, signals, wallet theories and incident language are editorial constructions, not research into live markets or real accounts. The Snapshot Tribunal and Interchain Transfer Review are separate answer-derived fictional interviews; they do not verify programme rules, wallets, networks, transactions or real eligibility / settlement.
 - **The Institutional Memory Ledger** presents fourteen consecutive fictional UTC dispatches from the same editorial system. It is a continuity device, not a record of actual events.
-- **The Department Case Atlas** organizes eighteen fictional themes across the ten divisions and compares generated UTC-date windows. Recurrence counts, routing totals and gaps describe only the synthetic briefing history; they must never be written as market or community statistics.
+- **The Department Case Atlas** indexes eighteen date-rotating fictional themes and two static incident / eligibility threads across the twelve divisions, and compares generated UTC-date windows. Recurrence counts, routing totals and gaps describe only the synthetic briefing history; they must never be written as market or community statistics.
 - **The shared Department Case Thread** routes one generated fictional case through three offices using the current division and UTC date. Its handoffs and Archive / Museum references are narrative continuity, not evidence gathered from real projects, people or wallets.
 
 ## What the Department is — and is not

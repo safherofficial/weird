@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { buildDepartmentCaseAtlas } from "../case-atlas";
 
 export const dynamic = "force-dynamic";
-export const alt = "THE DYOR DEPARTMENT / CASE ATLAS — an index of fictional crypto-trenches themes across ten offices, with date-seeded recurrence and matched-period comparisons.";
+export const alt = "THE DYOR DEPARTMENT / CASE ATLAS — an index of fictional crypto-trenches themes across twelve offices, with date-seeded recurrence and matched-period comparisons.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

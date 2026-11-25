@@ -105,9 +105,9 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
       description: "Move from archived eligibility appeals to a seven-question fictional review of qualifying actions, snapshot timing and claim expectations.",
     },
     {
-      href: "/museum",
-      title: "BAGHOLDER REHABILITATION / MUSEUM OF TRENCHES RELICS",
-      description: "See the artifacts left behind by fictional launches, copied calls and exits that never happened.",
+      href: "/bridge-incident-office",
+      title: "BRIDGE INCIDENT OFFICE / INTERCHAIN TRANSFER REVIEW",
+      description: "Review the fictional source receipt, destination status and route evidence behind an interchain transfer incident. No live bridge or wallet is checked.",
     },
   ],
   museum: [
@@ -132,6 +132,18 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
       href: "/club",
       title: "CROSS-CHAIN TRENCHES / 99% CLUB",
       description: "Take the eligibility paperwork back to the fictional cross-chain survivor registry. Points are not a membership benefit or allocation.",
+    },
+  ],
+  bridge: [
+    {
+      href: "/archives",
+      title: "WHALE & WALLET INVESTIGATION / DEPARTMENT ARCHIVES",
+      description: "Read the preserved late bridge receipt and separate a source-side record from destination settlement evidence.",
+    },
+    {
+      href: "/museum",
+      title: "BAGHOLDER REHABILITATION / BRIDGE QUEUE TICKET",
+      description: "Visit the fictional queue ticket that records a completed source step and an unanswered destination-side status.",
     },
   ],
   cope: [

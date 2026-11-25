@@ -177,7 +177,7 @@ export default function DepartmentHeader({
               <span className="mobile-nav__eyebrow">INTERNAL ROUTING / DD-01</span>
               <strong>DEPARTMENT DIRECTORY</strong>
             </div>
-            <span className="mobile-nav__count">11 DESTINATIONS<br />2 PORTAL SECTIONS</span>
+            <span className="mobile-nav__count">12 DESTINATIONS<br />2 PORTAL SECTIONS</span>
           </div>
 
           <div className="mobile-nav__scroll">

@@ -175,7 +175,7 @@ export default function Home() {
             <SectionLabel>INTERNAL ROUTING / TRENCHES AFTERCARE</SectionLabel>
             <h2 id="hq-directory-title">YOUR NEXT<br /><span>BAD DECISION.</span></h2>
           </div>
-          <p>Eleven numbered divisions. Three routing groups.<br />No alpha. No financial recovery plan.</p>
+          <p>Twelve numbered divisions. Three routing groups.<br />No alpha. No financial recovery plan.</p>
         </div>
 
         <div className="hq-directory__groups">
