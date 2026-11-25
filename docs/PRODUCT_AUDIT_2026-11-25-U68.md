@@ -19,7 +19,7 @@ The corrections are limited to semantics and accessible names. The custom scroll
 
 ## Automated browser coverage
 
-The new Playwright suite contains **23 Chromium tests**:
+The Playwright suite contains **23 Chromium tests**:
 
 - Axe scans across nine representative routes: homepage, Airdrop, Bridge, Governance, 99% Club, Archives, Daily Office, Museum and Passport.
 - Additional axe scans of the open mobile directory, the Bridge interview state and the Governance interview state.
@@ -27,7 +27,13 @@ The new Playwright suite contains **23 Chromium tests**:
 - Horizontal-overflow checks on the homepage at 390px, 768px and 1365px, plus 390px checks on Bridge, Governance, Club and Archives.
 - Complete seven-answer Bridge and Governance interview journeys, including generated public case URLs and successful HTTP 200 responses for the resulting public case pages.
 
-**Result: 23/23 passed.** The twelve axe scans reported zero automated violations for the tested page and interface states. These checks cover automated WCAG 2.1 A/AA and best-practice rules; they do not replace a human screen-reader review or establish full WCAG conformance.
+**Result: 23/23 passed.** The twelve axe scans reported zero automated violations for the tested page and interface states. These checks cover automated WCAG 2.1 A/AA and best-practice rules; they do not establish full WCAG conformance.
+
+## Manual keyboard and screen-reader review
+
+On 26 November 2026, the project owner confirmed that the manual keyboard and screen-reader review had been completed. This confirmation was provided outside the automated test environment. No device/browser/screen-reader matrix or detailed test log was supplied, so this report records completion as owner-confirmed and does not claim an independently reproduced assistive-technology test matrix or full WCAG conformance.
+
+The separate Chromium keyboard and accessibility-tree audit also passed on the live Production site across eleven routes. It verified skip-link operation, focus movement/restoration, desktop disclosure behavior, mobile menu keyboard behavior and accessible names in the rendered accessibility tree. These automated browser checks do not substitute for the manual screen-reader review.
 
 ## Lighthouse lab baseline
 
@@ -46,23 +52,35 @@ The current lab baseline does not justify a performance refactor. A provisional 
 
 ## Code-quality checks
 
-The following local checks completed successfully:
+The following commands completed successfully in an isolated Vercel sandbox using **Node.js v22.23.5**:
 
+- `npm ci --no-audit --no-fund` — passed.
 - `npm run typecheck` — passed.
 - `npm run test:quality` — **176 passed, 0 failed**.
 - `npm run build` — passed; Next.js generated **77/77** static pages.
+- `npx playwright install --with-deps chromium` — passed.
 - `npm run test:browser` — **23 passed, 0 failed**.
 - `git diff --check` — passed.
 
-The sandbox's shell used Node 24 although the repository declares Node 22 as its supported major version. The GitHub Actions workflow uses `.nvmrc` and will provide the authoritative Node 22 CI verification before this work is eligible to merge.
+The manual GitHub Actions workflow was not dispatched. These are verified sandbox executions of the workflow commands, not a GitHub Actions run. The sandbox worktree was clean after restoring build-generated configuration changes; no local test artifacts were committed.
 
-## Remaining verification
+## Production release
 
-- A manual keyboard and screen-reader review, including a real screen-reader session, remains outstanding.
-- Firefox and WebKit have not yet been added to the browser matrix; the new CI suite currently targets Chromium.
+The U68 merge commit `a85051637854fdcccbca962df942798bc22e6056` was subsequently deployed manually to Vercel Production.
+
+- Deployment ID: `dpl_FWYjAXEpJ4ZiJCqtvgarZuTNDG1r`
+- Deployment status: `READY`
+- Production URL: https://weird-zeta.vercel.app
+- Production HTTP check: `200`
+
+The deployment is tied to the U68 merge commit. The U68 changes did not add token, wallet, database, analytics or visitor-data functionality.
+
+## Remaining follow-up
+
+- Firefox and WebKit have not yet been added to the browser matrix; the automated browser suite currently targets Chromium.
 - Lighthouse results are local lab measurements; production-origin Lighthouse and field Core Web Vitals are not claimed.
 - External Search Console indexing and social-card debugger checks remain separate follow-up work.
 
 ## U68 conclusion
 
-U68 adds repeatable real-browser journeys and rendered axe checks to the quality workflow, resolves the accessibility defects found during the initial scan, and records a Lighthouse baseline. No production deployment has been made as part of this follow-up.
+U68 adds repeatable real-browser journeys and rendered axe checks to the quality workflow, resolves the accessibility defects found during the initial scan, records a Lighthouse baseline, and has been released to Production. Automated Chromium checks and the project owner's manual keyboard/screen-reader review are complete. Remaining items are cross-browser coverage and separate production-origin SEO/performance verification; they are not blockers to the completed U68 accessibility review.
