@@ -7,7 +7,7 @@ const read = (path: string) => readFileSync(path, "utf8");
 test("R5 README inventory matches the current routes, Passport count and quality workflow", () => {
   const readme = read("README.md");
 
-  assert.match(readme, /28 distinct achievement badges/);
+  assert.match(readme, /29 distinct achievement badges/);
   assert.match(readme, /twenty curated fictional records across five categories/);
   assert.doesNotMatch(readme, /sixteen curated fictional records across five categories/i);
   assert.match(readme, /nineteen fictional curated artifacts across four collections/);
@@ -26,6 +26,7 @@ test("R5 README inventory matches the current routes, Passport count and quality
     "app/cope-index/page.tsx",
     "app/airdrop-office/page.tsx",
     "app/bridge-incident-office/page.tsx",
+    "app/governance-office/page.tsx",
     "app/daily-office/atlas/page.tsx",
     "app/daily-office/ledger/page.tsx",
   ]) {
@@ -44,6 +45,7 @@ test("R5 Privacy Notice documents the real local-storage and same-origin API beh
   assert.match(privacy, /does not write to an application database/);
   assert.match(privacy, /Passport remains there until it is deleted from its page/);
   assert.match(privacy, /Bridge Incident Office case URL encodes only the seven selected answer indexes/);
+  assert.match(privacy, /Governance Accountability Office case URL likewise encodes only the seven selected answer indexes/);
   assert.doesNotMatch(privacy, /disabled and deleted from its page/);
   assert.match(privacy, /Google Fonts/);
   assert.match(privacy, /provider's technical logs/);
@@ -61,6 +63,12 @@ test("R5 legal pages carry the current review date and do not invent operator de
   assert.match(terms, /Last reviewed: 25 November 2026\./);
   assert.match(privacy, /legal identity and a dedicated contact channel .* have not been supplied/);
   assert.match(terms, /legal identity and contact details .* have not been supplied/);
+});
+
+test("U66 Governance Accountability Office legal terms disclose the fictional scope", () => {
+  const terms = read("app/terms/page.tsx");
+  assert.match(terms, /Governance Accountability Office scores only selected answers/);
+  assert.match(terms, /does not verify a DAO, proposal, voting power, delegation, quorum or execution/);
 });
 
 test("R5 editorial guidance keeps the daily archive and Case Atlas explicitly fictional", () => {
