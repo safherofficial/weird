@@ -77,7 +77,7 @@ export default async function GovernanceCasePage({ params }: GovernanceCasePageP
             <div><span>EXECUTION AWARENESS</span><strong className="utility-token">{result.executionAwareness}<small>/100</small></strong><i>SELECTED ANSWERS ONLY</i></div>
           </div>
           <DepartmentCrossRead read={result.crossRead} />
-          <div className="utility-secondary governance-secondary"><span>SECONDARY PATTERN DETECTED</span><strong>{result.secondaryProfile.title}</strong><small>{result.secondaryProfile.subtitle}</small></div>
+          <div className="utility-secondary governance-secondary"><span>SECONDARY PATTERN DETECTED</span><strong>{result.secondaryProfile?.title ?? "NO SECONDARY PATTERN DETECTED"}</strong><small>{result.secondaryProfile?.subtitle ?? "Your selected answers converged on one dominant review pattern."}</small></div>
           <div className="utility-roast governance-roast"><span>THE DEPARTMENT HAS A COMMENT</span><p>“{result.profile.roast}”</p></div>
           <div className="utility-history governance-history">
             <div className="utility-history__heading"><span>GOVERNANCE INTERVIEW RECORD</span><span>7 ANSWERS RECORDED</span></div>

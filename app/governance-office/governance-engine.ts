@@ -54,9 +54,9 @@ export type GovernanceResult = GovernanceProgress & {
   answers: number[];
   caseNumber: string;
   primaryTag: GovernanceArchetypeId;
-  secondaryTag: GovernanceArchetypeId;
+  secondaryTag: GovernanceArchetypeId | null;
   profile: GovernanceArchetype;
-  secondaryProfile: GovernanceArchetype;
+  secondaryProfile: GovernanceArchetype | null;
   finding: string;
   crossRead: DepartmentCrossRead;
 };
@@ -250,7 +250,7 @@ export function buildGovernanceResult(answers: number[]): GovernanceResult {
   });
   const ranking = [...tallies.entries()].sort((a, b) => b[1].count - a[1].count || a[1].firstIndex - b[1].firstIndex);
   const primaryTag = ranking[0]?.[0] ?? "quorum-optimist";
-  const secondaryTag = ranking[1]?.[0] ?? primaryTag;
+  const secondaryTag = ranking[1]?.[0] ?? null;
   const seed = answers.reduce((sum, answer, index) => ((sum * 31) + (answer + 1) * (index + 41)) % 900000, 306613);
   const caseNumber = String(seed + 100000).slice(-6);
   const strongest = progress.history.reduce((best, item, index, rows) =>
@@ -302,7 +302,7 @@ export function buildGovernanceResult(answers: number[]): GovernanceResult {
     primaryTag,
     secondaryTag,
     profile: governanceClassifications[primaryTag],
-    secondaryProfile: governanceClassifications[secondaryTag],
+    secondaryProfile: secondaryTag ? governanceClassifications[secondaryTag] : null,
     finding,
     crossRead,
   };

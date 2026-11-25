@@ -58,8 +58,8 @@ function ResultPanel({ result, restart }: { result: GovernanceResult; restart: (
       <DepartmentCrossRead read={result.crossRead} />
       <div className="utility-secondary governance-secondary">
         <span>SECONDARY PATTERN DETECTED</span>
-        <strong>{result.secondaryProfile.title}</strong>
-        <small>{result.secondaryProfile.subtitle}</small>
+        <strong>{result.secondaryProfile?.title ?? "NO SECONDARY PATTERN DETECTED"}</strong>
+        <small>{result.secondaryProfile?.subtitle ?? "Your selected answers converged on one dominant review pattern."}</small>
       </div>
       <div className="utility-roast governance-roast">
         <span>THE DEPARTMENT HAS A COMMENT</span>

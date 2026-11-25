@@ -52,10 +52,12 @@ test("U66 Quorum Tribunal scores only selected answers and stays within defined 
     }
     assert.equal(result.crossRead.signals.length, 2);
     assert.ok(result.profile.title.length > 10);
-    assert.ok(result.secondaryProfile.title.length > 10);
+    if (result.secondaryProfile) assert.ok(result.secondaryProfile.title.length > 10);
+    else assert.equal(result.secondaryTag, null);
     assert.ok(result.finding.length > 25);
     assert.match(result.crossRead.interpretation, /No DAO, proposal, wallet, vote/);
   }
+  assert.equal(buildGovernanceResult([0, 0, 0, 1, 0, 0, 0]).secondaryProfile, null);
   assert.throws(() => inspectGovernanceProgress([4]));
 });
 
