@@ -159,6 +159,8 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
     },
   ],
   cope: [
+    {
+      href: "/daily-office",
       title: "THE TRENCHES DESK / DAILY CT BRIEFING",
       description: "Read today's fictional CT briefing, pump.fun incident report, wallet theory and bagholder post-mortem.",
     },
