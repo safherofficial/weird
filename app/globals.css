@@ -15361,3 +15361,107 @@ main.audit-page.airdrop-page {
 .bridge-reference__links a { padding: 12px 0; border-bottom: 1px solid rgba(154, 215, 223, .18); text-decoration: none; }
 .bridge-reference__links a:hover { color: #e8fbff; }
 @media (max-width: 760px) { .bridge-reference { grid-template-columns: 1fr; gap: 18px; padding: 20px; } }
+
+
+/* U66 — Governance Accountability Office / Quorum Tribunal. */
+main.audit-page.governance-page {
+  --department-accent: #c5a6f2;
+  --department-accent-soft: rgba(197, 166, 242, .1);
+  --department-accent-line: rgba(197, 166, 242, .28);
+  background-image:
+    radial-gradient(ellipse at 86% 7%, rgba(197, 166, 242, .075), transparent 36%),
+    linear-gradient(180deg, rgba(197, 166, 242, .018), transparent 54%);
+}
+.governance-page .governance-intro__stamp {
+  border-color: rgba(197, 166, 242, .42);
+  border-left: 3px solid var(--department-accent);
+  background: linear-gradient(135deg, rgba(197, 166, 242, .1), rgba(17, 15, 22, .35));
+}
+.governance-page .governance-intro__stamp strong,
+.governance-page .governance-intro__stamp span,
+.governance-page .utility-intro h1 span,
+.governance-page .utility-briefing__body h2 span,
+.governance-page .utility-question__number,
+.governance-page .utility-status,
+.governance-page .utility-live-scores strong,
+.governance-page .utility-answer > span { color: var(--department-accent); }
+.governance-page .utility-status i,
+.governance-page .utility-progress > div { background: var(--department-accent); }
+.governance-page .utility-status i { box-shadow: 0 0 10px rgba(197, 166, 242, .58); }
+.governance-page .utility-panel {
+  border-color: var(--department-accent-line);
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(197, 166, 242, .026) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(197, 166, 242, .026) 50%, transparent 50.2%),
+    linear-gradient(155deg, #191521, #0d100e 72%);
+  background-size: 38px 38px, 38px 38px, auto;
+}
+.governance-page .utility-answer:hover,
+.governance-page .utility-answer:focus-visible,
+.governance-page .utility-answer.is-selected {
+  border-color: var(--department-accent);
+  background: var(--department-accent-soft);
+}
+.governance-page .governance-finding {
+  border-color: rgba(197, 166, 242, .3);
+  border-left-color: var(--department-accent);
+  background: linear-gradient(100deg, rgba(58, 42, 78, .5), #141511 75%);
+}
+.governance-page .governance-finding > span,
+.governance-page .governance-finding > small { color: #bda9d6; }
+.governance-page .governance-finding > strong { color: #e0ccff; }
+.governance-page .governance-metrics > div { border-color: rgba(197, 166, 242, .2); }
+.governance-page .governance-metrics > div:first-child strong { color: #c5a6f2; }
+.governance-page .governance-metrics > div:nth-child(2) strong { color: #a7c2b2; }
+.governance-page .governance-metrics > div:nth-child(3) strong { color: #e4bd76; }
+.governance-page .governance-secondary { border-color: rgba(197, 166, 242, .25); }
+.governance-page .governance-actions .button--primary { border-color: var(--department-accent); }
+.governance-page .governance-roast { border-left-color: var(--department-accent); }
+.governance-reference {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, .7fr);
+  gap: 42px;
+  margin: 8px auto 48px;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid rgba(197, 166, 242, .24);
+  background: linear-gradient(115deg, rgba(51, 39, 68, .42), rgba(13, 16, 13, .9) 68%);
+}
+.governance-reference > div:first-child > span,
+.governance-reference__links a {
+  color: #c5a6f2;
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .1em;
+}
+.governance-reference h2 {
+  margin: 11px 0;
+  color: #f0eee8;
+  font: 700 clamp(25px, 3vw, 38px)/1 var(--sans);
+  letter-spacing: -.05em;
+}
+.governance-reference p {
+  max-width: 620px;
+  color: #9c9a9f;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.governance-reference__links { display: grid; align-content: center; gap: 9px; }
+.governance-reference__links a {
+  display: flex;
+  padding: 13px 15px;
+  border: 1px solid rgba(197, 166, 242, .22);
+  background: rgba(10, 12, 10, .62);
+  text-decoration: none;
+  transition: border-color .2s ease, background .2s ease;
+}
+.governance-reference__links a:hover,
+.governance-reference__links a:focus-visible {
+  border-color: #c5a6f2;
+  background: rgba(197, 166, 242, .08);
+  outline: none;
+}
+.governance-actions { flex-wrap: wrap; }
+.governance-public-result { min-width: 0; }
+@media (max-width: 760px) {
+  .governance-reference { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 20px; }
+  .governance-reference__links a { overflow-wrap: anywhere; }
+}
