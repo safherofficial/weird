@@ -71,7 +71,7 @@ test("U65 Bridge Incident Office is integrated with the division directory, Pass
   const sitemap = read("app/sitemap.ts");
   assert.match(sitemap, /"\/bridge-incident-office"/);
   const header = read("app/components/department-header.tsx");
-  assert.match(header, /13 DESTINATIONS/);
+  assert.match(header, /departments\.length\} DESTINATIONS/);
   const journeys = read("app/lib/department-journeys.ts");
   assert.match(journeys, /bridge: \[/);
   assert.match(journeys, /href: "\/bridge-incident-office"/);
