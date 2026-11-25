@@ -7,7 +7,7 @@ type DepartmentFooterProps = {
 export default function DepartmentFooter({ message }: DepartmentFooterProps) {
   return (
     <footer className="site-footer shell">
-      <Link className="brand brand--footer" href="/" aria-label="The DYOR Department home">
+      <Link className="brand brand--footer" href="/">
         <span className="brand__mark" aria-hidden="true">D.</span>
         <span className="brand__name">THE DYOR<br />DEPARTMENT</span>
       </Link>

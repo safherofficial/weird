@@ -57,7 +57,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <CircuitClickReveal />
         <LaserCursor />
-        <EnergyScrollbar />
+        <div role="region" aria-label="Page scroll controls">
+          <EnergyScrollbar />
+        </div>
         <ScrollToTop />
         <AchievementToastHost />
       </body>

@@ -117,7 +117,7 @@ export default function DepartmentHeader({
       )}
 
       <header className="site-header shell">
-        <Link className="brand" href="/" aria-label="The DYOR Department home" onClick={closeMenu}>
+        <Link className="brand" href="/" onClick={closeMenu}>
           <span className="brand__mark" aria-hidden="true">D.</span>
           <span className="brand__name">THE DYOR<br />DEPARTMENT</span>
         </Link>
@@ -184,22 +184,22 @@ export default function DepartmentHeader({
 
           <div className="mobile-nav__scroll">
             {navigationGroups.map((group) => (
-              <section className="mobile-nav__section" aria-label={group.label} key={group.number}>
+              <div role="group" className="mobile-nav__section" aria-label={group.label} key={group.number}>
                 <div className="mobile-nav__section-heading">
                   <Link href={"/#" + group.anchorId} onClick={closeMenu}>{group.number} / {group.label} ↗</Link>
                   <span>{String(group.items.length).padStart(2, "0")} UNITS</span>
                 </div>
                 {group.items.map((item) => renderDepartmentLink(item, true))}
-              </section>
+              </div>
             ))}
 
-            <section className="mobile-nav__section mobile-nav__section--identity" aria-label="Passport">
+            <div role="group" className="mobile-nav__section mobile-nav__section--identity" aria-label="Passport">
               <div className="mobile-nav__section-heading">
                 <span>04 / PASSPORT</span>
                 <span>01 UNIT</span>
               </div>
               {renderDepartmentLink(passportItem, true)}
-            </section>
+            </div>
 
             <div className="mobile-nav__utility">
               <Link href={departmentsHref} onClick={closeMenu}>DIRECTORY <span aria-hidden="true">↗</span></Link>

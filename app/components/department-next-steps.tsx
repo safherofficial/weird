@@ -27,7 +27,6 @@ export default function DepartmentNextSteps({ currentDepartment }: DepartmentNex
             className="department-next-steps__card"
             href={destination.href}
             key={destination.href}
-            aria-label={"Open " + destination.title + ". " + destination.description}
           >
             <span className="department-next-steps__number">ROUTE / {String(index + 1).padStart(2, "0")}</span>
             <strong>{destination.title}</strong>
