@@ -89,36 +89,6 @@ test("U62 legal disclosures identify 99% Club membership as cross-chain", () => 
   }
 });
 
-test("U67 Brand Voice inventory matches all thirteen live divisions and the current Case Atlas", () => {
-  const brandVoice = read("docs/BRAND_VOICE.md");
-  const divisions = read("app/divisions.ts");
-  const atlas = read("app/daily-office/case-atlas.ts");
-
-  assert.match(brandVoice, /The thirteen operational divisions/);
-  assert.equal(
-    [...brandVoice.matchAll(/^\\| (?:0[1-9]|1[0-3])\\./gm)].length,
-    13,
-    "Brand Voice must document each operational division exactly once",
-  );
-  for (const requiredOffice of [
-    "11. Airdrop Entitlement Office",
-    "12. Bridge Incident Office",
-    "13. Governance Accountability Office",
-    "The Snapshot Tribunal",
-    "Interchain Transfer Review",
-    "The Quorum Tribunal",
-  ]) {
-    assert.ok(brandVoice.includes(requiredOffice), "Brand Voice must include " + requiredOffice);
-  }
-  assert.match(brandVoice, /twenty-one fictional case threads across thirteen divisions/);
-  assert.match(brandVoice, /eighteen date-rotating Trenches Desk themes plus three static threads/);
-  assert.match(brandVoice, /forty-two reference destinations/);
-  assert.match(brandVoice, /240 UTC dates/);
-  assert.match(divisions, /GOVERNANCE ACCOUNTABILITY OFFICE/);
-  assert.match(atlas, /DAO GOVERNANCE \/ CROSS-CHAIN QUORUM REVIEW/);
-  assert.doesNotMatch(brandVoice, /twelve operational divisions|Divisions 11 and 12|two static incident \/ eligibility threads/i);
-});
-
 test("U67 editorial guidance and division counters stay aligned with the live directory", () => {
   const brandVoice = read("docs/BRAND_VOICE.md");
   const divisions = read("app/divisions.ts");
@@ -126,7 +96,7 @@ test("U67 editorial guidance and division counters stay aligned with the live di
   const header = read("app/components/department-header.tsx");
 
   assert.ok(brandVoice.includes("The thirteen operational divisions"));
-  const divisionRows = brandVoice.split("\\n").filter((line) => {
+  const divisionRows = brandVoice.split(String.fromCharCode(10)).filter((line) => {
     if (!line.startsWith("| ")) return false;
     const number = Number(line.slice(2, 4));
     return Number.isInteger(number) && number >= 1 && number <= 13 && line[4] === ".";
