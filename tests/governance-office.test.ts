@@ -93,7 +93,7 @@ test("U66 Governance Office is integrated with Department navigation, Atlas, exi
   assert.match(passport, /"governance-tribunal-filed": \{ progress: completed\.has\("governance"\)/);
   assert.match(passport, /"governance", "museum-exhibit"/);
   assert.match(read("app/sitemap.ts"), /governance-office/);
-  assert.match(read("app/components/department-header.tsx"), /13 DESTINATIONS/);
+  assert.match(read("app/components/department-header.tsx"), /departments\.length\} DESTINATIONS/);
 });
 
 test("U66 governance public case files are URL-reconstructable, shareable and clearly fictional", () => {
