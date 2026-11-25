@@ -33,4 +33,5 @@ export const CLUB_BADGE_MARKS: Record<string, string> = {
   "club-weekly-regular": "W3",
   "airdrop-entitlement-filed": "AEO",
   "bridge-incident-filed": "BRG",
+  "governance-tribunal-filed": "DAO",
 };
