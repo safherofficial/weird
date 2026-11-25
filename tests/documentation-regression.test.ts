@@ -7,7 +7,7 @@ const read = (path: string) => readFileSync(path, "utf8");
 test("R5 README inventory matches the current routes, Passport count and quality workflow", () => {
   const readme = read("README.md");
 
-  assert.match(readme, /27 distinct achievement badges/);
+  assert.match(readme, /28 distinct achievement badges/);
   assert.match(readme, /twenty curated fictional records across five categories/);
   assert.doesNotMatch(readme, /sixteen curated fictional records across five categories/i);
   assert.match(readme, /nineteen fictional curated artifacts across four collections/);
@@ -25,6 +25,7 @@ test("R5 README inventory matches the current routes, Passport count and quality
     "app/museum/page.tsx",
     "app/cope-index/page.tsx",
     "app/airdrop-office/page.tsx",
+    "app/bridge-incident-office/page.tsx",
     "app/daily-office/atlas/page.tsx",
     "app/daily-office/ledger/page.tsx",
   ]) {
@@ -42,6 +43,7 @@ test("R5 Privacy Notice documents the real local-storage and same-origin API beh
   assert.match(privacy, /does not receive the visitor's interactive answers/);
   assert.match(privacy, /does not write to an application database/);
   assert.match(privacy, /Passport remains there until it is deleted from its page/);
+  assert.match(privacy, /Bridge Incident Office case URL encodes only the seven selected answer indexes/);
   assert.doesNotMatch(privacy, /disabled and deleted from its page/);
   assert.match(privacy, /Google Fonts/);
   assert.match(privacy, /provider's technical logs/);
@@ -65,7 +67,7 @@ test("R5 editorial guidance keeps the daily archive and Case Atlas explicitly fi
   const brandVoice = read("docs/BRAND_VOICE.md");
 
   assert.match(brandVoice, /fourteen consecutive fictional UTC dispatches/);
-  assert.match(brandVoice, /eighteen fictional themes/);
+  assert.match(brandVoice, /eighteen date-rotating fictional themes/);
   assert.match(brandVoice, /not evidence gathered from real projects, people or wallets/);
 });
 

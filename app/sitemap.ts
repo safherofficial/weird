@@ -14,6 +14,7 @@ const publicRoutes = [
   "/club",
   "/cope-index",
   "/airdrop-office",
+  "/bridge-incident-office",
   "/daily-office",
   "/museum",
   "/archives",

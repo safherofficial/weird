@@ -94,6 +94,11 @@ const officeEvidenceProfiles: Record<OfficeSection, OfficeEvidenceProfile> = {
     outputLabel: "SNAPSHOT / ELIGIBILITY DUE-PROCESS REVIEW",
     reviewQuestion: "Are qualifying actions, snapshot timing, wallet attribution and appeal conditions actually stated in the fictional record?",
   },
+  bridge: {
+    source: "INCIDENT REPORT",
+    outputLabel: "INTERCHAIN ROUTE EVIDENCE NOTE",
+    reviewQuestion: "Which transfer stage is actually documented, and what remains unknown about destination settlement?",
+  },
   utility: {
     source: "INCIDENT REPORT",
     outputLabel: "TOKEN-PURPOSE CLAIM REVIEW",
@@ -302,6 +307,16 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
     ],
     archiveSlug: "airdrop-snapshot-eligibility-appeal",
     exhibitSlug: "the-airdrop-passport-stamp-book",
+  },
+  "BRIDGE INCIDENT / MESSAGE DELIVERY REVIEW": {
+    narrative: "The source-side receipt is complete while the destination status remains pending. The Bridge Incident Office separates the route's individual stages, the Archive preserves the late receipt and the Museum keeps the queue ticket that was mistaken for a delivery certificate.",
+    offices: [
+      { section: "bridge", responsibility: "Reviews the fictional source receipt, route references, destination evidence and status assumptions without checking a live transfer." },
+      { section: "archives", responsibility: "Preserves the late bridge receipt and separates a source confirmation from a destination settlement claim." },
+      { section: "museum", responsibility: "Keeps the bridge queue ticket as an artifact of waiting between two network records." },
+    ],
+    archiveSlug: "the-bridge-receipt-that-arrived-late",
+    exhibitSlug: "the-bridge-queue-ticket",
   },
 
   "BAGHOLDER ENTRY HISTORY": {

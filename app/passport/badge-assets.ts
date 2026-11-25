@@ -32,4 +32,5 @@ export const CLUB_BADGE_MARKS: Record<string, string> = {
   "club-departmental-echo": "↺",
   "club-weekly-regular": "W3",
   "airdrop-entitlement-filed": "AEO",
+  "bridge-incident-filed": "BRG",
 };

@@ -71,7 +71,8 @@ export type DepartmentId =
   | "cope"
   | "archives"
   | "daily"
-  | "airdrop";
+  | "airdrop"
+  | "bridge";
 
 export type PassportActivityId =
   | "audit"
@@ -83,7 +84,8 @@ export type PassportActivityId =
   | "cope"
   | "museum-exhibit"
   | "archive-record"
-  | "airdrop";
+  | "airdrop"
+  | "bridge";
 
 export type BadgeRarity = "COMMON" | "UNCOMMON" | "RARE" | "LEGENDARY";
 export type BadgeIcon =
@@ -97,6 +99,7 @@ export type BadgeIcon =
   | "cope"
   | "museum"
   | "airdrop"
+  | "bridge"
   | "streak"
   | "circuit";
 
@@ -148,6 +151,7 @@ export const CORE_ACTIVITIES: PassportActivityId[] = [
   "club",
   "cope",
   "airdrop",
+  "bridge",
 ];
 
 export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
@@ -162,6 +166,7 @@ export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
   { id: "museum", number: "09", title: "BAGHOLDER REHABILITATION / TRENCHES RELIC MUSEUM", label: "TRENCHES RELICS VISITED" },
   { id: "cope", number: "10", title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX", label: "SYNTHETIC TRENCHES INDEX VIEWED" },
   { id: "airdrop", number: "11", title: "AIRDROP ENTITLEMENT OFFICE / SNAPSHOT TRIBUNAL", label: "ELIGIBILITY INTERVIEW FILED" },
+  { id: "bridge", number: "12", title: "BRIDGE INCIDENT OFFICE / INTERCHAIN TRANSFER REVIEW", label: "INTERCHAIN INCIDENT FILED" },
 ];
 
 export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
@@ -169,7 +174,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     id: "first-case-filed",
     title: "FIRST CASE FILED",
     description: "The Department has received your first completed case.",
-    requirement: "Complete any one of the eight interactive experiences.",
+    requirement: "Complete any one of the nine interactive experiences.",
     rarity: "COMMON",
     icon: "file",
   },
@@ -204,6 +209,14 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     requirement: "Complete all seven questions in the Airdrop Entitlement Office.",
     rarity: "COMMON",
     icon: "airdrop",
+  },
+  {
+    id: "bridge-incident-filed",
+    title: "INTERCHAIN INCIDENT FILED",
+    description: "Your fictional source-and-destination transfer interview has been entered into the local Passport.",
+    requirement: "Complete all seven questions in the Bridge Incident Office.",
+    rarity: "COMMON",
+    icon: "bridge",
   },
   {
     id: "roadmap-architect",
@@ -257,7 +270,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     id: "complete-circuit",
     title: "THE COMPLETE CIRCUIT",
     description: "Every interactive experience has produced a completed file.",
-    requirement: "Complete all eight interactive experiences at least once.",
+    requirement: "Complete all nine interactive experiences at least once.",
     rarity: "LEGENDARY",
     icon: "circuit",
   },
@@ -387,7 +400,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
 
 const departmentIds = new Set<string>(DEPARTMENT_STAMPS.map((stamp) => stamp.id));
 const activityIds = new Set<string>([
-  "audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "museum-exhibit", "archive-record",
+  "audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "bridge", "museum-exhibit", "archive-record",
 ]);
 
 function isIsoDate(value: unknown): value is string {
@@ -776,6 +789,7 @@ export function getPassportAchievementStatuses(data: PassportData): PassportAchi
     "paper-survivor": { progress: completed.has("simulator") ? 1 : 0, target: 1 },
     "utility-witness": { progress: completed.has("utility") ? 1 : 0, target: 1 },
     "airdrop-entitlement-filed": { progress: completed.has("airdrop") ? 1 : 0, target: 1 },
+    "bridge-incident-filed": { progress: completed.has("bridge") ? 1 : 0, target: 1 },
     "roadmap-architect": { progress: completed.has("roadmap") ? 1 : 0, target: 1 },
     "whitepaper-author": { progress: completed.has("whitepaper") ? 1 : 0, target: 1 },
     "club-admitted": { progress: completed.has("club") ? 1 : 0, target: 1 },

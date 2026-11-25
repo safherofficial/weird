@@ -41,7 +41,7 @@ const sections = [
   {
     title: "05 / PUBLIC RESULT LINKS",
     paragraphs: [
-      "The FOMO Control Unit Audit, Pump.fun Intelligence paper-market simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, cross-chain 99% Club membership, Copium Administration personal calibration and Airdrop Entitlement Office interview can each create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Emergency Office and Exit Liquidity Department URLs also contain the sanitized project label; the other personal-result links encode answer selections only.",
+      "The FOMO Control Unit Audit, Pump.fun Intelligence paper-market simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, cross-chain 99% Club membership, Copium Administration personal calibration, Airdrop Entitlement Office interview and Bridge Incident Office interview can each create shareable URLs. These URLs encode the choices needed to reconstruct the fictional result. CTO Emergency Office and Exit Liquidity Department URLs also contain the sanitized project label; the other personal-result links encode answer selections only. The Bridge Incident Office case URL encodes only the seven selected answer indexes; it does not contain a wallet, transaction hash or transfer reference.",
       "Anyone who receives a public case link can view the corresponding result. Links may remain in browser history, messages, social posts and hosting request records. The site does not maintain a private account that can revoke a copied link. Do not include personal or confidential details in a project label.",
     ],
   },
