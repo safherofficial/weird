@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:quality": "tsc -p tsconfig.quality.json && node --test .quality-tests/tests/*.test.js"
+    "test:quality": "tsc -p tsconfig.quality.json && node --test .quality-tests/tests/*.test.js",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "next": "16.4.6",
@@ -22,6 +23,8 @@
     "@types/node": "^22.19.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "@axe-core/playwright": "^4.14.1",
+    "@playwright/test": "^1.65.1"
   }
 }
