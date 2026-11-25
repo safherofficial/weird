@@ -173,11 +173,11 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
     exhibitSlug: "the-screenshot-of-a-screenshot",
   },
   "BUNDLE / WALLET THEORIES": {
-    narrative: "A wallet diagram is promoted as proof of coordinated intent, then used to support a points and eligibility rumour. The archive records what is visible and unknown, KOL Surveillance traces the caption's source, and the Snapshot Tribunal checks which programme rules the claim actually relies on.",
+    narrative: "A wallet diagram is promoted as proof of coordinated intent. The archive records what is visible and what is unknown, KOL Surveillance traces the caption's source, and the dossier office checks whether the claimed distribution is actually documented.",
     offices: [
       { section: "archives", responsibility: "Separates fictional transaction observations from assumptions about ownership." },
       { section: "daily", responsibility: "Checks whether the wallet story is being repeated as independent confirmation." },
-      { section: "airdrop", responsibility: "Separates recorded activity from snapshot eligibility and allocation assumptions." },
+      { section: "whitepaper", responsibility: "Reviews whether supply and allocation claims have any supporting context." },
     ],
     archiveSlug: "the-wallet-graph-does-not-prove-ownership",
     exhibitSlug: "the-bundle-family-portrait",
