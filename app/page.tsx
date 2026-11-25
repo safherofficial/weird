@@ -2,7 +2,7 @@ import Link from "next/link";
 import DepartmentHeader from "./components/department-header";
 import DepartmentFooter from "./components/department-footer";
 import SectionLabel from "./components/section-label";
-import { departmentGroups } from "./divisions";
+import { departmentGroups, departments } from "./divisions";
 import { factions } from "./club/club-engine";
 import ClubTokenNotice from "./club/club-token-notice";
 
@@ -91,8 +91,8 @@ export default function Home() {
         </div>
 
         <div className="hq-hero__register" aria-label="Department overview">
-          <div><strong>13</strong><span>DIVISIONS</span></div>
-          <div><strong>13</strong><span>PUBLIC DESTINATIONS</span></div>
+          <div><strong>{departments.length}</strong><span>DIVISIONS</span></div>
+          <div><strong>{departments.length}</strong><span>PUBLIC DESTINATIONS</span></div>
           <div><strong>0</strong><span>FINANCIAL ADVICE</span></div>
           <p>YOU ARE NOT THE FIRST. YOU WILL NOT BE THE LAST.</p>
         </div>

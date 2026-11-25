@@ -79,3 +79,21 @@ test("R2 audited small-text colors meet WCAG AA normal-text contrast on their re
     );
   }
 });
+
+test("U67 mobile Department navigation exposes its state and supports keyboard dismissal", () => {
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+
+  assert.ok(header.includes('aria-label="Main navigation"'));
+  assert.ok(header.includes('aria-label="Department directory"'));
+  assert.ok(header.includes("aria-controls={menuId}"));
+  assert.ok(header.includes("aria-expanded={menuOpen}"));
+  assert.ok(header.includes("hidden={!menuOpen}"));
+  assert.ok(header.includes('aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}'));
+
+  const escapeStart = header.indexOf('if (event.key === "Escape")');
+  assert.ok(escapeStart >= 0, "mobile navigation must listen for Escape");
+  const escapeHandler = header.slice(escapeStart, header.indexOf("    }", escapeStart));
+  assert.ok(escapeHandler.includes("setMenuOpen(false)"));
+  assert.ok(escapeHandler.includes("menuButtonRef.current?.focus()"));
+  assert.ok(header.includes("onClick={closeMenu}"));
+});
