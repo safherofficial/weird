@@ -33,7 +33,7 @@ jobs:
         run: npm run test:quality
       - name: Production build
         run: npm run build
-      - name: Install Chromium for browser checks
-        run: npx playwright install --with-deps chromium
+      - name: Install browser engines for cross-browser checks
+        run: npx playwright install --with-deps chromium firefox webkit
       - name: Browser E2E and accessibility tests
         run: npm run test:browser
