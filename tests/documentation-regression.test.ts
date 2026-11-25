@@ -75,7 +75,7 @@ test("R5 editorial guidance keeps the daily archive and Case Atlas explicitly fi
   const brandVoice = read("docs/BRAND_VOICE.md");
 
   assert.match(brandVoice, /fourteen consecutive fictional UTC dispatches/);
-  assert.match(brandVoice, /eighteen date-rotating fictional themes/);
+  assert.match(brandVoice, /eighteen date-rotating Trenches Desk themes/);
   assert.match(brandVoice, /not evidence gathered from real projects, people or wallets/);
 });
 
@@ -117,4 +117,46 @@ test("U67 Brand Voice inventory matches all thirteen live divisions and the curr
   assert.match(divisions, /GOVERNANCE ACCOUNTABILITY OFFICE/);
   assert.match(atlas, /DAO GOVERNANCE \/ CROSS-CHAIN QUORUM REVIEW/);
   assert.doesNotMatch(brandVoice, /twelve operational divisions|Divisions 11 and 12|two static incident \/ eligibility threads/i);
+});
+
+test("U67 editorial guidance and division counters stay aligned with the live directory", () => {
+  const brandVoice = read("docs/BRAND_VOICE.md");
+  const divisions = read("app/divisions.ts");
+  const home = read("app/page.tsx");
+  const header = read("app/components/department-header.tsx");
+
+  assert.ok(brandVoice.includes("The thirteen operational divisions"));
+  const divisionRows = brandVoice.split("\\n").filter((line) => {
+    if (!line.startsWith("| ")) return false;
+    const number = Number(line.slice(2, 4));
+    return Number.isInteger(number) && number >= 1 && number <= 13 && line[4] === ".";
+  });
+  assert.equal(divisionRows.length, 13, "Brand Voice must list all thirteen divisions exactly once");
+
+  for (const requiredOffice of [
+    "11. Airdrop Entitlement Office",
+    "12. Bridge Incident Office",
+    "13. Governance Accountability Office",
+    "The Snapshot Tribunal",
+    "Interchain Transfer Review",
+    "The Quorum Tribunal",
+  ]) {
+    assert.ok(brandVoice.includes(requiredOffice), "Brand Voice must include " + requiredOffice);
+  }
+  assert.ok(brandVoice.includes("twenty-one fictional case threads across thirteen divisions"));
+  assert.ok(brandVoice.includes("eighteen date-rotating Trenches Desk themes plus three static threads"));
+  assert.ok(brandVoice.includes("forty-two reference destinations"));
+  assert.ok(brandVoice.includes("240 UTC dates"));
+  assert.ok(divisions.includes("GOVERNANCE ACCOUNTABILITY OFFICE"));
+
+  assert.ok(home.includes('import { departmentGroups, departments } from "./divisions";'));
+  assert.ok(home.includes("<strong>{departments.length}</strong><span>DIVISIONS</span>"));
+  assert.ok(home.includes("<strong>{departments.length}</strong><span>PUBLIC DESTINATIONS</span>"));
+  assert.ok(header.includes('<span className="mobile-nav__count">{departments.length} DESTINATIONS'));
+  assert.ok(!home.includes("<strong>13</strong>"), "homepage division totals must not be hard-coded");
+  assert.ok(!header.includes("13 DESTINATIONS"), "mobile navigation total must not be hard-coded");
+  assert.ok(!brandVoice.includes("The twelve operational divisions"));
+  assert.ok(!brandVoice.includes("the twelve divisions"));
+  assert.ok(!brandVoice.includes("Divisions 11 and 12"));
+  assert.ok(!brandVoice.includes("two static incident / eligibility threads"));
 });
