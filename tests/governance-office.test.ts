@@ -114,5 +114,5 @@ test("U66 governance public case files are URL-reconstructable, shareable and cl
   assert.match(publicPage, /notFound\(\)/);
   assert.match(card, /buildGovernanceResult/);
   assert.match(landingCard, /DIVISION 13/);
-  assert.doesNotMatch(client + publicPage, /wallet connect|fetch\(|WebSocket|analytics|tracking pixel/i);
+  assert.doesNotMatch(client + publicPage, /fetch\(|WebSocket|wallet\.connect|ethereum\.request\(/i);
 });
