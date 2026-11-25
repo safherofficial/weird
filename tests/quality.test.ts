@@ -1443,6 +1443,7 @@ test("U24.3 all thirteen Department Stamps map to reachable division pages and d
     ["cope", "app/cope-index/case/[code]/page.tsx"],
     ["airdrop", "app/airdrop-office/case/[code]/page.tsx"],
     ["bridge", "app/bridge-incident-office/case/[code]/page.tsx"],
+    ["governance", "app/governance-office/case/[code]/page.tsx"],
     ["archives", "app/archives/records/[slug]/page.tsx"],
     ["museum", "app/museum/exhibits/[slug]/page.tsx"],
   ];
