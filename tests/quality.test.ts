@@ -2661,7 +2661,7 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
     PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).slice(0, expectedClubBadges.length + 1).map((badge) => badge.id),
     ["club-admitted", ...expectedClubBadges],
   );
-  assert.equal(PASSPORT_ACHIEVEMENTS.length, 28);
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 29);
   assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 16);
 
   const passport = makePassport({
@@ -2722,7 +2722,7 @@ test("U28.1 Club challenge desk uses only the optional local Passport and expose
   assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 15);
   assert.ok(passportClient.includes("badgeCollectionSvgHeight(statuses)"));
   assert.ok(passportClient.includes("getBadgeArtworkHref(item.id, assetBaseUrl)"));
-  assert.ok(passportPage.includes("28 ACHIEVEMENT BADGES"));
+  assert.ok(passportPage.includes("29 ACHIEVEMENT BADGES"));
   assert.doesNotMatch(challenges, /fetch\(|WebSocket|wallet connect|supabase|prisma/i);
 });
 
@@ -2780,7 +2780,7 @@ test("U28.2 Passport v4 adds faction affiliation, hidden achievements and three-
   const badgeAssets = readFileSync("app/passport/badge-assets.ts", "utf8");
   assert.ok(store.includes("export const PASSPORT_VERSION = 4"));
   assert.equal(CLUB_BADGE_IDS.length, 15);
-  assert.equal(PASSPORT_ACHIEVEMENTS.length, 28);
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 29);
   assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 16);
   assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "club-departmental-echo" && badge.secret));
   assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "club-weekly-regular" && badge.secret));
