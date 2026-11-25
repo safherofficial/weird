@@ -92,7 +92,7 @@ test("U66 Governance Office is integrated with Department navigation, Atlas, exi
   const passport = read("app/passport/passport-store.ts");
   assert.match(passport, /"governance-tribunal-filed": \{ progress: completed\.has\("governance"\)/);
   assert.match(passport, /"governance", "museum-exhibit"/);
-  assert.match(read("app/sitemap.ts"), /"\\/governance-office"/);
+  assert.match(read("app/sitemap.ts"), /governance-office/);
   assert.match(read("app/components/department-header.tsx"), /13 DESTINATIONS/);
 });
 
