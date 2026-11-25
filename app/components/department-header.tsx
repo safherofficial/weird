@@ -23,7 +23,7 @@ type DepartmentNavItem = {
 const navigationGroups = divisionNavigationGroups;
 
 const passportItem: DepartmentNavItem = {
-  number: "12",
+  number: "P",
   label: "THE DEPARTMENT PASSPORT",
   href: "/passport",
   section: "passport",
@@ -49,7 +49,9 @@ export default function DepartmentHeader({
   const activeDivision = activeSection ? divisionIdentityBySection[activeSection] : undefined;
   const toplineLabel = activeSection === "club"
     ? "THE CROSS-CHAIN SURVIVOR REGISTRY / ALL CHAINS & CYCLES"
-    : "THE OFFICIAL AFTERCARE DESK FOR THE SOLANA TRENCHES";
+    : activeSection === "governance"
+      ? "THE INTERCHAIN GOVERNANCE REVIEW DESK / ALL NETWORKS"
+      : "THE OFFICIAL AFTERCARE DESK FOR THE SOLANA TRENCHES";
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -177,7 +179,7 @@ export default function DepartmentHeader({
               <span className="mobile-nav__eyebrow">INTERNAL ROUTING / DD-01</span>
               <strong>DEPARTMENT DIRECTORY</strong>
             </div>
-            <span className="mobile-nav__count">12 DESTINATIONS<br />2 PORTAL SECTIONS</span>
+            <span className="mobile-nav__count">13 DESTINATIONS<br />2 PORTAL SECTIONS</span>
           </div>
 
           <div className="mobile-nav__scroll">

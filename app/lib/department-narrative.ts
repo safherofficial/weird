@@ -99,6 +99,11 @@ const officeEvidenceProfiles: Record<OfficeSection, OfficeEvidenceProfile> = {
     outputLabel: "INTERCHAIN ROUTE EVIDENCE NOTE",
     reviewQuestion: "Which transfer stage is actually documented, and what remains unknown about destination settlement?",
   },
+  governance: {
+    source: "RISK DEPARTMENT",
+    outputLabel: "GOVERNANCE PROCESS / QUORUM REVIEW",
+    reviewQuestion: "Which rules establish eligible participation, voting weight, quorum and execution before a proposal is described as a mandate?",
+  },
   utility: {
     source: "INCIDENT REPORT",
     outputLabel: "TOKEN-PURPOSE CLAIM REVIEW",
@@ -317,6 +322,17 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
     ],
     archiveSlug: "the-bridge-receipt-that-arrived-late",
     exhibitSlug: "the-bridge-queue-ticket",
+  },
+
+  "DAO GOVERNANCE / CROSS-CHAIN QUORUM REVIEW": {
+    narrative: "A fictional proposal combines voting totals from separate networks and declares a single mandate. The Governance Accountability Office checks proposal scope, voter eligibility, voting weight, delegation, quorum and execution rules; the Archive preserves the circular; and the Museum keeps the compass whose needle follows the loudest dashboard.",
+    offices: [
+      { section: "governance", responsibility: "Reviews the fictional proposal scope, eligible voting units, delegation and reproducible quorum and execution process." },
+      { section: "archives", responsibility: "Preserves Circular 04 and distinguishes separate network totals from a common, documented quorum." },
+      { section: "museum", responsibility: "Keeps the multichain quorum compass as a relic of dashboard aggregation and shifting counting rules." },
+    ],
+    archiveSlug: "circular-quorum-migration",
+    exhibitSlug: "the-multichain-quorum-compass",
   },
 
   "BAGHOLDER ENTRY HISTORY": {

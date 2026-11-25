@@ -365,7 +365,7 @@ test("U54 Case Atlas and Institutional Memory Ledger use concise route-specific 
   assert.ok(atlasCopy.length <= DEPARTMENT_SHARE_TEXT_LIMIT, "Atlas copy must fit the shared text budget");
   assert.ok(atlasCopy.length + 1 + 23 <= 280, "Atlas copy must reserve room for X's short URL");
   assert.ok(atlasCopy.startsWith("THE DYOR DEPARTMENT / CASE ATLAS."));
-  assert.match(atlasCopy, /20 fictional themes routed across 12 offices/);
+  assert.match(atlasCopy, /21 fictional themes routed across 13 offices/);
   assert.match(atlasCopy, /Every route leads to a record/);
 
   const records = buildInstitutionalMemory("2026-11-24", 14).slice().reverse();

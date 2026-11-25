@@ -41,7 +41,7 @@ import { archiveRecords, filterArchiveRecords } from "../app/archives/archive-da
 import { exhibits, searchExhibits } from "../app/museum/museum-data";
 import { departmentGroups, departments, divisionNavigationGroups } from "../app/divisions";
 import { departmentJourneys } from "../app/lib/department-journeys";
-import { CLUB_BADGE_IDS, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
+import { CLUB_BADGE_IDS, CORE_ACTIVITIES, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
 type ResultRecord = Record<string, unknown>;
 type EngineSpec = {
@@ -453,13 +453,37 @@ test("U46 Daily Trenches cross-reference current and archived issues without add
   assert.doesNotMatch(related, /localStorage|sessionStorage|fetch\(|WebSocket|wallet connect|analytics|tracking/i);
 });
 
-test("U25.3 Department narrative threads connect all twelve offices to existing fictional precedents", () => {
+
+
+test("U66 Governance Accountability Office is registered as a thirteenth division and ten-core activity", () => {
+  const office = departments.find((department) => department.section === "governance");
+  assert.ok(office);
+  assert.equal(office.number, "13");
+  assert.equal(office.href, "/governance-office");
+  assert.equal(office.pageTitle, "THE QUORUM TRIBUNAL");
+  assert.equal(DEPARTMENT_STAMPS.length, 13);
+  assert.equal(CORE_ACTIVITIES.length, 10);
+  assert.ok(CORE_ACTIVITIES.includes("governance"));
+  assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "governance-tribunal-filed"));
+  assert.ok(departmentCaseThreads["DAO GOVERNANCE / CROSS-CHAIN QUORUM REVIEW"]);
+  assert.equal(Object.keys(departmentCaseThreads).length, 21);
+});
+
+test("U66 Governance Accountability Office legal terms disclose the fictional scope", () => {
+  const terms = readFileSync("app/terms/page.tsx", "utf8");
+  const privacy = readFileSync("app/privacy/page.tsx", "utf8");
+  assert.match(terms, /Governance Accountability Office scores only selected answers/);
+  assert.match(terms, /does not verify a DAO, proposal, voting power, delegation, quorum or execution/);
+  assert.match(privacy, /Governance Accountability Office case URL likewise encodes only the seven selected answer indexes/);
+});
+
+test("U25.3 Department narrative threads connect all thirteen offices to existing fictional precedents", () => {
   const officeSections = new Set(departments.map((department) => department.section));
   const archiveSlugs = new Set(archiveRecords.map((record) => record.slug));
   const exhibitSlugs = new Set(exhibits.map((exhibit) => exhibit.slug));
   const mappedOffices = new Set<string>();
 
-  assert.equal(Object.keys(departmentCaseThreads).length, 20, "Every daily theme and static cross-reference case must have a narrative thread");
+  assert.equal(Object.keys(departmentCaseThreads).length, 21, "Every daily theme and static cross-reference case must have a narrative thread");
 
   for (const [theme, thread] of Object.entries(departmentCaseThreads)) {
     assert.ok(theme.length > 0);
@@ -475,7 +499,7 @@ test("U25.3 Department narrative threads connect all twelve offices to existing 
     assert.ok(thread.narrative.length > 80, theme + " must have a meaningful continuity explanation");
   }
 
-  assert.deepEqual([...mappedOffices].sort(), [...officeSections].sort(), "The narrative network must include all twelve divisions");
+  assert.deepEqual([...mappedOffices].sort(), [...officeSections].sort(), "The narrative network must include all thirteen divisions");
 });
 
 test("U25.3 daily case chains keep identical case identity across offices and dates", () => {
@@ -591,7 +615,7 @@ test("U27.3 shared case chains hand off dispatch evidence through three offices 
     assert.deepEqual(
       views.map((view) => view.offices.map((office) => office.section)),
       views.map(() => sharedRoute.map((office) => office.section)),
-      "the case route must be identical from all twelve Department pages",
+      "the case route must be identical from all thirteen Department pages",
     );
   }
 
@@ -805,7 +829,7 @@ test("Passport unlocks require their recorded activities and the seven-day strea
   assert.equal(partial.earned, false);
 
   const complete = makePassport({
-    completedActivities: ["audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "bridge", "museum-exhibit", "archive-record"],
+    completedActivities: ["audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "bridge", "governance", "museum-exhibit", "archive-record"],
     bestDailyStreak: 7,
   });
   const all = getPassportAchievementStatuses(complete);
@@ -1264,7 +1288,7 @@ test("Daily CT Briefing retains a healthy range of date-seeded editorial variant
 });
 
 
-test("U51 Department journeys form a connected editorial loop across all twelve divisions", () => {
+test("U51 Department journeys form a connected editorial loop across all thirteen divisions", () => {
   const departmentSections = departments.map((department) => department.section).sort();
   const component = readFileSync("app/components/department-next-steps.tsx", "utf8");
   const targetSectionByHref = new Map<string, string>(departments.map((department) => [department.href, department.section] as const));
@@ -1379,9 +1403,9 @@ test("U24.2 journey Passport messaging describes both visit stamps and completed
 });
 
 
-test("U24.3 all twelve Department Stamps map to reachable division pages and direct public records", () => {
-  assert.equal(DEPARTMENT_STAMPS.length, 12);
-  assert.equal(departments.length, 12);
+test("U24.3 all thirteen Department Stamps map to reachable division pages and direct public records", () => {
+  assert.equal(DEPARTMENT_STAMPS.length, 13);
+  assert.equal(departments.length, 13);
   assert.deepEqual(
     DEPARTMENT_STAMPS.map((stamp) => stamp.id),
     departments.map((department) => department.section),
@@ -1399,9 +1423,9 @@ test("U24.3 all twelve Department Stamps map to reachable division pages and dir
     ["utility", "app/utility-inspector/page.tsx"],
     ["museum", "app/museum/page.tsx"],
     ["cope", "app/cope-index/page.tsx"],
-    ["bridge", "app/bridge-incident-office/page.tsx"],
     ["airdrop", "app/airdrop-office/page.tsx"],
     ["bridge", "app/bridge-incident-office/page.tsx"],
+    ["governance", "app/governance-office/page.tsx"],
   ];
 
   for (const [section, path] of divisionPages) {
@@ -1419,6 +1443,7 @@ test("U24.3 all twelve Department Stamps map to reachable division pages and dir
     ["cope", "app/cope-index/case/[code]/page.tsx"],
     ["airdrop", "app/airdrop-office/case/[code]/page.tsx"],
     ["bridge", "app/bridge-incident-office/case/[code]/page.tsx"],
+    ["governance", "app/governance-office/case/[code]/page.tsx"],
     ["archives", "app/archives/records/[slug]/page.tsx"],
     ["museum", "app/museum/exhibits/[slug]/page.tsx"],
   ];
@@ -1467,6 +1492,7 @@ test("U24.3 completed experience activities are recorded only in the final-answe
     ["app/cope-index/cope-index-client.tsx", /if \(current === questions\.length - 1\) \{\s*setResult\(buildPersonalCopeResult\(next\)\);\s*recordPassportActivity\("cope"\);/],
     ["app/airdrop-office/airdrop-client.tsx", /if \(current === AIRDROP_QUESTIONS - 1\) \{\s*setResult\(buildAirdropResult\(nextAnswers\)\);\s*recordPassportActivity\("airdrop"\);/],
     ["app/bridge-incident-office/bridge-incident-client.tsx", /if \(current === BRIDGE_QUESTIONS - 1\) \{\s*setResult\(buildBridgeResult\(nextAnswers\)\);\s*recordPassportActivity\("bridge"\);/],
+    ["app/governance-office/governance-client.tsx", /if \(current === GOVERNANCE_QUESTIONS - 1\) \{\s*setResult\(buildGovernanceResult\(nextAnswers\)\);\s*recordPassportActivity\("governance"\);/],
   ] as const;
 
   for (const [path, pattern] of cases) {
@@ -1555,7 +1581,7 @@ test("U25.4 daily desk exposes linked historical files without adding visitor-da
 });
 
 
-test("U25.5 Case Atlas reconciles all 20 case threads against three valid offices and existing archive and Museum records", () => {
+test("U25.5 Case Atlas reconciles all 21 case threads against three valid offices and existing archive and Museum records", () => {
   const today = new Date().toISOString().slice(0, 10);
   const atlas = buildDepartmentCaseAtlas(today, 90);
   const repeated = buildDepartmentCaseAtlas(today, 90);
@@ -1563,7 +1589,7 @@ test("U25.5 Case Atlas reconciles all 20 case threads against three valid office
   assert.deepEqual(atlas, repeated, "the same as-of UTC date must produce the same Case Atlas");
   assert.equal(atlas.asOfDate, today);
   assert.equal(atlas.lookbackDays, 90);
-  assert.equal(atlas.entries.length, 20);
+  assert.equal(atlas.entries.length, 21);
   assert.deepEqual(
     atlas.entries.map((entry) => entry.theme).sort(),
     Object.keys(departmentCaseThreads).sort(),
@@ -1590,7 +1616,7 @@ test("U25.5 Case Atlas reconciles all 20 case threads against three valid office
     }
   }
 
-  assert.equal(atlas.divisions.length, 12);
+  assert.equal(atlas.divisions.length, 13);
   assert.deepEqual(atlas.divisions.map((division) => division.section), departments.map((department) => department.section));
   for (const division of atlas.divisions) {
     const expected = atlas.entries.filter((entry) => entry.offices.some((office) => office.section === division.section));
@@ -1726,7 +1752,7 @@ test("U25.6 Archive and Museum detail records provide reciprocal Case Atlas cros
   assert.ok(referenceComponent.includes("reference.counterpart.href"));
 
   const anchors = Object.keys(departmentCaseThreads).map(getDepartmentCaseThemeAnchor);
-  assert.equal(new Set(anchors).size, anchors.length, "all 20 Atlas case anchors must be unique");
+  assert.equal(new Set(anchors).size, anchors.length, "all 21 Atlas case anchors must be unique");
 
   let archiveReferenceCount = 0;
   for (const record of archiveRecords) {
@@ -1754,8 +1780,8 @@ test("U25.6 Archive and Museum detail records provide reciprocal Case Atlas cros
     }
   }
 
-  assert.equal(archiveReferenceCount, 20, "all 20 threads must point back from their Archive precedent");
-  assert.equal(museumReferenceCount, 20, "all 20 threads must point back from their Museum exhibit");
+  assert.equal(archiveReferenceCount, 21, "all 21 threads must point back from their Archive precedent");
+  assert.equal(museumReferenceCount, 21, "all 21 threads must point back from their Museum exhibit");
   assert.ok(Object.keys(departmentCaseThreads).some((theme) => getDepartmentCaseReferences("archive", departmentCaseThreads[theme].archiveSlug).some((reference) => reference.theme === theme)));
   assert.doesNotMatch(referenceComponent, /localStorage|sessionStorage|recordPassportActivity/);
 });
@@ -1937,7 +1963,7 @@ test("U25.10 Case Atlas date-window selector reconciles exact 14, 30, 60, 90 and
 
     assert.equal(selectedAtlas.asOfDate, today);
     assert.equal(selectedAtlas.lookbackDays, days);
-    assert.equal(selectedAtlas.entries.length, 20);
+    assert.equal(selectedAtlas.entries.length, 21);
 
     let totalOccurrences = 0;
     for (const entry of selectedAtlas.entries) {
@@ -2098,7 +2124,7 @@ test("U25.11 Case Atlas explains matched periods and displays non-predictive the
 test("U25.12 Case Atlas reconciles division routing assignments across all matched-period windows", () => {
   const today = new Date().toISOString().slice(0, 10);
   const sourceAtlas = buildDepartmentCaseAtlas(today, 240);
-  assert.equal(sourceAtlas.divisions.length, 12);
+  assert.equal(sourceAtlas.divisions.length, 13);
   assert.ok(sourceAtlas.divisions.every((division) => division.routingComparison === null));
 
   const countOfficeAssignments = (startOffset: number, days: number) => {
@@ -2126,7 +2152,7 @@ test("U25.12 Case Atlas reconciles division routing assignments across all match
     let currentTotal = 0;
     let previousTotal = 0;
 
-    assert.equal(selected.divisions.length, 12);
+    assert.equal(selected.divisions.length, 13);
     for (const division of selected.divisions) {
       const currentExpected = current.get(division.section) ?? { count: 0, themes: new Set<string>() };
       const previousExpected = previous.get(division.section) ?? { count: 0, themes: new Set<string>() };
@@ -2354,6 +2380,7 @@ test("U25 audit correction marks a viewing division clearly when it is outside t
     ["app/utility-inspector/page.tsx", "utility"],
     ["app/museum/page.tsx", "museum"],
     ["app/cope-index/page.tsx", "cope"],
+    ["app/governance-office/page.tsx", "governance"],
   ] as const;
   const nextSteps = readFileSync("app/components/department-next-steps.tsx", "utf8");
   const chainClient = readFileSync("app/components/department-case-chain.tsx", "utf8");
@@ -2524,8 +2551,8 @@ test("U27.6 production experience keeps collection counts, filter semantics and 
   assert.ok(archivesClient.includes('aria-live="polite"'));
   assert.ok(museumClient.includes('aria-live="polite"'));
 
-  assert.ok(homePage.includes("Twelve numbered divisions. Three routing groups."));
-  assert.equal(departments.length, 12);
+  assert.ok(homePage.includes("Thirteen numbered divisions. Three routing groups."));
+  assert.equal(departments.length, 13);
   assert.equal(departmentGroups.length, 3);
 
   assert.ok(header.includes('aria-controls={menuId}'));
@@ -2557,6 +2584,7 @@ test("U26 navigation labels and links match the exact destination pages and dire
     ["cope", "app/cope-index/page.tsx", "THE GLOBAL COPE INDEX"],
     ["airdrop", "app/airdrop-office/page.tsx", "THE SNAPSHOT TRIBUNAL"],
     ["bridge", "app/bridge-incident-office/page.tsx", "THE BRIDGE INCIDENT OFFICE"],
+    ["governance", "app/governance-office/page.tsx", "THE QUORUM TRIBUNAL"],
   ] as const;
   assert.equal(departments.length, routePages.length);
   assert.equal(divisionNavigationGroups.length, departmentGroups.length);
@@ -2633,7 +2661,7 @@ test("U28.1 Club adds twelve persistent, criteria-based achievements to the exis
     PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).slice(0, expectedClubBadges.length + 1).map((badge) => badge.id),
     ["club-admitted", ...expectedClubBadges],
   );
-  assert.equal(PASSPORT_ACHIEVEMENTS.length, 28);
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 29);
   assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 16);
 
   const passport = makePassport({
@@ -2694,7 +2722,7 @@ test("U28.1 Club challenge desk uses only the optional local Passport and expose
   assert.equal((clubBadgeArt.match(/"club-[^"]+":/g) ?? []).length, 15);
   assert.ok(passportClient.includes("badgeCollectionSvgHeight(statuses)"));
   assert.ok(passportClient.includes("getBadgeArtworkHref(item.id, assetBaseUrl)"));
-  assert.ok(passportPage.includes("28 ACHIEVEMENT BADGES"));
+  assert.ok(passportPage.includes("29 ACHIEVEMENT BADGES"));
   assert.doesNotMatch(challenges, /fetch\(|WebSocket|wallet connect|supabase|prisma/i);
 });
 
@@ -2752,7 +2780,7 @@ test("U28.2 Passport v4 adds faction affiliation, hidden achievements and three-
   const badgeAssets = readFileSync("app/passport/badge-assets.ts", "utf8");
   assert.ok(store.includes("export const PASSPORT_VERSION = 4"));
   assert.equal(CLUB_BADGE_IDS.length, 15);
-  assert.equal(PASSPORT_ACHIEVEMENTS.length, 28);
+  assert.equal(PASSPORT_ACHIEVEMENTS.length, 29);
   assert.equal(PASSPORT_ACHIEVEMENTS.filter((badge) => badge.id.startsWith("club-")).length, 16);
   assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "club-departmental-echo" && badge.secret));
   assert.ok(PASSPORT_ACHIEVEMENTS.some((badge) => badge.id === "club-weekly-regular" && badge.secret));

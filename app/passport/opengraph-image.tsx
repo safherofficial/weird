@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "THE DYOR DEPARTMENT Passport — ten departments, local visit stamps and fictional achievements.";
+export const alt = "THE DYOR DEPARTMENT Passport — thirteen departments, local visit stamps and fictional achievements.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -16,7 +16,7 @@ export default function DepartmentPassportOpenGraphImage() {
           <span style={{ color: "#b6ff65", fontSize: 16, letterSpacing: 3 }}>REGISTER DPP-001 / VISITS + COMPLETION BADGES</span>
           <span style={{ display: "flex", marginTop: 17, fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>THE DEPARTMENT</span>
           <span style={{ display: "flex", marginTop: 4, color: "#b6ff65", fontSize: 78, lineHeight: 1, fontWeight: 900, letterSpacing: -4 }}>PASSPORT.</span>
-          <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>12 visit stamps. 28 achievement badges. Absolutely no practical value.</span>
+          <span style={{ display: "flex", marginTop: 19, color: "#c5cec0", fontSize: 25 }}>13 visit stamps. 29 achievement badges. Absolutely no practical value.</span>
         </div>
         <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
           {["OPTIONAL / OFF BY DEFAULT", "NO ACCOUNT", "LOCAL STORAGE ONLY"].map((label) => (

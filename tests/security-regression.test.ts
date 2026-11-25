@@ -13,7 +13,7 @@ function findOpenGraphImages(directory: string): string[] {
 
 test("R4 generated social images use the default Node.js runtime, not deprecated Edge runtime", () => {
   const imageFiles = findOpenGraphImages("app");
-  assert.equal(imageFiles.length, 29, "all 29 generated social image routes must remain present");
+  assert.equal(imageFiles.length, 31, "all 31 generated social image routes must remain present");
 
   for (const path of imageFiles) {
     const source = readFileSync(path, "utf8");

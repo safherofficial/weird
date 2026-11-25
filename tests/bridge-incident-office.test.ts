@@ -66,12 +66,12 @@ test("U65 Bridge Incident Office is integrated with the division directory, Pass
   assert.match(passport, /\{ id: "bridge", number: "12"/);
   assert.match(passport, /id: "bridge-incident-filed"/);
   assert.match(passport, /"bridge-incident-filed": \{ progress: completed\.has\("bridge"\)/);
-  assert.ok(passport.includes("\"airdrop\",\n  \"bridge\",\n];"));
+  assert.ok(passport.includes("\"airdrop\",\n  \"bridge\",\n  \"governance\",\n];"));
 
   const sitemap = read("app/sitemap.ts");
   assert.match(sitemap, /"\/bridge-incident-office"/);
   const header = read("app/components/department-header.tsx");
-  assert.match(header, /12 DESTINATIONS/);
+  assert.match(header, /13 DESTINATIONS/);
   const journeys = read("app/lib/department-journeys.ts");
   assert.match(journeys, /bridge: \[/);
   assert.match(journeys, /href: "\/bridge-incident-office"/);

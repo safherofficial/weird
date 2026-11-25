@@ -72,7 +72,8 @@ export type DepartmentId =
   | "archives"
   | "daily"
   | "airdrop"
-  | "bridge";
+  | "bridge"
+  | "governance";
 
 export type PassportActivityId =
   | "audit"
@@ -85,7 +86,8 @@ export type PassportActivityId =
   | "museum-exhibit"
   | "archive-record"
   | "airdrop"
-  | "bridge";
+  | "bridge"
+  | "governance";
 
 export type BadgeRarity = "COMMON" | "UNCOMMON" | "RARE" | "LEGENDARY";
 export type BadgeIcon =
@@ -100,6 +102,7 @@ export type BadgeIcon =
   | "museum"
   | "airdrop"
   | "bridge"
+  | "governance"
   | "streak"
   | "circuit";
 
@@ -152,6 +155,7 @@ export const CORE_ACTIVITIES: PassportActivityId[] = [
   "cope",
   "airdrop",
   "bridge",
+  "governance",
 ];
 
 export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
@@ -167,6 +171,7 @@ export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
   { id: "cope", number: "10", title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX", label: "SYNTHETIC TRENCHES INDEX VIEWED" },
   { id: "airdrop", number: "11", title: "AIRDROP ENTITLEMENT OFFICE / SNAPSHOT TRIBUNAL", label: "ELIGIBILITY INTERVIEW FILED" },
   { id: "bridge", number: "12", title: "BRIDGE INCIDENT OFFICE / INTERCHAIN TRANSFER REVIEW", label: "INTERCHAIN INCIDENT FILED" },
+  { id: "governance", number: "13", title: "GOVERNANCE ACCOUNTABILITY OFFICE / QUORUM TRIBUNAL", label: "GOVERNANCE REVIEW FILED" },
 ];
 
 export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
@@ -174,7 +179,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     id: "first-case-filed",
     title: "FIRST CASE FILED",
     description: "The Department has received your first completed case.",
-    requirement: "Complete any one of the nine interactive experiences.",
+    requirement: "Complete any one of the ten interactive experiences.",
     rarity: "COMMON",
     icon: "file",
   },
@@ -217,6 +222,14 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     requirement: "Complete all seven questions in the Bridge Incident Office.",
     rarity: "COMMON",
     icon: "bridge",
+  },
+  {
+    id: "governance-tribunal-filed",
+    title: "QUORUM TRIBUNAL FILED",
+    description: "Your fictional DAO governance interview has been entered into the local Passport.",
+    requirement: "Complete all seven questions in the Governance Accountability Office.",
+    rarity: "COMMON",
+    icon: "governance",
   },
   {
     id: "roadmap-architect",
@@ -270,7 +283,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     id: "complete-circuit",
     title: "THE COMPLETE CIRCUIT",
     description: "Every interactive experience has produced a completed file.",
-    requirement: "Complete all nine interactive experiences at least once.",
+    requirement: "Complete all ten interactive experiences at least once.",
     rarity: "LEGENDARY",
     icon: "circuit",
   },
@@ -400,7 +413,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
 
 const departmentIds = new Set<string>(DEPARTMENT_STAMPS.map((stamp) => stamp.id));
 const activityIds = new Set<string>([
-  "audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "bridge", "museum-exhibit", "archive-record",
+  "audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "bridge", "governance", "museum-exhibit", "archive-record",
 ]);
 
 function isIsoDate(value: unknown): value is string {
@@ -790,6 +803,7 @@ export function getPassportAchievementStatuses(data: PassportData): PassportAchi
     "utility-witness": { progress: completed.has("utility") ? 1 : 0, target: 1 },
     "airdrop-entitlement-filed": { progress: completed.has("airdrop") ? 1 : 0, target: 1 },
     "bridge-incident-filed": { progress: completed.has("bridge") ? 1 : 0, target: 1 },
+    "governance-tribunal-filed": { progress: completed.has("governance") ? 1 : 0, target: 1 },
     "roadmap-architect": { progress: completed.has("roadmap") ? 1 : 0, target: 1 },
     "whitepaper-author": { progress: completed.has("whitepaper") ? 1 : 0, target: 1 },
     "club-admitted": { progress: completed.has("club") ? 1 : 0, target: 1 },

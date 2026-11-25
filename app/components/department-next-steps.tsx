@@ -39,9 +39,9 @@ export default function DepartmentNextSteps({ currentDepartment }: DepartmentNex
 
       <div className="department-next-steps__atlas-link">
         <div>
-          <span>INSTITUTIONAL REFERENCE / 20 THEMATIC FILES</span>
+          <span>INSTITUTIONAL REFERENCE / 21 THEMATIC FILES</span>
           <strong>TRACE THIS OFFICE THROUGH THE ENTIRE DEPARTMENT.</strong>
-          <p>Open the Case Atlas to follow shared cases, archive precedents and Museum records across all twelve divisions.</p>
+          <p>Open the Case Atlas to follow shared cases, archive precedents and Museum records across all thirteen divisions.</p>
         </div>
         <Link className="button button--quiet" href="/daily-office/atlas">OPEN THE CASE ATLAS ↗</Link>
       </div>

@@ -1,4 +1,4 @@
-export type DepartmentSection = "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily" | "airdrop" | "bridge" | "passport";
+export type DepartmentSection = "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily" | "airdrop" | "bridge" | "governance" | "passport";
 
 export type DepartmentDivision = {
   number: string; title: string; pageTitle: string; category: string; description: string;
@@ -18,12 +18,13 @@ export const departments: DepartmentDivision[] = [
   { number: "10", title: "COPIUM ADMINISTRATION", pageTitle: "THE GLOBAL COPE INDEX", category: "GLOBAL COPE INDEX / SYNTHETIC TRENCHES READINGS", description: "Check fictional daily readings for CT echo, launch FOMO, Telegram reassurance, CTO hope and post-graduation denial.", status: "COPE INDEX / SYNTHETIC", href: "/cope-index", symbol: "∞", section: "cope", mandate: "DATE-SEEDED READINGS / NO LIVE SENTIMENT DATA" },
   { number: "11", title: "AIRDROP ENTITLEMENT OFFICE", pageTitle: "THE SNAPSHOT TRIBUNAL", category: "AIRDROP SNAPSHOT / ELIGIBILITY INTERVIEW", description: "File a fictional review of points farming, snapshot assumptions, cross-chain activity, eligibility receipts and allocation expectations. No real programme or wallet is checked.", status: "ELIGIBILITY FILES ACCEPTED", href: "/airdrop-office", symbol: "◇", section: "airdrop", mandate: "AIRDROP ELIGIBILITY / SNAPSHOT RULES · POINTS · CLAIM WINDOWS" },
   { number: "12", title: "BRIDGE INCIDENT OFFICE", pageTitle: "THE BRIDGE INCIDENT OFFICE", category: "INTERCHAIN TRANSFER / INCIDENT REVIEW", description: "File a fictional review of source receipts, destination status, route evidence, confirmation states and the support ticket that became a second occupation. No live transfer is checked.", status: "INTERCHAIN INCIDENTS ACCEPTED", href: "/bridge-incident-office", symbol: "⇄", section: "bridge", mandate: "CROSS-CHAIN TRANSFERS / SOURCE CONFIRMATION · DESTINATION SETTLEMENT" },
+  { number: "13", title: "GOVERNANCE ACCOUNTABILITY OFFICE", pageTitle: "THE QUORUM TRIBUNAL", category: "DAO GOVERNANCE / PROPOSAL & QUORUM REVIEW", description: "File a fictional review of proposal scope, voter eligibility, delegation, cross-chain vote aggregation, quorum rules and execution authority. No DAO or vote is inspected.", status: "GOVERNANCE REVIEWS ACCEPTED", href: "/governance-office", symbol: "⌘", section: "governance", mandate: "GOVERNANCE PROCESS / ELIGIBILITY · VOTING WEIGHT · QUORUM · EXECUTION" },
 ];
 
 export const departmentGroups = [
   { number: "01", code: "ENTRY & SURVIVAL / DIVISIONS 01—03", title: "ENTRY & SURVIVAL", description: "The launch, the trench and the moment FOMO gets mistaken for a research process.", items: departments.slice(0, 3) },
   { number: "02", code: "INTELLIGENCE & OPERATIONS / DIVISIONS 04—08", title: "INTELLIGENCE & OPERATIONS", description: "KOL narratives, mystery wallets, emergency community takeovers, fictional token dossiers and the next supposedly life-changing gem.", items: departments.slice(3, 8) },
-  { number: "03", code: "AFTERCARE & INTERCHAIN OPERATIONS / DIVISIONS 09—12", title: "AFTERCARE & INTERCHAIN OPERATIONS", description: "The relics, official coping mechanisms, eligibility paperwork and transfer incidents left after the market has finished its business.", items: departments.slice(8, 12) },
+  { number: "03", code: "AFTERCARE, INTERCHAIN & GOVERNANCE OPERATIONS / DIVISIONS 09—13", title: "AFTERCARE & GOVERNANCE", description: "The relics, official coping mechanisms, eligibility paperwork, transfer incidents and voting rules left after the market has finished its business.", items: departments.slice(8, 13) },
 ];
 
 // Route labels intentionally mirror each destination page's H1, not its separate division identity.
