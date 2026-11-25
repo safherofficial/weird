@@ -9,9 +9,9 @@ The visitor is not an outsider who needs crypto explained. The visitor is one of
 
 **Core line:** You came for the 100x. You stayed because you can't sell at a loss.
 
-## The twelve operational divisions
+## The thirteen operational divisions
 
-Each division is an editorial identity wrapped around an existing experience. The division name is the public-facing identity; the experience label tells visitors what the existing interaction actually does. Do not imply that the site has a live service, analyst team, feed, or data source where none exists.
+Each division is an editorial identity wrapped around an existing experience. The division name is the public-facing identity; the experience label tells visitors what the interaction actually does. Divisions 11–13 are the Airdrop Entitlement Office, Bridge Incident Office and Governance Accountability Office. Do not imply that the site has a live service, analyst team, feed, or data source where none exists.
 
 | Division | Existing experience | Editorial territory |
 | --- | --- | --- |
@@ -27,14 +27,15 @@ Each division is an editorial identity wrapped around an existing experience. Th
 | 10. Copium Administration | Global Cope Index | Synthetic readings of CT echo, launch FOMO, Telegram reassurance and post-graduation denial. |
 | 11. Airdrop Entitlement Office | The Snapshot Tribunal | Fictional airdrop receipts, points farming, snapshot timing, cross-chain eligibility assumptions, claim windows and allocation expectations. |
 | 12. Bridge Incident Office | Interchain Transfer Review | Fictional source receipts, route references, destination status, confirmation stages, support tickets and settlement assumptions. |
+| 13. Governance Accountability Office | The Quorum Tribunal | Fictional proposal scope, voter eligibility, voting weight, delegation, cross-chain vote aggregation, quorum and execution accountability. |
 
-The division identities organize the Department routes and experiences; Divisions 11 and 12 add the Airdrop Entitlement Office and Bridge Incident Office as new interactive experiences. The Department remains rooted in its Solana / Crypto Twitter editorial world; the 99% Club is the explicit cross-chain exception and must never be framed as Solana-only.
+The Department remains rooted in its Solana / Crypto Twitter editorial world; the 99% Club is the explicit cross-chain exception and must never be framed as Solana-only. The Airdrop, Bridge and Governance offices may discuss cross-chain situations, but their interviews remain fictional and answer-derived.
 
 ## Daily editorial system
 
-- **The Trenches Desk** is the current UTC-date-seeded fictional briefing. Its reports, signals, wallet theories and incident language are editorial constructions, not research into live markets or real accounts. The Snapshot Tribunal and Interchain Transfer Review are separate answer-derived fictional interviews; they do not verify programme rules, wallets, networks, transactions or real eligibility / settlement.
+- **The Trenches Desk** is the current UTC-date-seeded fictional briefing. Its reports, signals, wallet theories and incident language are editorial constructions, not research into live markets or real accounts. The Snapshot Tribunal, Interchain Transfer Review and Quorum Tribunal are separate answer-derived fictional interviews; they do not verify programme rules, wallets, networks, transactions, DAOs, proposals, votes or execution.
 - **The Institutional Memory Ledger** presents fourteen consecutive fictional UTC dispatches from the same editorial system. It is a continuity device, not a record of actual events.
-- **The Department Case Atlas** indexes eighteen date-rotating fictional themes and two static incident / eligibility threads across the twelve divisions, and compares generated UTC-date windows. Recurrence counts, routing totals and gaps describe only the synthetic briefing history; they must never be written as market or community statistics.
+- **The Department Case Atlas** indexes twenty-one fictional case threads across thirteen divisions: eighteen date-rotating Trenches Desk themes plus three static threads for airdrop eligibility, bridge delivery and cross-chain governance. Each thread links a curated Archive precedent and Museum relic, creating forty-two reference destinations. The date-seeded source chronology spans 240 UTC dates; selectable comparison windows range from 14 to 120 days. Recurrence counts, routing totals and gaps describe only this synthetic editorial history and must never be written as market or community statistics.
 - **The shared Department Case Thread** routes one generated fictional case through three offices using the current division and UTC date. Its handoffs and Archive / Museum references are narrative continuity, not evidence gathered from real projects, people or wallets.
 
 ## What the Department is — and is not
@@ -45,6 +46,7 @@ The division identities organize the Department routes and experiences; Division
 - The joke is shared self-recognition. Never portray visitors as stupid, poor or inferior; the Department is in the screenshot too.
 
 ## Audience and cultural territory
+
 Write for people familiar with:
 - Crypto Twitter (CT), KOLs, shilling, paid calls, raids, quote-posts and echo chambers.
 - Solana trenches, microcaps, pump.fun, bonding curves, graduation and migration as the Department's editorial starting point.
@@ -57,6 +59,7 @@ Write for people familiar with:
 Use the culture accurately and naturally. Do not stuff every paragraph with slang. A reader should recognize the situation even when the slang is removed.
 
 ## Voice
+
 The Department speaks like a serious institution documenting unserious behaviour.
 1. **Institutional shell:** case files, incident reports, surveillance notes, memos, classifications, findings, dispositions and official notices.
 2. **Insider detail:** a bonding curve graduates; the dev goes quiet; the same KOL thesis appears across six accounts; an address is labelled smart money without evidence.
@@ -65,6 +68,7 @@ The Department speaks like a serious institution documenting unserious behaviour
 Suggested balance: mostly professional report language, with precise CT vocabulary and a short, sharp punchline. Do not write in a constant stream of memes.
 
 ## Editorial pattern
+
 1. Recognizable setup: a specific trenches situation.
 2. Departmental interpretation: a formal, overconfident classification.
 3. Punchline: one concise reversal that exposes the behaviour.
@@ -76,6 +80,7 @@ The bonding curve completed. The community called it a historic milestone. The s
 **Departmental finding:** The subject has been appointed temporary exit liquidity.
 
 ## Working glossary
+
 | Term | Editorial meaning |
 | --- | --- |
 | Ape / aped in | Entering a token, often impulsively. |
@@ -99,6 +104,7 @@ The bonding curve completed. The community called it a historic milestone. The s
 | 100x | The life-changing return fantasy that keeps the search going. |
 
 ## Quality bar for every generated item
+
 - Is the scenario anchored in recognizable crypto-culture behaviour, with Solana / Crypto Twitter specificity for the Department and cross-chain relevance for the 99% Club?
 - Does it contain a concrete behaviour or event, rather than generic crypto words?
 - Is the formal interpretation funnier than a generic meme caption?
@@ -111,6 +117,7 @@ The bonding curve completed. The community called it a historic milestone. The s
 Reject generic filler such as "crypto is volatile" or "the market is unpredictable" unless transformed into a specific, characterful incident.
 
 ## Share-copy rules
+
 - Public result, Archive and Museum posts should read as a complete miniature case: institutional hook, specific finding and one memorable punchline.
 - Keep copy designed for X at or below 235 characters before the canonical public URL is added. The reserved space prevents the link from pushing the post over the platform limit.
 - Keep the finding and punchline ahead of optional score detail or calls to action. Remove optional material before cutting the central joke.
@@ -118,6 +125,7 @@ Reject generic filler such as "crypto is volatile" or "the market is unpredictab
 - Keep the fictional / entertainment context clear. Scores remain labels inside a fictional case, not verified assessments or market data.
 
 ## Language rules
+
 - Public-facing site copy and generated content are written in English.
 - Use CT slang in context; do not force it into every sentence.
 - Keep headings short, official and memorable.
@@ -126,6 +134,7 @@ Reject generic filler such as "crypto is volatile" or "the market is unpredictab
 - No real market prices, live token data, wallet tracking or claims of on-chain research.
 
 ## Brand guardrails
+
 **We are not here to judge you. We are here because we are you.**
 
 The Department does not sell utility, alpha, access, promises or redemption. It files the paperwork after another questionable decision.
