@@ -10,24 +10,24 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Department Case Atlas",
-  description: "An interactive index of 20 fictional case threads, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and matched-period comparisons across selectable 14-to-120-day windows.",
+  description: "An interactive index of 21 fictional case threads, their assigned offices, archive precedents, Museum exhibits and date-seeded recurrence intervals and matched-period comparisons across selectable 14-to-120-day windows.",
   alternates: { canonical: "/daily-office/atlas" },
   robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     title: "THE DYOR DEPARTMENT / CASE ATLAS",
-    description: "Twenty fictional case threads across twelve Department offices, with date-seeded recurrence and matched-period comparisons. No live market activity.",
+    description: "Twenty-one fictional case threads across thirteen Department offices, with date-seeded recurrence and matched-period comparisons. No live market activity.",
     images: [{
       url: "/daily-office/atlas/opengraph-image",
       width: 1200,
       height: 630,
-      alt: "THE DYOR DEPARTMENT / CASE ATLAS — an index of fictional crypto-trenches themes across ten offices, with date-seeded recurrence and matched-period comparisons.",
+      alt: "THE DYOR DEPARTMENT / CASE ATLAS — an index of fictional crypto-trenches themes across thirteen offices, with date-seeded recurrence and matched-period comparisons.",
     }],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DYOR DEPARTMENT / CASE ATLAS",
-    description: "Twenty fictional case threads across twelve offices. Recurrence and matched-period comparisons, not market insight.",
+    description: "Twenty-one fictional case threads across thirteen offices. Recurrence and matched-period comparisons, not market insight.",
     images: ["/daily-office/atlas/opengraph-image"],
   },
 };
@@ -54,13 +54,13 @@ export default function DepartmentCaseAtlasPage() {
       <div className="department-case-atlas-shell shell" id="content-start" tabIndex={-1}>
         <header className="department-case-atlas-intro">
           <div className="audit-intro__meta">
-            <span>INSTITUTIONAL REFERENCE / 20 THEMATIC THREADS</span>
+            <span>INSTITUTIONAL REFERENCE / 21 THEMATIC THREADS</span>
             <span>240 UTC ISSUES AVAILABLE / THROUGH {asOfDate}</span>
           </div>
           <p className="eyebrow">THE DYOR DEPARTMENT / CROSS-DIVISION INDEX</p>
           <h1>THE CASE<br /><span>ATLAS.</span></h1>
           <p className="audit-intro__lead">
-            Eighteen date-rotating fictional themes and two static incident / eligibility files. Twelve divisions. Forty archive and Museum reference points. The Atlas shows who handles each file, which old records inform it, how often the theme reappeared and how many UTC days separated its fictional daily filings.
+            Eighteen date-rotating fictional themes and three static incident / eligibility / governance files. Thirteen divisions. Forty-two archive and Museum reference points. The Atlas shows who handles each file, which old records inform it, how often the theme reappeared and how many UTC days separated its fictional daily filings.
           </p>
           <div className="department-case-atlas-intro__notice">
             <span>INDEX METHOD / DETERMINISTIC REFERENCE DATA</span>

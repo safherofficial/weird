@@ -34,8 +34,8 @@ const sections = [
   {
     title: "04 / PUBLIC CASES AND PROJECT LABELS",
     paragraphs: [
-      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, cross-chain 99% Club membership, Copium Administration personal calibration, Airdrop Entitlement Office interview and Bridge Incident Office interview. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's sanitized project designation in the shareable URL.",
-      "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. The Bridge Incident Office scores only the selected answers and does not verify a transfer, network, bridge, wallet or refund. Visitors are responsible for deciding whether to publish or share a case link.",
+      "Visitors may create public case links for the FOMO Control Unit Audit, Pump.fun Intelligence simulator, 100X Research Bureau inspection, CTO Emergency Office roadmap, Exit Liquidity Department token dossier, cross-chain 99% Club membership, Copium Administration personal calibration, Airdrop Entitlement Office interview, Bridge Incident Office interview and Governance Accountability Office interview. Anyone with a case URL may view its contents. CTO Emergency Office and Exit Liquidity Department links include the visitor's sanitized project designation in the shareable URL.",
+      "Do not enter personal information, private names, confidential business details, passwords, wallet addresses or other sensitive information. The Bridge Incident Office scores only the selected answers and does not verify a transfer, network, bridge, wallet or refund. The Governance Accountability Office scores only selected answers and does not verify a DAO, proposal, voting power, delegation, quorum or execution. Visitors are responsible for deciding whether to publish or share a case link.",
     ],
   },
   {
