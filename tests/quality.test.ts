@@ -41,7 +41,7 @@ import { archiveRecords, filterArchiveRecords } from "../app/archives/archive-da
 import { exhibits, searchExhibits } from "../app/museum/museum-data";
 import { departmentGroups, departments, divisionNavigationGroups } from "../app/divisions";
 import { departmentJourneys } from "../app/lib/department-journeys";
-import { CLUB_BADGE_IDS, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
+import { CLUB_BADGE_IDS, CORE_ACTIVITIES, DEPARTMENT_STAMPS, PASSPORT_ACHIEVEMENTS, getDailyOfficeVisitStreak, getPassportAchievementStatuses, type PassportData } from "../app/passport/passport-store";
 
 type ResultRecord = Record<string, unknown>;
 type EngineSpec = {
