@@ -1,4 +1,4 @@
-export type DepartmentSection = "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily" | "passport";
+export type DepartmentSection = "home" | "audit" | "simulator" | "utility" | "roadmap" | "whitepaper" | "museum" | "club" | "cope" | "archives" | "daily" | "airdrop" | "passport";
 
 export type DepartmentDivision = {
   number: string; title: string; pageTitle: string; category: string; description: string;
@@ -16,12 +16,13 @@ export const departments: DepartmentDivision[] = [
   { number: "08", title: "100X RESEARCH BUREAU", pageTitle: "THE TOKEN-PURPOSE INSPECTOR", category: "TOKEN UTILITY / NARRATIVE INSPECTION", description: "Before calling a microcap the next 100x, submit its fictional utility claims for seven questions and three scores that should never be mistaken for alpha.", status: "CLAIMS / UNVERIFIED", href: "/utility-inspector", symbol: "⌗", section: "utility", mandate: "TOKEN NARRATIVE REVIEW / NO ACTUAL ALPHA INSIDE" },
   { number: "09", title: "BAGHOLDER REHABILITATION", pageTitle: "THE TRENCHES RELIC MUSEUM", category: "MUSEUM OF TRENCHES RELICS", description: "Visit the permanent collection of missed exits, bonding-curve trophies, copied KOL screenshots, CTO banners and conviction that outlived the chart.", status: "COLLECTION OPEN", href: "/museum", symbol: "▧", section: "museum", mandate: "RECOVERY COLLECTION / NO REFUNDS · NO ACTUAL TREATMENT" },
   { number: "10", title: "COPIUM ADMINISTRATION", pageTitle: "THE GLOBAL COPE INDEX", category: "GLOBAL COPE INDEX / SYNTHETIC TRENCHES READINGS", description: "Check fictional daily readings for CT echo, launch FOMO, Telegram reassurance, CTO hope and post-graduation denial.", status: "COPE INDEX / SYNTHETIC", href: "/cope-index", symbol: "∞", section: "cope", mandate: "DATE-SEEDED READINGS / NO LIVE SENTIMENT DATA" },
+  { number: "11", title: "AIRDROP ENTITLEMENT OFFICE", pageTitle: "THE SNAPSHOT TRIBUNAL", category: "AIRDROP SNAPSHOT / ELIGIBILITY INTERVIEW", description: "File a fictional review of points farming, snapshot assumptions, cross-chain activity, eligibility receipts and allocation expectations. No real programme or wallet is checked.", status: "ELIGIBILITY FILES ACCEPTED", href: "/airdrop-office", symbol: "◇", section: "airdrop", mandate: "AIRDROP ELIGIBILITY / SNAPSHOT RULES · POINTS · CLAIM WINDOWS" },
 ];
 
 export const departmentGroups = [
   { number: "01", code: "ENTRY & SURVIVAL / DIVISIONS 01—03", title: "ENTRY & SURVIVAL", description: "The launch, the trench and the moment FOMO gets mistaken for a research process.", items: departments.slice(0, 3) },
   { number: "02", code: "INTELLIGENCE & OPERATIONS / DIVISIONS 04—08", title: "INTELLIGENCE & OPERATIONS", description: "KOL narratives, mystery wallets, emergency community takeovers, fictional token dossiers and the next supposedly life-changing gem.", items: departments.slice(3, 8) },
-  { number: "03", code: "REHABILITATION & COPE / DIVISIONS 09—10", title: "REHABILITATION & COPE", description: "The artifacts, emotional paperwork and official coping mechanisms left after the market has finished its business.", items: departments.slice(8, 10) },
+  { number: "03", code: "AFTERCARE & ENTITLEMENT / DIVISIONS 09—11", title: "AFTERCARE & ENTITLEMENT", description: "The relics, official coping mechanisms and eligibility paperwork left after the market has finished its business.", items: departments.slice(8, 11) },
 ];
 
 // Route labels intentionally mirror each destination page's H1, not its separate division identity.

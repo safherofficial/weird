@@ -23,7 +23,7 @@ type DepartmentNavItem = {
 const navigationGroups = divisionNavigationGroups;
 
 const passportItem: DepartmentNavItem = {
-  number: "11",
+  number: "12",
   label: "THE DEPARTMENT PASSPORT",
   href: "/passport",
   section: "passport",

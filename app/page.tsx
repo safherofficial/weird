@@ -91,8 +91,8 @@ export default function Home() {
         </div>
 
         <div className="hq-hero__register" aria-label="Department overview">
-          <div><strong>10</strong><span>DIVISIONS</span></div>
-          <div><strong>11</strong><span>PUBLIC DESTINATIONS</span></div>
+          <div><strong>11</strong><span>DIVISIONS</span></div>
+          <div><strong>12</strong><span>PUBLIC DESTINATIONS</span></div>
           <div><strong>0</strong><span>FINANCIAL ADVICE</span></div>
           <p>YOU ARE NOT THE FIRST. YOU WILL NOT BE THE LAST.</p>
         </div>
@@ -175,7 +175,7 @@ export default function Home() {
             <SectionLabel>INTERNAL ROUTING / TRENCHES AFTERCARE</SectionLabel>
             <h2 id="hq-directory-title">YOUR NEXT<br /><span>BAD DECISION.</span></h2>
           </div>
-          <p>Ten numbered divisions. Three routing groups.<br />No alpha. No financial recovery plan.</p>
+          <p>Eleven numbered divisions. Three routing groups.<br />No alpha. No financial recovery plan.</p>
         </div>
 
         <div className="hq-directory__groups">

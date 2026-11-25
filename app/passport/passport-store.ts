@@ -70,7 +70,8 @@ export type DepartmentId =
   | "club"
   | "cope"
   | "archives"
-  | "daily";
+  | "daily"
+  | "airdrop";
 
 export type PassportActivityId =
   | "audit"
@@ -81,7 +82,8 @@ export type PassportActivityId =
   | "club"
   | "cope"
   | "museum-exhibit"
-  | "archive-record";
+  | "archive-record"
+  | "airdrop";
 
 export type BadgeRarity = "COMMON" | "UNCOMMON" | "RARE" | "LEGENDARY";
 export type BadgeIcon =
@@ -94,6 +96,7 @@ export type BadgeIcon =
   | "club"
   | "cope"
   | "museum"
+  | "airdrop"
   | "streak"
   | "circuit";
 
@@ -136,7 +139,7 @@ export type PassportAchievementStatus = PassportAchievement & {
   target: number;
 };
 
-const CORE_ACTIVITIES: PassportActivityId[] = [
+export const CORE_ACTIVITIES: PassportActivityId[] = [
   "audit",
   "simulator",
   "utility",
@@ -144,6 +147,7 @@ const CORE_ACTIVITIES: PassportActivityId[] = [
   "whitepaper",
   "club",
   "cope",
+  "airdrop",
 ];
 
 export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
@@ -157,6 +161,7 @@ export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
   { id: "utility", number: "08", title: "100X RESEARCH BUREAU / TOKEN-PURPOSE INSPECTION", label: "TOKEN PURPOSE REVIEWED" },
   { id: "museum", number: "09", title: "BAGHOLDER REHABILITATION / TRENCHES RELIC MUSEUM", label: "TRENCHES RELICS VISITED" },
   { id: "cope", number: "10", title: "COPIUM ADMINISTRATION / GLOBAL COPE INDEX", label: "SYNTHETIC TRENCHES INDEX VIEWED" },
+  { id: "airdrop", number: "11", title: "AIRDROP ENTITLEMENT OFFICE / SNAPSHOT TRIBUNAL", label: "ELIGIBILITY INTERVIEW FILED" },
 ];
 
 export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
@@ -164,7 +169,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     id: "first-case-filed",
     title: "FIRST CASE FILED",
     description: "The Department has received your first completed case.",
-    requirement: "Complete any one of the seven interactive experiences.",
+    requirement: "Complete any one of the eight interactive experiences.",
     rarity: "COMMON",
     icon: "file",
   },
@@ -191,6 +196,14 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     requirement: "Complete the 100X Research Bureau token-purpose inspection.",
     rarity: "COMMON",
     icon: "utility",
+  },
+  {
+    id: "airdrop-entitlement-filed",
+    title: "SNAPSHOT TRIBUNAL FILED",
+    description: "Your fictional airdrop eligibility interview has been entered into the local Passport.",
+    requirement: "Complete all seven questions in the Airdrop Entitlement Office.",
+    rarity: "COMMON",
+    icon: "airdrop",
   },
   {
     id: "roadmap-architect",
@@ -244,7 +257,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
     id: "complete-circuit",
     title: "THE COMPLETE CIRCUIT",
     description: "Every interactive experience has produced a completed file.",
-    requirement: "Complete all seven interactive experiences at least once.",
+    requirement: "Complete all eight interactive experiences at least once.",
     rarity: "LEGENDARY",
     icon: "circuit",
   },
@@ -374,7 +387,7 @@ export const PASSPORT_ACHIEVEMENTS: PassportAchievement[] = [
 
 const departmentIds = new Set<string>(DEPARTMENT_STAMPS.map((stamp) => stamp.id));
 const activityIds = new Set<string>([
-  "audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "museum-exhibit", "archive-record",
+  "audit", "simulator", "utility", "roadmap", "whitepaper", "club", "cope", "airdrop", "museum-exhibit", "archive-record",
 ]);
 
 function isIsoDate(value: unknown): value is string {
@@ -762,6 +775,7 @@ export function getPassportAchievementStatuses(data: PassportData): PassportAchi
     "forensic-auditor": { progress: completed.has("audit") ? 1 : 0, target: 1 },
     "paper-survivor": { progress: completed.has("simulator") ? 1 : 0, target: 1 },
     "utility-witness": { progress: completed.has("utility") ? 1 : 0, target: 1 },
+    "airdrop-entitlement-filed": { progress: completed.has("airdrop") ? 1 : 0, target: 1 },
     "roadmap-architect": { progress: completed.has("roadmap") ? 1 : 0, target: 1 },
     "whitepaper-author": { progress: completed.has("whitepaper") ? 1 : 0, target: 1 },
     "club-admitted": { progress: completed.has("club") ? 1 : 0, target: 1 },

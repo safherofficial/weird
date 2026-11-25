@@ -89,6 +89,11 @@ const officeEvidenceProfiles: Record<OfficeSection, OfficeEvidenceProfile> = {
     outputLabel: "SYNTHETIC CONFIDENCE READING",
     reviewQuestion: "How much of the reading is confidence theatre rather than evidence about the fictional case?",
   },
+  airdrop: {
+    source: "RISK DEPARTMENT",
+    outputLabel: "SNAPSHOT / ELIGIBILITY DUE-PROCESS REVIEW",
+    reviewQuestion: "Are qualifying actions, snapshot timing, wallet attribution and appeal conditions actually stated in the fictional record?",
+  },
   utility: {
     source: "INCIDENT REPORT",
     outputLabel: "TOKEN-PURPOSE CLAIM REVIEW",
@@ -168,11 +173,11 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
     exhibitSlug: "the-screenshot-of-a-screenshot",
   },
   "BUNDLE / WALLET THEORIES": {
-    narrative: "A wallet diagram is promoted as proof of coordinated intent. The archive records what is visible and what is unknown, KOL Surveillance traces the caption's source, and the dossier office checks whether the claimed distribution is actually documented.",
+    narrative: "A wallet diagram is promoted as proof of coordinated intent, then used to support a points and eligibility rumour. The archive records what is visible and unknown, KOL Surveillance traces the caption's source, and the Snapshot Tribunal checks which programme rules the claim actually relies on.",
     offices: [
       { section: "archives", responsibility: "Separates fictional transaction observations from assumptions about ownership." },
       { section: "daily", responsibility: "Checks whether the wallet story is being repeated as independent confirmation." },
-      { section: "whitepaper", responsibility: "Reviews whether supply and allocation claims have any supporting context." },
+      { section: "airdrop", responsibility: "Separates recorded activity from snapshot eligibility and allocation assumptions." },
     ],
     archiveSlug: "the-wallet-graph-does-not-prove-ownership",
     exhibitSlug: "the-bundle-family-portrait",
@@ -287,6 +292,18 @@ export const departmentCaseThreads: Record<string, CaseThreadDefinition> = {
     archiveSlug: "the-curve-completed-the-thesis-did-not",
     exhibitSlug: "the-bonding-curve-progress-bar",
   },
+
+  "AIRDROP SNAPSHOT / ELIGIBILITY APPEAL": {
+    narrative: "The applicant spread activity across networks, collected points and expected every task to qualify. The Snapshot Tribunal checks the published-rule assumptions, the Archive preserves the appeal and the 99% Club records the cross-chain aftercare story without turning activity into an entitlement.",
+    offices: [
+      { section: "airdrop", responsibility: "Reviews the fictional qualifying actions, snapshot window, attribution rules and expectation of an allocation." },
+      { section: "archives", responsibility: "Preserves the eligibility notice and separates recorded evidence from retrospective assumptions." },
+      { section: "club", responsibility: "Records the cross-chain survivor narrative without treating points or activity as a promised reward." },
+    ],
+    archiveSlug: "airdrop-snapshot-eligibility-appeal",
+    exhibitSlug: "the-airdrop-passport-stamp-book",
+  },
+
   "BAGHOLDER ENTRY HISTORY": {
     narrative: "The entry price has been promoted to a historical event. FOMO Control reconstructs the original decision, the survivor registry records the aftercare paperwork, and the Museum preserves the artifact that the subject refuses to call an exit warning.",
     offices: [

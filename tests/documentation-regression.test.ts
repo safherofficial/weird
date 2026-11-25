@@ -7,7 +7,7 @@ const read = (path: string) => readFileSync(path, "utf8");
 test("R5 README inventory matches the current routes, Passport count and quality workflow", () => {
   const readme = read("README.md");
 
-  assert.match(readme, /26 distinct achievement badges/);
+  assert.match(readme, /27 distinct achievement badges/);
   assert.match(readme, /twenty curated fictional records across five categories/);
   assert.doesNotMatch(readme, /sixteen curated fictional records across five categories/i);
   assert.match(readme, /nineteen fictional curated artifacts across four collections/);
@@ -24,6 +24,7 @@ test("R5 README inventory matches the current routes, Passport count and quality
     "app/utility-inspector/page.tsx",
     "app/museum/page.tsx",
     "app/cope-index/page.tsx",
+    "app/airdrop-office/page.tsx",
     "app/daily-office/atlas/page.tsx",
     "app/daily-office/ledger/page.tsx",
   ]) {

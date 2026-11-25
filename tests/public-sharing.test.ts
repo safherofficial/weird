@@ -95,9 +95,19 @@ const publicCases: PublicCaseContract[] = [
     builder: "buildPersonalCopeResult",
     encoder: "encodeCopeCode",
   },
+  {
+    name: "Airdrop Entitlement Tribunal",
+    route: "/airdrop-office",
+    page: "app/airdrop-office/case/[code]/page.tsx",
+    image: "app/airdrop-office/case/[code]/opengraph-image.tsx",
+    client: "app/airdrop-office/airdrop-client.tsx",
+    decoder: "decodeAirdropCode",
+    builder: "buildAirdropResult",
+    encoder: "encodeAirdropCode",
+  },
 ];
 
-test("all seven public result pages expose a complete noindex share and metadata contract", () => {
+test("all eight public result pages expose a complete noindex share and metadata contract", () => {
   for (const item of publicCases) {
     const page = readRepoFile(item.page);
     assert.ok(page.includes("export async function generateMetadata"), item.name + " metadata function");
@@ -119,7 +129,7 @@ test("all seven public result pages expose a complete noindex share and metadata
   }
 });
 
-test("all seven challenge links are understood by their matching intake experiences", () => {
+test("all eight challenge links are understood by their matching intake experiences", () => {
   for (const item of publicCases) {
     const client = readRepoFile(item.client);
     assert.ok(client.includes(item.decoder + "("), item.name + " intake decodes shared challenge codes");
@@ -131,7 +141,7 @@ test("all seven challenge links are understood by their matching intake experien
   }
 });
 
-test("all seven dynamic Open Graph endpoints reconstruct the matching fictional result", () => {
+test("all eight dynamic Open Graph endpoints reconstruct the matching fictional result", () => {
   for (const item of publicCases) {
     const image = readRepoFile(item.image);
     assert.ok(image.includes('from "next/og"'), item.name + " uses Next's Open Graph image renderer");
@@ -345,7 +355,7 @@ test("U54 Case Atlas and Institutional Memory Ledger use concise route-specific 
   assert.ok(atlasCopy.length <= DEPARTMENT_SHARE_TEXT_LIMIT, "Atlas copy must fit the shared text budget");
   assert.ok(atlasCopy.length + 1 + 23 <= 280, "Atlas copy must reserve room for X's short URL");
   assert.ok(atlasCopy.startsWith("THE DYOR DEPARTMENT / CASE ATLAS."));
-  assert.match(atlasCopy, /18 fictional themes routed across 10 offices/);
+  assert.match(atlasCopy, /19 fictional themes routed across 11 offices/);
   assert.match(atlasCopy, /Every route leads to a record/);
 
   const records = buildInstitutionalMemory("2026-11-24", 14).slice().reverse();
