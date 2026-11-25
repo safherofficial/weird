@@ -129,9 +129,9 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
       description: "Read the preserved snapshot eligibility appeal and compare the claim with its fictional criteria, source record and cross-chain assumptions.",
     },
     {
-      href: "/club",
-      title: "CROSS-CHAIN TRENCHES / 99% CLUB",
-      description: "Take the eligibility paperwork back to the fictional cross-chain survivor registry. Points are not a membership benefit or allocation.",
+      href: "/governance-office",
+      title: "GOVERNANCE ACCOUNTABILITY OFFICE / THE QUORUM TRIBUNAL",
+      description: "Move from eligibility claims to the rules that establish who may vote, how quorum is counted and who can execute a decision.",
     },
   ],
   bridge: [
@@ -146,9 +146,19 @@ export const departmentJourneys: Record<DepartmentJourneyId, readonly Department
       description: "Visit the fictional queue ticket that records a completed source step and an unanswered destination-side status.",
     },
   ],
-  cope: [
+  governance: [
     {
-      href: "/daily-office",
+      href: "/archives",
+      title: "WHALE & WALLET INVESTIGATION / GOVERNANCE CIRCULAR",
+      description: "Read Circular 04 and examine why vote totals from separate networks need a documented common quorum before they can describe one mandate.",
+    },
+    {
+      href: "/museum",
+      title: "BAGHOLDER REHABILITATION / THE MULTICHAIN QUORUM COMPASS",
+      description: "Visit the fictional compass whose needles follow four dashboards and whose quorum answer changes whenever another network joins the count.",
+    },
+  ],
+  cope: [
       title: "THE TRENCHES DESK / DAILY CT BRIEFING",
       description: "Read today's fictional CT briefing, pump.fun incident report, wallet theory and bagholder post-mortem.",
     },
