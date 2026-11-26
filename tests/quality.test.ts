@@ -2515,6 +2515,7 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   const contribution = readFileSync("app/club/club-contribution-studio.tsx", "utf8");
   const participation = readFileSync("app/club/club-participation-loop.tsx", "utf8");
   const journeyStyles = readFileSync("app/club/club-journey.module.css", "utf8");
+  const lazyWarRoom = readFileSync("app/club/club-war-room-lazy.tsx", "utf8");
 
   const stages = [
     'id="club-journey-identity"',
@@ -2537,7 +2538,7 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
     "<ClubCampaignContinuity />",
     "<ClubCultureDesk />",
     "<ClubContributionStudio />",
-    "<ClubWarRoom />",
+    "<ClubWarRoomLazy />",
     "<ClubParticipationLoop />",
     "<ClubChallenges />",
     "<ClubCommunityIntelligence />",
@@ -2561,6 +2562,11 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   assert.ok(journeyStyles.includes(".nav"));
   assert.ok(journeyStyles.includes("@media"));
   assert.ok(journeyStyles.includes("scroll-margin-top"));
+  assert.ok(page.includes("<ClubWarRoomLazy />"));
+  assert.ok(lazyWarRoom.includes('dynamic(() => import("./club-war-room")'));
+  assert.ok(lazyWarRoom.includes("IntersectionObserver"));
+  assert.ok(lazyWarRoom.includes('rootMargin: "900px 0px"'));
+  assert.doesNotMatch(page, /import ClubWarRoom from ["']\.\/club-war-room["']/);
 });
 
 test("U27.6 production experience keeps collection counts, filter semantics and responsive navigation accurate", () => {
@@ -3095,7 +3101,7 @@ test("U28.8 Club War Room creates browser-local meme PNGs and shareable public c
     assert.ok(challenge.postText.length > 60 && challenge.postText.length <= 280, challenge.id + " should fit an X post before its URL");
     assert.ok(challenge.postText.includes("#The99PercentClub"));
   }
-  assert.ok(page.includes("<ClubWarRoom />"));
+  assert.ok(page.includes("<ClubWarRoomLazy />"));
   assert.ok(warRoom.includes("canvas.toBlob"));
   assert.ok(warRoom.includes("navigator.canShare"));
   assert.ok(warRoom.includes("navigator.share"));
@@ -3455,7 +3461,7 @@ test("U33 Contribution Studio builds editable faction-aware public drafts withou
 
   assert.ok(page.includes("<ClubContributionStudio />"));
   assert.ok(page.indexOf("<ClubCultureDesk />") < page.indexOf("<ClubContributionStudio />"));
-  assert.ok(page.indexOf("<ClubContributionStudio />") < page.indexOf("<ClubWarRoom />"));
+  assert.ok(page.indexOf("<ClubContributionStudio />") < page.indexOf("<ClubWarRoomLazy />"));
   assert.ok(component.includes("key={continuity.weekKey"));
   assert.ok(component.includes("useClubCampaignContext()"));
   assert.ok(context.includes("PASSPORT_UPDATED_EVENT"));
