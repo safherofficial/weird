@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ThemeSwitcher from "./theme-switcher";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { recordDepartmentVisit } from "../passport/passport-store";
@@ -156,6 +157,7 @@ export default function DepartmentHeader({
         </nav>
 
         <div className="site-header__actions">
+          <ThemeSwitcher />
           <Link className="header-cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </Link>

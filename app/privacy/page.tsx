@@ -5,7 +5,7 @@ import DepartmentFooter from "../components/department-footer";
 
 export const metadata: Metadata = {
   title: "Privacy Notice",
-  description: "How THE DYOR DEPARTMENT handles local archives and Passport progress, public result URLs, self-hosted fonts and basic hosting requests.",
+  description: "How THE DYOR DEPARTMENT handles local archives, Passport and theme preferences, public result URLs, self-hosted fonts and hosting requests.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -25,10 +25,11 @@ const sections = [
     ],
   },
   {
-    title: "03 / LOCAL AUDIT ARCHIVE",
+    title: "03 / LOCAL BROWSER STORAGE",
     paragraphs: [
       "The DYOR Audit offers an optional archive of up to five result files in the visitor's browser using localStorage. A saved record contains the audit version, selected answer indexes and the time it was saved. The archive is not uploaded to an application database and is not synchronized across devices.",
       "Visitors can open or delete individual saved cases from the Audit interface. Clearing this site's stored data in the browser also removes the local archive. If local storage is unavailable, the Audit can still be completed without saving.",
+      "The color theme selector also saves the chosen palette identifier in browser localStorage on this device. This preference is separate from the Audit archive and Department Passport, contains no personal information, is not sent to the Department and is not used for analytics or tracking. When browser storage is unavailable, the selected palette lasts only until the page is reloaded.",
     ],
   },
   {

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Mono, Space_Grotesk } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+import "./theme-system.css";
 import "./accessibility-refinements.css";
 import "./passport/achievements.css";
 import "./components/laser-cursor.css";
@@ -62,8 +64,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en"
       id="page-scroll-region"
+      data-theme="terminal"
+      suppressHydrationWarning
       className={dmMono.variable + " " + spaceGrotesk.variable}
     >
+      <head>
+        <Script src="/theme-init.js" strategy="beforeInteractive" />
+      </head>
       <body>
         {children}
         <CircuitClickReveal />
