@@ -39,7 +39,7 @@ export default function Home() {
             </div>
             <div className="hq-hero__disclaimer">
               <span className="hq-hero__disclaimer-mark">!</span>
-              <span>TOKEN PLANNED. DETAILS NOT ANNOUNCED.<br />NO ALPHA. NO EXIT STRATEGY.<br />JUST OFFICIAL PAPERWORK FOR FICTIONAL DEGEN BEHAVIOUR.</span>
+              <span>TOKEN CONFIRMED. DETAILS NOT ANNOUNCED.<br />NO ALPHA. NO EXIT STRATEGY.<br />JUST OFFICIAL PAPERWORK FOR FICTIONAL DEGEN BEHAVIOUR.</span>
             </div>
           </div>
 
@@ -179,7 +179,7 @@ export default function Home() {
             </span>
           ))}
         </div>
-        <p className="hq-club__disclaimer">“99%” IS A SATIRICAL CLUB IDENTITY, NOT A MEASURED STATISTIC. MEMBERSHIP IS FICTIONAL. A CLUB TOKEN IS PLANNED, BUT ITS DETAILS ARE NOT ANNOUNCED; THERE IS NO VERIFIED ROSTER OR FINANCIAL BENEFIT.</p>
+        <p className="hq-club__disclaimer">“99%” IS A SATIRICAL CLUB IDENTITY, NOT A MEASURED STATISTIC. MEMBERSHIP IS FICTIONAL. A CLUB TOKEN IS CONFIRMED, BUT ITS DETAILS ARE NOT ANNOUNCED; THERE IS NO VERIFIED ROSTER OR FINANCIAL BENEFIT.</p>
       </section>
 
       <div className="shell">
