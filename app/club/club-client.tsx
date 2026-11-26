@@ -63,7 +63,7 @@ function makeMembershipSvg(result: ClubResult) {
     '<text x="580" y="439" fill="#a5b49b" font-family="monospace" font-size="10">' + factionMotto + '</text>' +
     '<text x="580" y="467" fill="#8d9a83" font-family="monospace" font-size="11">MEMBERSHIP / ' + escapeXml(result.membershipClass) + '</text>' +
     '<text x="580" y="490" fill="#ff8580" font-family="monospace" font-size="11">BENEFITS: NONE / EXPECTATIONS: MANAGED</text>' +
-    '<text x="68" y="600" fill="#b6ff65" font-family="monospace" font-size="15" font-weight="bold">NOT A REAL MEMBERSHIP / NO FINANCIAL BENEFITS / NO TOKEN / NO REAL 99% STATISTIC</text>' +
+    '<text x="68" y="600" fill="#b6ff65" font-family="monospace" font-size="15" font-weight="bold">FICTIONAL MEMBERSHIP / NO BENEFITS / TOKEN DETAILS UNANNOUNCED / NO REAL 99% STATISTIC</text>' +
     '<text x="1132" y="600" text-anchor="end" fill="#82907b" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
     '</svg>'
   );
@@ -149,7 +149,7 @@ export default function ClubClient() {
       ...result.crossRead.signals.map((signal) => signal.label + " / " + signal.answer + " / " + signal.detail),
       result.profile.motto,
       CLUB_SOCIAL_HASHTAGS,
-      "This is a fictional entertainment membership. '99%' is a satirical club name, not a statistic about real investors or markets. No benefits, token or financial product are provided.",
+      "This is a fictional entertainment membership. '99%' is a satirical club name, not a statistic about real investors or markets. The membership result carries no benefits or financial product. Separately, a 99% Club token is confirmed, but its official details have not been announced; this result does not establish token eligibility or entitlement.",
       "PUBLIC MEMBER FILE: " + caseUrl,
       "NOMINATE ANOTHER DEGEN: " + challengeUrl,
     ].join("\n");
@@ -285,7 +285,7 @@ export default function ClubClient() {
 
         <div className="club-result__disclaimer">
           <strong>IMPORTANT / PLEASE DO NOT CITE THIS AT A CONFERENCE</strong>
-          <p>THE 99% CLUB is a fictional satire membership. The name is not a statistic about real investors, traders, losses or market participants. Membership has no benefits, token, financial value or real-world status.</p>
+          <p>THE 99% CLUB is a fictional satire membership. The name is not a statistic about real investors, traders, losses or market participants. The membership result itself has no benefits, financial value or real-world status. Separately, a 99% Club token is confirmed, but its official details have not been announced; this result does not confer token rights or eligibility.</p>
         </div>
 
         <div className="club-actions">

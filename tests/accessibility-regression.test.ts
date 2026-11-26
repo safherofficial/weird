@@ -38,11 +38,12 @@ test("R2 archived daily dispatches expose a valid heading outline without changi
   assert.ok(styles.includes(".daily-office-section h2"));
 });
 
-test("R2 homepage membership card is grouped content, not a nested complementary landmark", () => {
+test("R2 compact homepage Club teaser avoids repeating the full membership card", () => {
   const home = readFileSync("app/page.tsx", "utf8");
   const clubCampaign = readFileSync("app/club/club-campaign-engine-desk.tsx", "utf8");
-  assert.ok(home.includes('<div className="hq-club__membership" role="group" aria-label="The 99% Club identity">'));
-  assert.ok(!home.includes('<aside className="hq-club__membership"'));
+  assert.ok(home.includes('className="hq-club hq-club--compact shell"'));
+  assert.ok(home.includes('href="/club">APPLY FOR MEMBERSHIP'));
+  assert.ok(!home.includes('hq-club__membership'));
   assert.ok(clubCampaign.includes('<div className="club-campaign-engine__next" role="group" aria-label="Next week campaign preview">'));
   assert.ok(!clubCampaign.includes('<aside className="club-campaign-engine__next">'));
   const accessibilityStyles = readFileSync("app/accessibility-refinements.css", "utf8");

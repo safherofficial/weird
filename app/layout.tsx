@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { DM_Mono, Space_Grotesk } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+import "./theme-system.css";
 import "./accessibility-refinements.css";
 import "./passport/achievements.css";
 import "./components/laser-cursor.css";
@@ -12,6 +15,20 @@ import LaserCursor from "./components/laser-cursor";
 import EnergyScrollbar from "./components/energy-scrollbar";
 import ScrollToTop from "./components/scroll-to-top";
 
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-dm-mono",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: "variable",
+  display: "swap",
+  variable: "--font-space-grotesk",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
@@ -20,19 +37,19 @@ export const metadata: Metadata = {
     template: "%s | THE DYOR DEPARTMENT",
   },
   description:
-    "The fictional aftercare department for Crypto Twitter, Solana memecoin trenches and pump.fun culture, with the 99% Club satirizing investor behaviour across all chains. FOMO, KOL calls and bagholder behaviour. No token, no alpha, no financial advice.",
+    "The fictional aftercare department for Crypto Twitter, Solana memecoin trenches and pump.fun culture. The 99% Club token is confirmed; its official details have not been announced. No alpha, no financial advice.",
   icons: {
     icon: "/icon.svg",
   },
   openGraph: {
     title: "THE DYOR DEPARTMENT",
-    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains. Its token is confirmed; official details have not been announced.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DYOR DEPARTMENT",
-    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains. Its token is confirmed; official details have not been announced.",
     images: ["/opengraph-image"],
   },
 };
@@ -44,14 +61,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" id="page-scroll-region">
+    <html
+      lang="en"
+      id="page-scroll-region"
+      data-theme="terminal"
+      suppressHydrationWarning
+      className={dmMono.variable + " " + spaceGrotesk.variable}
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        />
+        <Script src="/theme-init.js" strategy="beforeInteractive" />
       </head>
       <body>
         {children}

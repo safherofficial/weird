@@ -5,7 +5,7 @@ import DepartmentFooter from "../components/department-footer";
 
 export const metadata: Metadata = {
   title: "Privacy Notice",
-  description: "How THE DYOR DEPARTMENT handles local archives and Passport progress, public result URLs, external fonts and basic hosting requests.",
+  description: "How THE DYOR DEPARTMENT handles local archives, Passport and theme preferences, public result URLs, self-hosted fonts and hosting requests.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -13,7 +13,7 @@ const sections = [
   {
     title: "01 / WHAT THIS SITE IS",
     paragraphs: [
-      "THE DYOR DEPARTMENT is a satirical entertainment website. It does not offer financial services, accounts, paid products, token sales, wallet connections or trading functionality.",
+      "THE DYOR DEPARTMENT is a satirical entertainment website. A meme token associated with THE 99% CLUB is confirmed but has not been announced or launched. The site currently offers no token sale, purchase, claim, wallet connection or trading functionality.",
       "This notice describes the application's current behaviour. It is an operational transparency statement, not confirmation of legal compliance in every jurisdiction.",
     ],
   },
@@ -25,10 +25,11 @@ const sections = [
     ],
   },
   {
-    title: "03 / LOCAL AUDIT ARCHIVE",
+    title: "03 / LOCAL BROWSER STORAGE",
     paragraphs: [
       "The DYOR Audit offers an optional archive of up to five result files in the visitor's browser using localStorage. A saved record contains the audit version, selected answer indexes and the time it was saved. The archive is not uploaded to an application database and is not synchronized across devices.",
       "Visitors can open or delete individual saved cases from the Audit interface. Clearing this site's stored data in the browser also removes the local archive. If local storage is unavailable, the Audit can still be completed without saving.",
+      "The color theme selector also saves the chosen palette identifier in browser localStorage on this device. This preference is separate from the Audit archive and Department Passport, contains no personal information, is not sent to the Department and is not used for analytics or tracking. When browser storage is unavailable, the selected palette lasts only until the page is reloaded.",
     ],
   },
   {
@@ -49,7 +50,7 @@ const sections = [
     title: "06 / HOSTING AND THIRD-PARTY REQUESTS",
     paragraphs: [
       "The site is hosted on Vercel. As with other hosted websites, the hosting provider may process technical request information such as IP address, requested path, browser information and operational or security logs to deliver and protect the service. Log handling and retention are governed by the provider's own terms and privacy documentation; this application does not control those systems. On Department pages, the browser also makes a same-origin GET request to `/api/department-case` with the current Department identifier. The endpoint uses that identifier and the current UTC date to return a fictional three-office case narrative. It does not receive the visitor's interactive answers or free-text submissions, and it does not write to an application database or create a visitor profile. The request itself remains ordinary hosted website traffic and may appear in the provider's technical logs described above.",
-      "The page layout links to Google Fonts. A visitor's browser may contact Google Fonts to retrieve the font stylesheet and font files. This is a third-party network request made to render the site's typography.",
+      "The site uses Next.js font optimization to bundle subsetted DM Mono and Space Grotesk files with the application and serve them from the site's own origin. The visitor's browser does not request the site's font stylesheet or font files directly from Google Fonts.",
       "When a visitor chooses a 'Post to X' or 'Share on X' action, the browser opens an X intent URL containing the prepared post text and case link. The visitor decides whether to submit the post. The site does not embed an X tracking pixel.",
     ],
   },
@@ -64,7 +65,7 @@ const sections = [
     title: "08 / RETENTION AND CONTROL",
     paragraphs: [
       "The optional Audit archive remains in the visitor's browser until an individual case is deleted or the browser's site data is cleared. The Department Passport remains there until it is deleted from its page or the browser's site data is cleared. Public case information is encoded in the URL rather than stored in an application account. Copies of a URL shared elsewhere cannot be recalled by this site.",
-      "Operational hosting logs, font requests and external share services are controlled by their respective providers. Their retention periods cannot be configured or verified by this application.",
+      "Operational hosting logs and external share services are controlled by their respective providers. Their retention periods cannot be configured or verified by this application. Self-hosted font requests are ordinary requests to the site's hosting origin.",
     ],
   },
   {

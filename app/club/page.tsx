@@ -10,7 +10,7 @@ import ClubCampaignDesk from "./club-campaign-desk";
 import ClubCampaignEngineDesk from "./club-campaign-engine-desk";
 import ClubCampaignContinuity from "./club-campaign-continuity";
 import ClubCultureDesk from "./club-culture-desk";
-import ClubWarRoom from "./club-war-room";
+import ClubWarRoomLazy from "./club-war-room-lazy";
 import ClubCommunityIntelligence from "./club-community-intelligence";
 import ClubContributionStudio from "./club-contribution-studio";
 import ClubParticipationLoop from "./club-participation-loop";
@@ -83,7 +83,7 @@ export default function ClubPage() {
             <section className="club-faction-directory" aria-labelledby="club-factions-title">
           <header>
             <div><span>THE 99% CLUB / SIX FICTIONAL FACTIONS</span><h2 id="club-factions-title">PICK YOUR <em>EXCUSE.</em></h2></div>
-            <p>Your primary membership archetype determines your faction. No wallets, applications, token holdings or real-world groups are involved.</p>
+            <p>Your membership archetype determines your faction. This fictional classification does not inspect wallets or token holdings, confer real-world status or establish token eligibility.</p>
           </header>
           <div className="club-faction-directory__grid">
             {Object.values(factions).map((faction) => (
@@ -108,7 +108,7 @@ export default function ClubPage() {
           <div className={journey.stageMarker}><span className={journey.stageNumber}>04</span><div><strong>COMMUNITY CONTENT STUDIO</strong><small>WRITE / DESIGN / PACKAGE THE WEEKLY STORY</small></div></div>
           <div className="shell"><ClubCultureDesk /></div>
           <div className="shell"><ClubContributionStudio /></div>
-          <div className="shell"><ClubWarRoom /></div>
+          <div className="shell"><ClubWarRoomLazy /></div>
         </section>
 
         <section className={journey.stage} id="club-journey-participation" aria-label="Stage 5: Participation and Passport">

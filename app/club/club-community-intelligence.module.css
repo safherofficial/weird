@@ -3,7 +3,7 @@
   padding: clamp(22px, 3.2vw, 42px);
   border: 1px solid #394336;
   background:
-    radial-gradient(circle at 92% 0%, rgba(182, 255, 101, .08), transparent 28rem),
+    radial-gradient(circle at 92% 0%, rgba(var(--green-rgb), .08), transparent 28rem),
     linear-gradient(145deg, #111811, #0b0f0b 72%);
 }
 
@@ -31,7 +31,7 @@
 }
 
 .header h2 em {
-  color: #b6ff65;
+  color: var(--green);
   font-style: normal;
 }
 
@@ -53,7 +53,7 @@
   justify-content: center;
   border: 1px solid #647c4f;
   border-radius: 50%;
-  color: #b6ff65;
+  color: var(--green);
   text-align: center;
   transform: rotate(7deg);
 }
@@ -93,7 +93,7 @@
 
 .panelTop strong {
   flex: 0 0 auto;
-  color: #b6ff65;
+  color: var(--green);
   font: 9px/1.4 var(--mono);
 }
 
@@ -161,7 +161,7 @@
 }
 
 .link {
-  color: #b6ff65;
+  color: var(--green);
   font: 10px/1.6 var(--mono);
   text-decoration: none;
 }

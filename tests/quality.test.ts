@@ -2515,6 +2515,7 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   const contribution = readFileSync("app/club/club-contribution-studio.tsx", "utf8");
   const participation = readFileSync("app/club/club-participation-loop.tsx", "utf8");
   const journeyStyles = readFileSync("app/club/club-journey.module.css", "utf8");
+  const lazyWarRoom = readFileSync("app/club/club-war-room-lazy.tsx", "utf8");
 
   const stages = [
     'id="club-journey-identity"',
@@ -2537,7 +2538,7 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
     "<ClubCampaignContinuity />",
     "<ClubCultureDesk />",
     "<ClubContributionStudio />",
-    "<ClubWarRoom />",
+    "<ClubWarRoomLazy />",
     "<ClubParticipationLoop />",
     "<ClubChallenges />",
     "<ClubCommunityIntelligence />",
@@ -2561,6 +2562,22 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   assert.ok(journeyStyles.includes(".nav"));
   assert.ok(journeyStyles.includes("@media"));
   assert.ok(journeyStyles.includes("scroll-margin-top"));
+  assert.ok(page.includes("<ClubWarRoomLazy />"));
+  assert.ok(lazyWarRoom.includes('dynamic(() => import("./club-war-room")'));
+  assert.ok(lazyWarRoom.includes("IntersectionObserver"));
+  assert.ok(lazyWarRoom.includes('rootMargin: "900px 0px"'));
+  assert.doesNotMatch(page, /import ClubWarRoom from ["']\.\/club-war-room["']/);
+});
+
+test("U72 provides a themed App Router error boundary with safe retry and HQ recovery", () => {
+  const errorPage = readFileSync("app/error.tsx", "utf8");
+
+  assert.match(errorPage, /^"use client";/);
+  assert.ok(errorPage.includes("aria-labelledby=\"department-error-title\""));
+  assert.ok(errorPage.includes("onClick={reset}"));
+  assert.ok(errorPage.includes('href="/"'));
+  assert.ok(errorPage.includes("error.digest"));
+  assert.doesNotMatch(errorPage, /error\.message|error\.stack/);
 });
 
 test("U27.6 production experience keeps collection counts, filter semantics and responsive navigation accurate", () => {
@@ -2889,27 +2906,33 @@ test("U28.3 homepage gives the 99% Club a prominent and truthful public identity
   const home = readFileSync("app/page.tsx", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
   const tickerPosition = home.indexOf('<section className="hq-ticker"');
-  const clubPosition = home.indexOf('<section className="hq-club shell"');
-  const statusPosition = home.indexOf('<section className="hq-status shell"');
+  const clubPosition = home.indexOf('<section className="hq-club hq-club--compact shell"');
+  const directoryPosition = home.indexOf('<section className="hq-directory shell" id="departments"');
 
-  assert.ok(tickerPosition >= 0 && clubPosition > tickerPosition && statusPosition > clubPosition,
-    "The Club front door must sit directly after the hero ticker and before the status board");
+  assert.ok(tickerPosition >= 0 && clubPosition > tickerPosition && directoryPosition > clubPosition,
+    "The Club front door must sit after the hero ticker and before the ten secondary offices");
   assert.ok(home.includes('href="/club">APPLY FOR MEMBERSHIP'));
   assert.ok(home.includes('href="/club#club-factions-title">MEET THE SIX FACTIONS'));
-  assert.ok(home.includes("Object.values(factions).map"));
-  assert.ok(home.includes("faction.code") && home.includes("faction.title"));
+  assert.ok(home.includes("MEET THE SIX FACTIONS"));
+  assert.doesNotMatch(home, /Object\.values\(factions\)\.map/);
   assert.ok(home.includes("NOT A MEASURED STATISTIC"));
-  assert.ok(home.includes("THERE IS NO VERIFIED ROSTER, TOKEN OR FINANCIAL BENEFIT"));
-  assert.ok(styles.includes(".hq-club__factions"));
+  assert.ok(home.includes("A CLUB TOKEN IS CONFIRMED, BUT ITS DETAILS ARE NOT ANNOUNCED"));
+  assert.ok(home.includes("NO VERIFIED ROSTER OR FINANCIAL BENEFIT"));
+  assert.doesNotMatch(home, /NO TOKEN/i);
+  assert.doesNotMatch(home, /hq-status|hq-dispatch|hq-closing/);
+  assert.ok(styles.includes(".hq-club--compact"));
   assert.ok(styles.includes("@media (max-width: 640px)"));
 });
 
 
-test("U28.4 provides one canonical, honest future-token notice without invented launch details", () => {
+test("U28.4 provides one canonical confirmed-token notice without invented launch details", () => {
   const config = readFileSync("app/club/club-token-config.ts", "utf8");
   const notice = readFileSync("app/club/club-token-notice.tsx", "utf8");
   const home = readFileSync("app/page.tsx", "utf8");
   const clubPage = readFileSync("app/club/page.tsx", "utf8");
+  const clubClient = readFileSync("app/club/club-client.tsx", "utf8");
+  const memberFile = readFileSync("app/club/member/[code]/page.tsx", "utf8");
+  const memberImage = readFileSync("app/club/member/[code]/opengraph-image.tsx", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
 
   for (const field of ["ticker", "network", "contractAddress", "explorerUrl", "marketUrl"]) {
@@ -2917,13 +2940,35 @@ test("U28.4 provides one canonical, honest future-token notice without invented 
   }
   assert.ok(notice.includes("isOfficialClubTokenLink"));
   assert.ok(config.includes('url.protocol === "https:"'));
+  assert.ok(config.includes('status: "CONFIRMED / DETAILS NOT ANNOUNCED"'));
+  assert.ok(notice.includes("is confirmed"));
+  assert.ok(notice.includes("has not been announced or launched"));
   assert.ok(notice.includes("NOT ANNOUNCED"));
   assert.ok(notice.includes("NOT ISSUED"));
   assert.ok(notice.includes("NOT CONFIRMED"));
-  assert.ok(notice.includes("Unrelated tokens, copied tickers"));
+  assert.doesNotMatch(notice, /there is no verified 99% Club token/i);
+  assert.ok(/unrelated tokens, copied tickers/i.test(notice));
   assert.ok(notice.includes("no wallet connection, presale, purchase or claim function"));
+  assert.match(clubClient, /a 99% Club token is confirmed, but its official details have not been announced/i);
+  assert.match(clubClient, /does not confer token rights or eligibility/i);
+  assert.match(memberFile, /confirmed but unannounced 99% Club token/i);
+  assert.match(memberImage, /TOKEN DETAILS NOT ANNOUNCED/);
+  assert.doesNotMatch(clubClient + memberFile + memberImage, /NO TOKEN|no benefits, token|benefits, token or financial product/i);
+  assert.ok(home.includes("TOKEN CONFIRMED. DETAILS NOT ANNOUNCED."));
   assert.ok(home.includes('<ClubTokenNotice placement="home" />'));
   assert.ok(clubPage.includes('<ClubTokenNotice placement="club" />'));
+  const layout = readFileSync("app/layout.tsx", "utf8");
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+  const footer = readFileSync("app/components/department-footer.tsx", "utf8");
+  assert.ok(layout.includes("The 99% Club token is confirmed"));
+  assert.ok(header.includes("TOKEN CONFIRMED. DETAILS NOT ANNOUNCED."));
+  assert.ok(footer.includes("TOKEN CONFIRMED. DETAILS NOT ANNOUNCED."));
+  const socialImage = readFileSync("app/opengraph-image.tsx", "utf8");
+  const terms = readFileSync("app/terms/page.tsx", "utf8");
+  const privacy = readFileSync("app/privacy/page.tsx", "utf8");
+  assert.ok(socialImage.includes("TOKEN CONFIRMED / DETAILS NOT ANNOUNCED"));
+  assert.ok(terms.includes("a meme token associated with THE 99% CLUB is confirmed"));
+  assert.ok(privacy.includes("A meme token associated with THE 99% CLUB is confirmed"));
   assert.ok(styles.includes(".club-token-notice__details"));
   assert.ok(styles.includes("@media (max-width: 620px)"));
   assert.ok(styles.includes(".club-token-notice__details > div:nth-child(3n) { border-right: 1px solid #30352b; }"));
@@ -3067,7 +3112,7 @@ test("U28.8 Club War Room creates browser-local meme PNGs and shareable public c
     assert.ok(challenge.postText.length > 60 && challenge.postText.length <= 280, challenge.id + " should fit an X post before its URL");
     assert.ok(challenge.postText.includes("#The99PercentClub"));
   }
-  assert.ok(page.includes("<ClubWarRoom />"));
+  assert.ok(page.includes("<ClubWarRoomLazy />"));
   assert.ok(warRoom.includes("canvas.toBlob"));
   assert.ok(warRoom.includes("navigator.canShare"));
   assert.ok(warRoom.includes("navigator.share"));
@@ -3189,7 +3234,7 @@ test("U29 homepage presents the 99% Club as cross-chain while retaining Solana a
   const layout = readFileSync("app/layout.tsx", "utf8");
   const division = departments.find((item) => item.section === "club");
 
-  assert.ok(home.includes("COMMUNITY / ALL CHAINS"));
+  assert.ok(home.includes("THE 99% CLUB / MEMBERSHIP / ALL CHAINS"));
   assert.ok(home.includes("Born in the Solana trenches. Open to every chain and every cycle."));
   assert.ok(home.includes("Find your fictional crypto archetype"));
   assert.ok(home.includes("MEMBERSHIP / ALL CHAINS"));
@@ -3427,7 +3472,7 @@ test("U33 Contribution Studio builds editable faction-aware public drafts withou
 
   assert.ok(page.includes("<ClubContributionStudio />"));
   assert.ok(page.indexOf("<ClubCultureDesk />") < page.indexOf("<ClubContributionStudio />"));
-  assert.ok(page.indexOf("<ClubContributionStudio />") < page.indexOf("<ClubWarRoom />"));
+  assert.ok(page.indexOf("<ClubContributionStudio />") < page.indexOf("<ClubWarRoomLazy />"));
   assert.ok(component.includes("key={continuity.weekKey"));
   assert.ok(component.includes("useClubCampaignContext()"));
   assert.ok(context.includes("PASSPORT_UPDATED_EVENT"));

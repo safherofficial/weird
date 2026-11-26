@@ -1,11 +1,11 @@
 /**
- * Single source of truth for the future 99% Club token announcement.
- * Keep public identifiers and external links null until independently
- * confirmed official launch information is supplied.
+ * Single source of truth for the confirmed 99% Club token.
+ * Public identifiers and external links stay null
+ * until official launch details are confirmed and formally announced.
  */
 export const CLUB_TOKEN_ANNOUNCEMENT = {
   projectName: "THE 99% CLUB",
-  status: "PRE-LAUNCH / NOT ANNOUNCED",
+  status: "CONFIRMED / DETAILS NOT ANNOUNCED",
   ticker: null as string | null,
   network: null as string | null,
   contractAddress: null as string | null,

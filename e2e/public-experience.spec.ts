@@ -32,8 +32,65 @@ test("headquarters renders its primary heading and public department route", asy
   );
   expect(featuredRoutes).toEqual(["/simulator", "/club", "/audit"]);
   await expect(page.locator("#departments .hq-department")).toHaveCount(10);
-  await expect(page.locator(".hq-status-card__foot")).toHaveCount(0);
-  await expect(page.locator(".hq-status__disclaimer")).toBeVisible();
+  await expect(page.locator(".hq-casefile")).toBeVisible();
+  const tokenNotice = page.locator(".club-token-notice--home");
+  await expect(tokenNotice).toBeVisible();
+  await expect(tokenNotice.locator(".club-token-notice__lead")).toContainText(
+    "A meme token associated with THE 99% CLUB is confirmed. It has not been announced or launched.",
+  );
+  await expect(page.locator(".hq-casefile__chart-label")).toContainText("NOT MARKET DATA");
+  await expect(page.locator(".hq-passport")).toBeVisible();
+  await expect(page.locator(".hq-status")).toHaveCount(0);
+  await expect(page.locator(".hq-dispatch")).toHaveCount(0);
+  await expect(page.locator(".hq-closing")).toHaveCount(0);
+  await expect(page.locator(".hq-manifesto")).toBeVisible();
+});
+
+const publicDepartmentRoutes = [
+  "/simulator",
+  "/club",
+  "/audit",
+  "/daily-office",
+  "/archives",
+  "/roadmap-generator",
+  "/whitepaper-factory",
+  "/utility-inspector",
+  "/museum",
+  "/cope-index",
+  "/airdrop-office",
+  "/bridge-incident-office",
+  "/governance-office",
+];
+
+test("all thirteen public department routes resolve to populated experiences", async ({ page }) => {
+  test.setTimeout(90_000);
+
+  for (const route of publicDepartmentRoutes) {
+    const response = await page.goto(route);
+    expect(response?.status(), `${route} should resolve successfully`).toBe(200);
+    await expect(page.locator("main"), `${route} should render its main content`).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 }).first(), `${route} should expose a page heading`).toBeVisible();
+
+    const mainText = await page.locator("main").innerText();
+    expect(mainText.trim().length, `${route} should not be an empty page`).toBeGreaterThan(180);
+    expect(mainText, `${route} should not be a placeholder page`).not.toMatch(/\b(coming soon|under construction|launching soon)\b/i);
+  }
+});
+
+test("fictional-data notices are grouped instead of repeated on every directory and archive card", async ({ page }) => {
+  await page.goto("/");
+  const cardLabels = await page.locator(".hq-department__category, .hq-department__bottom > span").allTextContents();
+  expect(cardLabels.length).toBeGreaterThan(0);
+  for (const label of cardLabels) {
+    expect(label).not.toMatch(/\b(FICTIONAL|SYNTHETIC)\b/i);
+  }
+
+  await page.goto("/archives");
+  await expect(page.locator(".archives-intro__notice small")).toContainText("ALL RECORDS ARE ORIGINAL FICTIONAL SATIRE");
+  const filedLabels = await page.locator(".archives-card__top > span:nth-child(2)").allTextContents();
+  expect(filedLabels.length).toBeGreaterThan(0);
+  expect(filedLabels.every((label) => label.trim() === "FILED")).toBe(true);
+  await expect(page.locator(".archives-card__visual small")).toHaveCount(0);
 });
 
 test("mobile navigation opens, closes with Escape and restores focus", async ({ page }) => {

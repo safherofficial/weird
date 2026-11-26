@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ThemeSwitcher from "./theme-switcher";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { recordDepartmentVisit } from "../passport/passport-store";
@@ -156,6 +157,7 @@ export default function DepartmentHeader({
         </nav>
 
         <div className="site-header__actions">
+          <ThemeSwitcher />
           <Link className="header-cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </Link>
@@ -205,7 +207,7 @@ export default function DepartmentHeader({
               <Link href={departmentsHref} onClick={closeMenu}>DIRECTORY <span aria-hidden="true">↗</span></Link>
               <Link href={manifestoHref} onClick={closeMenu}>MANIFESTO <span aria-hidden="true">↗</span></Link>
             </div>
-            <div className="mobile-nav__foot">NO TOKEN. NO ALPHA. NO LIVE MARKET DATA.</div>
+            <div className="mobile-nav__foot">TOKEN CONFIRMED. DETAILS NOT ANNOUNCED. NO LIVE MARKET DATA.</div>
           </div>
 
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
