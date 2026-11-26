@@ -210,3 +210,52 @@ test("simulator completion respects Passport opt-in and unlocks its local badges
   await expect(paperSurvivorBadge).toHaveClass(/is-earned/);
   await expect(firstCaseBadge).toHaveClass(/is-earned/);
 });
+
+
+test("Bridge and Governance interviews record their Passport completions and badges", async ({ page }) => {
+  const passportKey = "dyor-department:passport:v1";
+  const readLocalPassport = () =>
+    page.evaluate((key) => localStorage.getItem(key), passportKey);
+
+  await page.goto("/passport");
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.getByText(/ENABLED ON THIS DEVICE/i)).toBeVisible();
+
+  await completeBridgeInterview(page);
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "saved",
+  );
+
+  let savedPassport = JSON.parse((await readLocalPassport()) ?? "null");
+  expect(savedPassport.completedActivities).toContain("bridge");
+
+  await page.goto("/governance-office");
+  await page.getByRole("button", { name: /OPEN GOVERNANCE INTERVIEW/i }).click();
+
+  for (let question = 0; question < 7; question += 1) {
+    const firstAnswer = page.locator("main .utility-answer").first();
+    await expect(firstAnswer).toBeVisible();
+    await firstAnswer.click();
+  }
+
+  await expect(page.getByText("GOVERNANCE INTERVIEW COMPLETE / 07 OF 07", { exact: true })).toBeVisible();
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "saved",
+  );
+
+  savedPassport = JSON.parse((await readLocalPassport()) ?? "null");
+  expect(savedPassport.completedActivities).toEqual(expect.arrayContaining(["bridge", "governance"]));
+
+  await page.goto("/passport");
+  const bridgeBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "INTERCHAIN INCIDENT FILED" }) });
+  const governanceBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "QUORUM TRIBUNAL FILED" }) });
+
+  await expect(bridgeBadge).toHaveClass(/is-earned/);
+  await expect(governanceBadge).toHaveClass(/is-earned/);
+});
