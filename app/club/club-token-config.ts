@@ -1,6 +1,6 @@
 /**
- * Single source of truth for the planned 99% Club token.
- * The token's existence is confirmed; public identifiers and external links stay null
+ * Single source of truth for the confirmed 99% Club token.
+ * Public identifiers and external links stay null
  * until official launch details are confirmed and formally announced.
  */
 export const CLUB_TOKEN_ANNOUNCEMENT = {
