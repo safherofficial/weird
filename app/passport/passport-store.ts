@@ -160,7 +160,7 @@ export const CORE_ACTIVITIES: PassportActivityId[] = [
 
 export const DEPARTMENT_STAMPS: DepartmentStamp[] = [
   { id: "simulator", number: "01", title: "PUMP.FUN INTELLIGENCE / PAPER MARKET SIMULATOR", label: "PAPER LAUNCH COMPLETED" },
-  { id: "club", number: "02", title: "SOLANA TRENCHES / 99% SURVIVOR REGISTRY", label: "SURVIVOR STATUS REVIEWED" },
+  { id: "club", number: "02", title: "CROSS-CHAIN TRENCHES / 99% SURVIVOR REGISTRY", label: "SURVIVOR STATUS REVIEWED" },
   { id: "audit", number: "03", title: "FOMO CONTROL UNIT / DYOR AUDIT", label: "RESEARCH FILED" },
   { id: "daily", number: "04", title: "KOL SURVEILLANCE / THE TRENCHES DESK", label: "DAILY CT BRIEFING READ" },
   { id: "archives", number: "05", title: "WHALE & WALLET INVESTIGATION / CASE ARCHIVE", label: "FICTIONAL CASES REVIEWED" },

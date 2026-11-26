@@ -470,6 +470,17 @@ test("U66 Governance Accountability Office is registered as a thirteenth divisio
   assert.equal(Object.keys(departmentCaseThreads).length, 21);
 });
 
+test("99% Club Passport stamp preserves the explicit cross-chain identity", () => {
+  const clubStamp = DEPARTMENT_STAMPS.find((stamp) => stamp.id === "club");
+  assert.ok(clubStamp, "the Club must retain its dedicated Passport visit stamp");
+  assert.equal(clubStamp.title, "CROSS-CHAIN TRENCHES / 99% SURVIVOR REGISTRY");
+  assert.doesNotMatch(clubStamp.title, /SOLANA/i);
+
+  const brandVoice = readFileSync("docs/BRAND_VOICE.md", "utf8");
+  assert.match(brandVoice, /the 99% Club is the explicit cross-chain exception and must never be framed as Solana-only/i);
+});
+
+
 test("U66 Governance Accountability Office legal terms disclose the fictional scope", () => {
   const terms = readFileSync("app/terms/page.tsx", "utf8");
   const privacy = readFileSync("app/privacy/page.tsx", "utf8");
