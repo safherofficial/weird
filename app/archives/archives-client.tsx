@@ -47,6 +47,7 @@ export default function ArchivesClient() {
             <article className="archives-card" key={record.slug}>
               <div className="archives-card__top">
                 <span>{record.accession}</span>
+                <span>FILED</span>
               </div>
               <div className="archives-card__visual">
                 <span>{record.category}</span>
