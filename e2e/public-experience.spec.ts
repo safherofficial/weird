@@ -33,6 +33,7 @@ test("headquarters renders its primary heading and public department route", asy
   expect(featuredRoutes).toEqual(["/simulator", "/club", "/audit"]);
   await expect(page.locator("#departments .hq-department")).toHaveCount(10);
   await expect(page.locator(".hq-casefile")).toBeVisible();
+  await expect(page.getByText("TOKEN CONFIRMED. DETAILS NOT ANNOUNCED.", { exact: false }).first()).toBeVisible();
   await expect(page.locator(".hq-casefile__chart-label")).toContainText("NOT MARKET DATA");
   await expect(page.locator(".hq-passport")).toBeVisible();
   await expect(page.locator(".hq-status")).toHaveCount(0);
