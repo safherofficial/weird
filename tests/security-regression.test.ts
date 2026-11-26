@@ -39,9 +39,9 @@ test("R4 Content Security Policy allows only the resources this application uses
     "form-action 'self'",
     "script-src 'self' 'unsafe-inline'",
     "script-src-attr 'none'",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
-    "font-src 'self' data: https://fonts.gstatic.com",
+    "font-src 'self' data:",
     "connect-src 'self'",
     "frame-src 'none'",
     "upgrade-insecure-requests",
@@ -49,6 +49,13 @@ test("R4 Content Security Policy allows only the resources this application uses
     assert.ok(policy.includes(directive), `CSP must include ${directive}`);
   }
   assert.doesNotMatch(policy, /unsafe-eval/u, "production CSP must not enable eval");
+  assert.doesNotMatch(policy, /fonts\.googleapis\.com|fonts\.gstatic\.com/u, "self-hosted fonts must not require Google font origins");
+
+  const layout = readFileSync("app/layout.tsx", "utf8");
+  assert.match(layout, /from ["']next\/font\/google["']/u);
+  assert.match(layout, /DM_Mono/u);
+  assert.match(layout, /Space_Grotesk/u);
+  assert.doesNotMatch(layout, /fonts\.googleapis\.com|fonts\.gstatic\.com/u);
   assert.match(readme, /Content Security Policy/);
   assert.match(readme, /does not enable dynamic `eval` execution/);
 
