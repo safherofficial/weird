@@ -73,6 +73,7 @@ export default function OfficeStaff() {
   useEffect(() => {
     const main = document.querySelector<HTMLElement>("#main-content, main");
     if (!main) return;
+    const pageMain = main;
 
     const narrowViewport = window.matchMedia("(max-width: 900px)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -80,7 +81,7 @@ export default function OfficeStaff() {
     let frame = 0;
 
     function collectBlocks() {
-      const semanticSections = Array.from(main.querySelectorAll<HTMLElement>("section")).filter((section) => {
+      const semanticSections = Array.from(pageMain.querySelectorAll<HTMLElement>("section")).filter((section) => {
         const rect = section.getBoundingClientRect();
         const nestedInSection = Boolean(section.parentElement?.closest("section"));
         return !nestedInSection && !section.closest("footer") && rect.width >= 360 && rect.height >= 240;
@@ -91,7 +92,7 @@ export default function OfficeStaff() {
         return;
       }
 
-      blocks = Array.from(main.children).filter((element): element is HTMLElement => {
+      blocks = Array.from(pageMain.children).filter((element): element is HTMLElement => {
         if (!(element instanceof HTMLElement)) return false;
         if (["HEADER", "FOOTER", "NAV"].includes(element.tagName)) return false;
         if (element.matches(".topline, .site-header, .division-idbar")) return false;
@@ -169,10 +170,10 @@ export default function OfficeStaff() {
       collectBlocks();
       scheduleUpdate();
     });
-    mutationObserver.observe(main, { childList: true, subtree: true });
+    mutationObserver.observe(pageMain, { childList: true, subtree: true });
 
     const resizeObserver = new ResizeObserver(scheduleUpdate);
-    resizeObserver.observe(main);
+    resizeObserver.observe(pageMain);
 
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate);
