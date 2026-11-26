@@ -77,7 +77,9 @@ test("fictional-data notices are grouped instead of repeated on every directory 
 
   await page.goto("/archives");
   await expect(page.locator(".archives-intro__notice small")).toContainText("ALL RECORDS ARE ORIGINAL FICTIONAL SATIRE");
-  await expect(page.locator(".archives-card__top > span:nth-child(2)")).toHaveCount(0);
+  const filedLabels = await page.locator(".archives-card__top > span:nth-child(2)").allTextContents();
+  expect(filedLabels.length).toBeGreaterThan(0);
+  expect(filedLabels.every((label) => label.trim() === "FILED")).toBe(true);
   await expect(page.locator(".archives-card__visual small")).toHaveCount(0);
 });
 
