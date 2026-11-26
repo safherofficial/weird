@@ -5,7 +5,7 @@ import DepartmentFooter from "../components/department-footer";
 
 export const metadata: Metadata = {
   title: "Privacy Notice",
-  description: "How THE DYOR DEPARTMENT handles local archives and Passport progress, public result URLs, external fonts and basic hosting requests.",
+  description: "How THE DYOR DEPARTMENT handles local archives and Passport progress, public result URLs, self-hosted fonts and basic hosting requests.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -49,7 +49,7 @@ const sections = [
     title: "06 / HOSTING AND THIRD-PARTY REQUESTS",
     paragraphs: [
       "The site is hosted on Vercel. As with other hosted websites, the hosting provider may process technical request information such as IP address, requested path, browser information and operational or security logs to deliver and protect the service. Log handling and retention are governed by the provider's own terms and privacy documentation; this application does not control those systems. On Department pages, the browser also makes a same-origin GET request to `/api/department-case` with the current Department identifier. The endpoint uses that identifier and the current UTC date to return a fictional three-office case narrative. It does not receive the visitor's interactive answers or free-text submissions, and it does not write to an application database or create a visitor profile. The request itself remains ordinary hosted website traffic and may appear in the provider's technical logs described above.",
-      "The page layout links to Google Fonts. A visitor's browser may contact Google Fonts to retrieve the font stylesheet and font files. This is a third-party network request made to render the site's typography.",
+      "The site uses Next.js font optimization to bundle subsetted DM Mono and Space Grotesk files with the application and serve them from the site's own origin. The visitor's browser does not request the site's font stylesheet or font files directly from Google Fonts.",
       "When a visitor chooses a 'Post to X' or 'Share on X' action, the browser opens an X intent URL containing the prepared post text and case link. The visitor decides whether to submit the post. The site does not embed an X tracking pixel.",
     ],
   },
@@ -64,7 +64,7 @@ const sections = [
     title: "08 / RETENTION AND CONTROL",
     paragraphs: [
       "The optional Audit archive remains in the visitor's browser until an individual case is deleted or the browser's site data is cleared. The Department Passport remains there until it is deleted from its page or the browser's site data is cleared. Public case information is encoded in the URL rather than stored in an application account. Copies of a URL shared elsewhere cannot be recalled by this site.",
-      "Operational hosting logs, font requests and external share services are controlled by their respective providers. Their retention periods cannot be configured or verified by this application.",
+      "Operational hosting logs and external share services are controlled by their respective providers. Their retention periods cannot be configured or verified by this application. Self-hosted font requests are ordinary requests to the site's hosting origin.",
     ],
   },
   {
