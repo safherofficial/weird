@@ -2569,6 +2569,17 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   assert.doesNotMatch(page, /import ClubWarRoom from ["']\.\/club-war-room["']/);
 });
 
+test("U72 provides a themed App Router error boundary with safe retry and HQ recovery", () => {
+  const errorPage = readFileSync("app/error.tsx", "utf8");
+
+  assert.match(errorPage, /^"use client";/);
+  assert.ok(errorPage.includes("aria-labelledby=\"department-error-title\""));
+  assert.ok(errorPage.includes("onClick={reset}"));
+  assert.ok(errorPage.includes('href="/"'));
+  assert.ok(errorPage.includes("error.digest"));
+  assert.doesNotMatch(errorPage, /error\.message|error\.stack/);
+});
+
 test("U27.6 production experience keeps collection counts, filter semantics and responsive navigation accurate", () => {
   const archivePage = readFileSync("app/archives/page.tsx", "utf8");
   const museumPage = readFileSync("app/museum/page.tsx", "utf8");
