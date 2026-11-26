@@ -2896,14 +2896,14 @@ test("U28.3 homepage gives the 99% Club a prominent and truthful public identity
     "The Club front door must sit after the hero ticker and before the ten secondary offices");
   assert.ok(home.includes('href="/club">APPLY FOR MEMBERSHIP'));
   assert.ok(home.includes('href="/club#club-factions-title">MEET THE SIX FACTIONS'));
-  assert.ok(home.includes("Object.values(factions).map"));
-  assert.ok(home.includes("faction.code") && home.includes("faction.title"));
+  assert.ok(home.includes("MEET THE SIX FACTIONS"));
+  assert.doesNotMatch(home, /Object\.values\(factions\)\.map/);
   assert.ok(home.includes("NOT A MEASURED STATISTIC"));
   assert.ok(home.includes("A CLUB TOKEN IS CONFIRMED, BUT ITS DETAILS ARE NOT ANNOUNCED"));
   assert.ok(home.includes("THERE IS NO VERIFIED ROSTER OR FINANCIAL BENEFIT"));
   assert.doesNotMatch(home, /NO TOKEN/i);
   assert.doesNotMatch(home, /hq-status|hq-dispatch|hq-closing/);
-  assert.ok(styles.includes(".hq-club__factions"));
+  assert.ok(styles.includes(".hq-club--compact"));
   assert.ok(styles.includes("@media (max-width: 640px)"));
 });
 
