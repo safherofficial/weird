@@ -130,7 +130,7 @@ export default async function ClubMemberPage({ params }: MemberPageProps) {
         <p className="club-result__disclaimer">
           THE 99% CLUB is a fictional satire membership. The name is not a statistic about real investors,
           traders, losses or market participants. This public file reconstructs selected answers from its URL.
-          It does not create an account, real membership, benefits, token or financial product.
+          It does not create an account, real membership or benefits, and it does not establish eligibility or entitlement for the confirmed but unannounced 99% Club token. No financial product is provided.
         </p>
       </article>
 
