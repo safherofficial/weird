@@ -8,13 +8,11 @@ import "./passport/achievements.css";
 import "./components/theme-pointer.css";
 import "./components/energy-scrollbar.css";
 import "./components/scroll-to-top.css";
-import "./components/office-staff.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
 import CircuitClickReveal from "./components/circuit-click-reveal";
 import EnergyScrollbar from "./components/energy-scrollbar";
 import ScrollToTop from "./components/scroll-to-top";
-import OfficeStaff from "./components/office-staff";
 
 const dmMono = DM_Mono({
   subsets: ["latin"],
@@ -34,7 +32,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
   title: {
-    default: "THE DYOR DEPARTMENT â You came for the 100x. You stayed because you can't sell at a loss.",
+    default: "THE DYOR DEPARTMENT — You came for the 100x. You stayed because you can't sell at a loss.",
     template: "%s | THE DYOR DEPARTMENT",
   },
   description:
@@ -80,7 +78,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </div>
         <ScrollToTop />
         <AchievementToastHost />
-        <OfficeStaff />
       </body>
     </html>
   );
