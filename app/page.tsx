@@ -212,8 +212,8 @@ export default function Home() {
                   </Link>
                 ))}
               </div>
+              {index < departmentGroups.length - 1 && <SacredGeometry variant="divider" className="hq-directory__geometry" />}
             </section>
-            {index < departmentGroups.length - 1 && <SacredGeometry variant="divider" className="hq-directory__geometry" />}
           ))}
         </div>
       </section>
