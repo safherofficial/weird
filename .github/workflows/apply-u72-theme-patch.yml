@@ -4,13 +4,21 @@ on:
   push:
     branches:
       - feat/u72-theme-system
+  pull_request:
+    branches:
+      - refine/u71-phase1-credibility
+    paths:
+      - .github/u72-patch/**
+      - .github/workflows/apply-u72-theme-patch.yml
 
 permissions:
   contents: write
 
 jobs:
   apply-u72:
-    if: github.event.head_commit.message == 'chore: stage U72 source patch'
+    if: >-
+      (github.event_name == 'push' && github.event.head_commit.message == 'chore: stage U72 source patch') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.sha == '42c3688c46600a33fab12654ab9a0a005c0aa224')
     runs-on: ubuntu-latest
     steps:
       - name: Check out the feature branch
