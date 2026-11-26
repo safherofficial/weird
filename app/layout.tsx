@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { DM_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./accessibility-refinements.css";
 import "./passport/achievements.css";
@@ -11,6 +12,20 @@ import CircuitClickReveal from "./components/circuit-click-reveal";
 import LaserCursor from "./components/laser-cursor";
 import EnergyScrollbar from "./components/energy-scrollbar";
 import ScrollToTop from "./components/scroll-to-top";
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-dm-mono",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: "300 700",
+  display: "swap",
+  variable: "--font-space-grotesk",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -44,15 +59,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" id="page-scroll-region">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        />
-      </head>
+    <html
+      lang="en"
+      id="page-scroll-region"
+      className={dmMono.variable + " " + spaceGrotesk.variable}
+    >
       <body>
         {children}
         <CircuitClickReveal />
