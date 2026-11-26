@@ -2913,6 +2913,9 @@ test("U28.4 provides one canonical confirmed-token notice without invented launc
   const notice = readFileSync("app/club/club-token-notice.tsx", "utf8");
   const home = readFileSync("app/page.tsx", "utf8");
   const clubPage = readFileSync("app/club/page.tsx", "utf8");
+  const clubClient = readFileSync("app/club/club-client.tsx", "utf8");
+  const memberFile = readFileSync("app/club/member/[code]/page.tsx", "utf8");
+  const memberImage = readFileSync("app/club/member/[code]/opengraph-image.tsx", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
 
   for (const field of ["ticker", "network", "contractAddress", "explorerUrl", "marketUrl"]) {
@@ -2929,6 +2932,11 @@ test("U28.4 provides one canonical confirmed-token notice without invented launc
   assert.doesNotMatch(notice, /there is no verified 99% Club token/i);
   assert.ok(/unrelated tokens, copied tickers/i.test(notice));
   assert.ok(notice.includes("no wallet connection, presale, purchase or claim function"));
+  assert.match(clubClient, /a 99% Club token is confirmed, but its official details have not been announced/i);
+  assert.match(clubClient, /does not confer token rights or eligibility/i);
+  assert.match(memberFile, /confirmed but unannounced 99% Club token/i);
+  assert.match(memberImage, /TOKEN DETAILS NOT ANNOUNCED/);
+  assert.doesNotMatch(clubClient + memberFile + memberImage, /NO TOKEN|no benefits, token|benefits, token or financial product/i);
   assert.ok(home.includes("TOKEN CONFIRMED. DETAILS NOT ANNOUNCED."));
   assert.ok(home.includes('<ClubTokenNotice placement="home" />'));
   assert.ok(clubPage.includes('<ClubTokenNotice placement="club" />'));
