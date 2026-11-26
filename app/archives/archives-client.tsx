@@ -47,12 +47,10 @@ export default function ArchivesClient() {
             <article className="archives-card" key={record.slug}>
               <div className="archives-card__top">
                 <span>{record.accession}</span>
-                <span>{record.clearance}</span>
               </div>
               <div className="archives-card__visual">
                 <span>{record.category}</span>
                 <b>{record.accession.slice(-3)}</b>
-                <small>OFFICIAL RECORD / FICTIONAL</small>
               </div>
               <div className="archives-card__body">
                 <div className="archives-card__department">{record.department}</div>
