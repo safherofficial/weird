@@ -259,3 +259,34 @@ test("Bridge and Governance interviews record their Passport completions and bad
   await expect(bridgeBadge).toHaveClass(/is-earned/);
   await expect(governanceBadge).toHaveClass(/is-earned/);
 });
+
+
+test("Museum exhibits and Archive records complete the Passport culture-curator achievement", async ({ page }) => {
+  const passportKey = "dyor-department:passport:v1";
+  const readLocalPassport = () =>
+    page.evaluate((key) => localStorage.getItem(key), passportKey);
+
+  await page.goto("/passport");
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.getByText(/ENABLED ON THIS DEVICE/i)).toBeVisible();
+
+  await page.goto("/museum/exhibits/the-seventeenth-rocket");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect.poll(async () => {
+    const passport = JSON.parse((await readLocalPassport()) ?? "null");
+    return passport?.completedActivities ?? [];
+  }).toContain("museum-exhibit");
+
+  await page.goto("/archives/records/the-entry-was-impeccable");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect.poll(async () => {
+    const passport = JSON.parse((await readLocalPassport()) ?? "null");
+    return passport?.completedActivities ?? [];
+  }).toEqual(expect.arrayContaining(["museum-exhibit", "archive-record"]));
+
+  await page.goto("/passport");
+  const cultureCuratorBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "CULTURE CURATOR" }) });
+  await expect(cultureCuratorBadge).toHaveClass(/is-earned/);
+});
