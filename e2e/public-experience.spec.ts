@@ -345,3 +345,54 @@ test("DYOR Audit and Airdrop interviews record their Passport activities and unl
   await expect(auditBadge).toHaveClass(/is-earned/);
   await expect(airdropBadge).toHaveClass(/is-earned/);
 });
+
+test("Utility inspection respects Passport opt-in and unlocks its local badge", async ({ page }) => {
+  const passportKey = "dyor-department:passport:v1";
+  const readLocalPassport = () =>
+    page.evaluate((key) => localStorage.getItem(key), passportKey);
+
+  async function completeInspection() {
+    await page.getByRole("button", { name: /OPEN INSPECTION/i }).click();
+
+    const firstAnswer = page.locator(".utility-answer").first();
+    for (let question = 0; question < 7; question += 1) {
+      await expect(firstAnswer).toBeVisible();
+      await firstAnswer.click();
+    }
+
+    await expect(page.getByText("INSPECTION COMPLETE / 07 OF 07", { exact: true })).toBeVisible();
+  }
+
+  await page.goto("/utility-inspector");
+  expect(await readLocalPassport()).toBeNull();
+
+  await completeInspection();
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "missing",
+  );
+  expect(await readLocalPassport()).toBeNull();
+
+  await page.goto("/passport");
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.getByText(/ENABLED ON THIS DEVICE/i)).toBeVisible();
+
+  await page.goto("/utility-inspector");
+  await completeInspection();
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "saved",
+  );
+
+  const savedPassport = JSON.parse((await readLocalPassport()) ?? "null");
+  expect(savedPassport).toMatchObject({
+    enabled: true,
+    completedActivities: ["utility"],
+  });
+
+  await page.goto("/passport");
+  const utilityBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "TOKEN-PURPOSE WITNESS" }) });
+  await expect(utilityBadge).toHaveClass(/is-earned/);
+});
