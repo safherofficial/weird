@@ -42,7 +42,7 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-const themeBootScript = `(function(){var root=document.documentElement;var theme="ice";try{var saved=localStorage.getItem("dyor-theme");if(saved==="ice"||saved==="lime"||saved==="ruby")theme=saved;}catch(e){}root.dataset.theme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(!meta){meta=document.createElement("meta");meta.name="theme-color";document.head.appendChild(meta);}var bg=getComputedStyle(root).getPropertyValue("--bg").trim();if(bg)meta.content=bg;})();`;
+const themeBootScript = `(function(){var root=document.documentElement;var theme="ice";try{var saved=localStorage.getItem("dyor-theme");if(typeof saved==="string"&&/^[a-z][a-z0-9-]{0,31}$/i.test(saved))theme=saved;}catch(e){}root.dataset.theme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(!meta){meta=document.createElement("meta");meta.name="theme-color";document.head.appendChild(meta);}var bg=getComputedStyle(root).getPropertyValue("--bg").trim();if(bg)meta.content=bg;})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

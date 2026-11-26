@@ -1,18 +1,61 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 
-type Theme = "ice" | "lime" | "ruby";
+type ThemeOption = {
+  id: string;
+  label: string;
+  swatch: string;
+};
 
-const THEMES: ReadonlyArray<{ id: Theme; label: string }> = [
-  { id: "ice", label: "Ice blue theme" },
-  { id: "lime", label: "Acid lime theme" },
-  { id: "ruby", label: "Ruby red theme" },
+const FALLBACK_THEMES: ThemeOption[] = [
+  { id: "ice", label: "Ice blue theme", swatch: "#9fd0ff" },
+  { id: "lime", label: "Acid lime theme", swatch: "#d4ff5a" },
+  { id: "ruby", label: "Ruby red theme", swatch: "#ff8fa3" },
 ];
 
-function readTheme(): Theme {
-  const value = document.documentElement.dataset.theme;
-  return value === "lime" || value === "ruby" ? value : "ice";
+let cachedThemes: ThemeOption[] | null = null;
+
+function getAvailableThemes(): ThemeOption[] {
+  if (cachedThemes) return cachedThemes;
+
+  const discovered: ThemeOption[] = [];
+  for (const sheet of Array.from(document.styleSheets)) {
+    try {
+      for (const rule of Array.from(sheet.cssRules)) {
+        if (!(rule instanceof CSSStyleRule)) continue;
+        const match = rule.selectorText.match(/^html\[data-theme=(?:"([^"]+)"|'([^']+)'|([^\]]+))\]$/);
+        if (!match) continue;
+
+        const id = (match[1] ?? match[2] ?? match[3] ?? "").trim();
+        const swatch = rule.style.getPropertyValue("--primary").trim();
+        if (!id || !/^[a-z][a-z0-9-]{0,31}$/i.test(id) || !swatch) continue;
+        if (discovered.some((item) => item.id === id)) continue;
+
+        const label = rule.style.getPropertyValue("--theme-label")
+          .trim()
+          .replace(/^["']|["']$/g, "") || `${id.replace(/-/g, " ")} theme`;
+        discovered.push({ id, label, swatch });
+      }
+    } catch {
+      // Cross-origin stylesheets are not readable. The local theme sheet remains discoverable.
+    }
+  }
+
+  const merged = [...FALLBACK_THEMES];
+  for (const item of discovered) {
+    const existingIndex = merged.findIndex((fallback) => fallback.id === item.id);
+    if (existingIndex >= 0) merged[existingIndex] = item;
+    else merged.push(item);
+  }
+
+  cachedThemes = merged;
+  return cachedThemes;
+}
+
+function readTheme(themes: ThemeOption[]): string {
+  const active = document.documentElement.dataset.theme;
+  return themes.some((item) => item.id === active) ? active! : (themes[0]?.id ?? "ice");
 }
 
 function syncThemeColor() {
@@ -26,7 +69,7 @@ function syncThemeColor() {
   if (background) meta.content = background;
 }
 
-function applyTheme(theme: Theme) {
+function applyTheme(theme: string) {
   document.documentElement.dataset.theme = theme;
   try {
     window.localStorage.setItem("dyor-theme", theme);
@@ -42,49 +85,62 @@ type ThemeSwitchProps = {
 };
 
 export default function ThemeSwitch({ placement = "header" }: ThemeSwitchProps) {
-  const [theme, setTheme] = useState<Theme>("ice");
+  const [themes, setThemes] = useState<ThemeOption[]>(FALLBACK_THEMES);
+  const [theme, setTheme] = useState<string>("ice");
   const [ready, setReady] = useState(false);
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
-    setTheme(readTheme());
+    const available = getAvailableThemes();
+    const active = readTheme(available);
+    setThemes(available);
+    setTheme(active);
+    if (document.documentElement.dataset.theme !== active) {
+      document.documentElement.dataset.theme = active;
+    }
     setReady(true);
     syncThemeColor();
-    const handleThemeChange = () => setTheme(readTheme());
+
+    const handleThemeChange = () => setTheme(readTheme(available));
     window.addEventListener("themechange", handleThemeChange);
     return () => window.removeEventListener("themechange", handleThemeChange);
   }, []);
 
-  const chooseTheme = useCallback((next: Theme, focus = false) => {
+  const chooseTheme = useCallback((next: string, focus = false) => {
     applyTheme(next);
     setTheme(next);
     if (focus) {
-      const index = THEMES.findIndex((item) => item.id === next);
+      const index = themes.findIndex((item) => item.id === next);
       refs.current[index]?.focus();
     }
-  }, []);
+  }, [themes]);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    const currentIndex = THEMES.findIndex((item) => item.id === theme);
+    if (themes.length === 0) return;
+    const activeIndex = themes.findIndex((item) => item.id === theme);
+    const currentIndex = activeIndex < 0 ? 0 : activeIndex;
     let nextIndex = currentIndex;
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (currentIndex + 1) % THEMES.length;
-    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (currentIndex - 1 + THEMES.length) % THEMES.length;
+
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (currentIndex + 1) % themes.length;
+    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (currentIndex - 1 + themes.length) % themes.length;
     else if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = THEMES.length - 1;
+    else if (event.key === "End") nextIndex = themes.length - 1;
     else return;
+
     event.preventDefault();
-    chooseTheme(THEMES[nextIndex].id, true);
+    chooseTheme(themes[nextIndex].id, true);
   }
 
   return (
     <div className={`theme-switch theme-switch--${placement}`} data-ready={ready}>
       <span className="theme-switch__label">THEME</span>
       <div className="theme-switch__group" role="radiogroup" aria-label="Color theme" onKeyDown={handleKeyDown}>
-        {THEMES.map((item, index) => (
+        {themes.map((item, index) => (
           <button
             key={item.id}
             ref={(node) => { refs.current[index] = node; }}
-            className={`theme-switch__swatch theme-switch__swatch--${item.id}${theme === item.id ? " is-active" : ""}`}
+            className={`theme-switch__swatch${theme === item.id ? " is-active" : ""}`}
+            style={{ "--swatch-color": item.swatch } as CSSProperties}
             type="button"
             role="radio"
             aria-label={item.label}
