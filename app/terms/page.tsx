@@ -21,7 +21,7 @@ const sections = [
     title: "02 / NO REAL ASSETS OR MARKET DATA",
     paragraphs: [
       "HYPE-404, Department Paper Credits (DPC), fictional token supplies, allocation models, yields, paper profit/loss and all simulated prices are invented for entertainment. They are not real tokens, currencies, market quotes, investment results or representations of any blockchain asset.",
-      "Separately, a meme token associated with THE 99% CLUB is planned. It has not been announced or launched; its ticker, network, contract address and official market links have not been published. This website currently offers no token sale, purchase, claim or wallet connection. Treat only details published in the official Club notice as authoritative.",
+      "Separately, a meme token associated with THE 99% CLUB is confirmed. It has not been announced or launched; its ticker, network, contract address and official market links have not been published. This website currently offers no token sale, purchase, claim or wallet connection. Treat only details published in the official Club notice as authoritative.",
       "The site does not connect to wallets, exchanges, smart contracts, blockchains or live market feeds. It does not execute trades or move funds.",
     ],
   },
