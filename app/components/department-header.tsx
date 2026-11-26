@@ -205,7 +205,7 @@ export default function DepartmentHeader({
               <Link href={departmentsHref} onClick={closeMenu}>DIRECTORY <span aria-hidden="true">↗</span></Link>
               <Link href={manifestoHref} onClick={closeMenu}>MANIFESTO <span aria-hidden="true">↗</span></Link>
             </div>
-            <div className="mobile-nav__foot">TOKEN PLANNED. DETAILS NOT ANNOUNCED. NO LIVE MARKET DATA.</div>
+            <div className="mobile-nav__foot">TOKEN CONFIRMED. DETAILS NOT ANNOUNCED. NO LIVE MARKET DATA.</div>
           </div>
 
           <Link className="mobile-nav__cta" href={ctaHref} onClick={closeMenu}>
