@@ -159,4 +159,66 @@ export default function Home() {
           </div>
         </div>
 
-        <p className="hq-club__disclaimer">“99%” IS SATIRE, NOT A MEASURED STATISTIC. MEMBERSHIP IS FICTIONAL. TOKEN CONFIRMED; DETAILS NOT ANNOUNCED. NO VERIFIED ROSTER OR FINANCIAL BENEFIT.</p>
+        <p className="hq-club__disclaimer">“99%” IS SATIRE, NOT A MEASURED STATISTIC. MEMBERSHIP IS FICTIONAL. A CLUB TOKEN IS CONFIRMED, BUT ITS DETAILS ARE NOT ANNOUNCED. NO VERIFIED ROSTER OR FINANCIAL BENEFIT.</p>
+        <ClubTokenNotice placement="home" />
+      </section>
+
+      <section className="hq-directory shell" id="departments" aria-labelledby="hq-directory-title">
+        <div className="hq-section-heading">
+          <div>
+            <SectionLabel>ADDITIONAL OFFICES / DIVISIONS 04—13</SectionLabel>
+            <h2 id="hq-directory-title">THE OTHER<br /><span>OFFICES.</span></h2>
+          </div>
+          <p>Ten additional divisions. Two routing groups.<br />All thirteen offices remain open.</p>
+        </div>
+
+        <div className="hq-directory__groups">
+          {departmentGroups.slice(1).map((group) => (
+            <section className="hq-office" id={"department-group-" + group.number} key={group.number} aria-labelledby={"hq-office-" + group.number}>
+              <div className="hq-office__header">
+                <div className="hq-office__number">{group.number}</div>
+                <div className="hq-office__identity">
+                  <span>{group.code}</span>
+                  <h3 id={"hq-office-" + group.number}>{group.title}</h3>
+                  <p>{group.description}</p>
+                </div>
+                <span className="hq-office__count">{String(group.items.length).padStart(2, "0")} UNITS</span>
+              </div>
+              <div className={"hq-office__grid hq-office__grid--" + group.number}>
+                {group.items.map((item) => (
+                  <Link className="hq-department" href={item.href} key={item.number}>
+                    <div className="hq-department__top">
+                      <span>DEPT. {item.number}</span>
+                      <span className="hq-department__availability"><i aria-hidden="true" /> OPEN</span>
+                    </div>
+                    <div className="hq-department__symbol" aria-hidden="true">{item.symbol}</div>
+                    <span className="hq-department__category">{item.category}</span>
+                    <h4>{item.title}</h4>
+                    <p>{item.description}</p>
+                    <div className="hq-department__bottom">
+                      <span>{item.status}</span>
+                      <b aria-hidden="true">↗</b>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section className="hq-manifesto" id="manifesto">
+        <div className="hq-manifesto__inner shell">
+          <SectionLabel>THE DEPARTMENTAL CHARTER</SectionLabel>
+          <p className="hq-manifesto__statement">WE ARE NOT HERE TO JUDGE YOU.<br /><span>WE ARE HERE BECAUSE WE ARE YOU.</span></p>
+          <div className="hq-manifesto__bottom">
+            <p>We aped the first green candle, called the second one confirmation, and mistook a Telegram raid for due diligence. We chased wallet screenshots we could not verify, followed KOLs who followed each other, and stayed through graduation because someone said "send it".</p>
+            <p>Then the dev went quiet, the chart turned red, and the group chat became a support group. This Department is not here to judge. We are in the screenshot too.</p>
+          </div>
+        </div>
+      </section>
+
+      <DepartmentFooter message={["THE OFFICIAL HEADQUARTERS OF FINANCIAL DELUSION", "BUILT BY DEGENS. FILED BY BAGHOLDERS."]} />
+    </main>
+  );
+}
