@@ -2551,7 +2551,11 @@ test("U27.6 production experience keeps collection counts, filter semantics and 
   assert.ok(archivesClient.includes('aria-live="polite"'));
   assert.ok(museumClient.includes('aria-live="polite"'));
 
-  assert.ok(homePage.includes("Thirteen numbered divisions. Three routing groups."));
+  assert.ok(homePage.includes('id="featured-desks"'), "homepage must expose its featured entry section");
+  assert.ok(homePage.includes('<h2 id="hq-featured-title">START <span>HERE.</span></h2>'), "featured section must retain its current heading");
+  assert.ok(homePage.includes("departmentGroups.slice(0, 1)"), "the first routing group must remain the featured entry group");
+  assert.ok(homePage.includes('id="departments"'), "the remaining division directory must remain reachable");
+  assert.ok(homePage.includes("departmentGroups.slice(1)"), "the directory must contain the groups after the featured entry group");
   assert.equal(departments.length, 13);
   assert.equal(departmentGroups.length, 3);
 
