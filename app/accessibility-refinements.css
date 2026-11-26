@@ -15,7 +15,8 @@
 }
 
 .daily-office-section h2 {
-  margin: 15px 0 9px;color: var(--ink);
+  margin: 15px 0 9px;
+  color: #e1e8dc;
   font: 600 15px/1.2 var(--sans);
   letter-spacing: -.02em;
 }
@@ -25,24 +26,24 @@
 }
 
 /* AA contrast for the fine-print labels identified by the page audit. */
-.hq-status-card__index {color: var(--ink); }
-.hq-status-card__foot {color: var(--ink); }
+.hq-status-card__index { color: #76836f; }
+.hq-status-card__foot { color: #768270; }
 
 .utility-briefing__facts span,
 .roadmap-briefing__facts span,
 .whitepaper-briefing__facts span,
-.club-briefing__facts span {color: var(--ink); }
+.club-briefing__facts span { color: #768570; }
 
 .result-metrics i,
 .utility-metrics i,
 .roadmap-metrics i,
-.club-metrics i {color: var(--ink); }
+.club-metrics i { color: #798475; }
 
-.utility-history__heading span:last-child {color: var(--ink); }
-.whitepaper-cover__scores strong small {color: var(--ink); }
-.whitepaper-allocation__heading small {color: var(--ink); }
-.museum-exhibit__facts span {color: var(--ink); }
-.cope-dimension__top strong small {color: var(--ink); }
+.utility-history__heading span:last-child { color: #768270; }
+.whitepaper-cover__scores strong small { color: #798673; }
+.whitepaper-allocation__heading small { color: #768272; }
+.museum-exhibit__facts span { color: #798573; }
+.cope-dimension__top strong small { color: #76846f; }
 
 /* WCAG 2.2 target-size: make adjacent case-handoff links independently tappable. */
 .department-case-chain__handoff a {

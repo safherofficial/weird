@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { recordDepartmentVisit } from "../passport/passport-store";
-import ThemeSwitch from "./theme-switch";
 import { departments, divisionIdentityBySection, divisionNavigationGroups, type DepartmentSection } from "../divisions";
 
 type DepartmentHeaderProps = {
@@ -160,7 +159,6 @@ export default function DepartmentHeader({
           <Link className="header-cta" href={ctaHref} onClick={closeMenu}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </Link>
-          <ThemeSwitch placement="header" />
           <button
             ref={menuButtonRef}
             className={"menu-toggle" + (menuOpen ? " is-open" : "")}
@@ -207,7 +205,6 @@ export default function DepartmentHeader({
               <Link href={departmentsHref} onClick={closeMenu}>DIRECTORY <span aria-hidden="true">↗</span></Link>
               <Link href={manifestoHref} onClick={closeMenu}>MANIFESTO <span aria-hidden="true">↗</span></Link>
             </div>
-            <ThemeSwitch placement="menu" />
             <div className="mobile-nav__foot">NO TOKEN. NO ALPHA. NO LIVE MARKET DATA.</div>
           </div>
 
@@ -216,7 +213,6 @@ export default function DepartmentHeader({
           </Link>
         </nav>
       </header>
-      <ThemeSwitch placement="fixed" />
     </>
   );
 }

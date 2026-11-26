@@ -22,6 +22,18 @@ test("headquarters renders its primary heading and public department route", asy
     "href",
     "/audit",
   );
+  await expect(page.getByRole("link", { name: /ENTER THE 99% CLUB/i })).toHaveAttribute(
+    "href",
+    "/club",
+  );
+
+  const featuredRoutes = await page.locator("#featured-desks .hq-department").evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  );
+  expect(featuredRoutes).toEqual(["/simulator", "/club", "/audit"]);
+  await expect(page.locator("#departments .hq-department")).toHaveCount(10);
+  await expect(page.locator(".hq-status-card__foot")).toHaveCount(0);
+  await expect(page.locator(".hq-status__disclaimer")).toBeVisible();
 });
 
 test("mobile navigation opens, closes with Escape and restores focus", async ({ page }) => {
