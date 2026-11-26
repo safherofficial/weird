@@ -25,11 +25,29 @@ function escapeXml(value: string) {
   });
 }
 
-function rarityColor(rarity: PassportAchievementStatus["rarity"]) {
-  if (rarity === "LEGENDARY") return "#e7c17c";
-  if (rarity === "RARE") return "#8fc6e8";
-  if (rarity === "UNCOMMON") return "#c4a46c";
-  return "#b6ff65";
+type PassportThemeColors = {
+  bg: string;
+  surface: string;
+  raised: string;
+  line: string;
+  ink: string;
+  primary: string;
+};
+
+function passportThemeColors(): PassportThemeColors {
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    bg: styles.getPropertyValue("--bg").trim(),
+    surface: styles.getPropertyValue("--surface").trim(),
+    raised: styles.getPropertyValue("--surface-raised").trim(),
+    line: styles.getPropertyValue("--line").trim(),
+    ink: styles.getPropertyValue("--ink").trim(),
+    primary: styles.getPropertyValue("--primary").trim(),
+  };
+}
+
+function rarityColor(_rarity: PassportAchievementStatus["rarity"]) {
+  return passportThemeColors().primary;
 }
 
 function passportSvgHeight(statuses: PassportAchievementStatus[]) {
@@ -46,12 +64,13 @@ function getBadgeArtworkHref(id: string, assetBaseUrl: string) {
   const mark = CLUB_BADGE_MARKS[id];
   if (!mark) return "";
   const fontSize = mark.length > 2 ? 25 : 43;
+  const colors = passportThemeColors();
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">' +
-    '<circle cx="72" cy="72" r="62" fill="#0a0e0a" stroke="#526b43" stroke-width="3"/>' +
-    '<circle cx="72" cy="72" r="53" fill="none" stroke="#b6ff65" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 5"/>' +
-    '<path d="M72 18 85 37 108 36 107 59 126 72 107 85 108 108 85 107 72 126 59 107 36 108 37 85 18 72 37 59 36 36 59 37Z" fill="#182416" stroke="#8ba96d" stroke-width="1.5"/>' +
-    '<text x="72" y="83" text-anchor="middle" fill="#d8efc5" font-family="monospace" font-size="' + fontSize + '" font-weight="900">' + escapeXml(mark) + '</text>' +
-    '<path d="M72 5V14M72 130V139M5 72H14M130 72H139" stroke="#b6ff65" stroke-width="2"/></svg>';
+    '<circle cx="72" cy="72" r="62" fill="' + colors.bg + '" stroke="' + colors.line + '" stroke-width="3"/>' +
+    '<circle cx="72" cy="72" r="53" fill="none" stroke="' + colors.primary + '" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 5"/>' +
+    '<path d="M72 18 85 37 108 36 107 59 126 72 107 85 108 108 85 107 72 126 59 107 36 108 37 85 18 72 37 59 36 36 59 37Z" fill="' + colors.raised + '" stroke="' + colors.line + '" stroke-width="1.5"/>' +
+    '<text x="72" y="83" text-anchor="middle" fill="' + colors.ink + '" font-family="monospace" font-size="' + fontSize + '" font-weight="900">' + escapeXml(mark) + '</text>' +
+    '<path d="M72 5V14M72 130V139M5 72H14M130 72H139" stroke="' + colors.primary + '" stroke-width="2"/></svg>';
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
@@ -72,6 +91,7 @@ function badgeDisplayRequirement(item: PassportAchievementStatus) {
 }
 
 function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus[], assetBaseUrl: string) {
+  const colors = passportThemeColors();
   const height = passportSvgHeight(statuses);
   const footerY = height - 30;
   const visited = new Set(data.visitedDepartments);
@@ -82,11 +102,11 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     const x = column === 0 ? 72 : 720;
     const y = 256 + row * 55;
     const earned = visited.has(stamp.id);
-    const color = earned ? "#b6ff65" : "#657061";
+    const color = earned ? colors.primary : colors.ink;
     return (
-      '<rect x="' + x + '" y="' + y + '" width="608" height="43" fill="' + (earned ? "#172216" : "#101510") + '" stroke="' + (earned ? "#526b43" : "#30382f") + '"/>' +
+      '<rect x="' + x + '" y="' + y + '" width="608" height="43" fill="' + (earned ? colors.raised : colors.surface) + '" stroke="' + colors.line + '"/>' +
       '<text x="' + (x + 15) + '" y="' + (y + 18) + '" fill="' + color + '" font-family="monospace" font-size="10">' + stamp.number + " / " + escapeXml(stamp.title) + '</text>' +
-      '<text x="' + (x + 15) + '" y="' + (y + 33) + '" fill="' + (earned ? "#a8c795" : "#66705f") + '" font-family="monospace" font-size="8">' + (earned ? "STAMPED / " + escapeXml(stamp.label) : "NOT YET VISITED") + '</text>' +
+      '<text x="' + (x + 15) + '" y="' + (y + 33) + '" fill="' + colors.ink + '" font-family="monospace" font-size="8">' + (earned ? "STAMPED / " + escapeXml(stamp.label) : "NOT YET VISITED") + '</text>' +
       '<text x="' + (x + 582) + '" y="' + (y + 29) + '" text-anchor="end" fill="' + color + '" font-family="monospace" font-size="15">' + (earned ? "✓" : "—") + '</text>'
     );
   }).join("");
@@ -95,33 +115,34 @@ function makePassportSvg(data: PassportData, statuses: PassportAchievementStatus
     const row = Math.floor(index / 3);
     const x = 72 + column * 432;
     const y = 635 + row * 105;
-    const color = item.earned ? rarityColor(item.rarity) : "#66705f";
+    const color = item.earned ? rarityColor(item.rarity) : colors.ink;
     const label = item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.progress + " OF " + item.target;
     const imageHref = getBadgeArtworkHref(item.id, assetBaseUrl);
     return (
-      '<rect x="' + x + '" y="' + y + '" width="408" height="84" fill="' + (item.earned ? "#172016" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '"/>' +
+      '<rect x="' + x + '" y="' + y + '" width="408" height="84" fill="' + (item.earned ? colors.raised : colors.surface) + '" stroke="' + (item.earned ? color : colors.line) + '"/>' +
       '<image href="' + imageHref + '" x="' + (x + 3) + '" y="' + (y + 4) + '" width="76" height="76" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".36") + '"/>' +
-      '<text x="' + (x + 86) + '" y="' + (y + 35) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="11">' + escapeXml(badgeDisplayTitle(item)) + '</text>' +
+      '<text x="' + (x + 86) + '" y="' + (y + 35) + '" fill="' + colors.ink + '" font-family="monospace" font-size="11">' + escapeXml(badgeDisplayTitle(item)) + '</text>' +
       '<text x="' + (x + 86) + '" y="' + (y + 56) + '" fill="' + color + '" font-family="monospace" font-size="8">' + label + '</text>'
     );
   }).join("");
 
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="' + height + '" viewBox="0 0 1400 ' + height + '">' +
-    '<rect width="1400" height="' + height + '" fill="#090b09"/><rect x="28" y="28" width="1344" height="' + (height - 56) + '" fill="none" stroke="#384137" stroke-width="2"/>' +
-    '<path d="M28 110H1372M28 215H1372M28 590H1372" stroke="#384137"/>' +
-    '<text x="72" y="76" fill="#b6ff65" font-family="monospace" font-size="24" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1328" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="13">PERSONAL DEPARTMENT PASSPORT</text>' +
-    '<text x="72" y="166" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="43" font-weight="900">THE DEPARTMENT PASSPORT</text>' +
-    '<text x="72" y="193" fill="#8d968a" font-family="monospace" font-size="12">' + visited.size + ' / ' + DEPARTMENT_STAMPS.length + ' DEPARTMENTS VISITED  •  ' + unlockedCount + ' / ' + statuses.length + ' ACHIEVEMENT BADGES UNLOCKED</text>' +
-    '<text x="72" y="246" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">01 / DEPARTMENT STAMPS — VISITS</text>' + stampLines +
-    '<text x="72" y="620" fill="#b6ff65" font-family="monospace" font-size="11" font-weight="bold">02 / ACHIEVEMENT BADGES — COMPLETED EXPERIENCES &amp; CHALLENGES</text>' + badgeLines +
-    '<text x="1328" y="' + footerY + '" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">LOCAL RECORD / FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE</text>' +
+    '<rect width="1400" height="' + height + '" fill="' + colors.bg + '"/><rect x="28" y="28" width="1344" height="' + (height - 56) + '" fill="none" stroke="' + colors.line + '" stroke-width="2"/>' +
+    '<path d="M28 110H1372M28 215H1372M28 590H1372" stroke="' + colors.line + '"/>' +
+    '<text x="72" y="76" fill="' + colors.primary + '" font-family="monospace" font-size="24" font-weight="bold">THE DYOR DEPARTMENT</text>' +
+    '<text x="1328" y="76" text-anchor="end" fill="' + colors.ink + '" font-family="monospace" font-size="13">PERSONAL DEPARTMENT PASSPORT</text>' +
+    '<text x="72" y="166" fill="' + colors.ink + '" font-family="Arial,sans-serif" font-size="43" font-weight="900">THE DEPARTMENT PASSPORT</text>' +
+    '<text x="72" y="193" fill="' + colors.ink + '" font-family="monospace" font-size="12">' + visited.size + ' / ' + DEPARTMENT_STAMPS.length + ' DEPARTMENTS VISITED  •  ' + unlockedCount + ' / ' + statuses.length + ' ACHIEVEMENT BADGES UNLOCKED</text>' +
+    '<text x="72" y="246" fill="' + colors.primary + '" font-family="monospace" font-size="11" font-weight="bold">01 / DEPARTMENT STAMPS — VISITS</text>' + stampLines +
+    '<text x="72" y="620" fill="' + colors.primary + '" font-family="monospace" font-size="11" font-weight="bold">02 / ACHIEVEMENT BADGES — COMPLETED EXPERIENCES &amp; CHALLENGES</text>' + badgeLines +
+    '<text x="1328" y="' + footerY + '" text-anchor="end" fill="' + colors.ink + '" font-family="monospace" font-size="9">LOCAL RECORD / FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE</text>' +
     '</svg>'
   );
 }
 
 function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], assetBaseUrl: string) {
+  const colors = passportThemeColors();
   const height = badgeCollectionSvgHeight(statuses);
   const footerY = height - 40;
   const unlocked = statuses.filter((item) => item.earned).length;
@@ -130,30 +151,30 @@ function makeAchievementCollectionSvg(statuses: PassportAchievementStatus[], ass
     const row = Math.floor(index / 3);
     const x = 70 + column * 430;
     const y = 220 + row * 175;
-    const color = item.earned ? rarityColor(item.rarity) : "#66705f";
+    const color = item.earned ? rarityColor(item.rarity) : colors.ink;
     const progressWidth = Math.round((item.progress / item.target) * 280);
     const imageHref = getBadgeArtworkHref(item.id, assetBaseUrl);
     return (
-      '<rect x="' + x + '" y="' + y + '" width="398" height="150" fill="' + (item.earned ? "#141d12" : "#101510") + '" stroke="' + (item.earned ? color : "#30382f") + '" stroke-width="' + (item.earned ? 2 : 1) + '"/>' +
-      '<circle cx="' + (x + 72) + '" cy="' + (y + 75) + '" r="62" fill="#0a0d0a" stroke="' + color + '" stroke-opacity=".32" stroke-width="1"/>' +
+      '<rect x="' + x + '" y="' + y + '" width="398" height="150" fill="' + (item.earned ? colors.raised : colors.surface) + '" stroke="' + (item.earned ? color : colors.line) + '" stroke-width="' + (item.earned ? 2 : 1) + '"/>' +
+      '<circle cx="' + (x + 72) + '" cy="' + (y + 75) + '" r="62" fill="' + colors.bg + '" stroke="' + color + '" stroke-opacity=".32" stroke-width="1"/>' +
       '<image href="' + imageHref + '" x="' + (x + 7) + '" y="' + (y + 10) + '" width="130" height="130" preserveAspectRatio="xMidYMid meet" opacity="' + (item.earned ? "1" : ".34") + '"/>' +
-      '<text x="' + (x + 150) + '" y="' + (y + 38) + '" fill="' + (item.earned ? "#f0f0e9" : "#929b8d") + '" font-family="monospace" font-size="12">' + escapeXml(badgeDisplayTitle(item)) + '</text>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 38) + '" fill="' + colors.ink + '" font-family="monospace" font-size="12">' + escapeXml(badgeDisplayTitle(item)) + '</text>' +
       '<text x="' + (x + 150) + '" y="' + (y + 61) + '" fill="' + color + '" font-family="monospace" font-size="9">' + (item.earned ? "UNLOCKED / " + item.rarity : "LOCKED / " + item.rarity) + '</text>' +
-      '<text x="' + (x + 150) + '" y="' + (y + 82) + '" fill="#899486" font-family="monospace" font-size="8">' + item.progress + ' / ' + item.target + ' REQUIREMENT UNITS</text>' +
-      '<rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="218" height="5" fill="#30382f"/><rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="' + Math.round(progressWidth * .78) + '" height="5" fill="' + color + '"/>' +
-      '<text x="' + (x + 150) + '" y="' + (y + 124) + '" fill="#899486" font-family="monospace" font-size="8">' + (item.earned ? "DEPARTMENTAL RECORD VERIFIED" : "REQUIREMENT NOT YET MET") + '</text>'
+      '<text x="' + (x + 150) + '" y="' + (y + 82) + '" fill="' + colors.ink + '" font-family="monospace" font-size="8">' + item.progress + ' / ' + item.target + ' REQUIREMENT UNITS</text>' +
+      '<rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="218" height="5" fill="' + colors.line + '"/><rect x="' + (x + 150) + '" y="' + (y + 98) + '" width="' + Math.round(progressWidth * .78) + '" height="5" fill="' + color + '"/>' +
+      '<text x="' + (x + 150) + '" y="' + (y + 124) + '" fill="' + colors.ink + '" font-family="monospace" font-size="8">' + (item.earned ? "DEPARTMENTAL RECORD VERIFIED" : "REQUIREMENT NOT YET MET") + '</text>'
     );
   }).join("");
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="' + height + '" viewBox="0 0 1400 ' + height + '">' +
-    '<rect width="1400" height="' + height + '" fill="#090b09"/><rect x="28" y="28" width="1344" height="' + (height - 56) + '" fill="none" stroke="#384137" stroke-width="2"/>' +
-    '<path d="M28 110H1372M28 180H1372" stroke="#384137"/>' +
-    '<text x="70" y="76" fill="#b6ff65" font-family="monospace" font-size="23" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1330" y="76" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="12">ACHIEVEMENT OFFICE / COLLECTION RECORD</text>' +
-    '<text x="70" y="151" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="36" font-weight="900">THE BADGE COLLECTION</text>' +
-    '<text x="1330" y="151" text-anchor="end" fill="#b6ff65" font-family="monospace" font-size="12">' + unlocked + ' / ' + statuses.length + ' UNLOCKED</text>' +
+    '<rect width="1400" height="' + height + '" fill="' + colors.bg + '"/><rect x="28" y="28" width="1344" height="' + (height - 56) + '" fill="none" stroke="' + colors.line + '" stroke-width="2"/>' +
+    '<path d="M28 110H1372M28 180H1372" stroke="' + colors.line + '"/>' +
+    '<text x="70" y="76" fill="' + colors.primary + '" font-family="monospace" font-size="23" font-weight="bold">THE DYOR DEPARTMENT</text>' +
+    '<text x="1330" y="76" text-anchor="end" fill="' + colors.ink + '" font-family="monospace" font-size="12">ACHIEVEMENT OFFICE / COLLECTION RECORD</text>' +
+    '<text x="70" y="151" fill="' + colors.ink + '" font-family="Arial,sans-serif" font-size="36" font-weight="900">THE BADGE COLLECTION</text>' +
+    '<text x="1330" y="151" text-anchor="end" fill="' + colors.primary + '" font-family="monospace" font-size="12">' + unlocked + ' / ' + statuses.length + ' UNLOCKED</text>' +
     cards +
-    '<text x="1330" y="' + footerY + '" text-anchor="end" fill="#8d968a" font-family="monospace" font-size="9">FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE / LOCAL RECORD</text>' +
+    '<text x="1330" y="' + footerY + '" text-anchor="end" fill="' + colors.ink + '" font-family="monospace" font-size="9">FICTIONAL ACHIEVEMENTS / NO FINANCIAL VALUE / LOCAL RECORD</text>' +
     '</svg>'
   );
 }

@@ -5,6 +5,7 @@ import "./passport/achievements.css";
 import "./components/laser-cursor.css";
 import "./components/energy-scrollbar.css";
 import "./components/scroll-to-top.css";
+import "./theme-system.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
 import CircuitClickReveal from "./components/circuit-click-reveal";
@@ -38,19 +39,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#090b09",
   colorScheme: "dark",
 };
 
+const themeBootScript = `(function(){var root=document.documentElement;var theme="ice";try{var saved=localStorage.getItem("dyor-theme");if(saved==="ice"||saved==="lime"||saved==="ruby")theme=saved;}catch(e){}root.dataset.theme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(!meta){meta=document.createElement("meta");meta.name="theme-color";document.head.appendChild(meta);}var bg=getComputedStyle(root).getPropertyValue("--bg").trim();if(bg)meta.content=bg;})();`;
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" id="page-scroll-region">
+    <html lang="en" id="page-scroll-region" data-theme="ice" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         />
       </head>
       <body>

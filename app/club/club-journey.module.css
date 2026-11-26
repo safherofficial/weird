@@ -14,9 +14,7 @@
   grid-template-columns: 26px minmax(0, 1fr);
   gap: 4px 9px;
   padding: 11px 12px;
-  border: 1px solid var(--department-accent-line);
-  background: linear-gradient(135deg, rgba(217, 155, 207, .055), rgba(10, 12, 10, .92));
-  color: #e8eee2;
+  border: 1px solid var(--department-accent-line);background: linear-gradient(135deg, color-mix(in srgb, var(--surface-raised) 6%, transparent), color-mix(in srgb, var(--surface) 92%, transparent));color: var(--ink);
   text-decoration: none;
   transition: border-color .18s ease, background .18s ease, transform .18s ease;
 }
@@ -28,21 +26,18 @@
   font: 700 12px/1 var(--font-mono);
 }
 
-.nav a > strong {
-  color: #e9eee5;
+.nav a > strong {color: var(--ink);
   font: 700 11px/1.4 var(--font-mono);
   letter-spacing: .045em;
 }
 
-.nav a > small {
-  color: #83907d;
+.nav a > small {color: var(--ink);
   font: 9px/1.4 var(--font-mono);
   letter-spacing: .045em;
 }
 
 .nav a:hover {
-  border-color: var(--department-accent);
-  background: rgba(217, 155, 207, .09);
+  border-color: var(--department-accent);background: color-mix(in srgb, var(--surface-raised) 9%, transparent);
   transform: translateY(-2px);
 }
 
@@ -56,8 +51,7 @@
   scroll-margin-top: 24px;
 }
 
-.stage + .stage {
-  border-top: 1px solid rgba(217, 155, 207, .18);
+.stage + .stage {border-top: 1px solid color-mix(in srgb, var(--line) 18%, transparent);
 }
 
 .stageMarker {
@@ -74,8 +68,7 @@
   height: 36px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--department-accent-line);
-  background: rgba(217, 155, 207, .055);
+  border: 1px solid var(--department-accent-line);background: color-mix(in srgb, var(--surface-raised) 6%, transparent);
   color: var(--department-accent);
   font: 700 11px/1 var(--font-mono);
 }
@@ -85,14 +78,12 @@
   gap: 4px;
 }
 
-.stageMarker strong {
-  color: #e9eee5;
+.stageMarker strong {color: var(--ink);
   font: 700 10px/1.4 var(--font-mono);
   letter-spacing: .12em;
 }
 
-.stageMarker small {
-  color: #788474;
+.stageMarker small {color: var(--ink);
   font: 9px/1.5 var(--font-mono);
   letter-spacing: .065em;
 }

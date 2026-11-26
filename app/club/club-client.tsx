@@ -43,28 +43,37 @@ function makeMembershipSvg(result: ClubResult) {
   const factionTitle = escapeXml(result.faction.title);
   const factionMotto = escapeXml(result.faction.motto);
   const factionCode = escapeXml(result.faction.code);
+  const styles = getComputedStyle(document.documentElement);
+  const colors = {
+    bg: styles.getPropertyValue("--bg").trim(),
+    surface: styles.getPropertyValue("--surface").trim(),
+    raised: styles.getPropertyValue("--surface-raised").trim(),
+    line: styles.getPropertyValue("--line").trim(),
+    ink: styles.getPropertyValue("--ink").trim(),
+    primary: styles.getPropertyValue("--primary").trim(),
+  };
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">' +
-    '<rect width="1200" height="675" fill="#090b09"/>' +
-    '<rect x="30" y="30" width="1140" height="615" fill="#101610" stroke="#52633f" stroke-width="2"/>' +
-    '<path d="M30 126H1170M30 550H1170" stroke="#34412f"/>' +
-    '<path d="M935 30L1170 265M1015 30L1170 185M1095 30L1170 105" stroke="#b6ff65" stroke-opacity=".12" stroke-width="2"/>' +
-    '<text x="68" y="86" fill="#b6ff65" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
-    '<text x="1132" y="86" text-anchor="end" fill="#85917c" font-family="monospace" font-size="14">CRYPTO TRENCHES / ALL CHAINS / 99% CLUB</text>' +
-    '<text x="68" y="178" fill="#879481" font-family="monospace" font-size="16" letter-spacing="3">MEMBERSHIP CERTIFICATE / FICTIONAL ISSUE</text>' +
-    '<text x="68" y="269" fill="#f0f0e9" font-family="Arial,sans-serif" font-size="57" font-weight="900">' + title + '</text>' +
-    '<text x="68" y="321" fill="#b6ff65" font-family="monospace" font-size="23">' + motto + '</text>' +
-    '<text x="68" y="352" fill="#a6c88f" font-family="monospace" font-size="12" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
-    '<rect x="68" y="371" width="470" height="112" fill="#151e12" stroke="#46573a"/>' +
-    '<text x="92" y="409" fill="#8d9a83" font-family="monospace" font-size="14">MEMBER NUMBER</text>' +
-    '<text x="92" y="457" fill="#b6ff65" font-family="monospace" font-size="37" font-weight="bold">' + member + '</text>' +
-    '<text x="580" y="389" fill="#8d9a83" font-family="monospace" font-size="12">FACTION / ' + factionCode + '</text>' +
-    '<text x="580" y="415" fill="#b6ff65" font-family="monospace" font-size="16" font-weight="bold">' + factionTitle + '</text>' +
-    '<text x="580" y="439" fill="#a5b49b" font-family="monospace" font-size="10">' + factionMotto + '</text>' +
-    '<text x="580" y="467" fill="#8d9a83" font-family="monospace" font-size="11">MEMBERSHIP / ' + escapeXml(result.membershipClass) + '</text>' +
-    '<text x="580" y="490" fill="#ff8580" font-family="monospace" font-size="11">BENEFITS: NONE / EXPECTATIONS: MANAGED</text>' +
-    '<text x="68" y="600" fill="#b6ff65" font-family="monospace" font-size="15" font-weight="bold">NOT A REAL MEMBERSHIP / NO FINANCIAL BENEFITS / NO TOKEN / NO REAL 99% STATISTIC</text>' +
-    '<text x="1132" y="600" text-anchor="end" fill="#82907b" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
+    '<rect width="1200" height="675" fill="' + colors.bg + '"/>' +
+    '<rect x="30" y="30" width="1140" height="615" fill="' + colors.surface + '" stroke="' + colors.line + '" stroke-width="2"/>' +
+    '<path d="M30 126H1170M30 550H1170" stroke="' + colors.line + '"/>' +
+    '<path d="M935 30L1170 265M1015 30L1170 185M1095 30L1170 105" stroke="' + colors.primary + '" stroke-opacity=".12" stroke-width="2"/>' +
+    '<text x="68" y="86" fill="' + colors.primary + '" font-family="monospace" font-size="25" font-weight="bold">THE DYOR DEPARTMENT</text>' +
+    '<text x="1132" y="86" text-anchor="end" fill="' + colors.ink + '" font-family="monospace" font-size="14">CRYPTO TRENCHES / ALL CHAINS / 99% CLUB</text>' +
+    '<text x="68" y="178" fill="' + colors.ink + '" font-family="monospace" font-size="16" letter-spacing="3">MEMBERSHIP CERTIFICATE / FICTIONAL ISSUE</text>' +
+    '<text x="68" y="269" fill="' + colors.ink + '" font-family="Arial,sans-serif" font-size="57" font-weight="900">' + title + '</text>' +
+    '<text x="68" y="321" fill="' + colors.primary + '" font-family="monospace" font-size="23">' + motto + '</text>' +
+    '<text x="68" y="352" fill="' + colors.primary + '" font-family="monospace" font-size="12" font-weight="bold">BEHAVIOURAL CROSS-READ / ' + crossRead + '</text>' +
+    '<rect x="68" y="371" width="470" height="112" fill="' + colors.raised + '" stroke="' + colors.line + '"/>' +
+    '<text x="92" y="409" fill="' + colors.ink + '" font-family="monospace" font-size="14">MEMBER NUMBER</text>' +
+    '<text x="92" y="457" fill="' + colors.primary + '" font-family="monospace" font-size="37" font-weight="bold">' + member + '</text>' +
+    '<text x="580" y="389" fill="' + colors.ink + '" font-family="monospace" font-size="12">FACTION / ' + factionCode + '</text>' +
+    '<text x="580" y="415" fill="' + colors.primary + '" font-family="monospace" font-size="16" font-weight="bold">' + factionTitle + '</text>' +
+    '<text x="580" y="439" fill="' + colors.ink + '" font-family="monospace" font-size="10">' + factionMotto + '</text>' +
+    '<text x="580" y="467" fill="' + colors.ink + '" font-family="monospace" font-size="11">MEMBERSHIP / ' + escapeXml(result.membershipClass) + '</text>' +
+    '<text x="580" y="490" fill="' + colors.primary + '" font-family="monospace" font-size="11">BENEFITS: NONE / EXPECTATIONS: MANAGED</text>' +
+    '<text x="68" y="600" fill="' + colors.primary + '" font-family="monospace" font-size="15" font-weight="bold">NOT A REAL MEMBERSHIP / NO FINANCIAL BENEFITS / NO TOKEN / NO REAL 99% STATISTIC</text>' +
+    '<text x="1132" y="600" text-anchor="end" fill="' + colors.ink + '" font-family="monospace" font-size="12">ENTERTAINMENT ONLY</text>' +
     '</svg>'
   );
 }

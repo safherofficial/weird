@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 type Theme = "ice" | "lime" | "ruby";
 
@@ -43,10 +43,12 @@ type ThemeSwitchProps = {
 
 export default function ThemeSwitch({ placement = "header" }: ThemeSwitchProps) {
   const [theme, setTheme] = useState<Theme>("ice");
+  const [ready, setReady] = useState(false);
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
     setTheme(readTheme());
+    setReady(true);
     syncThemeColor();
     const handleThemeChange = () => setTheme(readTheme());
     window.addEventListener("themechange", handleThemeChange);
@@ -62,7 +64,7 @@ export default function ThemeSwitch({ placement = "header" }: ThemeSwitchProps) 
     }
   }, []);
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     const currentIndex = THEMES.findIndex((item) => item.id === theme);
     let nextIndex = currentIndex;
     if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (currentIndex + 1) % THEMES.length;
@@ -75,7 +77,7 @@ export default function ThemeSwitch({ placement = "header" }: ThemeSwitchProps) 
   }
 
   return (
-    <div className={`theme-switch theme-switch--${placement}`}>
+    <div className={`theme-switch theme-switch--${placement}`} data-ready={ready}>
       <span className="theme-switch__label">THEME</span>
       <div className="theme-switch__group" role="radiogroup" aria-label="Color theme" onKeyDown={handleKeyDown}>
         {THEMES.map((item, index) => (
