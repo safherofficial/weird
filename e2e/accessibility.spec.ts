@@ -63,3 +63,19 @@ test("Governance interview state has no axe violations", async ({ page }) => {
 
   expect(scan.violations, formatViolations(scan.violations)).toEqual([]);
 });
+
+test("enabled local Passport badge collection has no axe violations on desktop and mobile", async ({ page }) => {
+  await page.goto("/passport");
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.locator("#passport-achievements-title")).toBeVisible();
+  await expect(page.locator(".passport-achievements__grid .passport-achievement")).toHaveCount(29);
+
+  for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+
+    const scan = await new AxeBuilder({ page }).withTags(wcagTags).analyze();
+
+    expect(scan.violations, formatViolations(scan.violations)).toEqual([]);
+  }
+});
+

@@ -131,3 +131,26 @@ for (const route of ["/bridge-incident-office", "/governance-office", "/club", "
     ).toBeLessThanOrEqual(dimensions.viewport + 1);
   });
 }
+
+test("local Passport stays off until opted in and deletion clears its browser record", async ({ page }) => {
+  await page.goto("/passport");
+
+  const readLocalPassport = () => page.evaluate(() => localStorage.getItem("dyor-department:passport:v1"));
+
+  expect(await readLocalPassport()).toBeNull();
+  await expect(page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i })).toBeVisible();
+
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.getByText(/ENABLED ON THIS DEVICE/i)).toBeVisible();
+
+  const enabledRecord = await readLocalPassport();
+  expect(enabledRecord).not.toBeNull();
+  expect(JSON.parse(enabledRecord ?? "null")).toMatchObject({ enabled: true, visitedDepartments: [], completedActivities: [] });
+
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: /DISABLE & DELETE LOCAL PASSPORT/i }).click();
+
+  await expect(page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i })).toBeVisible();
+  expect(await readLocalPassport()).toBeNull();
+});
+
