@@ -13,7 +13,7 @@ const sections = [
   {
     title: "01 / WHAT THIS SITE IS",
     paragraphs: [
-      "THE DYOR DEPARTMENT is a satirical entertainment website. A meme token associated with THE 99% CLUB is planned but has not been announced or launched. The site currently offers no token sale, purchase, claim, wallet connection or trading functionality.",
+      "THE DYOR DEPARTMENT is a satirical entertainment website. A meme token associated with THE 99% CLUB is confirmed but has not been announced or launched. The site currently offers no token sale, purchase, claim, wallet connection or trading functionality.",
       "This notice describes the application's current behaviour. It is an operational transparency statement, not confirmation of legal compliance in every jurisdiction.",
     ],
   },
