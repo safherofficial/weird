@@ -63,7 +63,7 @@ test("all thirteen public department routes resolve to populated experiences", a
 
     const mainText = await page.locator("main").innerText();
     expect(mainText.trim().length, `${route} should not be an empty page`).toBeGreaterThan(180);
-    expect(mainText, `${route} should not be a placeholder page`).not.toMatch(/\\b(coming soon|under construction|launching soon)\\b/i);
+    expect(mainText, `${route} should not be a placeholder page`).not.toMatch(/\b(coming soon|under construction|launching soon)\b/i);
   }
 });
 
@@ -72,7 +72,7 @@ test("fictional-data notices are grouped instead of repeated on every directory 
   const cardLabels = await page.locator(".hq-department__category, .hq-department__bottom > span").allTextContents();
   expect(cardLabels.length).toBeGreaterThan(0);
   for (const label of cardLabels) {
-    expect(label).not.toMatch(/\\b(FICTIONAL|SYNTHETIC)\\b/i);
+    expect(label).not.toMatch(/\b(FICTIONAL|SYNTHETIC)\b/i);
   }
 
   await page.goto("/archives");
