@@ -33,7 +33,11 @@ test("headquarters renders its primary heading and public department route", asy
   expect(featuredRoutes).toEqual(["/simulator", "/club", "/audit"]);
   await expect(page.locator("#departments .hq-department")).toHaveCount(10);
   await expect(page.locator(".hq-casefile")).toBeVisible();
-  await expect(page.getByText("TOKEN CONFIRMED. DETAILS NOT ANNOUNCED.", { exact: false }).first()).toBeVisible();
+  const tokenNotice = page.locator(".club-token-notice--home");
+  await expect(tokenNotice).toBeVisible();
+  await expect(tokenNotice.locator(".club-token-notice__lead")).toContainText(
+    "A meme token associated with THE 99% CLUB is confirmed. It has not been announced or launched.",
+  );
   await expect(page.locator(".hq-casefile__chart-label")).toContainText("NOT MARKET DATA");
   await expect(page.locator(".hq-passport")).toBeVisible();
   await expect(page.locator(".hq-status")).toHaveCount(0);
