@@ -22,7 +22,16 @@ type CircuitBurst = {
   duration: number;
 };
 
-const TRACE_COLORS = ["#b6ff65", "#d9ffad", "#91ed79"] as const;
+type ThemePalette = { primary: string; ink: string; glow: string };
+
+function readThemePalette(): ThemePalette {
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    primary: styles.getPropertyValue("--primary").trim(),
+    ink: styles.getPropertyValue("--ink").trim(),
+    glow: styles.getPropertyValue("--glow").trim(),
+  };
+}
 const MAX_ACTIVE_BURSTS = 5;
 
 function randomBetween(min: number, max: number) {
@@ -39,6 +48,7 @@ function makeTrace(
   segmentCount: number,
   delay: number,
   opacity = 1,
+  themeColor = "",
 ): CircuitTrace {
   const directionX = Math.cos(angle) >= 0 ? 1 : -1;
   const directionY = Math.sin(angle) >= 0 ? 1 : -1;
@@ -67,11 +77,11 @@ function makeTrace(
     fadeDuration: randomBetween(260, 390),
     opacity,
     width: randomBetween(1, 1.65),
-    color: TRACE_COLORS[Math.floor(Math.random() * TRACE_COLORS.length)],
+    color: themeColor,
   };
 }
 
-function createBurst(x: number, y: number, startedAt: number): CircuitBurst {
+function createBurst(x: number, y: number, startedAt: number, themeColor: string): CircuitBurst {
   const traces: CircuitTrace[] = [];
   const traceCount = 10;
 
@@ -81,7 +91,7 @@ function createBurst(x: number, y: number, startedAt: number): CircuitBurst {
       x: x + randomBetween(-4, 4),
       y: y + randomBetween(-4, 4),
     };
-    const trace = makeTrace(start, angle, Math.floor(randomBetween(3, 6)), randomBetween(0, 165));
+    const trace = makeTrace(start, angle, Math.floor(randomBetween(3, 6)), randomBetween(0, 165), 1, themeColor);
     traces.push(trace);
 
     // A few short secondary branches make the pattern read like a circuit board.
@@ -95,6 +105,7 @@ function createBurst(x: number, y: number, startedAt: number): CircuitBurst {
           Math.floor(randomBetween(2, 4)),
           trace.delay + randomBetween(65, 135),
           0.78,
+          themeColor,
         ),
       );
     }
@@ -160,6 +171,7 @@ function drawBurst(
   context: CanvasRenderingContext2D,
   burst: CircuitBurst,
   now: number,
+  palette: ThemePalette,
 ) {
   const age = now - burst.startedAt;
   const ringProgress = clamp(age / 470, 0, 1);
@@ -168,7 +180,7 @@ function drawBurst(
   if (ringAlpha > 0) {
     context.save();
     context.globalAlpha = ringAlpha;
-    context.strokeStyle = "#cfff9b";
+    context.strokeStyle = palette.primary;
     context.lineWidth = 1;
     context.beginPath();
     context.arc(burst.x, burst.y, 3 + ringProgress * 31, 0, Math.PI * 2);
@@ -181,9 +193,9 @@ function drawBurst(
   if (sparkAlpha > 0) {
     context.save();
     context.globalAlpha = sparkAlpha * 0.8;
-    context.strokeStyle = "#e6ffcf";
+    context.strokeStyle = palette.ink;
     context.lineWidth = 1.25;
-    context.shadowColor = "#b6ff65";
+    context.shadowColor = palette.glow;
     context.shadowBlur = 10;
     context.beginPath();
     context.moveTo(burst.x - 5, burst.y);
@@ -211,7 +223,7 @@ function drawBurst(
     context.lineJoin = "round";
     context.strokeStyle = trace.color;
     context.lineWidth = trace.width;
-    context.shadowColor = "#b6ff65";
+    context.shadowColor = palette.glow;
     context.shadowBlur = 7;
     const head = drawPartialTrace(context, trace.points, progress);
     context.stroke();
@@ -227,7 +239,7 @@ function drawBurst(
       if (index % 2 === 0) {
         context.beginPath();
         context.arc(point.x, point.y, 1.5, 0, Math.PI * 2);
-        context.fillStyle = "#e5ffc8";
+        context.fillStyle = palette.ink;
         context.fill();
       }
     }
@@ -236,14 +248,14 @@ function drawBurst(
     if (progress < 1) {
       context.beginPath();
       context.arc(head.x, head.y, 2.1, 0, Math.PI * 2);
-      context.fillStyle = "#f0ffdc";
+      context.fillStyle = palette.ink;
       context.shadowBlur = 11;
       context.fill();
     } else {
       const end = trace.points[trace.points.length - 1];
       context.beginPath();
       context.arc(end.x, end.y, 1.8, 0, Math.PI * 2);
-      context.fillStyle = "#e5ffc8";
+      context.fillStyle = palette.ink;
       context.fill();
     }
 
@@ -267,6 +279,7 @@ export default function CircuitClickReveal() {
     let animationFrame = 0;
     let running = false;
     let motionEnabled = !reducedMotion.matches;
+    let palette = readThemePalette();
 
     const resize = () => {
       width = window.innerWidth;
@@ -295,7 +308,7 @@ export default function CircuitClickReveal() {
           bursts.splice(index, 1);
           continue;
         }
-        drawBurst(context, burst, now);
+        drawBurst(context, burst, now, palette);
       }
 
       if (bursts.length > 0 && motionEnabled) {
@@ -332,7 +345,7 @@ export default function CircuitClickReveal() {
         y = bounds.top + bounds.height / 2;
       }
 
-      bursts.push(createBurst(x, y, window.performance.now()));
+      bursts.push(createBurst(x, y, window.performance.now(), palette.primary));
       if (bursts.length > MAX_ACTIVE_BURSTS) bursts.shift();
       start();
     };
@@ -345,13 +358,22 @@ export default function CircuitClickReveal() {
     };
 
     resize();
+    const handleThemeChange = () => {
+      palette = readThemePalette();
+      for (const burst of bursts) {
+        for (const trace of burst.traces) trace.color = palette.primary;
+      }
+    };
+
     window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("themechange", handleThemeChange);
     window.addEventListener("click", handleClick, { passive: true });
     reducedMotion.addEventListener("change", handleMotionChange);
 
     return () => {
       stop();
       window.removeEventListener("resize", resize);
+      window.removeEventListener("themechange", handleThemeChange);
       window.removeEventListener("click", handleClick);
       reducedMotion.removeEventListener("change", handleMotionChange);
     };
