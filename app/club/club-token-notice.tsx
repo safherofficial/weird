@@ -35,7 +35,7 @@ export default function ClubTokenNotice({ placement }: ClubTokenNoticeProps) {
       </header>
 
       <p className="club-token-notice__lead">
-        A meme token associated with THE 99% CLUB is planned. It has not been announced or launched.
+        A meme token associated with THE 99% CLUB is confirmed. It has not been announced or launched.
         Its ticker, network, contract address and official market links will be published here only
         after they are confirmed.
       </p>
@@ -62,7 +62,7 @@ export default function ClubTokenNotice({ placement }: ClubTokenNoticeProps) {
       <div className="club-token-notice__warning">
         <strong>ANTI-SCAM NOTICE / READ BEFORE YOU CONNECT</strong>
         <p>
-          The token is planned, but no ticker, network, contract address or official market link has
+          The token is confirmed, but no ticker, network, contract address or official market link has
           been announced. Until those details appear in this notice, unrelated tokens, copied tickers,
           unsolicited messages and external links are not verified as connected to the Club.
           This site currently offers no wallet connection, presale, purchase or claim function.
