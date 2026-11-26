@@ -5,13 +5,12 @@ import "./globals.css";
 import "./theme-system.css";
 import "./accessibility-refinements.css";
 import "./passport/achievements.css";
-import "./components/laser-cursor.css";
+import "./components/theme-pointer.css";
 import "./components/energy-scrollbar.css";
 import "./components/scroll-to-top.css";
 import { SITE_URL } from "./site-config";
 import AchievementToastHost from "./components/achievement-toast";
 import CircuitClickReveal from "./components/circuit-click-reveal";
-import LaserCursor from "./components/laser-cursor";
 import EnergyScrollbar from "./components/energy-scrollbar";
 import ScrollToTop from "./components/scroll-to-top";
 
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
   title: {
-    default: "THE DYOR DEPARTMENT — You came for the 100x. You stayed because you can't sell at a loss.",
+    default: "THE DYOR DEPARTMENT â You came for the 100x. You stayed because you can't sell at a loss.",
     template: "%s | THE DYOR DEPARTMENT",
   },
   description:
@@ -74,7 +73,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         {children}
         <CircuitClickReveal />
-        <LaserCursor />
         <div role="region" aria-label="Page scroll controls">
           <EnergyScrollbar />
         </div>
