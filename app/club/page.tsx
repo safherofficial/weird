@@ -83,7 +83,7 @@ export default function ClubPage() {
             <section className="club-faction-directory" aria-labelledby="club-factions-title">
           <header>
             <div><span>THE 99% CLUB / SIX FICTIONAL FACTIONS</span><h2 id="club-factions-title">PICK YOUR <em>EXCUSE.</em></h2></div>
-            <p>Your primary membership archetype determines your faction. No wallets, applications, token holdings or real-world groups are involved.</p>
+            <p>Your membership archetype determines your faction. This fictional classification does not inspect wallets or token holdings, confer real-world status or establish token eligibility.</p>
           </header>
           <div className="club-faction-directory__grid">
             {Object.values(factions).map((faction) => (
