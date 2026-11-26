@@ -60,7 +60,7 @@
   content: "";
   pointer-events: none;
 }
-.passport-achievement--common { --badge-rarity: #b6ff65; }
+.passport-achievement--common { --badge-rarity: var(--green); }
 .passport-achievement--uncommon { --badge-rarity: #c4a46c; }
 .passport-achievement--rare { --badge-rarity: #8fc6e8; }
 .passport-achievement--legendary { --badge-rarity: #e7c17c; }
@@ -92,7 +92,7 @@
   justify-content: center;
   overflow: visible;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(182,255,101,.10), rgba(0,0,0,0) 72%);
+  background: radial-gradient(circle, rgba(var(--green-rgb), .10), rgba(0,0,0,0) 72%);
 }
 .achievement-emblem__art {
   position: relative;
@@ -104,7 +104,7 @@
   transition: filter .24s ease, opacity .24s ease, transform .24s ease;
 }
 .achievement-emblem.is-earned .achievement-emblem__art {
-  filter: drop-shadow(0 0 7px rgba(182,255,101,.16));
+  filter: drop-shadow(0 0 7px rgba(var(--green-rgb), .16));
 }
 .achievement-emblem.is-earned::after {
   position: absolute;
@@ -121,7 +121,7 @@
   opacity: .48;
   filter: grayscale(.58) brightness(.72);
 }
-.achievement-emblem--common { --badge-rarity: #b6ff65; }
+.achievement-emblem--common { --badge-rarity: var(--green); }
 .achievement-emblem--uncommon { --badge-rarity: #c4a46c; }
 .achievement-emblem--rare { --badge-rarity: #8fc6e8; }
 .achievement-emblem--legendary { --badge-rarity: #e7c17c; }
@@ -131,7 +131,7 @@
 }
 .passport-rarity-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: -2px 0 16px; }
 .passport-rarity-legend span { font: 8px/1.5 var(--font-mono); letter-spacing: .1em; }
-.passport-rarity-legend .rarity-common { color: #b6ff65; }
+.passport-rarity-legend .rarity-common { color: var(--green); }
 .passport-rarity-legend .rarity-uncommon { color: #c4a46c; }
 .passport-rarity-legend .rarity-rare { color: #8fc6e8; }
 .passport-rarity-legend .rarity-legendary { color: #e7c17c; }
@@ -150,7 +150,7 @@
   align-items: center;
   gap: 14px;
   padding: 14px;
-  border: 1px solid rgba(182, 255, 101, .32);
+  border: 1px solid rgba(var(--green-rgb), .32);
   border-left: 3px solid var(--department-accent, #a8d99b);
   background: rgba(11, 15, 11, .97);
   box-shadow: 0 16px 48px rgba(0,0,0,.42);
@@ -191,7 +191,7 @@
   margin: 0 auto 32px;
   padding: clamp(20px, 3.2vw, 34px);
   border: 1px solid #34412f;
-  background: linear-gradient(145deg, rgba(182,255,101,.055), rgba(12,16,13,.94) 48%);
+  background: linear-gradient(145deg, rgba(var(--green-rgb), .055), rgba(12,16,13,.94) 48%);
 }
 .passport-guide__heading { max-width: 720px; }
 .passport-guide__heading .eyebrow { margin: 0 0 12px; }
@@ -251,8 +251,8 @@
 }
 .passport-guide__difference article {
   padding: 17px;
-  border: 1px solid rgba(182,255,101,.22);
-  background: rgba(182,255,101,.035);
+  border: 1px solid rgba(var(--green-rgb), .22);
+  background: rgba(var(--green-rgb), .035);
 }
 .passport-guide__difference h3 { margin-top: 7px; }
 .passport-guide__fineprint {
@@ -272,7 +272,7 @@
   gap: 5px;
   padding: 9px 10px;
   border-left: 2px solid color-mix(in srgb, var(--badge-rarity) 65%, transparent);
-  background: rgba(182,255,101,.035);
+  background: rgba(var(--green-rgb), .035);
 }
 .passport-achievement__requirement strong {
   color: var(--badge-rarity, var(--accent));
@@ -293,19 +293,19 @@
   position: relative;
   isolation: isolate;
   padding-inline: 12px;
-  border-color: rgba(182,255,101,.68);
-  background: rgba(182,255,101,.045);
+  border-color: rgba(var(--green-rgb), .68);
+  background: rgba(var(--green-rgb), .045);
   color: #c9ff91;
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(182,255,101,.32);
-  box-shadow: 0 0 0 1px rgba(182,255,101,.08), 0 0 13px rgba(182,255,101,.12), inset 0 0 12px rgba(182,255,101,.055);
+  text-shadow: 0 0 10px rgba(var(--green-rgb), .32);
+  box-shadow: 0 0 0 1px rgba(var(--green-rgb), .08), 0 0 13px rgba(var(--green-rgb), .12), inset 0 0 12px rgba(var(--green-rgb), .055);
   animation: passport-nav-neon-pulse 2.8s ease-in-out infinite;
 }
 .main-nav__passport::after {
   position: absolute;
   inset: -4px;
   z-index: -1;
-  border: 1px solid rgba(182,255,101,.24);
+  border: 1px solid rgba(var(--green-rgb), .24);
   content: "";
   pointer-events: none;
   animation: passport-nav-halo 2.8s ease-in-out infinite;
@@ -313,23 +313,23 @@
 .main-nav__passport:hover,
 .main-nav__passport[aria-current="page"] {
   border-color: var(--green);
-  background: rgba(182,255,101,.12);
+  background: rgba(var(--green-rgb), .12);
   color: #e1ffbf;
-  box-shadow: 0 0 18px rgba(182,255,101,.25), inset 0 0 16px rgba(182,255,101,.10);
+  box-shadow: 0 0 18px rgba(var(--green-rgb), .25), inset 0 0 16px rgba(var(--green-rgb), .10);
 }
 .mobile-nav__item--passport {
   position: relative;
-  border: 1px solid rgba(182,255,101,.44);
-  background: rgba(182,255,101,.06);
+  border: 1px solid rgba(var(--green-rgb), .44);
+  background: rgba(var(--green-rgb), .06);
   color: #cfff9f;
-  box-shadow: 0 0 13px rgba(182,255,101,.09), inset 0 0 12px rgba(182,255,101,.045);
+  box-shadow: 0 0 13px rgba(var(--green-rgb), .09), inset 0 0 12px rgba(var(--green-rgb), .045);
   animation: passport-nav-neon-pulse 2.8s ease-in-out infinite;
 }
 .mobile-nav__item--passport .mobile-nav__number,
 .mobile-nav__item--passport .mobile-nav__arrow { color: var(--green); }
 @keyframes passport-nav-neon-pulse {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(182,255,101,.08), 0 0 10px rgba(182,255,101,.10), inset 0 0 9px rgba(182,255,101,.035); }
-  50% { box-shadow: 0 0 0 1px rgba(182,255,101,.26), 0 0 22px rgba(182,255,101,.27), inset 0 0 16px rgba(182,255,101,.10); }
+  0%, 100% { box-shadow: 0 0 0 1px rgba(var(--green-rgb), .08), 0 0 10px rgba(var(--green-rgb), .10), inset 0 0 9px rgba(var(--green-rgb), .035); }
+  50% { box-shadow: 0 0 0 1px rgba(var(--green-rgb), .26), 0 0 22px rgba(var(--green-rgb), .27), inset 0 0 16px rgba(var(--green-rgb), .10); }
 }
 @keyframes passport-nav-halo {
   0%, 100% { opacity: .22; transform: scale(.985); }

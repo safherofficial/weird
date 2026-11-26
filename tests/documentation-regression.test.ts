@@ -44,6 +44,8 @@ test("R5 Privacy Notice documents the real local-storage and same-origin API beh
   assert.match(privacy, /does not receive the visitor's interactive answers/);
   assert.match(privacy, /does not write to an application database/);
   assert.match(privacy, /Passport remains there until it is deleted from its page/);
+  assert.match(privacy, /color theme selector also saves the chosen palette identifier in browser localStorage on this device/);
+  assert.match(privacy, /is not sent to the Department and is not used for analytics or tracking/);
   assert.match(privacy, /Bridge Incident Office case URL encodes only the seven selected answer indexes/);
   assert.match(privacy, /Governance Accountability Office case URL likewise encodes only the seven selected answer indexes/);
   assert.doesNotMatch(privacy, /disabled and deleted from its page/);

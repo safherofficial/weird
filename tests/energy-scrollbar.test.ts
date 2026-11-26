@@ -60,7 +60,8 @@ test("energy scrollbar respects reduced motion, visibility changes and touch dev
 });
 
 test("energy scrollbar presents the neon energy core and responsive wake-up state", () => {
-  assert.match(stylesheet, /#b6ff65/iu);
+  assert.match(stylesheet, /var\(--green\)/u);
+  assert.match(stylesheet, /rgb\(var\(--green-rgb\) \/ /u);
   assert.match(stylesheet, /radial-gradient/u);
   assert.match(stylesheet, /data-scrolling="true"/u);
   assert.match(stylesheet, /energy-scrollbar__spark/u);
