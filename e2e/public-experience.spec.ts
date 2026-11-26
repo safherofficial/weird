@@ -290,3 +290,58 @@ test("Museum exhibits and Archive records complete the Passport culture-curator 
     .filter({ has: page.getByRole("heading", { name: "CULTURE CURATOR" }) });
   await expect(cultureCuratorBadge).toHaveClass(/is-earned/);
 });
+
+
+test("DYOR Audit and Airdrop interviews record their Passport activities and unlock badges", async ({ page }) => {
+  const passportKey = "dyor-department:passport:v1";
+  const readLocalPassport = () =>
+    page.evaluate((key) => localStorage.getItem(key), passportKey);
+
+  await page.goto("/passport");
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.getByText(/ENABLED ON THIS DEVICE/i)).toBeVisible();
+
+  await page.goto("/audit");
+  const firstAuditAnswer = page.locator(".answer-option").first();
+  for (let question = 0; question < 10; question += 1) {
+    await expect(firstAuditAnswer).toBeVisible();
+    await firstAuditAnswer.click();
+  }
+
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "saved",
+  );
+
+  let savedPassport = JSON.parse((await readLocalPassport()) ?? "null");
+  expect(savedPassport.completedActivities).toContain("audit");
+
+  await page.goto("/airdrop-office");
+  await page.getByRole("button", { name: /OPEN ENTITLEMENT INTERVIEW/i }).click();
+
+  const firstAirdropAnswer = page.locator("main .utility-answer").first();
+  for (let question = 0; question < 7; question += 1) {
+    await expect(firstAirdropAnswer).toBeVisible();
+    await firstAirdropAnswer.click();
+  }
+
+  await expect(page.getByText("ENTITLEMENT INTERVIEW COMPLETE / 07 OF 07", { exact: true })).toBeVisible();
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "saved",
+  );
+
+  savedPassport = JSON.parse((await readLocalPassport()) ?? "null");
+  expect(savedPassport.completedActivities).toEqual(expect.arrayContaining(["audit", "airdrop"]));
+
+  await page.goto("/passport");
+  const auditBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "FORENSIC AUDITOR" }) });
+  const airdropBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "SNAPSHOT TRIBUNAL FILED" }) });
+
+  await expect(auditBadge).toHaveClass(/is-earned/);
+  await expect(airdropBadge).toHaveClass(/is-earned/);
+});
