@@ -207,6 +207,14 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="hq-passport shell" aria-label="Department Passport">
+        <div>
+          <span>YOUR VISITS. YOUR RECORD.</span>
+          <p>Keep an optional local record of your journey through the Department.</p>
+        </div>
+        <Link href="/passport">OPEN DEPARTMENT PASSPORT <span aria-hidden="true">↗</span></Link>
+      </section>
+
       <section className="hq-manifesto" id="manifesto">
         <div className="hq-manifesto__inner shell">
           <SectionLabel>THE DEPARTMENTAL CHARTER</SectionLabel>
