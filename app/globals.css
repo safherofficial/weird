@@ -14901,6 +14901,20 @@ main.audit-page :is(.museum-filters button, .archives-categories button):focus-v
 @media (prefers-reduced-motion:reduce) { .club-culture-desk * { scroll-behavior:auto; } }
 
 /* U28.8 — Meme studio and public challenge board. */
+.club-war-room--loading {
+  min-height: clamp(360px, 42vw, 520px);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+}
+.club-war-room--loading p {
+  max-width: 52ch;
+  margin: 0;
+  color: #9ba895;
+  font: 700 10px/1.8 var(--font-mono);
+  letter-spacing: .08em;
+}
 .club-war-room { margin:clamp(30px,5vw,58px) auto; padding:clamp(20px,3.5vw,36px); border:1px solid #566b43; background:radial-gradient(ellipse at 100% 0,rgb(182 255 101 / 7%),transparent 42%),linear-gradient(135deg,#101710 0%,#090d0a 72%); }
 .club-war-room__header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
 .club-war-room__header > div:first-child > span,.club-meme-studio__intro > span,.club-challenge-board header > div > span { color:var(--accent); font:700 7px/1.6 var(--font-mono); letter-spacing:.12em; }
