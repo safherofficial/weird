@@ -42,7 +42,7 @@ export default async function ClubMemberImage({
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 16, borderTop: "1px solid #30382f", color: "#b6ff65", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>
-          <span>NO BENEFITS. NO TOKEN. NO REAL 99% STATISTIC.</span>
+          <span>NO MEMBERSHIP BENEFITS. TOKEN DETAILS NOT ANNOUNCED. NO REAL 99% STATISTIC.</span>
           <span style={{ color: "#7c8778", fontWeight: 400 }}>ENTERTAINMENT ONLY</span>
         </div>
       </div>
