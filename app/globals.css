@@ -24,8 +24,8 @@
   --accent-danger: var(--red);
 
   /* Typography roles. */
-  --mono: "DM Mono", "SFMono-Regular", Consolas, monospace;
-  --sans: "Space Grotesk", Arial, sans-serif;
+  --mono: var(--font-dm-mono), "SFMono-Regular", Consolas, monospace;
+  --sans: var(--font-space-grotesk), Arial, sans-serif;
   --font-mono: var(--mono);
   --font-sans: var(--sans);
   --type-display: clamp(3rem, 7.5vw, 6.5rem);
