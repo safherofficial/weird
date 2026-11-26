@@ -2890,16 +2890,19 @@ test("U28.3 homepage gives the 99% Club a prominent and truthful public identity
   const styles = readFileSync("app/globals.css", "utf8");
   const tickerPosition = home.indexOf('<section className="hq-ticker"');
   const clubPosition = home.indexOf('<section className="hq-club shell"');
-  const statusPosition = home.indexOf('<section className="hq-status shell"');
+  const directoryPosition = home.indexOf('<section className="hq-directory shell" id="departments"');
 
-  assert.ok(tickerPosition >= 0 && clubPosition > tickerPosition && statusPosition > clubPosition,
-    "The Club front door must sit directly after the hero ticker and before the status board");
+  assert.ok(tickerPosition >= 0 && clubPosition > tickerPosition && directoryPosition > clubPosition,
+    "The Club front door must sit after the hero ticker and before the ten secondary offices");
   assert.ok(home.includes('href="/club">APPLY FOR MEMBERSHIP'));
   assert.ok(home.includes('href="/club#club-factions-title">MEET THE SIX FACTIONS'));
   assert.ok(home.includes("Object.values(factions).map"));
   assert.ok(home.includes("faction.code") && home.includes("faction.title"));
   assert.ok(home.includes("NOT A MEASURED STATISTIC"));
-  assert.ok(home.includes("THERE IS NO VERIFIED ROSTER, TOKEN OR FINANCIAL BENEFIT"));
+  assert.ok(home.includes("A CLUB TOKEN IS PLANNED, BUT ITS DETAILS ARE NOT ANNOUNCED"));
+  assert.ok(home.includes("THERE IS NO VERIFIED ROSTER OR FINANCIAL BENEFIT"));
+  assert.doesNotMatch(home, /NO TOKEN/i);
+  assert.doesNotMatch(home, /hq-status|hq-dispatch|hq-closing/);
   assert.ok(styles.includes(".hq-club__factions"));
   assert.ok(styles.includes("@media (max-width: 640px)"));
 });
@@ -2917,13 +2920,24 @@ test("U28.4 provides one canonical, honest future-token notice without invented 
   }
   assert.ok(notice.includes("isOfficialClubTokenLink"));
   assert.ok(config.includes('url.protocol === "https:"'));
+  assert.ok(config.includes('status: "PLANNED / DETAILS NOT ANNOUNCED"'));
+  assert.ok(notice.includes("is planned"));
+  assert.ok(notice.includes("has not been announced or launched"));
   assert.ok(notice.includes("NOT ANNOUNCED"));
   assert.ok(notice.includes("NOT ISSUED"));
   assert.ok(notice.includes("NOT CONFIRMED"));
+  assert.doesNotMatch(notice, /there is no verified 99% Club token/i);
   assert.ok(notice.includes("Unrelated tokens, copied tickers"));
   assert.ok(notice.includes("no wallet connection, presale, purchase or claim function"));
+  assert.ok(home.includes("TOKEN PLANNED. DETAILS NOT ANNOUNCED."));
   assert.ok(home.includes('<ClubTokenNotice placement="home" />'));
   assert.ok(clubPage.includes('<ClubTokenNotice placement="club" />'));
+  const layout = readFileSync("app/layout.tsx", "utf8");
+  const header = readFileSync("app/components/department-header.tsx", "utf8");
+  const footer = readFileSync("app/components/department-footer.tsx", "utf8");
+  assert.ok(layout.includes("A 99% Club token is planned"));
+  assert.ok(header.includes("TOKEN PLANNED. DETAILS NOT ANNOUNCED."));
+  assert.ok(footer.includes("TOKEN PLANNED. DETAILS NOT ANNOUNCED."));
   assert.ok(styles.includes(".club-token-notice__details"));
   assert.ok(styles.includes("@media (max-width: 620px)"));
   assert.ok(styles.includes(".club-token-notice__details > div:nth-child(3n) { border-right: 1px solid #30352b; }"));
