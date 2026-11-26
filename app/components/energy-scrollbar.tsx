@@ -58,9 +58,6 @@ export default function EnergyScrollbar() {
     let draggingPointer: number | null = null;
     let previousInlineScrollBehavior: string | null = null;
     let isReducedMotion = reducedMotion.matches;
-    let primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();
-    let inkColor = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
-    let glowColor = getComputedStyle(document.documentElement).getPropertyValue("--glow").trim();
     let ownsScrollRegionId = false;
 
     if (!document.documentElement.id) {
@@ -123,10 +120,10 @@ export default function EnergyScrollbar() {
 
           context.save();
           context.globalAlpha = alpha * 0.72;
-          context.strokeStyle = primaryColor;
+          context.strokeStyle = "#b6ff65";
           context.lineWidth = 1.2 + alpha * 2.2;
           context.lineCap = "round";
-          context.shadowColor = glowColor;
+          context.shadowColor = "#b6ff65";
           context.shadowBlur = 8 + alpha * 10;
           context.beginPath();
           context.moveTo(canvasWidth / 2, from.y);
@@ -151,8 +148,8 @@ export default function EnergyScrollbar() {
           const y = particle.y + particle.driftY * progress;
           context.save();
           context.globalAlpha = alpha * 0.9;
-          context.fillStyle = progress < 0.35 ? inkColor : primaryColor;
-          context.shadowColor = glowColor;
+          context.fillStyle = progress < 0.35 ? "#efffdc" : "#b6ff65";
+          context.shadowColor = "#b6ff65";
           context.shadowBlur = 7;
           context.beginPath();
           context.arc(x, y, particle.size * (1 - progress * 0.35), 0, Math.PI * 2);
@@ -350,14 +347,6 @@ export default function EnergyScrollbar() {
       if (draggingPointer === null) track.dataset.hover = "false";
     };
 
-    const handleThemeChange = () => {
-      const styles = getComputedStyle(document.documentElement);
-      primaryColor = styles.getPropertyValue("--primary").trim();
-      inkColor = styles.getPropertyValue("--ink").trim();
-      glowColor = styles.getPropertyValue("--glow").trim();
-      drawEnergyTrail(performance.now());
-    };
-
     track.addEventListener("pointerdown", handlePointerDown);
     track.addEventListener("pointermove", handlePointerMove);
     track.addEventListener("pointerup", stopDragging);
@@ -367,7 +356,6 @@ export default function EnergyScrollbar() {
     track.addEventListener("pointerenter", handlePointerEnter);
     track.addEventListener("pointerleave", handlePointerLeave);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("themechange", handleThemeChange);
     window.addEventListener("resize", scheduleRender, { passive: true });
     document.addEventListener("visibilitychange", handleVisibilityChange);
     reducedMotion.addEventListener("change", handleMotionChange);
@@ -408,7 +396,6 @@ export default function EnergyScrollbar() {
       track.removeEventListener("pointerenter", handlePointerEnter);
       track.removeEventListener("pointerleave", handlePointerLeave);
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("themechange", handleThemeChange);
       window.removeEventListener("resize", scheduleRender);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       reducedMotion.removeEventListener("change", handleMotionChange);

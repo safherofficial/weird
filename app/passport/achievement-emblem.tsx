@@ -31,11 +31,11 @@ export default function AchievementEmblem({ id, rarity, earned }: AchievementEmb
         />
       ) : (
         <svg className="achievement-emblem__vector" viewBox="0 0 144 144" focusable="false">
-          <circle cx="72" cy="72" r="62" fill="var(--bg)" stroke="var(--line)" strokeWidth="3" />
-          <circle cx="72" cy="72" r="53" fill="none" stroke="var(--primary)" strokeOpacity=".55" strokeWidth="1.5" strokeDasharray="4 5" />
-          <path d="M72 18 85 37 108 36 107 59 126 72 107 85 108 108 85 107 72 126 59 107 36 108 37 85 18 72 37 59 36 36 59 37Z" fill="var(--surface-raised)" stroke="var(--line)" strokeWidth="1.5" />
-          <text x="72" y="83" textAnchor="middle" fill="var(--ink)" fontFamily="monospace" fontSize={mark.length > 2 ? "22" : "42"} fontWeight="900">{mark}</text>
-          <path d="M72 5V14M72 130V139M5 72H14M130 72H139" stroke="var(--primary)" strokeWidth="2" />
+          <circle cx="72" cy="72" r="62" fill="#0a0e0a" stroke="#526b43" strokeWidth="3" />
+          <circle cx="72" cy="72" r="53" fill="none" stroke="#b6ff65" strokeOpacity=".55" strokeWidth="1.5" strokeDasharray="4 5" />
+          <path d="M72 18 85 37 108 36 107 59 126 72 107 85 108 108 85 107 72 126 59 107 36 108 37 85 18 72 37 59 36 36 59 37Z" fill="#182416" stroke="#8ba96d" strokeWidth="1.5" />
+          <text x="72" y="83" textAnchor="middle" fill="#d8efc5" fontFamily="monospace" fontSize={mark.length > 2 ? "22" : "42"} fontWeight="900">{mark}</text>
+          <path d="M72 5V14M72 130V139M5 72H14M130 72H139" stroke="#b6ff65" strokeWidth="2" />
         </svg>
       )}
     </span>

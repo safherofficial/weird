@@ -5,8 +5,6 @@ import SectionLabel from "./components/section-label";
 import { departmentGroups, departments } from "./divisions";
 import { factions } from "./club/club-engine";
 import ClubTokenNotice from "./club/club-token-notice";
-import SacredGeometry from "./components/sacred-geometry";
-import HalftoneImage from "./components/halftone-image";
 
 const conditions = [
   { label: "BONDING CURVE", value: "GRADUATED / TOO LATE", tone: "green" },
@@ -22,7 +20,6 @@ export default function Home() {
       <DepartmentHeader activeSection="home" statusMessage="ALL SYSTEMS NOMINALLY USELESS" />
 
       <section className="hq-hero hq-hero--identity shell" id="content-start" tabIndex={-1}>
-        <SacredGeometry variant="hero" className="hq-hero__geometry" />
         <div className="hq-hero__topline">
           <SectionLabel>OFFICIAL HEADQUARTERS OF FINANCIAL DELUSION</SectionLabel>
           <span className="hq-reference">PUBLIC ACCESS / REF. DYOR-001</span>
@@ -44,7 +41,7 @@ export default function Home() {
             </div>
             <div className="hq-hero__actions">
               <Link className="button button--primary" href="/audit">ENTER FOMO CONTROL <span>↗</span></Link>
-              <a className="button button--quiet" href="#departments">ENTER THE DEPARTMENT <span>↓</span></a>
+              <Link className="button button--quiet" href="/club">ENTER THE 99% CLUB <span>↗</span></Link>
             </div>
             <div className="hq-hero__disclaimer">
               <span className="hq-hero__disclaimer-mark">!</span>
@@ -66,17 +63,16 @@ export default function Home() {
             </div>
             <div className="hq-casefile__chart">
               <div className="hq-casefile__chart-grid" aria-hidden="true" />
-              <HalftoneImage className="hq-casefile__halftone" alt="A stippled archival engraving rendered as an abstract geometric study" />
               <svg viewBox="0 0 440 200" role="img" aria-label="Illustrative chart with a sharp downward trend">
                 <defs>
                   <linearGradient id="hqChartArea" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="var(--primary)" stopOpacity=".22" />
-                    <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#ff6b62" stopOpacity=".22" />
+                    <stop offset="100%" stopColor="#ff6b62" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path d="M0 34 L28 28 L56 42 L83 25 L110 40 L137 48 L166 43 L194 67 L220 61 L247 87 L274 81 L303 109 L331 100 L357 132 L385 125 L411 161 L440 174 L440 200 L0 200 Z" fill="url(#hqChartArea)" />
-                <path d="M0 34 L28 28 L56 42 L83 25 L110 40 L137 48 L166 43 L194 67 L220 61 L247 87 L274 81 L303 109 L331 100 L357 132 L385 125 L411 161 L440 174" fill="none" stroke="var(--primary)" strokeWidth="2.4" vectorEffect="non-scaling-stroke" />
-                <path d="M0 178 H440" stroke="var(--line)" strokeDasharray="3 7" />
+                <path d="M0 34 L28 28 L56 42 L83 25 L110 40 L137 48 L166 43 L194 67 L220 61 L247 87 L274 81 L303 109 L331 100 L357 132 L385 125 L411 161 L440 174" fill="none" stroke="#ff6b62" strokeWidth="2.4" vectorEffect="non-scaling-stroke" />
+                <path d="M0 178 H440" stroke="#53604d" strokeDasharray="3 7" />
               </svg>
               <span className="hq-casefile__loss">−97.4%<small>HYPOTHETICAL</small></span>
               <span className="hq-casefile__chart-label">FICTIONAL BAG PERFORMANCE / NOT MARKET DATA</span>
@@ -108,6 +104,50 @@ export default function Home() {
             <span className="hq-ticker__group" key={index}>
               <b>WE DID THE RESEARCH</b><i>✳</i><b>WE BOUGHT THE TOP</b><i>✳</i><b>WE TRUSTED THE DEV</b><i>✳</i><b>WE ARE STILL EARLY</b><i>✳</i><b>WE ARE NOT FINANCIAL ADVISORS</b><i>✳</i>
             </span>
+          ))}
+        </div>
+      </section>
+
+      <section className="hq-directory hq-featured shell" id="featured-desks" aria-labelledby="hq-featured-title">
+        <div className="hq-section-heading">
+          <div>
+            <SectionLabel>ENTRY &amp; SURVIVAL / FIRST DESKS</SectionLabel>
+            <h2 id="hq-featured-title">START <span>HERE.</span></h2>
+          </div>
+          <p>Three core experiences.<br />One familiar route into the trenches.</p>
+        </div>
+
+        <div className="hq-directory__groups">
+          {departmentGroups.slice(0, 1).map((group) => (
+            <section className="hq-office" id={"department-group-" + group.number} key={group.number} aria-labelledby={"hq-office-" + group.number}>
+              <div className="hq-office__header">
+                <div className="hq-office__number">{group.number}</div>
+                <div className="hq-office__identity">
+                  <span>{group.code}</span>
+                  <h3 id={"hq-office-" + group.number}>{group.title}</h3>
+                  <p>{group.description}</p>
+                </div>
+                <span className="hq-office__count">{String(group.items.length).padStart(2, "0")} UNITS</span>
+              </div>
+              <div className={"hq-office__grid hq-office__grid--" + group.number}>
+                {group.items.map((item) => (
+                  <Link className="hq-department" href={item.href} key={item.number}>
+                    <div className="hq-department__top">
+                      <span>DEPT. {item.number}</span>
+                      <span className="hq-department__availability"><i aria-hidden="true" /> OPEN</span>
+                    </div>
+                    <div className="hq-department__symbol" aria-hidden="true">{item.symbol}</div>
+                    <span className="hq-department__category">{item.category}</span>
+                    <h4>{item.title}</h4>
+                    <p>{item.description}</p>
+                    <div className="hq-department__bottom">
+                      <span>{item.status}</span>
+                      <b aria-hidden="true">↗</b>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       </section>
@@ -158,7 +198,7 @@ export default function Home() {
             <SectionLabel>TRENCHES SITUATION ROOM</SectionLabel>
             <h2 id="hq-status-title">TRENCHES <span>CONDITIONS.</span></h2>
           </div>
-          <p>FICTIONAL DEGEN READINGS<br />NOT LIVE MARKET DATA</p>
+          <p>DEPARTMENT READOUT<br />FIVE INDICATORS</p>
         </div>
         <div className="hq-status__grid">
           {conditions.map((item, index) => (
@@ -166,7 +206,6 @@ export default function Home() {
               <span className="hq-status-card__index">0{index + 1}</span>
               <span className="hq-status-card__label">{item.label}</span>
               <strong className={"hq-status-card__value hq-status-card__value--" + item.tone}>{item.value}</strong>
-              <span className="hq-status-card__foot">SYNTHETIC DEPARTMENTAL READING</span>
             </div>
           ))}
         </div>
@@ -176,14 +215,14 @@ export default function Home() {
       <section className="hq-directory shell" id="departments" aria-labelledby="hq-directory-title">
         <div className="hq-section-heading">
           <div>
-            <SectionLabel>INTERNAL ROUTING / TRENCHES AFTERCARE</SectionLabel>
-            <h2 id="hq-directory-title">YOUR NEXT<br /><span>BAD DECISION.</span></h2>
+            <SectionLabel>ADDITIONAL OFFICES / DIVISIONS 04—13</SectionLabel>
+            <h2 id="hq-directory-title">THE OTHER<br /><span>OFFICES.</span></h2>
           </div>
-          <p>Thirteen numbered divisions. Three routing groups.<br />No alpha. No financial recovery plan.</p>
+          <p>Ten additional divisions. Two routing groups.<br />All thirteen offices remain open.</p>
         </div>
 
         <div className="hq-directory__groups">
-          {departmentGroups.map((group, index) => (
+          {departmentGroups.slice(1).map((group) => (
             <section className="hq-office" id={"department-group-" + group.number} key={group.number} aria-labelledby={"hq-office-" + group.number}>
               <div className="hq-office__header">
                 <div className="hq-office__number">{group.number}</div>
@@ -212,7 +251,6 @@ export default function Home() {
                   </Link>
                 ))}
               </div>
-              {index < departmentGroups.length - 1 && <SacredGeometry variant="divider" className="hq-directory__geometry" />}
             </section>
           ))}
         </div>
