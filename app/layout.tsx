@@ -26,13 +26,13 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "THE DYOR DEPARTMENT",
-    description: "You came for the 100x. You stayed because you can't sell at a loss. The 99% Club token is confirmed; its official details have not been announced.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains. Its token is confirmed; official details have not been announced.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "THE DYOR DEPARTMENT",
-    description: "You came for the 100x. You stayed because you can't sell at a loss. The 99% Club token is confirmed; its official details have not been announced.",
+    description: "You came for the 100x. You stayed because you can't sell at a loss. Solana is the Department's starting point; the 99% Club is open to crypto culture across all chains. Its token is confirmed; official details have not been announced.",
     images: ["/opengraph-image"],
   },
 };
