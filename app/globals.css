@@ -10012,7 +10012,7 @@ body {
 
 
 /* U16.5 — department identities: distinct environments, shared institution */
-main.audit-page {--department-accent: var(--primary);--department-accent-soft: color-mix(in srgb, var(--primary) 9%, transparent);--department-accent-line: color-mix(in srgb, var(--line) 32%, transparent);background-image: radial-gradient(ellipse at 12% 13%, var(--surface-raised), .075), transparent 36%);
+main.audit-page {--department-accent: var(--primary);--department-accent-soft: color-mix(in srgb, var(--primary) 9%, transparent);--department-accent-line: color-mix(in srgb, var(--line) 32%, transparent);background-image: radial-gradient(ellipse at 12% 13%, color-mix(in srgb, var(--department-accent) 7.5%, transparent), transparent 36%);
 }
 
 main.audit-page .eyebrow { color: var(--department-accent); }
@@ -10039,8 +10039,8 @@ main.audit-page .audit-warning > span { background: var(--department-accent);col
 main.audit-page .audit-warning p {color: var(--ink); }
 main.audit-page .audit-workspace {
   border-color: var(--department-accent-line);
-  border-left: 2px solid var(--department-accent);background: linear-gradient(var(--surface-raised), .035) 1px, transparent 1px),
-    linear-gradient(90deg, var(--surface-raised), .035) 1px, transparent 1px),
+  border-left: 2px solid var(--department-accent);background: linear-gradient(color-mix(in srgb, var(--department-accent) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--department-accent) 3.5%, transparent) 1px, transparent 1px),
     linear-gradient(155deg, var(--surface), var(--surface) 72%);
   background-size: 34px 34px, 34px 34px, auto;
 }
@@ -10311,13 +10311,13 @@ main.audit-page.passport-page {--department-accent: var(--primary);--department-
 .passport-page .passport-achievement.is-earned > span { color: var(--department-accent); }
 
 /* Shared interaction cues keep every room inside one design system. */
-main.audit-page :is(.audit-progress, .simulator-progress, .utility-progress, .roadmap-progress, .whitepaper-progress, .club-progress, .cope-progress) {background-color: var(--surface-raised), .12);
+main.audit-page :is(.audit-progress, .simulator-progress, .utility-progress, .roadmap-progress, .whitepaper-progress, .club-progress, .cope-progress) {background-color: color-mix(in srgb, var(--department-accent) 12%, transparent);
 }
 main.audit-page :is(.audit-workspace, .simulator-panel, .utility-panel, .roadmap-panel, .whitepaper-panel, .club-panel, .cope-daily-board, .archives-library, .daily-office-panel, .passport-panel) :is(button, a):focus-visible {
   outline-color: var(--department-accent);
 }
 @media (max-width: 800px) {
-  main.audit-page {background-image: radial-gradient(ellipse at 50% 8%, var(--surface-raised), .065), transparent 34%); }
+  main.audit-page {background-image: radial-gradient(ellipse at 50% 8%, color-mix(in srgb, var(--department-accent) 6.5%, transparent), transparent 34%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .museum-page .museum-card,
@@ -10357,7 +10357,7 @@ main.audit-page :is(
   .club-answer.is-selected,
   .cope-answer.is-selected
 ) {box-shadow: inset 3px 0 0 var(--department-accent),
-    0 8px 22px var(--ink), .075);
+    0 8px 22px color-mix(in srgb, var(--department-accent) 7.5%, transparent);
 }
 
 main.audit-page :is(
@@ -10382,18 +10382,18 @@ main.audit-page :is(
 ) > div {
   transition:
     width var(--motion-slow) var(--motion-ease),
-    background-color var(--motion-standard) var(--motion-ease);box-shadow: 0 0 12px var(--ink), .22);
+    background-color var(--motion-standard) var(--motion-ease);box-shadow: 0 0 12px color-mix(in srgb, var(--department-accent) 22%, transparent);
 }
 
 .passport-page .passport-progress__bar span {
-  transition: width var(--motion-slow) var(--motion-ease);box-shadow: 0 0 13px var(--ink), .3);
+  transition: width var(--motion-slow) var(--motion-ease);box-shadow: 0 0 13px color-mix(in srgb, var(--department-accent) 30%, transparent);
 }
 
 .passport-page :is(.passport-stamp.is-earned, .passport-achievement.is-earned) {
   transition:
     border-color var(--motion-standard) var(--motion-ease),
     background var(--motion-standard) var(--motion-ease),
-    box-shadow var(--motion-standard) var(--motion-ease);box-shadow: inset 0 0 22px var(--ink), .035);
+    box-shadow var(--motion-standard) var(--motion-ease);box-shadow: inset 0 0 22px color-mix(in srgb, var(--department-accent) 3.5%, transparent);
 }
 
 main.audit-page :is(.museum-filters button, .archives-categories button) {
@@ -10416,7 +10416,7 @@ main.audit-page :is(.museum-search input, .archives-search input) {
 }
 
 main.audit-page :is(.museum-search input, .archives-search input):focus-visible {
-  outline-color: var(--department-accent);box-shadow: 0 0 0 3px var(--ink), .12);
+  outline-color: var(--department-accent);box-shadow: 0 0 0 3px color-mix(in srgb, var(--department-accent) 12%, transparent);
 }
 
 main.audit-page :is(.museum-filters button, .archives-categories button):focus-visible {
