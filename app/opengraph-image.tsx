@@ -46,7 +46,7 @@ export default function OpenGraphImage() {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 18, borderTop: "1px solid #30382f" }}>
           <span style={{ color: "#929d8d", fontSize: 16 }}>PUMP.FUN AFTERCARE. SOLANA TRENCHES. CRYPTO TWITTER.</span>
-          <span style={{ color: "#b6ff65", fontSize: 13, fontWeight: 700 }}>TOKEN PLANNED / DETAILS NOT ANNOUNCED</span>
+          <span style={{ color: "#b6ff65", fontSize: 13, fontWeight: 700 }}>TOKEN CONFIRMED / DETAILS NOT ANNOUNCED</span>
         </div>
       </div>
     ),
