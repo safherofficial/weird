@@ -22,7 +22,7 @@ const dmMono = DM_Mono({
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: "300 700",
+  weight: "variable",
   display: "swap",
   variable: "--font-space-grotesk",
 });
