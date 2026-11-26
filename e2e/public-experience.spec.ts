@@ -32,8 +32,13 @@ test("headquarters renders its primary heading and public department route", asy
   );
   expect(featuredRoutes).toEqual(["/simulator", "/club", "/audit"]);
   await expect(page.locator("#departments .hq-department")).toHaveCount(10);
-  await expect(page.locator(".hq-status-card__foot")).toHaveCount(0);
-  await expect(page.locator(".hq-status__disclaimer")).toBeVisible();
+  await expect(page.locator(".hq-casefile")).toBeVisible();
+  await expect(page.locator(".hq-casefile__chart-label")).toContainText("NOT MARKET DATA");
+  await expect(page.locator(".hq-passport")).toBeVisible();
+  await expect(page.locator(".hq-status")).toHaveCount(0);
+  await expect(page.locator(".hq-dispatch")).toHaveCount(0);
+  await expect(page.locator(".hq-closing")).toHaveCount(0);
+  await expect(page.locator(".hq-manifesto")).toBeVisible();
 });
 
 const publicDepartmentRoutes = [
