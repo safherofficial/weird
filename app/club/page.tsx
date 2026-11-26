@@ -10,7 +10,7 @@ import ClubCampaignDesk from "./club-campaign-desk";
 import ClubCampaignEngineDesk from "./club-campaign-engine-desk";
 import ClubCampaignContinuity from "./club-campaign-continuity";
 import ClubCultureDesk from "./club-culture-desk";
-import ClubWarRoom from "./club-war-room";
+import ClubWarRoomLazy from "./club-war-room-lazy";
 import ClubCommunityIntelligence from "./club-community-intelligence";
 import ClubContributionStudio from "./club-contribution-studio";
 import ClubParticipationLoop from "./club-participation-loop";
@@ -108,7 +108,7 @@ export default function ClubPage() {
           <div className={journey.stageMarker}><span className={journey.stageNumber}>04</span><div><strong>COMMUNITY CONTENT STUDIO</strong><small>WRITE / DESIGN / PACKAGE THE WEEKLY STORY</small></div></div>
           <div className="shell"><ClubCultureDesk /></div>
           <div className="shell"><ClubContributionStudio /></div>
-          <div className="shell"><ClubWarRoom /></div>
+          <div className="shell"><ClubWarRoomLazy /></div>
         </section>
 
         <section className={journey.stage} id="club-journey-participation" aria-label="Stage 5: Participation and Passport">
