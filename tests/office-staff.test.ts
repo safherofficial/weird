@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
-const layout = readFileSync(new URL("../app/layout.tsx", import.meta.url), "utf8");
-const component = readFileSync(new URL("../app/components/office-staff.tsx", import.meta.url), "utf8");
-const stylesheet = readFileSync(new URL("../app/components/office-staff.css", import.meta.url), "utf8");
+const layout = readFileSync("app/layout.tsx", "utf8");
+const component = readFileSync("app/components/office-staff.tsx", "utf8");
+const stylesheet = readFileSync("app/components/office-staff.css", "utf8");
 
 test("editorial office staff is mounted globally without changing page content", () => {
   assert.match(layout, /import OfficeStaff from "\.\/components\/office-staff"/);
