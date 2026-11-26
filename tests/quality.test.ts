@@ -2889,7 +2889,7 @@ test("U28.3 homepage gives the 99% Club a prominent and truthful public identity
   const home = readFileSync("app/page.tsx", "utf8");
   const styles = readFileSync("app/globals.css", "utf8");
   const tickerPosition = home.indexOf('<section className="hq-ticker"');
-  const clubPosition = home.indexOf('<section className="hq-club shell"');
+  const clubPosition = home.indexOf('<section className="hq-club hq-club--compact shell"');
   const directoryPosition = home.indexOf('<section className="hq-directory shell" id="departments"');
 
   assert.ok(tickerPosition >= 0 && clubPosition > tickerPosition && directoryPosition > clubPosition,
@@ -2900,7 +2900,7 @@ test("U28.3 homepage gives the 99% Club a prominent and truthful public identity
   assert.doesNotMatch(home, /Object\.values\(factions\)\.map/);
   assert.ok(home.includes("NOT A MEASURED STATISTIC"));
   assert.ok(home.includes("A CLUB TOKEN IS CONFIRMED, BUT ITS DETAILS ARE NOT ANNOUNCED"));
-  assert.ok(home.includes("THERE IS NO VERIFIED ROSTER OR FINANCIAL BENEFIT"));
+  assert.ok(home.includes("NO VERIFIED ROSTER OR FINANCIAL BENEFIT"));
   assert.doesNotMatch(home, /NO TOKEN/i);
   assert.doesNotMatch(home, /hq-status|hq-dispatch|hq-closing/);
   assert.ok(styles.includes(".hq-club--compact"));
