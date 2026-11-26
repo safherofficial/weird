@@ -154,3 +154,59 @@ test("local Passport stays off until opted in and deletion clears its browser re
   expect(await readLocalPassport()).toBeNull();
 });
 
+
+test("simulator completion respects Passport opt-in and unlocks its local badges", async ({ page }) => {
+  const passportKey = "dyor-department:passport:v1";
+  const readLocalPassport = () =>
+    page.evaluate((key) => localStorage.getItem(key), passportKey);
+
+  async function finishSimulation() {
+    await page.getByRole("button", { name: /OPEN SIMULATION/i }).click();
+
+    const firstDecision = page.locator(".simulator-choice__button").first();
+    for (let round = 0; round < 7; round += 1) {
+      await expect(firstDecision).toBeVisible();
+      await firstDecision.click();
+    }
+
+    await expect(page.locator('[aria-label="Department Passport completion status"]')).toBeVisible();
+  }
+
+  await page.goto("/simulator");
+  expect(await readLocalPassport()).toBeNull();
+
+  await finishSimulation();
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "missing",
+  );
+  expect(await readLocalPassport()).toBeNull();
+
+  await page.goto("/passport");
+  await page.getByRole("button", { name: /ENABLE MY LOCAL PASSPORT/i }).click();
+  await expect(page.getByText(/ENABLED ON THIS DEVICE/i)).toBeVisible();
+
+  await page.goto("/simulator");
+  await finishSimulation();
+  await expect(page.locator('[aria-label="Department Passport completion status"]')).toHaveAttribute(
+    "data-status",
+    "saved",
+  );
+
+  const savedPassport = JSON.parse((await readLocalPassport()) ?? "null");
+  expect(savedPassport).toMatchObject({
+    enabled: true,
+    completedActivities: ["simulator"],
+  });
+
+  await page.goto("/passport");
+  const paperSurvivorBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "PAPER MARKET SURVIVOR" }) });
+  const firstCaseBadge = page
+    .locator(".passport-achievement")
+    .filter({ has: page.getByRole("heading", { name: "FIRST CASE FILED" }) });
+
+  await expect(paperSurvivorBadge).toHaveClass(/is-earned/);
+  await expect(firstCaseBadge).toHaveClass(/is-earned/);
+});
