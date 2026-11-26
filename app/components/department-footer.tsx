@@ -17,7 +17,7 @@ export default function DepartmentFooter({ message }: DepartmentFooterProps) {
           <Link href="/privacy">PRIVACY</Link>
           <Link href="/terms">TERMS</Link>
         </nav>
-        <span>NO TOKEN. NO ALPHA. NO FINANCIAL ADVICE.</span>
+        <span>TOKEN PLANNED. DETAILS NOT ANNOUNCED. NO ALPHA. NO FINANCIAL ADVICE.</span>
         <span>© THE DEPARTMENT — FOR ENTERTAINMENT ONLY</span>
       </div>
     </footer>
