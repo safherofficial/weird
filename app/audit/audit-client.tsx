@@ -8,6 +8,7 @@ import {
   AUDIT_QUESTION_COUNT,
   AUDIT_VERSION,
   buildResult,
+  buildAuditShareText,
   decodeCaseCode,
   encodeCaseCode,
   isValidAnswers,
@@ -116,13 +117,6 @@ function makeShareUrl(answers: number[]) {
 function makeChallengeUrl(answers: number[]) {
   if (typeof window === "undefined") return "/audit";
   return window.location.origin + "/audit?challenge=" + encodeURIComponent(encodeCaseCode(answers));
-}
-
-function makeXSafeRoast(value: string) {
-  if (value.length <= 82) return value;
-  const clipped = value.slice(0, 79);
-  const boundary = clipped.lastIndexOf(" ");
-  return clipped.slice(0, boundary > 48 ? boundary : clipped.length) + "…";
 }
 
 export default function AuditClient() {
@@ -356,13 +350,7 @@ export default function AuditClient() {
 
   if (result) {
     const reportUrl = makeShareUrl(result.answers);
-    const xText = [
-      "I have been audited by THE DYOR DEPARTMENT.",
-      "Classification: " + result.profile.title + ".",
-      "Research: " + result.research + "/100. Cope: " + result.cope + "/100. Crowd dependency: " + result.crowd + "/100.",
-      "Cross-read: " + result.crossRead.headline + ".",
-      makeXSafeRoast(result.profile.roast),
-    ].join(" ");
+    const xText = buildAuditShareText(result);
     const xIntent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText) + "&url=" + encodeURIComponent(reportUrl);
     const challengeText = [
       "THE DYOR DEPARTMENT has issued my case file.",
