@@ -9,12 +9,21 @@ type ThemeOption = {
 };
 
 const FALLBACK_THEMES: ThemeOption[] = [
-  { id: "ice", label: "Ice blue theme", swatch: "#9fd0ff" },
-  { id: "lime", label: "Acid lime theme", swatch: "#d4ff5a" },
-  { id: "ruby", label: "Ruby red theme", swatch: "#ff8fa3" },
+  { id: "ice", label: "Ice blue theme", swatch: "var(--primary)" },
+  { id: "lime", label: "Acid lime theme", swatch: "var(--primary)" },
+  { id: "ruby", label: "Ruby red theme", swatch: "var(--primary)" },
 ];
 
 let cachedThemes: ThemeOption[] | null = null;
+
+function readThemeSwatch(id: string): string {
+  const root = document.documentElement;
+  const previous = root.dataset.theme || "ice";
+  root.dataset.theme = id;
+  const swatch = getComputedStyle(root).getPropertyValue("--primary").trim();
+  root.dataset.theme = previous;
+  return swatch || "var(--primary)";
+}
 
 function getAvailableThemes(): ThemeOption[] {
   if (cachedThemes) return cachedThemes;
@@ -42,7 +51,7 @@ function getAvailableThemes(): ThemeOption[] {
     }
   }
 
-  const merged = [...FALLBACK_THEMES];
+  const merged = FALLBACK_THEMES.map((item) => ({ ...item, swatch: readThemeSwatch(item.id) }));
   for (const item of discovered) {
     const existingIndex = merged.findIndex((fallback) => fallback.id === item.id);
     if (existingIndex >= 0) merged[existingIndex] = item;
