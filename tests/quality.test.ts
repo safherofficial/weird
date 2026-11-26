@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { classifications as auditClassifications, questions as auditQuestions } from "../app/audit/audit-data";
-import { AUDIT_QUESTION_COUNT, buildResult as buildAuditResult, decodeCaseCode, encodeCaseCode, isValidAnswers } from "../app/audit/audit-engine";
+import { AUDIT_QUESTION_COUNT, buildResult as buildAuditResult, buildAuditShareText, decodeCaseCode, encodeCaseCode, isValidAnswers } from "../app/audit/audit-engine";
+import { DEPARTMENT_SHARE_TEXT_LIMIT } from "../app/lib/department-share-copy";
 import { actions as simulatorActions, marketEvents, SIMULATOR_ROUNDS, buildSimulatorResult, decodeSimulatorCode, encodeSimulatorCode, isValidDecisions, simulateProgress } from "../app/simulator/simulator-engine";
 import { classifications as utilityClassifications, questions as utilityQuestions, INSPECTOR_QUESTIONS, buildUtilityResult, decodeUtilityCode, encodeUtilityCode, inspectProgress, isValidUtilityAnswers } from "../app/utility-inspector/utility-engine";
 import { classifications as roadmapClassifications, questions as roadmapQuestions, ROADMAP_QUESTIONS, buildRoadmapResult, decodeRoadmapCode, encodeRoadmapCode, inspectRoadmapProgress, isValidRoadmapAnswers, slugifyProjectName } from "../app/roadmap-generator/roadmap-engine";
@@ -875,6 +876,31 @@ test("DYOR Audit archetype copy describes the selected behavior", () => {
 
   assert.equal(auditQuestions[6].options[1].tag, "tokenomics-poet");
   assert.match(auditClassifications["tokenomics-poet"].title, /TOKEN-MECHANICS/);
+});
+
+test("DYOR Audit X share copy fits the shared platform budget across representative result profiles", () => {
+  const answerSets = [
+    Array(AUDIT_QUESTION_COUNT).fill(0),
+    Array(AUDIT_QUESTION_COUNT).fill(1),
+    Array(AUDIT_QUESTION_COUNT).fill(2),
+    Array(AUDIT_QUESTION_COUNT).fill(3),
+    [3, 3, 3, 3, 3, 3, 3, 3, 2, 2],
+    Array.from({ length: AUDIT_QUESTION_COUNT }, (_, index) => index % 4),
+    Array.from({ length: AUDIT_QUESTION_COUNT }, (_, index) => (index + 1) % 4),
+  ];
+
+  for (const answers of answerSets) {
+    const result = buildAuditResult(answers);
+    const copy = buildAuditShareText(result);
+    assert.ok(copy.length <= DEPARTMENT_SHARE_TEXT_LIMIT, "Audit share copy must leave room for X URL accounting");
+    assert.ok(copy.includes("THE DYOR DEPARTMENT"));
+    assert.ok(copy.includes(result.profile.title), "The primary classification must survive copy budgeting");
+    assert.ok(copy.includes("Research " + result.research + "/100"));
+    assert.ok(copy.includes("Cope " + result.cope + "/100"));
+    assert.ok(copy.includes("Crowd " + result.crowd + "/100"));
+    assert.ok(copy.includes(result.crossRead.headline), "The cross-read headline must survive copy budgeting");
+    assert.ok(copy.includes("YOUR LOSSES REMAIN YOURS."));
+  }
 });
 
 test("DYOR Audit cross-read stays evidence-linked, deterministic and non-clinical", () => {

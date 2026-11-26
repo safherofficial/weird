@@ -1,4 +1,5 @@
 import { classifications, questions, type ArchetypeId } from "./audit-data";
+import { buildDepartmentShareText } from "../lib/department-share-copy";
 
 export type AuditCrossRead = {
   headline: string;
@@ -191,4 +192,25 @@ export function buildResult(answers: number[]): AuditResult {
     disposition: getDisposition(research, cope, crowd),
     caseNumber,
   };
+}
+
+
+/**
+ * Keeps the Audit X post inside the Department's shared text budget while
+ * prioritising the classification, scores and final satirical finding.
+ */
+export function buildAuditShareText(result: AuditResult): string {
+  return buildDepartmentShareText({
+    opening: "THE DYOR DEPARTMENT AUDITED ME.",
+    finding: [
+      result.profile.title + ".",
+      "Research " + result.research + "/100",
+      "Cope " + result.cope + "/100",
+      "Crowd " + result.crowd + "/100",
+      result.crossRead.headline + ".",
+    ].join(" · "),
+    evidence: result.profile.roast,
+    punchline: "YOUR LOSSES REMAIN YOURS.",
+    invitation: "RUN YOUR OWN AUDIT.",
+  });
 }
