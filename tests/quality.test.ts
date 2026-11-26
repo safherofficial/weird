@@ -3209,7 +3209,7 @@ test("U29 homepage presents the 99% Club as cross-chain while retaining Solana a
   const layout = readFileSync("app/layout.tsx", "utf8");
   const division = departments.find((item) => item.section === "club");
 
-  assert.ok(home.includes("COMMUNITY / ALL CHAINS"));
+  assert.ok(home.includes("THE 99% CLUB / MEMBERSHIP / ALL CHAINS"));
   assert.ok(home.includes("Born in the Solana trenches. Open to every chain and every cycle."));
   assert.ok(home.includes("Find your fictional crypto archetype"));
   assert.ok(home.includes("MEMBERSHIP / ALL CHAINS"));
