@@ -264,7 +264,9 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
     }
 
     const ratioSummary = selected.volumeLiquidityRatio === null
-      ? "A volume-to-liquidity ratio cannot be calculated because the snapshot did not contain usable displayed pool liquidity."
+      ? selected.volume24hUsd === null
+        ? "A volume-to-liquidity ratio cannot be calculated because the reported 24-hour volume was unavailable."
+        : "A volume-to-liquidity ratio cannot be calculated because displayed pool liquidity was zero or unavailable."
       : "Reported trailing 24-hour volume was " + selected.volumeLiquidityRatio.toFixed(2) +
         " times the displayed liquidity snapshot. This is a turnover-to-pool comparison, not net inflow, cash reserves or the amount that could be sold at the quoted price.";
     let liquidityComment;
