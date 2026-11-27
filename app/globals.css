@@ -16878,3 +16878,10 @@ main.audit-page.governance-page {
     transition: none;
   }
 }
+
+
+/* U91 — Stop the sticky Daily Office intro from overlapping full-width content while scrolling. */
+.daily-office-page .daily-office-intro {
+  position: static;
+  top: auto;
+}
