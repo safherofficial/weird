@@ -145,7 +145,7 @@
       "heading": "VOLUME IS NOT AN EXIT PLAN.",
       "paragraphs": [
         "Reported trailing 24-hour volume was 141.18 times the displayed liquidity snapshot. This is a turnover-to-pool comparison, not net inflow, cash reserves or the amount that could be sold at the quoted price. A 141.18× ratio means the recorded trading volume was enormous relative to the liquidity figure visible at collection time. It may reflect repeated turnover through the same pool; it does not mean that the pool held $804,418 or could absorb an exit of that size. Volume is activity. Liquidity is the pool snapshot. They are not interchangeable, however much the timeline would like them to be.",
-        "The provider also reported reported market cap $8,168 and reported FDV $8,168. Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value. The pool's displayed liquidity is not a promise that a holder can sell at the quoted price, and the market-cap field is not an ATM. The Department would like these nouns kept in separate departments."
+        "The provider also reported market cap $8,168 and FDV $8,168. Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value. The pool's displayed liquidity is not a promise that a holder can sell at the quoted price, and the market-cap field is not an ATM. The Department would like these nouns kept in separate departments."
       ]
     },
     {
