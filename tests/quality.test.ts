@@ -2591,6 +2591,39 @@ test("P2 routes the 99% Club through five focused stages and distinct community 
   assert.doesNotMatch(page, /import ClubWarRoom from ["']\.\/club-war-room["']/);
 });
 
+test("P3 keeps shared interface surfaces aligned with all three color themes", () => {
+  const themeConfig = readFileSync("app/theme-config.ts", "utf8");
+  const themeSystem = readFileSync("app/theme-system.css", "utf8");
+  const themeInit = readFileSync("public/theme-init.js", "utf8");
+  const globalCss = readFileSync("app/globals.css", "utf8");
+
+  const palettes = [
+    { id: "terminal", accent: "#b6ff65", chrome: "#090b09" },
+    { id: "amber", accent: "#ffc36b", chrome: "#0d0a07" },
+    { id: "signal", accent: "#78d8f2", chrome: "#080c12" },
+  ];
+
+  for (const palette of palettes) {
+    assert.ok(themeConfig.includes('id: "' + palette.id + '"'), palette.id + " must remain selectable");
+    assert.ok(themeSystem.includes('html[data-theme="' + palette.id + '"]'), palette.id + " must define its CSS palette");
+    assert.ok(themeInit.includes(palette.id + ': "' + palette.chrome + '"'), palette.id + " must synchronize browser chrome");
+    assert.ok(themeConfig.includes('swatch: "' + palette.accent + '"'), palette.id + " switcher swatch must match its accent");
+    if (palette.id !== "terminal") {
+      assert.ok(themeSystem.includes("--green: " + palette.accent + ";"), palette.id + " CSS accent must match its swatch");
+    }
+  }
+
+  assert.ok(themeSystem.includes("--surface-glass:"));
+  assert.ok(themeSystem.includes("--line-bright:"));
+  assert.ok(themeSystem.includes('html[data-theme="amber"]') && themeSystem.includes("rgb(17 12 7 / 94%)"));
+  assert.ok(themeSystem.includes('html[data-theme="signal"]') && themeSystem.includes("rgb(8 14 22 / 94%)"));
+  assert.ok(globalCss.includes("rgb(var(--green-rgb) / 4.2%)"), "background grid must follow the selected accent");
+  assert.ok(globalCss.includes("background: var(--panel);"), "shared mobile navigation must use the active panel surface");
+  assert.ok(globalCss.includes("background:linear-gradient(100deg,var(--panel-2) 0%,var(--surface-deep) 58%,var(--panel) 100%)"), "division identity bar must use active theme surfaces");
+  assert.ok(globalCss.includes("color:var(--text-secondary); font:6px/1.65 var(--mono)"), "division mandate copy must use theme text tokens");
+  assert.ok(globalCss.includes("background: var(--surface-canvas);"), "shared evidence panels must use theme surfaces");
+});
+
 test("U72 provides a themed App Router error boundary with safe retry and HQ recovery", () => {
   const errorPage = readFileSync("app/error.tsx", "utf8");
 
