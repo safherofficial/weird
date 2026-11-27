@@ -6,7 +6,6 @@ import DepartmentNextSteps from "../components/department-next-steps";
 import ClubClient from "./club-client";
 import ClubChallenges from "./club-challenges";
 import ClubTokenNotice from "./club-token-notice";
-import ClubCampaignDesk from "./club-campaign-desk";
 import ClubCampaignEngineDesk from "./club-campaign-engine-desk";
 import ClubCampaignContinuity from "./club-campaign-continuity";
 import ClubCultureDesk from "./club-culture-desk";
@@ -44,9 +43,9 @@ export default function ClubPage() {
         <nav className={journey.nav} aria-label="99% Club five-stage journey">
           <Link href="#club-journey-identity"><span>01</span><strong>MEMBERSHIP &amp; IDENTITY</strong><small>APPLY / CLUB STATUS</small></Link>
           <Link href="#club-journey-factions"><span>02</span><strong>FACTION CLASSIFICATION</strong><small>CHOOSE YOUR EXCUSE</small></Link>
-          <Link href="#club-journey-campaign"><span>03</span><strong>WEEKLY CAMPAIGN</strong><small>THIS WEEK'S BRIEF</small></Link>
-          <Link href="#club-journey-content"><span>04</span><strong>COMMUNITY CONTENT STUDIO</strong><small>CREATE / EDIT / SHARE</small></Link>
-          <Link href="#club-journey-participation"><span>05</span><strong>PARTICIPATION &amp; PASSPORT</strong><small>CONTRIBUTE / KEEP YOUR FILE</small></Link>
+          <Link href="#club-journey-campaign"><span>03</span><strong>WEEKLY CAMPAIGN</strong><small>ONE UTC BRIEF / SIX FACTION ANGLES</small></Link>
+          <Link href="#club-journey-content"><span>04</span><strong>COMMUNITY CONTENT STUDIO</strong><small>ORIGINAL POST / MEME / COPY LIBRARY</small></Link>
+          <Link href="#club-journey-participation"><span>05</span><strong>PARTICIPATION &amp; PASSPORT</strong><small>PUBLIC REPLIES / LOCAL RITUALS / BADGES</small></Link>
         </nav>
 
         <section className={journey.stage + " " + journey.identityStage} id="club-journey-identity" aria-label="Stage 1: Membership and identity">
@@ -98,21 +97,20 @@ export default function ClubPage() {
         </section>
 
         <section className={journey.stage} id="club-journey-campaign" aria-label="Stage 3: Current weekly campaign">
-          <div className={journey.stageMarker}><span className={journey.stageNumber}>03</span><div><strong>CURRENT WEEKLY CAMPAIGN</strong><small>ONE SHARED BRIEF / SIX FACTION LENSES</small></div></div>
-          <div className="shell"><ClubCampaignDesk /></div>
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>03</span><div><strong>WEEKLY CAMPAIGN</strong><small>ONE SHARED BRIEF / OPTIONAL PERSONAL FACTION ORDER</small></div></div>
           <div className="shell"><ClubCampaignEngineDesk /></div>
           <div className="shell"><ClubCampaignContinuity /></div>
         </section>
 
         <section className={journey.stage} id="club-journey-content" aria-label="Stage 4: Community content studio">
-          <div className={journey.stageMarker}><span className={journey.stageNumber}>04</span><div><strong>COMMUNITY CONTENT STUDIO</strong><small>WRITE / DESIGN / PACKAGE THE WEEKLY STORY</small></div></div>
-          <div className="shell"><ClubCultureDesk /></div>
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>04</span><div><strong>COMMUNITY CONTENT STUDIO</strong><small>START WITH YOUR WEEKLY POST / THEN MAKE ARTWORK OR USE THE COPY LIBRARY</small></div></div>
           <div className="shell"><ClubContributionStudio /></div>
           <div className="shell"><ClubWarRoomLazy /></div>
+          <div className="shell"><ClubCultureDesk /></div>
         </section>
 
         <section className={journey.stage} id="club-journey-participation" aria-label="Stage 5: Participation and Passport">
-          <div className={journey.stageMarker}><span className={journey.stageNumber}>05</span><div><strong>PARTICIPATION &amp; PASSPORT</strong><small>TAKE PART / FILE YOUR RITUALS / SEE WHAT IS ACTUALLY SAVED</small></div></div>
+          <div className={journey.stageMarker}><span className={journey.stageNumber}>05</span><div><strong>PARTICIPATION &amp; PASSPORT</strong><small>PUBLIC CONVERSATION DRAFTS / LOCAL MEMBER FILES / TRANSPARENT EVIDENCE</small></div></div>
           <div className="shell"><ClubParticipationLoop /></div>
           <div className="shell"><ClubChallenges /></div>
           <div className="shell"><ClubCommunityIntelligence /></div>

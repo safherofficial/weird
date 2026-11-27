@@ -12,7 +12,7 @@
   gap: 24px;
 }
 .header > div:first-child { min-width: 0; }
-.eyebrow, .assignmentTop, .routeHeader > div > span, .step > span, .deliverable > span {
+.eyebrow, .assignmentTop, .deliverable > span {
   color: var(--green);
   font: 700 7px/1.7 var(--font-mono);
   letter-spacing: .1em;
@@ -23,8 +23,8 @@
   font: 800 clamp(32px, 4.5vw, 54px)/.94 var(--sans);
   letter-spacing: -.07em;
 }
-.header h2 em, .routeHeader h3 em { color: var(--green); font-style: normal; }
-.header p, .routeHeader > p {
+.header h2 em { color: var(--green); font-style: normal; }
+.header p {
   max-width: 720px;
   margin: 0;
   color: #9ba895;
@@ -60,32 +60,18 @@
 .assignmentGrid p { margin: 0; color: #a4b09e; font-size: 10px; line-height: 1.75; }
 .deliverable { margin: 18px 0 15px; padding: 13px 15px; border-left: 2px solid var(--green); background: #101910; }
 .deliverable p { margin: 5px 0 0; color: #d4dfce; font-size: 10px; line-height: 1.7; }
+.assignmentActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+.assignmentActions .button { min-height: 38px; }
 .noFaction { margin-top: 17px; padding: 17px; border: 1px dashed #526744; background: rgb(7 12 8 / 65%); }
 .noFaction > strong { color: #e7efe0; font: 800 12px/1.5 var(--font-mono); }
 .noFaction p { max-width: 720px; margin: 8px 0 14px; color: #9ba895; font-size: 10px; line-height: 1.8; }
-.routeHeader { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin: 27px 0 14px; }
-.routeHeader h3 { margin: 8px 0 0; color: #edf1e7; font: 800 clamp(19px, 2.8vw, 30px)/1 var(--sans); letter-spacing: -.05em; }
-.routeHeader > p { max-width: 340px; font-size: 9px; }
-.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.step { display: flex; min-width: 0; flex-direction: column; padding: 15px; border: 1px solid #344431; background: rgb(7 12 8 / 88%); }
-.step > strong { min-height: 25px; margin-top: 10px; color: var(--green); font: 700 7px/1.6 var(--font-mono); letter-spacing: .06em; }
-.step h4 { margin: 7px 0; color: #edf1e7; font: 800 13px/1.25 var(--sans); }
-.step p { flex: 1; margin: 0 0 14px; color: #98a591; font-size: 9px; line-height: 1.75; overflow-wrap: anywhere; }
-.step a { align-self: flex-start; color: var(--green); font: 700 7px/1.7 var(--font-mono); letter-spacing: .04em; text-decoration: none; }
-.step a:hover, .step a:focus-visible { color: #efffdf; text-decoration: underline; }
-.stepLinks { display: flex; flex-wrap: wrap; gap: 7px 13px; }
-.ritualNote { display: block; margin: -5px 0 13px; color: #83927d; font: 6px/1.7 var(--font-mono); letter-spacing: .04em; }
-.privacyNote { margin: 16px 0 0; color: #778371; font: 6px/1.8 var(--font-mono); letter-spacing: .045em; }
 .root :global(.button) { min-height: 38px; font-size: 7px; }
-@media (max-width: 820px) {
-  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
 @media (max-width: 620px) {
-  .header, .routeHeader { display: grid; grid-template-columns: 1fr; }
+  .header { display: grid; grid-template-columns: 1fr; }
   .seal { display: none; }
   .assignmentGrid { grid-template-columns: 1fr; gap: 16px; }
-  .steps { grid-template-columns: 1fr; }
-  .step { min-height: 0; }
+  .assignmentActions { display: grid; grid-template-columns: 1fr; }
+  .assignmentActions .button { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .root * { scroll-behavior: auto; }

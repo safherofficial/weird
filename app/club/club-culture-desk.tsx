@@ -77,9 +77,9 @@ export default function ClubCultureDesk() {
     <section className="club-culture-desk" aria-labelledby="club-culture-title">
       <header className="club-culture-desk__header">
         <div>
-          <span>THE 99% CLUB / COMMUNITY CULTURE DESK</span>
-          <h2 id="club-culture-title">THE CONTENT <em>DEPARTMENT.</em></h2>
-          <p>Recurring formats for the investor who did the research, knows the market and has already identified the next opportunity to be right about.</p>
+          <span>THE 99% CLUB / EVERGREEN COPY LIBRARY</span>
+          <h2 id="club-culture-title">EVERGREEN <em>POST FILES.</em></h2>
+          <p>Reusable Club posts and reply prompts for when you want a ready-made format rather than a draft tied to this week's campaign. Pick a category, edit the copy in your own voice and decide whether to share it.</p>
         </div>
         <div className="club-culture-desk__count">
           <strong>{CLUB_CULTURE_POSTS.length.toString().padStart(2, "0")}</strong>
