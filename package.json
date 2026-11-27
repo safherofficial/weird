@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:quality": "tsc -p tsconfig.quality.json && node --test .quality-tests/tests/*.test.js",
+    "test:quality": "tsc -p tsconfig.quality.json && node --test .quality-tests/tests/*.test.js && node --test tests/onchain-generator.test.mjs",
     "test:browser": "playwright test"
   },
   "dependencies": {
