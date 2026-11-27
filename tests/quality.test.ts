@@ -873,9 +873,9 @@ test("simulator result distinguishes executed additions from unfunded attempts",
 
 test("simulator decision cards render canonical action labels and descriptions", () => {
   const source = readFileSync("app/simulator/simulator-client.tsx", "utf8");
-  assert.match(source, /\\{actions\\.map\\(\\(action, index\\) =>/);
-  assert.match(source, /<strong>\\{action\\.label\\}<\\/strong>/);
-  assert.match(source, /<small>\\{unavailable \\? unavailableMessage : action\\.description\\}<\\/small>/);
+  assert.ok(source.includes("{actions.map((action, index) =>"));
+  assert.ok(source.includes("<strong>{action.label}</strong>"));
+  assert.ok(source.includes("<small>{unavailable ? unavailableMessage : action.description}</small>"));
   assert.deepEqual(
     simulatorActions.map(({ id, label }) => ({ id, label })),
     [
