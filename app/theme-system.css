@@ -6,6 +6,8 @@
   --surface-hover: #192216;
   --surface-highlight: #182317;
   --line-strong: #52633f;
+  --surface-glass: rgb(12 16 12 / 92%);
+  --line-bright: #465340;
 }
 
 html[data-theme="amber"] {
@@ -19,6 +21,8 @@ html[data-theme="amber"] {
   --surface-hover: #2a1e12;
   --surface-highlight: #241b10;
   --line-strong: #6d512e;
+  --surface-glass: rgb(17 12 7 / 94%);
+  --line-bright: #6d512e;
   --text: #f4efe7;
   --green: #ffc36b;
   --green-rgb: 255, 195, 107;
@@ -39,6 +43,8 @@ html[data-theme="signal"] {
   --surface-hover: #203347;
   --surface-highlight: #1d2b3d;
   --line-strong: #496a7b;
+  --surface-glass: rgb(8 14 22 / 94%);
+  --line-bright: #496a7b;
   --text: #eef5fb;
   --green: #78d8f2;
   --green-rgb: 120, 216, 242;
