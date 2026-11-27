@@ -65,12 +65,12 @@ export default function OnchainReportView({ report, compact = false }: OnchainRe
             <div><span>POOL LIQUIDITY</span><strong>{formatOnchainMoney(featured.liquidityUsd)}</strong></div>
             <div><span>24H VOLUME</span><strong>{formatOnchainMoney(featured.volume24hUsd)}</strong></div>
             <div><span>24H PRICE CHANGE</span><strong className={featured.priceChange24hPct === null ? "" : featured.priceChange24hPct >= 0 ? "onchain-positive" : "onchain-negative"}>{formatOnchainPercent(featured.priceChange24hPct)}</strong></div>
-            <div><span>24H BUYS / SELLS</span><strong>{featured.buys24h.toLocaleString("en-US")} / {featured.sells24h.toLocaleString("en-US")}</strong></div>
+            <div><span>24H BUYS / SELLS</span><strong>{featured.buys24h === null ? "N/D" : featured.buys24h.toLocaleString("en-US")} / {featured.sells24h === null ? "N/D" : featured.sells24h.toLocaleString("en-US")}</strong></div>
             <div><span>VOLUME / LIQUIDITY</span><strong>{featured.volumeLiquidityRatio === null ? "N/D" : featured.volumeLiquidityRatio.toFixed(2) + "×"}</strong></div>
           </div>
           <div className="onchain-feature__footer">
             <span>DEX / {featured.dexId}</span>
-            <span>24H TXNS / {featured.totalTransactions24h.toLocaleString("en-US")}</span>
+            <span>24H TXNS / {featured.totalTransactions24h === null ? "N/D" : featured.totalTransactions24h.toLocaleString("en-US")}</span>
             <span>BUY SHARE / {featured.buySharePct === null ? "N/D" : featured.buySharePct.toFixed(1) + "%"}</span>
           </div>
         </section>
