@@ -15951,7 +15951,7 @@ main.audit-page.governance-page {
 .onchain-desk-teaser__body > p:not(.eyebrow) {
   max-width: 780px;
   color: #a5ad9e;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
 }
 
@@ -16111,7 +16111,7 @@ main.audit-page.governance-page {
   max-width: 800px;
   margin: 0;
   color: #a4ad9d;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.75;
 }
 
@@ -16221,8 +16221,10 @@ main.audit-page.governance-page {
 
 .onchain-report__body {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 26px;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 900px;
+  margin-inline: auto;
+  gap: 0;
 }
 
 .onchain-report__section {
@@ -16231,15 +16233,17 @@ main.audit-page.governance-page {
 }
 
 .onchain-report__section h3 {
-  margin: 0 0 11px;
+  margin: 0 0 12px;
   color: var(--green);
+  font-size: 9px;
+  line-height: 1.55;
 }
 
 .onchain-report__section p {
-  margin: 0 0 10px;
-  color: #aeb6a8;
-  font-size: 12px;
-  line-height: 1.8;
+  margin: 0 0 12px;
+  color: #b6bfb0;
+  font-size: 14px;
+  line-height: 1.85;
 }
 
 .onchain-report__section p:last-child {
@@ -16289,8 +16293,8 @@ main.audit-page.governance-page {
 }
 
 .onchain-observation > span {
-  color: #8e9b80;
-  font-size: 7px;
+  color: #9eaa90;
+  font-size: 8px;
 }
 
 .onchain-observation > strong {
@@ -16314,7 +16318,7 @@ main.audit-page.governance-page {
   justify-content: space-between;
   gap: 7px;
   color: #839079;
-  font: 7px var(--mono);
+  font: 9px/1.5 var(--mono);
 }
 
 .onchain-observation > div b {
@@ -16324,7 +16328,7 @@ main.audit-page.governance-page {
 
 .onchain-observation > em {
   color: var(--green);
-  font-size: 7px;
+  font-size: 8px;
   font-style: normal;
 }
 
@@ -16343,9 +16347,9 @@ main.audit-page.governance-page {
 
 .onchain-report__footer p {
   margin: 8px 0 0;
-  color: #899584;
-  font-size: 10px;
-  line-height: 1.7;
+  color: #a3ad9a;
+  font-size: 11px;
+  line-height: 1.75;
 }
 
 .onchain-report__footer a {
@@ -16370,9 +16374,9 @@ main.audit-page.governance-page {
   gap: 8px;
   margin: 0;
   padding: 0 38px 16px;
-  color: #969f8d;
-  font-size: 10px;
-  line-height: 1.65;
+  color: #a3ad9a;
+  font-size: 11px;
+  line-height: 1.7;
 }
 
 .onchain-report__actions {
@@ -16485,8 +16489,8 @@ main.audit-page.governance-page {
 .onchain-archive-entry__main > p {
   max-width: 780px;
   margin: 0;
-  color: #99a392;
-  font-size: 11px;
+  color: #a9b39f;
+  font-size: 12px;
   line-height: 1.65;
 }
 
