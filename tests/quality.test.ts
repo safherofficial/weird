@@ -482,6 +482,14 @@ test("99% Club Passport stamp preserves the explicit cross-chain identity", () =
 });
 
 
+test("Brand Voice distinguishes fictional editorial divisions from the real-data Onchain Desk", () => {
+  const brandVoice = readFileSync("docs/BRAND_VOICE.md", "utf8");
+  assert.match(brandVoice, /Onchain Intelligence Desk.*sole public-data reporting exception/i);
+  assert.match(brandVoice, /dated Solana DEX snapshot/i);
+  assert.match(brandVoice, /must not turn pair-level observations into claims about identities, ownership, intent, causation, safety or future price direction/i);
+  assert.doesNotMatch(brandVoice, /No real market prices, live token data, wallet tracking or claims of on-chain research\./i);
+});
+
 test("U66 Governance Accountability Office legal terms disclose the fictional scope", () => {
   const terms = readFileSync("app/terms/page.tsx", "utf8");
   const privacy = readFileSync("app/privacy/page.tsx", "utf8");
