@@ -113,8 +113,8 @@ async function fetchPublicJson<T>(url: string, fresh = false): Promise<T | null>
   }
 }
 
-export async function getOnchainReportIndex(): Promise<OnchainReportIndex | null> {
-  const index = await fetchPublicJson<OnchainReportIndex>(RAW_BASE + "/index.json", true);
+export async function getOnchainReportIndex(fresh = true): Promise<OnchainReportIndex | null> {
+  const index = await fetchPublicJson<OnchainReportIndex>(RAW_BASE + "/index.json", fresh);
   if (index === null) return null;
   if (index.schemaVersion !== 1 || !Array.isArray(index.reports)) {
     throw new OnchainDataUnavailableError("The public Onchain archive index failed schema validation.");
