@@ -115,6 +115,14 @@ export default function SimulatorClient() {
       setNotice("INSUFFICIENT PAPER CREDITS. THE DEPARTMENT CANNOT EXTEND YOU A LOAN.");
       return;
     }
+    if (actionId === "verify" && progress.intelFilesRemaining < 1) {
+      setNotice("NO INTELLIGENCE FILES REMAIN. THE DEPARTMENT HAS CLOSED THE ARCHIVE DRAWER.");
+      return;
+    }
+    if (actionId === "guard" && progress.guardOrdersRemaining < 1) {
+      setNotice("NO DRAWDOWN GUARD ORDERS REMAIN. THE RISK OFFICE IS OUT OF FORMS.");
+      return;
+    }
 
     const nextDecisions = [...decisions, index];
     setDecisions(nextDecisions);
@@ -386,6 +394,8 @@ export default function SimulatorClient() {
   }
 
   const isAverageUnavailable = progress.cash < 25;
+  const isVerifyUnavailable = progress.intelFilesRemaining < 1;
+  const isGuardUnavailable = progress.guardOrdersRemaining < 1;
   const displayedNetWorth = progress.netWorth;
   const chartValues = [STARTING_CREDITS, ...progress.history.map((entry) => entry.netWorthAfter)];
   const chartMax = Math.max(STARTING_CREDITS * 1.15, ...chartValues);
@@ -405,6 +415,8 @@ export default function SimulatorClient() {
 
       {challengeMessage && <div className="audit-challenge-banner">{challengeMessage}</div>}
 
+      <div className="simulator-game-layout">
+        <aside className="simulator-game-sidebar" aria-label="Live paper portfolio and department systems">
       <div className="simulator-dashboard">
         <div className="simulator-dashboard__asset">
           <div>
@@ -438,11 +450,35 @@ export default function SimulatorClient() {
         </div>
       </div>
 
+      <div className="simulator-systems" aria-label="Department game systems">
+        <div className="simulator-systems__heading"><span>DEPARTMENT SYSTEMS</span><small>LIVE / FICTIONAL</small></div>
+        <div className="simulator-system-meter">
+          <div><span>RESEARCH INTEGRITY</span><strong>{progress.researchScore}<small>/100</small></strong></div>
+          <div className="simulator-system-meter__track"><i style={{ width: progress.researchScore + "%" }} /></div>
+        </div>
+        <div className="simulator-system-meter simulator-system-meter--heat">
+          <div><span>CHAT DEPENDENCY</span><strong>{progress.chatHeat}<small>/100</small></strong></div>
+          <div className="simulator-system-meter__track"><i style={{ width: progress.chatHeat + "%" }} /></div>
+        </div>
+        <div className="simulator-system-meter simulator-system-meter--discipline">
+          <div><span>EXIT DISCIPLINE</span><strong>{progress.exitDiscipline}<small>/100</small></strong></div>
+          <div className="simulator-system-meter__track"><i style={{ width: progress.exitDiscipline + "%" }} /></div>
+        </div>
+        <div className="simulator-systems__resources">
+          <span>INTEL FILES <b>{progress.intelFilesRemaining}/3</b></span>
+          <span>GUARD ORDERS <b>{progress.guardOrdersRemaining}/2</b></span>
+          <span>GUARDS TRIGGERED <b>{progress.guardsTriggered}</b></span>
+        </div>
+      </div>
+        </aside>
+        <div className="simulator-game-main">
       {previousEntry && (
         <div className="simulator-last-move">
           <span>LAST MARKET EVENT / DAY {String(previousEntry.day).padStart(2, "0")}</span>
           <strong>{previousEntry.headline}</strong>
           <small>{previousEntry.movement} / YOUR PAPER EQUITY: {previousEntry.netWorthAfter.toFixed(2)} DPC</small>
+          {previousEntry.intelNote && <small className="simulator-last-move__intel">RECEIPT CHECK / {previousEntry.intelNote}</small>}
+          {previousEntry.guardTriggered && <small className="simulator-last-move__guard">20% DRAWDOWN GUARD TRIGGERED / 25% OF THE REMAINING POSITION SOLD AT THE FICTIONAL TRIGGER LEVEL.</small>}
         </div>
       )}
 
@@ -450,6 +486,11 @@ export default function SimulatorClient() {
         <div className="simulator-round__meta">
           <span>MARKET BULLETIN / DAY {String(currentEvent.day).padStart(2, "0")}</span>
           <span>{Math.round((currentRound / SIMULATOR_ROUNDS) * 100)}% OF YOUR DOOM</span>
+        </div>
+        <div className="simulator-round-track" aria-label={"Round " + (currentRound + 1) + " of " + SIMULATOR_ROUNDS}>
+          {marketEvents.map((event, index) => (
+            <span key={event.day} className={index < currentRound ? "is-complete" : index === currentRound ? "is-current" : ""} />
+          ))}
         </div>
         <h2>{currentEvent.headline}</h2>
         <p>{currentEvent.memo}</p>
@@ -466,7 +507,15 @@ export default function SimulatorClient() {
         </div>
         <div className="simulator-choice__grid">
           {actions.map((action, index) => {
-            const unavailable = action.id === "average" && isAverageUnavailable;
+            const unavailable =
+              (action.id === "average" && isAverageUnavailable) ||
+              (action.id === "verify" && isVerifyUnavailable) ||
+              (action.id === "guard" && isGuardUnavailable);
+            const unavailableMessage = action.id === "average"
+              ? "NO PAPER CREDITS LEFT TO DEPLOY."
+              : action.id === "verify"
+                ? "NO INTEL FILES REMAIN."
+                : "NO GUARD ORDERS REMAIN.";
             return (
               <button
                 className="simulator-choice__button"
@@ -477,8 +526,8 @@ export default function SimulatorClient() {
               >
                 <span className="simulator-choice__key">{String.fromCharCode(65 + index)}</span>
                 <strong>{action.label}</strong>
-                <small>{unavailable ? "NO PAPER CREDITS LEFT TO DEPLOY." : action.description}</small>
-                <b>{unavailable ? "UNAVAILABLE" : "SELECT DECISION ↗"}</b>
+                <small>{unavailable ? unavailableMessage : action.description}</small>
+                <b>{unavailable ? "RESOURCE DEPLETED" : "SELECT DECISION ↗"}</b>
               </button>
             );
           })}
@@ -490,6 +539,8 @@ export default function SimulatorClient() {
         <button type="button" onClick={restart}>ABANDON SIMULATION ↺</button>
       </div>
       {notice && <p className="audit-notice" role="status">{notice}</p>}
+        </div>
+      </div>
     </section>
   );
 }
