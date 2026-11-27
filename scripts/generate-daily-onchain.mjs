@@ -581,7 +581,7 @@ function isValidIndexEntry(entry) {
   return Boolean(
     entry &&
     typeof entry === "object" &&
-    /^\d{4}-\\d{2}-\\d{2}$/.test(entry.issueDate) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(entry.issueDate) &&
     typeof entry.title === "string" &&
     typeof entry.standfirst === "string" &&
     typeof entry.classification === "string" &&
@@ -617,7 +617,7 @@ function isValidStoredReport(report, expectedDate) {
     report &&
     report.schemaVersion === 1 &&
     report.issueDate === expectedDate &&
-    /^\d{4}-\\d{2}-\\d{2}$/.test(report.issueDate) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(report.issueDate) &&
     typeof report.issuedAt === "string" &&
     typeof report.title === "string" &&
     typeof report.standfirst === "string" &&
