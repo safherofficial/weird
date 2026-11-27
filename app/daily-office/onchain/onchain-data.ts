@@ -93,10 +93,10 @@ export class OnchainDataUnavailableError extends Error {
 async function fetchPublicJson<T>(url: string, fresh = false): Promise<T | null> {
   let response: Response;
   try {
-    response = await fetch(url, fresh
+    const requestInit = (fresh
       ? { headers: { accept: "application/json" }, cache: "no-store" }
-      : { headers: { accept: "application/json" }, next: { revalidate: 300 } },
-    );
+      : { headers: { accept: "application/json" }, next: { revalidate: 300 } }) as RequestInit;
+    response = await fetch(url, requestInit);
   } catch (error) {
     throw new OnchainDataUnavailableError("The public Onchain archive could not be reached.", { cause: error });
   }
