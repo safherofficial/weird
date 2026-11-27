@@ -123,8 +123,8 @@
     {
       "heading": "THE INCIDENT REPORT: THE CANDLE HAS REQUESTED COUNSEL.",
       "paragraphs": [
-        "At 09:48 UTC, the selected pumpswap pair showed $5,698 in displayed pool liquidity and $804,418 in reported trailing 24-hour volume. The quoted token price was $0.000008168. These are DEX Screener snapshots, not a reconstruction of every trade. We have the receipts; the market has declined to provide a statement.",
-        "This pair was not selected because it dumped. It ranked first by reported 24-hour volume among four fresh candidates that met the publication thresholds. The pool was approximately 12.0 hours old when collected. Its 24-hour activity and price-change fields cannot represent a full 24 hours of this pair's history; the label is a rolling window, not a time machine. The discovery feed labels this profile COMMUNITY TAKEOVER. That is a provider-supplied category, not independent verification of who controls the project, its keys or its treasury. The ceremonial handover paperwork remains missing."
+        "At 09:48 UTC, the selected pumpswap pair showed $5,698 in displayed pool liquidity and $804,418 in reported trailing 24-hour volume. The quoted token price was $0.00000816800. These are DEX Screener snapshots, not a reconstruction of every trade. We have the receipts; the market has declined to provide a statement.",
+        "This pair was not selected because it dumped. It ranked first by reported 24-hour volume among 4 fresh candidates that met the publication thresholds. The pair was approximately 12.0 hours old when collected. Because the pool was younger than 24 hours, its reported 24-hour activity and price-change fields cannot represent a full 24 hours of that pair's history. The label is a rolling window, not a time machine. The discovery feed labels this profile COMMUNITY TAKEOVER. That is a provider-supplied discovery category, not independent verification of who controls the project, its keys or its treasury. The ceremonial handover paperwork remains missing."
       ]
     },
     {
@@ -144,14 +144,14 @@
     {
       "heading": "VOLUME IS NOT AN EXIT PLAN.",
       "paragraphs": [
-        "Reported trailing 24-hour volume was 141.18 times the displayed liquidity snapshot. This is a turnover-to-pool comparison, not net inflow, cash reserves or the amount that could be sold at the quoted price. A 141.18× ratio means recorded trading volume was enormous relative to the liquidity figure visible at collection time. It may reflect repeated turnover through the same pool; it does not mean that the pool held $804,418 or could absorb an exit of that size. Volume is activity. Liquidity is the pool snapshot. They are not interchangeable, however much the timeline would like them to be.",
-        "The provider also reported market cap of $8,168 and FDV of $8,168. Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value. The pool's displayed liquidity is not a promise that a holder can sell at the quoted price, and the market-cap field is not an ATM. The Department would like these nouns kept in separate departments."
+        "Reported trailing 24-hour volume was 141.18 times the displayed liquidity snapshot. This is a turnover-to-pool comparison, not net inflow, cash reserves or the amount that could be sold at the quoted price. A 141.18× ratio means the recorded trading volume was enormous relative to the liquidity figure visible at collection time. It may reflect repeated turnover through the same pool; it does not mean that the pool held $804,418 or could absorb an exit of that size. Volume is activity. Liquidity is the pool snapshot. They are not interchangeable, however much the timeline would like them to be.",
+        "The provider also reported reported market cap $8,168 and reported FDV $8,168. Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value. The pool's displayed liquidity is not a promise that a holder can sell at the quoted price, and the market-cap field is not an ATM. The Department would like these nouns kept in separate departments."
       ]
     },
     {
       "heading": "THE REST OF THE ROOM IS ALSO ON THE RECORD.",
       "paragraphs": [
-        "The neighbouring rows in the same limited feed are worth a look too: twin ($twin) recorded $130,341 in reported volume, $0 displayed liquidity in this snapshot and a reported price move of +8.71%; its pair was about 3.8 hours old, so the 24-hour field does not contain a full day of pair history. Sukicoin ($Suki) recorded $109,412 in reported volume, $0 displayed liquidity in this snapshot and a reported price move of +555%; its pair was about 0.3 hours old, so that 24-hour field is effectively describing a very short trading history.",
+        "The neighbouring rows in the same limited feed are worth a look too: twin ($twin) recorded $130,341 in reported volume, $0 displayed liquidity in this snapshot and reported price move +8.71%; pair age 3.8h, so the 24h field does not contain a full day of pair history. Sukicoin ($Suki) recorded $109,412 in reported volume, $0 displayed liquidity in this snapshot and reported price move +555.00%; pair age 0.3h, so the 24h field does not contain a full day of pair history.",
         "This is context from the same limited discovery sample, not a ranking of Solana or a claim that these pairs represent the wider market. The shortlist is a feed sample, not a census of the trenches."
       ]
     },
