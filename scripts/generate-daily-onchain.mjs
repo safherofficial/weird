@@ -167,6 +167,54 @@ export function isQualifyingCandidate(candidate) {
     candidate.totalTransactions24h >= MIN_TRANSACTIONS_24H;
 }
 
+export function getEditorialPriorityScore(candidate) {
+  let score = 0;
+  const change24h = candidate.priceChange24hPct;
+  const change1h = candidate.priceChange1hPct;
+
+  if (change24h !== null) {
+    if (change24h <= -50) score += 50;
+    else if (change24h <= -20) score += 30;
+    else if (change24h <= -10) score += 15;
+    else if (change24h >= 50) score += 45;
+    else if (change24h >= 20) score += 28;
+  }
+
+  if (change1h !== null) {
+    if (change1h <= -10) score += 15;
+    else if (change1h <= -5) score += 8;
+    else if (change1h >= 10) score += 15;
+    else if (change1h >= 5) score += 8;
+  }
+
+  if (candidate.volumeLiquidityRatio !== null) {
+    if (candidate.volumeLiquidityRatio >= 50) score += 30;
+    else if (candidate.volumeLiquidityRatio >= 10) score += 15;
+  }
+
+  if (change24h !== null && change24h <= -10 &&
+      candidate.buys24h !== null && candidate.sells24h !== null &&
+      candidate.buys24h > candidate.sells24h) {
+    score += 8;
+  }
+  if (change24h !== null && change24h >= 10 &&
+      candidate.buys24h !== null && candidate.sells24h !== null &&
+      candidate.sells24h > candidate.buys24h) {
+    score += 8;
+  }
+
+  if (change24h !== null && Math.abs(change24h) >= 20 &&
+      candidate.liquidityUsd !== null && candidate.liquidityUsd <= 10000) {
+    score += 8;
+  }
+  if (change24h !== null && Math.abs(change24h) >= 20 &&
+      candidate.ageHours !== null && candidate.ageHours < 24) {
+    score += 4;
+  }
+
+  return score;
+}
+
 export function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided) {
   const sourceSummary = "DEX Screener public API; latest Solana token-profile and community-takeover feeds, plus returned pair snapshots. The Department supplies the attitude, not the numbers.";
   if (selected) {
@@ -334,8 +382,8 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
             money(selected.volume24hUsd) + " in reported trailing 24-hour volume. The quoted token price was " +
             (selected.priceUsd === null ? "not reported" : "$" + selected.priceUsd.toPrecision(6)) +
             ". These are DEX Screener snapshots, not a reconstruction of every trade. We have the receipts; the market has declined to provide a statement.",
-          "This pair was not selected because it dumped. It ranked first by reported 24-hour volume among " +
-            counts.freshQualifyingCandidates + " fresh candidates that met the publication thresholds. " +
+          "This pair was not selected simply because it dumped. It ranked first under the Department's editorial-priority rules among " +
+            counts.freshQualifyingCandidates + " fresh candidates that met the publication thresholds. The ranking weighs the size of the 24-hour move, one-hour momentum, turnover relative to displayed liquidity and transaction-count divergences from price direction; reported 24-hour volume breaks ties. " +
             ageSummary + " " + ageCaveat + " " + discoverySummary,
         ],
       },
@@ -403,7 +451,7 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
         "Pair selection: highest displayed-liquidity pair returned for each discovered token.",
         "Feature threshold: at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells.",
         "To vary the daily archive, a token featured during the previous seven issues is skipped when another qualifying candidate exists.",
-        "The featured item is selected by reported 24-hour pair volume among fresh candidates that pass the thresholds; a large drawdown is not itself a selection criterion.",
+        "Editorial priority ranks fresh qualifying candidates by the severity of their 24-hour price move, one-hour momentum, volume-to-liquidity turnover and buy/sell-count divergence from price direction; reported 24-hour volume breaks ties. This is a story-selection rule, not a quality or investment score.",
         "Commentary interprets reported pair metrics only. It does not infer wallet identities, trade sizes, causes, motives, safety or future price direction.",
       ],
       sources: [
@@ -696,7 +744,10 @@ export async function publishDailyReport({
       .map((entry) => String(entry.featuredTokenAddress).toLowerCase())
   );
   const freshQualifying = qualifying.filter((candidate) => !recentlyFeatured.has(candidate.address.toLowerCase()));
-  const selected = freshQualifying[0] || null;
+  const selected = [...freshQualifying].sort((a, b) =>
+    getEditorialPriorityScore(b) - getEditorialPriorityScore(a) ||
+    b.volume24hUsd - a.volume24hUsd
+  )[0] || null;
   const repeatAvoided = qualifying.length > 0 && freshQualifying.length === 0;
   const issuedAt = now.toISOString();
   const counts = {
