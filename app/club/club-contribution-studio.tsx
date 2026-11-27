@@ -113,8 +113,7 @@ function ClubContributionStudioEditor({ continuity }: Props) {
           <span className={styles.eyebrow}>U33 / COMMUNITY CONTRIBUTION STUDIO</span>
           <h3 id="club-contribution-title">DON'T JUST READ THE BRIEF.<br /><em>ADD YOUR EXCUSE.</em></h3>
           <p>
-            Turn this week's campaign into your own public contribution. Start with a faction angle or a challenge response,
-            rewrite it in your voice, then copy it or open an X draft.
+            Build one original post from this week's shared brief and your faction angle. For replies, follow-up questions and hand-offs, use the conversation relay in Stage 5.
           </p>
         </div>
         <div className={styles.contributionStamp}><strong>YOUR</strong><span>WORDS<br />YOUR CALL</span></div>
