@@ -29,7 +29,7 @@ The visitor is not an outsider being mocked. The Department is in the screenshot
 - Primary and secondary patterns, a personalized Department finding and a downloadable PNG case card.
 - Public case pages with dynamic Open Graph / X preview cards (1200×630), exact result reconstruction from share URLs, native sharing, copy-link actions, direct X sharing and challenge-a-friend links.
 - A local archive of up to five saved Audit cases on the visitor's device, with restore and delete controls.
-- Pump.fun Intelligence paper-market simulator: seven fixed fictional launch events covering CA discovery, bundle chatter, copied KOL calls, bonding-curve graduation, CTO takeover and the post-graduation pool; four decisions per round and paper-only accounting.
+- Pump.fun Intelligence / Bagholder Simulator: seven fixed fictional launch events; six strategic actions; three limited intelligence files; two drawdown-guard orders; live research-integrity, chat-dependency and exit-discipline meters; paper-only accounting and shareable case files.
 - Public simulator case pages with dynamic social previews, share links and challenge-a-friend actions.
 - The 100X Research Bureau: seven self-reported multiple-choice questions, three fictional scores, ten satirical archetypes and a shareable inspection dossier.
 - Public utility inspection case pages with dynamic social previews and challenge-a-friend links.
