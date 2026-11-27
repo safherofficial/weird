@@ -64,17 +64,6 @@ async function fetchJson(url) {
   return response.json();
 }
 
-async function readIndex() {
-  try {
-    const parsed = JSON.parse(await readFile(INDEX_PATH, "utf8"));
-    if (!parsed || !Array.isArray(parsed.reports)) throw new Error("Invalid on-chain index format.");
-    return parsed;
-  } catch (error) {
-    if (error && error.code === "ENOENT") return { schemaVersion: 1, reports: [] };
-    throw error;
-  }
-}
-
 export function profileMapFromFeeds(profileFeed, takeoverFeed) {
   const profiles = new Map();
   const addProfiles = (items, discoveryType) => {
