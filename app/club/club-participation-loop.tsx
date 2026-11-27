@@ -95,7 +95,7 @@ function ClubParticipationLoopEditor({ continuity }: Props) {
     <section className={styles.participation} id="club-participation-loop" aria-labelledby="club-participation-title">
       <header className={styles.participationHeader}>
         <div>
-          <span className={styles.eyebrow}>U34 / COMMUNITY PARTICIPATION LOOP</span>
+          <span className={styles.eyebrow}>U34 / PUBLIC CONVERSATION RELAY</span>
           <h3 id="club-participation-title">A POST IS A START.<br /><em>KEEP THE FILE MOVING.</em></h3>
           <p>
             Continue the current campaign through a reply, a useful follow-up question and a hand-off.
