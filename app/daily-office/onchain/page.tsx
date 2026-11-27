@@ -9,16 +9,16 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Onchain Intelligence Desk | Daily Solana Reports",
-  description: "Daily data-led Solana DEX observations from public DEX Screener pair data. Real market snapshots, transparent thresholds and clear limits.",
+  description: "Real Solana DEX snapshots, reported with the unapologetically satirical voice of THE DYOR DEPARTMENT. Every roast is tied to a metric.",
   alternates: { canonical: "/daily-office/onchain" },
   openGraph: {
     title: "THE DYOR DEPARTMENT / ONCHAIN INTELLIGENCE",
-    description: "Daily Solana DEX market observations, published from public pair data without paid data feeds or generated market claims.",
+    description: "Public Solana DEX data, transparent selection rules and satirical Department commentary. No invented market events.",
   },
   twitter: {
     card: "summary",
     title: "THE DYOR DEPARTMENT / ONCHAIN INTELLIGENCE",
-    description: "Real DEX pair snapshots. Transparent selection. No fabricated market stories.",
+    description: "Real DEX snapshots. WEIRD commentary. No fabricated market stories.",
   },
 };
 
@@ -44,13 +44,12 @@ export default async function OnchainIntelligencePage() {
           <p className="eyebrow">THE DYOR DEPARTMENT / ONCHAIN INTELLIGENCE UNIT</p>
           <h1>THE DATA<br /><span>DESK.</span></h1>
           <p className="audit-intro__lead">
-            A daily editorial report built from public Solana token-discovery feeds and DEX pair statistics.
-            The numbers are real snapshots. The commentary is templated. The Department does not invent a story when the evidence is thin.
+            A daily report built from real public Solana DEX snapshots. Liquidity, volume, prices and recorded transactions stay factual; the Department’s commentary is free to be gloriously unserious. Every punchline has to earn its place in the data.
           </p>
           <div className="onchain-page-intro__notice">
             <span>METHOD / FREE PUBLIC DATA</span>
             <strong>NO PAID API. NO AI API. NO DATABASE.</strong>
-            <small>PAIR ACTIVITY IS OBSERVED THROUGH DEX SCREENER. THIS IS NOT WALLET-LEVEL FORENSICS OR FINANCIAL ADVICE.</small>
+            <small>REAL DEX METRICS / SATIRICAL DEPARTMENT COMMENTARY / NO WALLET-LEVEL CLAIMS OR FINANCIAL ADVICE.</small>
           </div>
           <div className="onchain-page-intro__actions">
             <Link className="button button--quiet" href="/daily-office/onchain/archive">BROWSE ALL DAILY FILES ↗</Link>
