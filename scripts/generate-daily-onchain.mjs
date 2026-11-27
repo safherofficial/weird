@@ -88,6 +88,29 @@ export function profileMapFromFeeds(profileFeed, takeoverFeed) {
   return profiles;
 }
 
+export function selectProfileAddresses(profiles, limit = 30) {
+  const groups = [
+    [],
+    [],
+  ];
+
+  for (const profile of profiles.values()) {
+    if (!profile || typeof profile.tokenAddress !== "string") continue;
+    if (profile.discoveryType === "COMMUNITY TAKEOVER") groups[1].push(profile.tokenAddress);
+    else groups[0].push(profile.tokenAddress);
+  }
+
+  const maximum = Number.isInteger(limit) && limit > 0 ? limit : 0;
+  const selected = [];
+  let groupIndex = 0;
+  while (selected.length < maximum && (groups[0].length > 0 || groups[1].length > 0)) {
+    if (groups[groupIndex].length === 0) groupIndex = 1 - groupIndex;
+    selected.push(groups[groupIndex].shift());
+    groupIndex = 1 - groupIndex;
+  }
+  return selected;
+}
+
 export function makePairRows(pairs, profiles, now) {
   const bestByToken = new Map();
 
@@ -766,7 +789,7 @@ export async function publishDailyReport({
   }
 
   const profiles = profileMapFromFeeds(profileFeed, takeoverFeed);
-  const addresses = Array.from(profiles.values()).slice(0, 30).map((profile) => profile.tokenAddress);
+  const addresses = selectProfileAddresses(profiles, 30);
   if (addresses.length === 0) {
     throw new Error("No Solana token profiles were available in the discovery feeds; refusing to publish a quiet-day report.");
   }
