@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import DepartmentHeader from "../../../components/department-header";
-import DepartmentFooter from "../../../components/department-footer";
-import { getOnchainReport, getOnchainReportIndex } from "../onchain/onchain-data";
-import OnchainReportView from "../onchain/onchain-report-view";
+import DepartmentHeader from "../../components/department-header";
+import DepartmentFooter from "../../components/department-footer";
+import { getOnchainReport, getOnchainReportIndex } from "./onchain-data";
+import OnchainReportView from "./onchain-report-view";
 
 export const dynamic = "force-dynamic";
 
