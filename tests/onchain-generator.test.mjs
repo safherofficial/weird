@@ -10,6 +10,7 @@ const {
   makePairRows,
   profileMapFromFeeds,
   publishDailyReport,
+  selectFeaturedCandidate,
 } = await import("../scripts/generate-daily-onchain.mjs");
 
 const now = new Date("2026-11-27T10:00:00.000Z");
@@ -100,6 +101,32 @@ test("qualified candidates require all threshold fields to be present", () => {
   assert.equal(isQualifyingCandidate({ ...candidate, liquidityUsd: null }), false);
   assert.equal(isQualifyingCandidate({ ...candidate, volume24hUsd: null }), false);
   assert.equal(isQualifyingCandidate({ ...candidate, totalTransactions24h: null }), false);
+});
+
+test("editorial priority selects the stronger market event before using volume as a tie-breaker", () => {
+  const highVolumeAddress = "HighVolumeToken11111111111111111111111111";
+  const profiles = profileMapFromFeeds([
+    { chainId: "solana", tokenAddress: address },
+    { chainId: "solana", tokenAddress: highVolumeAddress },
+  ], []);
+  const candidates = makePairRows([
+    pair({
+      volume: { h24: 20000 },
+      liquidity: { usd: 6000 },
+      txns: { h24: { buys: 120, sells: 80 } },
+      priceChange: { h1: -12, h24: -71 },
+    }),
+    pair({
+      baseToken: { address: highVolumeAddress, name: "LOUD", symbol: "LOUD" },
+      volume: { h24: 5000000 },
+      liquidity: { usd: 1000000 },
+      txns: { h24: { buys: 400, sells: 400 } },
+      priceChange: { h1: 0.2, h24: 2 },
+    }),
+  ], profiles, now);
+
+  assert.equal(candidates[0].symbol, "LOUD", "the comparison fixture must have the larger raw volume");
+  assert.equal(selectFeaturedCandidate(candidates).symbol, "HOLD");
 });
 
 test("featured article is detailed, metric-led and avoids duplicated market-cap wording", () => {
