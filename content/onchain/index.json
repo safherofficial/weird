@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-27T09:48:58.957Z",
+  "reports": [
+    {
+      "issueDate": "2026-11-27",
+      "path": "content/onchain/2026-11-27.json",
+      "title": "$HOLD: THE LIQUIDITY CHECK",
+      "standfirst": "HOLD appeared in the latest Solana discovery feed. The Department checked the most liquid reported pair, its recent trading activity and the limits of what those numbers can prove.",
+      "classification": "OBSERVED SOLANA DEX ACTIVITY",
+      "featuredSymbol": "HOLD",
+      "featuredTokenAddress": "BuNeErf9FjL6dgzE74S21Qm9EeBaYMJXSW4A8ihxpump",
+      "pairUrl": "https://dexscreener.com/solana/hmuaeubteldjzmchup4zzwoz9dexlirhffgaqced9udr",
+      "liquidityUsd": 5697.99,
+      "volume24hUsd": 804417.71,
+      "issuedAt": "2026-11-27T09:48:58.957Z"
+    }
+  ]
+}
