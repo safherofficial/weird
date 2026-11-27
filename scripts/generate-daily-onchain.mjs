@@ -182,7 +182,7 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
     const sells = selected.sells24h;
     const totalTransactions = selected.totalTransactions24h;
     const buyShare = selected.buySharePct;
-    const hasTransactionCounts = totalTransactions > 0;
+    const hasTransactionCounts = totalTransactions !== null;
     const poolIsYoung = selected.ageHours !== null && selected.ageHours < 24;
     const issueClock = issuedAt.slice(11, 16) + " UTC";
 
@@ -249,6 +249,8 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
     let flowComment;
     if (!hasTransactionCounts) {
       flowComment = "With no usable counts, the Department cannot describe the transaction mix.";
+    } else if (totalTransactions === 0) {
+      flowComment = "The provider reported zero buys and zero sells in the 24-hour fields. That is an absence of recorded transactions in this snapshot, not evidence that the token or its wider market had no activity elsewhere.";
     } else if (buys > sells && priceChange !== null && priceChange <= -10) {
       flowComment = "This is the detail the group chat will try to turn into a paradox: buy transactions outnumbered sells, yet the quoted price fell hard. It is not actually a contradiction. Counts do not measure trade size or sequence; fewer, larger sells can outweigh a greater number of smaller buys. The data does not tell us whether that is what happened here. The 99% Research Confidence Division has nevertheless drafted a bullish thread and is being held outside Compliance.";
     } else if (sells > buys && priceChange !== null && priceChange >= 10) {
