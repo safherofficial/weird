@@ -224,7 +224,7 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
       sourceSummary,
       counts,
       featuredToken: selected,
-      observations: candidates.slice(0, 3),
+      observations: candidates.filter((candidate) => candidate.address.toLowerCase() !== selected.address.toLowerCase()).slice(0, 3),
       sections,
       methodology: [
         "Discovery sample: latest Solana token profiles and latest community-takeover notices supplied by DEX Screener.",
