@@ -4,6 +4,7 @@ import DepartmentHeader from "../components/department-header";
 import DepartmentFooter from "../components/department-footer";
 import DepartmentNextSteps from "../components/department-next-steps";
 import DailyOfficeClient from "./daily-client";
+import OnchainDailyTeaser from "./onchain-teaser";
 import DailyOfficeRelatedLinks from "./daily-office-related-links";
 import { buildDailyOfficeDispatch } from "./daily-engine";
 
@@ -12,16 +13,16 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   alternates: { canonical: "/daily-office" },
   title: "The Trenches Desk | Daily CT Briefing",
-  description: "A date-seeded fictional Crypto Twitter and Solana trenches briefing: copied KOL calls, pump.fun launch incidents, bundle theories, CTO handovers and bagholder post-mortems.",
+  description: "A satirical date-seeded CT briefing, alongside a separate daily on-chain desk publishing real Solana DEX observations from public data.",
   openGraph: {
     title: "THE TRENCHES DESK / DAILY CT BRIEFING",
-    description: "Another UTC issue from the fictional CT and Solana trenches desk. No real accounts, wallets or market events are monitored.",
+    description: "The fictional Trenches Desk and a separate daily on-chain intelligence report sourced from public Solana DEX data.",
     images: ["/daily-office/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "THE TRENCHES DESK / DAILY CT BRIEFING",
-    description: "Daily fictional CT dispatches. Zero live KOL tracking. Zero real wallet or market data.",
+    description: "Daily satirical CT dispatches plus a separate real-data Solana DEX report.",
     images: ["/daily-office/opengraph-image"],
   },
 };
@@ -47,10 +48,11 @@ export default function DailyOfficePage() {
           </p>
           <div className="daily-office-intro__notice">
             <span>EDITORIAL NOTICE / NOT A NEWS SERVICE</span>
-            <strong>ALL DISPATCHES ARE FICTIONAL AND DATE-SEEDED.</strong>
-            <small>NO REAL PROJECTS, PEOPLE, TOKENS OR MARKET EVENTS ARE COVERED.</small>
+            <strong>THIS TRENCHES DESK BRIEFING IS FICTIONAL AND DATE-SEEDED.</strong>
+            <small>REAL SOLANA DEX ACTIVITY IS PUBLISHED SEPARATELY IN ONCHAIN INTELLIGENCE.</small>
           </div>
         </header>
+        <OnchainDailyTeaser />
         <DailyOfficeClient dispatch={dispatch} />
         <DailyOfficeRelatedLinks dispatch={dispatch} />
         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 10, margin: "24px 0" }}>
