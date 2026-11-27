@@ -215,6 +215,13 @@ export function getEditorialPriorityScore(candidate) {
   return score;
 }
 
+export function selectFeaturedCandidate(candidates) {
+  return [...candidates].sort((a, b) =>
+    getEditorialPriorityScore(b) - getEditorialPriorityScore(a) ||
+    (b.volume24hUsd ?? -1) - (a.volume24hUsd ?? -1)
+  )[0] || null;
+}
+
 export function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided) {
   const sourceSummary = "DEX Screener public API; latest Solana token-profile and community-takeover feeds, plus returned pair snapshots. The Department supplies the attitude, not the numbers.";
   if (selected) {
@@ -744,10 +751,7 @@ export async function publishDailyReport({
       .map((entry) => String(entry.featuredTokenAddress).toLowerCase())
   );
   const freshQualifying = qualifying.filter((candidate) => !recentlyFeatured.has(candidate.address.toLowerCase()));
-  const selected = [...freshQualifying].sort((a, b) =>
-    getEditorialPriorityScore(b) - getEditorialPriorityScore(a) ||
-    b.volume24hUsd - a.volume24hUsd
-  )[0] || null;
+  const selected = selectFeaturedCandidate(freshQualifying);
   const repeatAvoided = qualifying.length > 0 && freshQualifying.length === 0;
   const issuedAt = now.toISOString();
   const counts = {
