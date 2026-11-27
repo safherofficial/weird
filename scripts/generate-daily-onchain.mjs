@@ -426,7 +426,7 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
         heading: "THE OFFICIAL STATEMENT: WE FILED THE DATA. THE MARKET FILED A COMPLAINT.",
         paragraphs: [
           "The Department can report what the provider returned: price change, pool liquidity, turnover, transaction counts, pair age and the feed's discovery label. It cannot honestly turn those fields into a story about a whale, insiders, a rug pull, coordinated selling, wallet concentration or anyone's intentions.",
-          "So yes, another day in which the chart has made the Department look ridiculous by association. We did not select the pair for its losses, predict its direction or certify its quality. We selected it under published volume and activity rules, recorded the result and left the excuses to the professionals. DYOR means checking the receipts, especially when the receipt is ugly.",
+          "So yes, another day in which the chart has made the Department look ridiculous by association. The reported drawdown helped make this pair editorially relevant under the published scoring rules; it is not proof of wrongdoing, wallet behaviour or a future move. We did not predict the direction or certify the project's quality. We recorded the result and left the excuses to the professionals. DYOR means checking the receipts, especially when the receipt is ugly.",
         ],
       },
       {
