@@ -509,24 +509,6 @@ export function buildSimulatorResult(decisions: number[]): SimulatorResult {
         answer: largestSwing.entry.actionLabel,
         detail: (largestSwing.change >= 0 ? "+" : "") + largestSwing.change.toFixed(2) + " DPC versus the prior round close.",
       },
-      {
-        label: "RESEARCH INTEGRITY",
-        context: counts.verify + " receipt checks / " + progress.intelFilesRemaining + " intel files left",
-        answer: progress.researchScore + "/100",
-        detail: "A fictional score for evidence checks and resistance to timeline noise.",
-      },
-      {
-        label: "CHAT DEPENDENCY",
-        context: counts.telegram + " CT / Telegram consultations",
-        answer: progress.chatHeat + "/100",
-        detail: "A fictional pressure meter. More noise does not create better evidence.",
-      },
-      {
-        label: "EXIT DISCIPLINE",
-        context: counts.trim + " trims / " + counts.guard + " guard orders",
-        answer: progress.exitDiscipline + "/100",
-        detail: progress.guardsTriggered + " drawdown guards triggered during the scripted sequence.",
-      },
     ],
   };
 
