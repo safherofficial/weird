@@ -8,8 +8,8 @@ export default async function OnchainDailyTeaser() {
   return (
     <section className="onchain-desk-teaser" aria-labelledby="onchain-desk-teaser-title">
       <div className="onchain-desk-teaser__stamp">
-        <span>LIVE DATA / SOLANA DEX PAIRS</span>
-        <b><i /> DAILY AUTOMATION</b>
+        <span>PUBLIC DEX SNAPSHOT / SOLANA PAIRS</span>
+        <b><i /> AUTO-PUBLISHED / DAILY</b>
       </div>
       <div className="onchain-desk-teaser__body">
         <p className="eyebrow">THE NEW EDITORIAL DESK / DATA FIRST. DIGNITY OPTIONAL.</p>
