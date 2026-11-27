@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DepartmentHeader from "../../../../components/department-header";
-import DepartmentFooter from "../../../../components/department-footer";
+import DepartmentHeader from "../../../components/department-header";
+import DepartmentFooter from "../../../components/department-footer";
 import OnchainReportView from "../onchain-report-view";
 import { getOnchainReport } from "../onchain-data";
 
