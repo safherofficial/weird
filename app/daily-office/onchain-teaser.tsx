@@ -12,7 +12,7 @@ export default async function OnchainDailyTeaser() {
         <b><i /> DAILY AUTOMATION</b>
       </div>
       <div className="onchain-desk-teaser__body">
-        <p className="eyebrow">THE NEW EDITORIAL DESK / REAL MARKET OBSERVATIONS</p>
+        <p className="eyebrow">THE NEW EDITORIAL DESK / DATA FIRST. DIGNITY OPTIONAL.</p>
         <h2 id="onchain-desk-teaser-title">ONCHAIN<br /><span>INTELLIGENCE.</span></h2>
         {latest ? (
           <>
@@ -36,7 +36,7 @@ export default async function OnchainDailyTeaser() {
         )}
       </div>
       <div className="onchain-desk-teaser__footer">
-        <span>PUBLIC DEX DATA / AUTOMATED EDITORIAL TEMPLATES</span>
+        <span>REAL PAIR METRICS / UNOFFICIAL DEPARTMENT VERDICT</span>
         <span>NO PAID API / NO AI API / NO DATABASE</span>
       </div>
     </section>
