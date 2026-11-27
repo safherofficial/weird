@@ -2528,6 +2528,8 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
   const contribution = readFileSync("app/club/club-contribution-studio.tsx", "utf8");
   const participation = readFileSync("app/club/club-participation-loop.tsx", "utf8");
+  const culture = readFileSync("app/club/club-culture-desk.tsx", "utf8");
+  const challenges = readFileSync("app/club/club-challenges.tsx", "utf8");
   const journeyStyles = readFileSync("app/club/club-journey.module.css", "utf8");
   const lazyWarRoom = readFileSync("app/club/club-war-room-lazy.tsx", "utf8");
 
@@ -2547,12 +2549,11 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
     "<ClubClient />",
     '<ClubTokenNotice placement="club" />',
     '<section className="club-faction-directory"',
-    "<ClubCampaignDesk />",
     "<ClubCampaignEngineDesk />",
     "<ClubCampaignContinuity />",
-    "<ClubCultureDesk />",
     "<ClubContributionStudio />",
     "<ClubWarRoomLazy />",
+    "<ClubCultureDesk />",
     "<ClubParticipationLoop />",
     "<ClubChallenges />",
     "<ClubCommunityIntelligence />",
@@ -2568,11 +2569,18 @@ test("U45 organizes the 99% Club into five navigable stages without dropping exi
   assert.ok(context.includes('window.addEventListener("storage", refresh)'));
   assert.ok(context.includes('window.addEventListener("focus", refresh)'));
   assert.ok(continuity.includes("useClubCampaignContext()"));
-  assert.doesNotMatch(continuity, /ClubContributionStudio|ClubParticipationLoop/);
+  assert.ok(continuity.includes('href="#club-contribution-studio"'), "the faction assignment must lead directly to the original contribution editor");
+  assert.doesNotMatch(continuity, /routeHeader|styles\.steps|OPEN LINKED EDITORIAL POST|PERSONAL FILES/);
+  assert.doesNotMatch(page, /<ClubCampaignDesk\s*\/>/, "the redundant manifesto desk must not interrupt the weekly campaign path");
   assert.ok(contribution.includes("useClubCampaignContext()"));
   assert.ok(contribution.includes("key={continuity.weekKey"));
   assert.ok(participation.includes("useClubCampaignContext()"));
   assert.ok(participation.includes("key={continuity.weekKey"));
+  assert.ok(participation.includes("PUBLIC CONVERSATION RELAY"));
+  assert.ok(participation.includes("separate from the original campaign post"));
+  assert.ok(culture.includes("EVERGREEN COPY LIBRARY"));
+  assert.ok(challenges.includes("LOCAL MEMBER RITUALS"));
+  assert.ok(challenges.includes("not public posts or verified community participation"));
   assert.ok(journeyStyles.includes(".nav"));
   assert.ok(journeyStyles.includes("@media"));
   assert.ok(journeyStyles.includes("scroll-margin-top"));
