@@ -11,6 +11,7 @@ const {
   profileMapFromFeeds,
   publishDailyReport,
   selectFeaturedCandidate,
+  selectProfileAddresses,
 } = await import("../scripts/generate-daily-onchain.mjs");
 
 const now = new Date("2026-11-27T10:00:00.000Z");
@@ -91,6 +92,28 @@ test("missing and invalid market fields remain unavailable rather than becoming 
   assert.equal(zero.totalTransactions24h, 0);
   assert.equal(zero.buySharePct, null);
   assert.equal(isQualifyingCandidate(zero), false);
+});
+
+test("the 30-address discovery cap samples both profiles and community takeovers", () => {
+  const profiles = new Map();
+  for (let index = 0; index < 30; index += 1) {
+    profiles.set("profile-" + index, {
+      tokenAddress: "ProfileAddress" + index,
+      discoveryType: "NEW DEX PROFILE",
+    });
+  }
+  for (let index = 0; index < 10; index += 1) {
+    profiles.set("takeover-" + index, {
+      tokenAddress: "TakeoverAddress" + index,
+      discoveryType: "COMMUNITY TAKEOVER",
+    });
+  }
+
+  const selected = selectProfileAddresses(profiles, 30);
+  assert.equal(selected.length, 30);
+  assert.equal(selected.filter((address) => address.startsWith("TakeoverAddress")).length, 10);
+  assert.equal(selected.filter((address) => address.startsWith("ProfileAddress")).length, 20);
+  assert.deepEqual(selectProfileAddresses(profiles, 2), ["ProfileAddress0", "TakeoverAddress0"]);
 });
 
 test("qualified candidates require all threshold fields to be present", () => {
