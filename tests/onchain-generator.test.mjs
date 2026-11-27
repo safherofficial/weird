@@ -122,7 +122,7 @@ test("featured article is detailed, metric-led and avoids duplicated market-cap 
   assert.match(report.title, /-71\.00%/);
   assert.match(copy, /reported market cap/);
   assert.doesNotMatch(copy, /reported reported market cap/);
-  assert.match(copy, /Volume is activity/i);
+  assert.match(copy, /Turnover was high relative to displayed pool liquidity/i);
   assert.match(copy, /transaction counts/i);
 });
 
