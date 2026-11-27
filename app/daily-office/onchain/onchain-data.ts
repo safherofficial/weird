@@ -79,12 +79,12 @@ export type OnchainReportIndex = {
 
 const RAW_BASE = "https://raw.githubusercontent.com/safherofficial/weird/main/content/onchain";
 
-async function fetchPublicJson<T>(url: string): Promise<T | null> {
+async function fetchPublicJson<T>(url: string, fresh = false): Promise<T | null> {
   try {
-    const response = await fetch(url, {
-      headers: { accept: "application/json" },
-      next: { revalidate: 300 },
-    });
+    const response = await fetch(url, fresh
+      ? { headers: { accept: "application/json" }, cache: "no-store" }
+      : { headers: { accept: "application/json" }, next: { revalidate: 300 } },
+    );
     if (!response.ok) return null;
     return await response.json() as T;
   } catch {
@@ -93,7 +93,7 @@ async function fetchPublicJson<T>(url: string): Promise<T | null> {
 }
 
 export async function getOnchainReportIndex(): Promise<OnchainReportIndex | null> {
-  const index = await fetchPublicJson<OnchainReportIndex>(RAW_BASE + "/index.json");
+  const index = await fetchPublicJson<OnchainReportIndex>(RAW_BASE + "/index.json", true);
   if (!index || index.schemaVersion !== 1 || !Array.isArray(index.reports)) return null;
   return index;
 }
