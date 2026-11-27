@@ -102,6 +102,18 @@ export default async function SimulatorCasePage({ params }: SimulatorCasePagePro
               {result.paperReturn > 0 ? "+" : ""}{result.paperReturn.toFixed(1)}<small>%</small>
             </strong>
           </div>
+          <div>
+            <span>RESEARCH INTEGRITY / {3 - result.intelFilesRemaining} FILES CHECKED</span>
+            <strong>{result.researchScore}<small>/100</small></strong>
+          </div>
+          <div>
+            <span>CHAT DEPENDENCY</span>
+            <strong className={result.chatHeat >= 55 ? "red-text" : "simulator-positive"}>{result.chatHeat}<small>/100</small></strong>
+          </div>
+          <div>
+            <span>EXIT DISCIPLINE / {result.guardsTriggered} GUARDS TRIGGERED</span>
+            <strong>{result.exitDiscipline}<small>/100</small></strong>
+          </div>
         </div>
 
         <DepartmentCrossRead read={result.crossRead} />
