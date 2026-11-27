@@ -214,8 +214,10 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
       ? "The Department cannot infer who was in control of the flow from missing counts."
       : buyShare >= 60
         ? "Buy transactions outnumbered sells by a wide margin. That still does not reveal trade sizes, unique traders or whether the buyers are now enjoying the view from underwater."
-        : buyShare > 50
-          ? "There were slightly more buy transactions than sells. Yet transaction count does not measure conviction, capital or trade size. The buy button is not a personality test."
+        : buyShare > 50 && priceChange !== null && priceChange <= -20
+          ? "There were more buy transactions than sells, but the quote still fell hard. The Department's 99% Research Confidence Division has drafted an all-caps bullish thread; Compliance is waiting for trade sizes."
+          : buyShare > 50
+            ? "There were slightly more buy transactions than sells. Yet transaction count does not measure conviction, capital or trade size. The buy button is not a personality test."
           : buyShare <= 40
             ? "Sell transactions outnumbered buys. That is a count of executions, not proof that every seller escaped or every buyer is doomed."
             : "The transaction count was relatively balanced. A balanced queue is not the same thing as a healthy market; the chart and liquidity still deserve their own questions.";
