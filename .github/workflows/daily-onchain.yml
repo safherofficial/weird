@@ -1,0 +1,51 @@
+name: Publish daily on-chain intelligence
+
+on:
+  schedule:
+    - cron: "17 9 * * *"
+      timezone: "Europe/Rome"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/daily-onchain.yml"
+      - "scripts/generate-daily-onchain.mjs"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-onchain-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Research and publish today's report
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Collect public Solana market data and write the report
+        run: node scripts/generate-daily-onchain.mjs
+
+      - name: Commit the daily article and archive index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/onchain
+          if git diff --cached --quiet; then
+            echo "No new article was created."
+            exit 0
+          fi
+          git commit -m "content: publish daily on-chain report"
+          git push
