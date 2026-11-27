@@ -469,11 +469,7 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
   }
 
   const topCandidate = candidates[0] || null;
-  const qualifying = candidates.filter((candidate) =>
-    candidate.liquidityUsd >= MIN_LIQUIDITY_USD &&
-    candidate.volume24hUsd >= MIN_VOLUME_24H_USD &&
-    candidate.totalTransactions24h >= MIN_TRANSACTIONS_24H
-  );
+  const qualifying = candidates.filter(isQualifyingCandidate);
   const repeatedCandidate = qualifying[0] || null;
   const title = repeatAvoided
     ? "THE SAME CANDIDATES AGAIN. THE DEPARTMENT REFUSES TO RECYCLE THE HEADLINE."
@@ -581,18 +577,58 @@ function reportIndexEntry(report) {
   };
 }
 
+function isValidIndexEntry(entry) {
+  return Boolean(
+    entry &&
+    typeof entry === "object" &&
+    /^\\d{4}-\\d{2}-\\d{2}$/.test(entry.issueDate) &&
+    typeof entry.title === "string" &&
+    typeof entry.standfirst === "string" &&
+    typeof entry.classification === "string" &&
+    typeof entry.issuedAt === "string" &&
+    (entry.featuredSymbol === null || typeof entry.featuredSymbol === "string") &&
+    (entry.featuredTokenAddress === null || typeof entry.featuredTokenAddress === "string") &&
+    (entry.pairUrl === null || typeof entry.pairUrl === "string") &&
+    (entry.liquidityUsd === null || Number.isFinite(entry.liquidityUsd)) &&
+    (entry.volume24hUsd === null || Number.isFinite(entry.volume24hUsd))
+  );
+}
+
 function isValidStoredReport(report, expectedDate) {
+  const countFields = [
+    "discoveryProfiles",
+    "solanaProfiles",
+    "solanaTakeovers",
+    "profilesChecked",
+    "pairsReturned",
+    "candidatePairs",
+    "qualifyingCandidates",
+    "freshQualifyingCandidates",
+  ];
+  const countsValid = Boolean(report && report.counts &&
+    countFields.every((field) => Number.isFinite(report.counts[field])));
+  const featuredValid = report && (
+    report.featuredToken === null ||
+    (typeof report.featuredToken === "object" &&
+      typeof report.featuredToken.address === "string" &&
+      typeof report.featuredToken.symbol === "string")
+  );
   return Boolean(
     report &&
     report.schemaVersion === 1 &&
     report.issueDate === expectedDate &&
+    /^\\d{4}-\\d{2}-\\d{2}$/.test(report.issueDate) &&
     typeof report.issuedAt === "string" &&
     typeof report.title === "string" &&
     typeof report.standfirst === "string" &&
-    report.counts &&
+    countsValid &&
+    featuredValid &&
     Array.isArray(report.sections) &&
+    report.sections.every((section) => section && typeof section.heading === "string" && Array.isArray(section.paragraphs)) &&
     Array.isArray(report.methodology) &&
-    Array.isArray(report.sources)
+    report.methodology.every((item) => typeof item === "string") &&
+    Array.isArray(report.sources) &&
+    report.sources.every((item) => item && typeof item.label === "string" && typeof item.url === "string")
   );
 }
 
@@ -614,7 +650,8 @@ async function writeFileAtomically(filePath, content) {
 async function readIndex(indexPath) {
   try {
     const parsed = JSON.parse(await readFile(indexPath, "utf8"));
-    if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.reports)) {
+    if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.reports) ||
+        !parsed.reports.every(isValidIndexEntry)) {
       return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
     }
     return { index: parsed, needsRebuild: false };
