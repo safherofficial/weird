@@ -1,5 +1,7 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rename, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { randomUUID } from "node:crypto";
+import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
 const CONTENT_DIR = join(ROOT, "content", "onchain");
@@ -22,15 +24,15 @@ function localIssueDate(date = new Date()) {
   return values.year + "-" + values.month + "-" + values.day;
 }
 
-function numberOrZero(value) {
-  const number = typeof value === "string" ? Number(value) : Number(value);
-  return Number.isFinite(number) ? number : 0;
-}
-
-function nullableNumber(value) {
+export function nullableNumber(value) {
   if (value === null || value === undefined || value === "") return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function nullableNonNegative(value) {
+  const number = nullableNumber(value);
+  return number === null || number < 0 ? null : number;
 }
 
 function rounded(value, digits = 2) {
@@ -73,7 +75,7 @@ async function readIndex() {
   }
 }
 
-function profileMapFromFeeds(profileFeed, takeoverFeed) {
+export function profileMapFromFeeds(profileFeed, takeoverFeed) {
   const profiles = new Map();
   const addProfiles = (items, discoveryType) => {
     for (const item of items) {
@@ -97,7 +99,7 @@ function profileMapFromFeeds(profileFeed, takeoverFeed) {
   return profiles;
 }
 
-function makePairRows(pairs, profiles, now) {
+export function makePairRows(pairs, profiles, now) {
   const bestByToken = new Map();
 
   for (const pair of pairs) {
@@ -105,19 +107,23 @@ function makePairRows(pairs, profiles, now) {
     const profile = profiles.get(String(pair.baseToken.address).toLowerCase());
     if (!profile) continue;
 
-    const liquidityUsd = numberOrZero(pair.liquidity && pair.liquidity.usd);
-    const volume24hUsd = numberOrZero(pair.volume && pair.volume.h24);
-    const buys24h = numberOrZero(pair.txns && pair.txns.h24 && pair.txns.h24.buys);
-    const sells24h = numberOrZero(pair.txns && pair.txns.h24 && pair.txns.h24.sells);
-    const totalTransactions24h = buys24h + sells24h;
+    const liquidityUsd = nullableNonNegative(pair.liquidity && pair.liquidity.usd);
+    const volume24hUsd = nullableNonNegative(pair.volume && pair.volume.h24);
+    const buys24h = nullableNonNegative(pair.txns && pair.txns.h24 && pair.txns.h24.buys);
+    const sells24h = nullableNonNegative(pair.txns && pair.txns.h24 && pair.txns.h24.sells);
+    const totalTransactions24h = buys24h !== null && sells24h !== null
+      ? buys24h + sells24h
+      : null;
     const pairCreatedAt = nullableNumber(pair.pairCreatedAt);
-    const ageHours = pairCreatedAt
+    const ageHours = pairCreatedAt !== null
       ? Math.max(0, (now.getTime() - pairCreatedAt) / 3600000)
       : null;
-    const buySharePct = totalTransactions24h > 0
+    const buySharePct = totalTransactions24h !== null && totalTransactions24h > 0
       ? rounded((buys24h / totalTransactions24h) * 100, 1)
       : null;
-    const volumeLiquidityRatio = liquidityUsd > 0 ? rounded(volume24hUsd / liquidityUsd, 2) : null;
+    const volumeLiquidityRatio = liquidityUsd !== null && liquidityUsd > 0 && volume24hUsd !== null
+      ? rounded(volume24hUsd / liquidityUsd, 2)
+      : null;
 
     const row = {
       name: pair.baseToken.name || "Unknown token",
@@ -141,23 +147,38 @@ function makePairRows(pairs, profiles, now) {
       totalTransactions24h,
       buySharePct,
       volumeLiquidityRatio,
-      pairCreatedAt: pairCreatedAt ? new Date(pairCreatedAt).toISOString() : null,
+      pairCreatedAt: pairCreatedAt !== null ? new Date(pairCreatedAt).toISOString() : null,
       ageHours: ageHours === null ? null : rounded(ageHours, 1),
     };
 
     const key = row.address.toLowerCase();
     const existing = bestByToken.get(key);
-    if (!existing || row.liquidityUsd > existing.liquidityUsd ||
-      (row.liquidityUsd === existing.liquidityUsd && row.volume24hUsd > existing.volume24hUsd)) {
+    if (!existing ||
+      (row.liquidityUsd !== null && (existing.liquidityUsd === null || row.liquidityUsd > existing.liquidityUsd)) ||
+      (row.liquidityUsd === existing.liquidityUsd &&
+        row.volume24hUsd !== null &&
+        (existing.volume24hUsd === null || row.volume24hUsd > existing.volume24hUsd))) {
       bestByToken.set(key, row);
     }
   }
 
-  return Array.from(bestByToken.values())
-    .sort((a, b) => b.volume24hUsd - a.volume24hUsd);
+  return Array.from(bestByToken.values()).sort((a, b) => {
+    if (a.volume24hUsd === null) return b.volume24hUsd === null ? 0 : 1;
+    if (b.volume24hUsd === null) return -1;
+    return b.volume24hUsd - a.volume24hUsd;
+  });
 }
 
-function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided) {
+export function isQualifyingCandidate(candidate) {
+  return candidate.liquidityUsd !== null &&
+    candidate.volume24hUsd !== null &&
+    candidate.totalTransactions24h !== null &&
+    candidate.liquidityUsd >= MIN_LIQUIDITY_USD &&
+    candidate.volume24hUsd >= MIN_VOLUME_24H_USD &&
+    candidate.totalTransactions24h >= MIN_TRANSACTIONS_24H;
+}
+
+export function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided) {
   const sourceSummary = "DEX Screener public API; latest Solana token-profile and community-takeover feeds, plus returned pair snapshots. The Department supplies the attitude, not the numbers.";
   if (selected) {
     const priceChange = selected.priceChange24hPct;
@@ -267,8 +288,8 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
     }
 
     const valuationNotes = [];
-    if (selected.marketCapUsd !== null) valuationNotes.push("reported market cap " + money(selected.marketCapUsd));
-    if (selected.fdvUsd !== null) valuationNotes.push("reported FDV " + money(selected.fdvUsd));
+    if (selected.marketCapUsd !== null) valuationNotes.push("market cap " + money(selected.marketCapUsd));
+    if (selected.fdvUsd !== null) valuationNotes.push("FDV " + money(selected.fdvUsd));
     const valuationSummary = valuationNotes.length
       ? "The provider also reported " + valuationNotes.join(" and ") +
         ". Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value."
@@ -416,8 +437,10 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
     topCandidateParagraph = "No pair with a usable snapshot was returned. The Department cannot write an investigation around an empty chart, however persistent the editorial calendar may be.";
   } else {
     const failures = [];
-    if (topCandidate.liquidityUsd < MIN_LIQUIDITY_USD) failures.push("displayed liquidity of " + money(topCandidate.liquidityUsd) + " against a $5,000 minimum");
-    if (topCandidate.volume24hUsd < MIN_VOLUME_24H_USD) failures.push("reported 24-hour volume of " + money(topCandidate.volume24hUsd) + " against a $5,000 minimum");
+    if (topCandidate.liquidityUsd === null) failures.push("displayed liquidity was not available");
+    else if (topCandidate.liquidityUsd < MIN_LIQUIDITY_USD) failures.push("displayed liquidity of " + money(topCandidate.liquidityUsd) + " against a $5,000 minimum");
+    if (topCandidate.volume24hUsd === null) failures.push("reported 24-hour volume was not available");
+    else if (topCandidate.volume24hUsd < MIN_VOLUME_24H_USD) failures.push("reported 24-hour volume of " + money(topCandidate.volume24hUsd) + " against a $5,000 minimum");
     if (topCandidate.totalTransactions24h < MIN_TRANSACTIONS_24H) failures.push(topCandidate.totalTransactions24h + " recorded buys and sells against a 20-transaction minimum");
     const movement = topCandidate.priceChange24hPct === null
       ? "The price move was not reported."
@@ -490,45 +513,186 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
   };
 }
 
-async function main() {
-  const date = localIssueDate();
-  await mkdir(CONTENT_DIR, { recursive: true });
-  const index = await readIndex();
-  const reportPath = join(CONTENT_DIR, date + ".json");
+function reportIndexEntry(report) {
+  const featured = report.featuredToken || null;
+  return {
+    issueDate: report.issueDate,
+    path: "content/onchain/" + report.issueDate + ".json",
+    title: report.title,
+    standfirst: report.standfirst,
+    classification: report.classification,
+    featuredSymbol: featured ? featured.symbol : null,
+    featuredTokenAddress: featured ? featured.address : null,
+    pairUrl: featured ? featured.pairUrl : null,
+    liquidityUsd: featured ? featured.liquidityUsd : null,
+    volume24hUsd: featured ? featured.volume24hUsd : null,
+    issuedAt: report.issuedAt,
+  };
+}
 
+function isValidStoredReport(report, expectedDate) {
+  return Boolean(
+    report &&
+    report.schemaVersion === 1 &&
+    report.issueDate === expectedDate &&
+    typeof report.issuedAt === "string" &&
+    typeof report.title === "string" &&
+    typeof report.standfirst === "string" &&
+    report.counts &&
+    Array.isArray(report.sections) &&
+    Array.isArray(report.methodology) &&
+    Array.isArray(report.sources)
+  );
+}
+
+async function writeFileAtomically(filePath, content) {
+  const temporaryPath = filePath + "." + randomUUID() + ".tmp";
   try {
-    await readFile(reportPath, "utf8");
-    console.log("An on-chain report already exists for " + date + "; nothing to do.");
-    return;
+    await writeFile(temporaryPath, content, { encoding: "utf8", flag: "wx" });
+    await rename(temporaryPath, filePath);
+  } catch (error) {
+    try {
+      await unlink(temporaryPath);
+    } catch {
+      // The temporary file may not have been created or may already have been renamed.
+    }
+    throw error;
+  }
+}
+
+async function readIndex(indexPath) {
+  try {
+    const parsed = JSON.parse(await readFile(indexPath, "utf8"));
+    if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.reports)) {
+      return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
+    }
+    return { index: parsed, needsRebuild: false };
+  } catch (error) {
+    if (error && error.code === "ENOENT") {
+      return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
+    }
+    if (error instanceof SyntaxError) {
+      return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
+    }
+    throw error;
+  }
+}
+
+async function rebuildIndexFromReports(contentDir, logger = console) {
+  const entries = [];
+  const files = await readdir(contentDir);
+  for (const fileName of files) {
+    if (!/^\d{4}-\d{2}-\d{2}\.json$/.test(fileName)) continue;
+    const date = fileName.slice(0, 10);
+    try {
+      const report = JSON.parse(await readFile(join(contentDir, fileName), "utf8"));
+      if (!isValidStoredReport(report, date)) {
+        logger.warn("Skipping invalid archived report while rebuilding index: " + fileName);
+        continue;
+      }
+      entries.push(reportIndexEntry(report));
+    } catch (error) {
+      logger.warn("Skipping unreadable archived report while rebuilding index: " + fileName, error);
+    }
+  }
+  return entries.sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+}
+
+async function reconcileIndex({ index, needsRebuild, report, contentDir, indexPath, now, logger }) {
+  const baseReports = needsRebuild
+    ? await rebuildIndexFromReports(contentDir, logger)
+    : index.reports;
+  const entry = reportIndexEntry(report);
+  const previous = baseReports.find((item) => item && item.issueDate === report.issueDate);
+  const entryChanged = JSON.stringify(previous) !== JSON.stringify(entry);
+  if (!needsRebuild && !entryChanged) {
+    return { ...index, reports: baseReports };
+  }
+
+  const reports = [entry, ...baseReports.filter((item) => item && item.issueDate !== report.issueDate)]
+    .sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+  const updatedIndex = {
+    schemaVersion: 1,
+    updatedAt: now.toISOString(),
+    reports,
+  };
+  await writeFileAtomically(indexPath, JSON.stringify(updatedIndex, null, 2) + "\n");
+  logger.log("Reconciled the daily Onchain archive index for " + report.issueDate + ".");
+  return updatedIndex;
+}
+
+export async function publishDailyReport({
+  now = new Date(),
+  contentDir = CONTENT_DIR,
+  fetchJsonImpl = fetchJson,
+  logger = console,
+} = {}) {
+  await mkdir(contentDir, { recursive: true });
+  const indexPath = join(contentDir, "index.json");
+  const date = localIssueDate(now);
+  const reportPath = join(contentDir, date + ".json");
+  const indexState = await readIndex(indexPath);
+  const index = indexState.needsRebuild
+    ? { schemaVersion: 1, reports: await rebuildIndexFromReports(contentDir, logger) }
+    : indexState.index;
+
+  let existingContent = null;
+  try {
+    existingContent = await readFile(reportPath, "utf8");
   } catch (error) {
     if (!error || error.code !== "ENOENT") throw error;
   }
 
+  if (existingContent !== null) {
+    let existingReport;
+    try {
+      existingReport = JSON.parse(existingContent);
+    } catch (error) {
+      throw new Error("An existing daily report is not valid JSON; refusing to overwrite it: " + reportPath, { cause: error });
+    }
+    if (!isValidStoredReport(existingReport, date)) {
+      throw new Error("An existing daily report failed schema validation; refusing to overwrite it: " + reportPath);
+    }
+    await reconcileIndex({
+      index,
+      needsRebuild: indexState.needsRebuild,
+      report: existingReport,
+      contentDir,
+      indexPath,
+      now,
+      logger,
+    });
+    logger.log("An on-chain report already exists for " + date + "; verified and reconciled the archive index.");
+    return { status: "existing", report: existingReport };
+  }
+
   const [profileFeed, takeoverFeed] = await Promise.all([
-    fetchJson(API + "/token-profiles/latest/v1"),
-    fetchJson(API + "/community-takeovers/latest/v1"),
+    fetchJsonImpl(API + "/token-profiles/latest/v1"),
+    fetchJsonImpl(API + "/community-takeovers/latest/v1"),
   ]);
   if (!Array.isArray(profileFeed) || !Array.isArray(takeoverFeed)) {
-    throw new Error("DEX Screener returned an unexpected discovery-feed format.");
+    throw new Error("DEX Screener returned an unexpected discovery-feed format; refusing to publish an incomplete report.");
+  }
+  if (profileFeed.length === 0 && takeoverFeed.length === 0) {
+    throw new Error("Both Solana discovery feeds returned zero records; refusing to interpret an empty feed as a quiet market day.");
   }
 
   const profiles = profileMapFromFeeds(profileFeed, takeoverFeed);
   const addresses = Array.from(profiles.values()).slice(0, 30).map((profile) => profile.tokenAddress);
-  let pairPayload = [];
-  if (addresses.length > 0) {
-    pairPayload = await fetchJson(API + "/tokens/v1/solana/" + addresses.join(","));
+  if (addresses.length === 0) {
+    throw new Error("No Solana token profiles were available in the discovery feeds; refusing to publish a quiet-day report.");
   }
+
+  const pairPayload = await fetchJsonImpl(API + "/tokens/v1/solana/" + addresses.join(","));
   const pairs = Array.isArray(pairPayload)
     ? pairPayload
-    : (pairPayload && Array.isArray(pairPayload.pairs) ? pairPayload.pairs : []);
-  const now = new Date();
-  const candidates = makePairRows(pairs, profiles, now);
-  const qualifying = candidates.filter((candidate) =>
-    candidate.liquidityUsd >= MIN_LIQUIDITY_USD &&
-    candidate.volume24hUsd >= MIN_VOLUME_24H_USD &&
-    candidate.totalTransactions24h >= MIN_TRANSACTIONS_24H
-  );
+    : (pairPayload && Array.isArray(pairPayload.pairs) ? pairPayload.pairs : null);
+  if (!pairs) {
+    throw new Error("DEX Screener returned an unexpected pair-snapshot format; refusing to publish an incomplete report.");
+  }
 
+  const candidates = makePairRows(pairs, profiles, now);
+  const qualifying = candidates.filter(isQualifyingCandidate);
   const recentCutoff = new Date(now.getTime() - RECENT_FEATURE_DAYS * 86400000);
   const recentlyFeatured = new Set(
     index.reports
@@ -549,38 +713,32 @@ async function main() {
     qualifyingCandidates: qualifying.length,
     freshQualifyingCandidates: freshQualifying.length,
   };
-  const report = buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided);
-  await writeFile(reportPath, JSON.stringify(report, null, 2) + "\n", "utf8");
 
-  const entry = {
-    issueDate: date,
-    path: "content/onchain/" + date + ".json",
-    title: report.title,
-    standfirst: report.standfirst,
-    classification: report.classification,
-    featuredSymbol: selected ? selected.symbol : null,
-    featuredTokenAddress: selected ? selected.address : null,
-    pairUrl: selected ? selected.pairUrl : null,
-    liquidityUsd: selected ? selected.liquidityUsd : null,
-    volume24hUsd: selected ? selected.volume24hUsd : null,
-    issuedAt,
-  };
-  const reports = [entry, ...index.reports.filter((item) => item && item.issueDate !== date)]
-    .sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+  const report = buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided);
+  await writeFileAtomically(reportPath, JSON.stringify(report, null, 2) + "\n");
+
   const updatedIndex = {
     schemaVersion: 1,
     updatedAt: issuedAt,
-    reports,
+    reports: [reportIndexEntry(report), ...index.reports.filter((item) => item && item.issueDate !== date)]
+      .sort((a, b) => b.issueDate.localeCompare(a.issueDate)),
   };
-  await writeFile(INDEX_PATH, JSON.stringify(updatedIndex, null, 2) + "\n", "utf8");
+  await writeFileAtomically(indexPath, JSON.stringify(updatedIndex, null, 2) + "\n");
 
-  console.log("Published " + date + ": " + report.title);
-  console.log("Profiles: " + counts.solanaProfiles + " / pairs: " + counts.pairsReturned +
+  logger.log("Published " + date + ": " + report.title);
+  logger.log("Profiles: " + counts.solanaProfiles + " / pairs: " + counts.pairsReturned +
     " / qualifying candidates: " + counts.qualifyingCandidates);
-  if (selected) console.log("Featured pair: " + selected.name + " (" + selected.symbol + ") " + selected.pairUrl);
+  if (selected) logger.log("Featured pair: " + selected.name + " (" + selected.symbol + ") " + selected.pairUrl);
+  return { status: "published", report };
 }
 
-main().catch((error) => {
-  console.error("Daily on-chain publication failed:", error);
-  process.exitCode = 1;
-});
+async function main() {
+  await publishDailyReport();
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error("Daily on-chain publication failed:", error);
+    process.exitCode = 1;
+  });
+}
