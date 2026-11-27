@@ -3,10 +3,10 @@
   "issueDate": "2026-11-27",
   "issuedAt": "2026-11-27T09:48:58.957Z",
   "timezone": "Europe/Rome",
-  "title": "$HOLD: THE LIQUIDITY CHECK",
-  "standfirst": "HOLD appeared in the latest Solana discovery feed. The Department checked the most liquid reported pair, its recent trading activity and the limits of what those numbers can prove.",
-  "classification": "OBSERVED SOLANA DEX ACTIVITY",
-  "sourceSummary": "DEX Screener public API; Solana token profiles, community-takeover notices and pair snapshots.",
+  "title": "$HOLD: THE LIQUIDITY HAS ENTERED WITNESS PROTECTION",
+  "standfirst": "HOLD brought $804,418 in reported 24-hour pair volume to a pool showing $5,698 in displayed liquidity. The quoted price move was -71.78%. The Department has opened a case file, not a fan club.",
+  "classification": "OBSERVED SOLANA DEX ACTIVITY / DEPARTMENT COMMENTARY",
+  "sourceSummary": "DEX Screener public API; Solana token profiles, community-takeover notices and pair snapshots. The Department supplies the attitude, not the numbers.",
   "counts": {
     "discoveryProfiles": 30,
     "solanaProfiles": 20,
@@ -121,32 +121,32 @@
   ],
   "sections": [
     {
-      "heading": "WHAT THE TAPE SAYS",
+      "heading": "THE NUMBERS ARE IN. CT IS STILL OUTSIDE.",
       "paragraphs": [
-        "At 2026-11-27T09:48:58.957Z UTC, the selected pumpswap pair reported $5,698 in displayed liquidity and $804,418 in trailing 24-hour volume. The quoted token price was $0.00000816800.",
-        "The pool was approximately 12 hours old at collection time. Discovery label: community takeover."
+        "At 2026-11-27T09:48:58.957Z UTC, the selected pumpswap pair showed $5,698 in displayed liquidity and $804,418 in trailing 24-hour volume. The quoted token price was $0.00000816800. These are provider snapshots. We accept the figures; the victory laps can wait.",
+        "The pool was approximately 12 hours old at collection time. The discovery feed labels this profile COMMUNITY TAKEOVER. That is a provider-supplied discovery label, not independently verified proof of who controls the project or its keys. The Department has not been given the ceremonial handover paperwork."
       ]
     },
     {
-      "heading": "BUYERS, SELLERS AND THE CHATTER",
+      "heading": "BUYERS, SELLERS & THE GROUP CHAT LAWYER.",
       "paragraphs": [
-        "The pair recorded 13,151 buys and 11,515 sells in the trailing 24 hours (24,666 transactions in total). 53.3% of the recorded buy/sell transactions were buys and 46.7% were sells. These are transaction counts, not unique wallets.",
-        "The reported 1-hour price change was -9.97% and the 24-hour change was -71.78%."
+        "The pair recorded 13,151 buys and 11,515 sells: 24,666 recorded transactions in total. 53.3% of recorded transactions were buys and 46.7% were sells. These are transaction counts, not unique people, wallet counts or trade-size-weighted flows.",
+        "The reported 24-hour price move was -71.78%. A -71.78% day is not a little wobble. The phrase 'healthy correction' has been asked to leave the building until it can produce documentation. There were more buy transactions than sells, but the quote still fell hard. The Department's 99% Research Confidence Division has drafted an all-caps bullish thread; Compliance is waiting for trade sizes."
       ]
     },
     {
-      "heading": "THE DEPARTMENT'S READ",
+      "heading": "THE DEPARTMENT'S UNOFFICIAL VERDICT.",
       "paragraphs": [
-        "Reported 24-hour volume was 141.18 times the displayed pool liquidity. This is turnover relative to a snapshot of liquidity, not net inflow.",
-        "The pair had a measurable flow of recorded swaps during the observation window. Activity alone does not establish organic demand, holder growth or sustainable liquidity.",
-        "This is a snapshot of one selected pair from a limited discovery sample, not a ranking of the best tokens on Solana."
+        "Trailing 24-hour volume was 141.18 times displayed pool liquidity. That measures turnover against a liquidity snapshot; it is not net inflow, cash reserves or the amount waiting politely to buy your bag.",
+        "The volume number is doing laps around the liquidity number. That can describe a very active pair, but it does not mean the pool contains $804,418 or can absorb an exit of the same size. The Department would like these two nouns kept in separate departments.",
+        "This is one selected pair from a limited discovery sample, not a ranking of Solana, a token safety inspection or proof of organic demand. The Department has a clipboard, not a crystal ball."
       ]
     },
     {
-      "heading": "WHAT WE CANNOT CLAIM",
+      "heading": "WHAT THE DATA DOES NOT KNOW (A LOT).",
       "paragraphs": [
-        "DEX pair statistics do not identify unique traders, beneficial owners, wallet clusters, deployer intent or coordinated activity. Buy/sell counts are not a count of distinct wallets.",
-        "Liquidity, volume and price can change immediately after collection. This report is an editorial observation, not a token review, a safety assessment or a trading recommendation."
+        "These pair statistics do not identify unique traders, beneficial owners, wallet clusters, deployer intent, coordinated activity or who is posting rocket emojis. Buy/sell counts are not a count of distinct wallets.",
+        "Liquidity, volume and price can change immediately after collection. This report is an evidence-led roast of an observed market snapshot, not a safety audit or trading recommendation. DYOR means checking the receipts, not outsourcing your decisions to a headline."
       ]
     }
   ],
@@ -155,7 +155,8 @@
     "Pair selection: highest displayed liquidity among returned pairs for each discovered token.",
     "Feature threshold: at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells.",
     "To vary the daily archive, a token featured during the previous seven issues is skipped when another qualifying candidate exists.",
-    "The featured item is selected by reported 24-hour pair volume among candidates that pass the threshold; it is not a quality or investment score."
+    "The featured item is selected by reported 24-hour pair volume among candidates that pass the threshold; it is not a quality or investment score.",
+    "Satirical commentary is selected from explicit metric conditions. It does not add wallet identities, motives, causes or other facts not present in the source snapshot."
   ],
   "sources": [
     {

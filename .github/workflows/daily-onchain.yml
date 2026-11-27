@@ -35,6 +35,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Validate the editorial generator
+        run: node --check scripts/generate-daily-onchain.mjs
+
       - name: Collect public Solana market data and write the report
         run: node scripts/generate-daily-onchain.mjs
 
