@@ -151,9 +151,9 @@ export default function ClubChallenges() {
     <section id="club-challenges" className="club-challenges" aria-labelledby="club-challenges-title">
       <header className="club-challenges__header">
         <div>
-          <span>THE 99% CLUB / INTERACTIVE CONVICTION DESK</span>
-          <h2 id="club-challenges-title">THE EXCUSE <em>DEPARTMENT.</em></h2>
-          <p>Three short case exercises. Three chances to explain why the next one is still yours.</p>
+          <span>THE 99% CLUB / LOCAL MEMBER RITUALS</span>
+          <h2 id="club-challenges-title">YOUR CLUB <em>FILES.</em></h2>
+          <p>Complete three fictional in-site exercises and the UTC weekly ritual to build your optional local Passport record and unlock Club badges. These files are not public posts or verified community participation.</p>
         </div>
         <div className="club-challenges__counter">
           <strong>{unlockedCount}<small>/{clubBadges.length}</small></strong>
@@ -228,7 +228,7 @@ export default function ClubChallenges() {
           <strong>{unlockedCount} / {clubBadges.length} UNLOCKED</strong>
         </div>
         <p className="club-badge-case__intro">
-          Membership answers and completed challenges unlock these badges automatically. Enable the Passport before filing to save your collection on this device.
+          Membership answers and completed local rituals unlock these badges. Enable the optional Passport before filing to keep the collection on this device; nothing is published or shared.
         </p>
         <div className="club-badge-case__grid">
           {clubBadges.map((badge) => (
