@@ -16202,7 +16202,7 @@ main.audit-page.governance-page {
 }
 
 .onchain-positive {
-  color: #b6ff65 !important;
+  color: var(--green) !important;
 }
 
 .onchain-negative {
