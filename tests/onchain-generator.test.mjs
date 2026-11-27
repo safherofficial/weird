@@ -126,6 +126,26 @@ test("featured article is detailed, metric-led and avoids duplicated market-cap 
   assert.match(copy, /transaction counts/i);
 });
 
+test("a real zero-transaction snapshot is not described as an unavailable count", () => {
+  const profiles = profileMapFromFeeds([{ chainId: "solana", tokenAddress: address }], []);
+  const [candidate] = makePairRows([pair({ txns: { h24: { buys: 0, sells: 0 } } })], profiles, now);
+  const counts = {
+    discoveryProfiles: 1,
+    solanaProfiles: 1,
+    solanaTakeovers: 0,
+    profilesChecked: 1,
+    pairsReturned: 1,
+    candidatePairs: 1,
+    qualifyingCandidates: 0,
+    freshQualifyingCandidates: 0,
+  };
+  const report = buildArticle("2026-11-27", now.toISOString(), counts, [candidate], candidate, false);
+  const copy = report.sections.flatMap((section) => section.paragraphs).join(" ");
+  assert.match(copy, /0 buys and 0 sells/i);
+  assert.match(copy, /zero buys and zero sells/i);
+  assert.doesNotMatch(copy, /API did not supply a usable 24-hour buy\/sell transaction count/i);
+});
+
 test("empty discovery feeds fail closed instead of creating a fake quiet-day report", async () => {
   const contentDir = await makeTempContentDir();
   try {
