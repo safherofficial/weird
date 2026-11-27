@@ -2522,7 +2522,7 @@ test("U44 expands Archives into cross-chain written evidence and Museum into cro
 });
 
 
-test("U45 organizes the 99% Club into five navigable stages without dropping existing tools", () => {
+test("P2 routes the 99% Club through five focused stages and distinct community actions", () => {
   const page = readFileSync("app/club/page.tsx", "utf8");
   const context = readFileSync("app/club/club-campaign-context.tsx", "utf8");
   const continuity = readFileSync("app/club/club-campaign-continuity.tsx", "utf8");
