@@ -105,6 +105,8 @@ export default function OnchainReportView({ report, compact = false }: OnchainRe
                 <div>
                   <span>LIQUIDITY <b>{formatOnchainMoney(item.liquidityUsd)}</b></span>
                   <span>24H VOLUME <b>{formatOnchainMoney(item.volume24hUsd)}</b></span>
+                  <span>24H CHANGE <b className={item.priceChange24hPct === null ? "" : item.priceChange24hPct >= 0 ? "onchain-positive" : "onchain-negative"}>{formatOnchainPercent(item.priceChange24hPct)}</b></span>
+                  <span>PAIR AGE <b>{item.ageHours === null ? "N/D" : item.ageHours.toFixed(1) + "h"}</b></span>
                 </div>
                 <em>INSPECT PAIR ↗</em>
               </a>
