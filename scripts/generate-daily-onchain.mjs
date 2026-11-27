@@ -313,9 +313,11 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
         const change = candidate.priceChange24hPct === null
           ? "price move not reported"
           : "reported price move " + signedPercent(candidate.priceChange24hPct);
-        const liquidity = candidate.liquidityUsd <= 0
-          ? "$0 displayed liquidity in this snapshot"
-          : money(candidate.liquidityUsd) + " displayed liquidity";
+        const liquidity = candidate.liquidityUsd === null
+          ? "liquidity unavailable in this snapshot"
+          : candidate.liquidityUsd === 0
+            ? "$0 displayed liquidity in this snapshot"
+            : money(candidate.liquidityUsd) + " displayed liquidity";
         const ageNote = candidate.ageHours !== null && candidate.ageHours < 24
           ? "; pair age " + candidate.ageHours.toFixed(1) + "h, so the 24h field does not contain a full day of pair history"
           : "";
@@ -441,7 +443,8 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
     else if (topCandidate.liquidityUsd < MIN_LIQUIDITY_USD) failures.push("displayed liquidity of " + money(topCandidate.liquidityUsd) + " against a $5,000 minimum");
     if (topCandidate.volume24hUsd === null) failures.push("reported 24-hour volume was not available");
     else if (topCandidate.volume24hUsd < MIN_VOLUME_24H_USD) failures.push("reported 24-hour volume of " + money(topCandidate.volume24hUsd) + " against a $5,000 minimum");
-    if (topCandidate.totalTransactions24h < MIN_TRANSACTIONS_24H) failures.push(topCandidate.totalTransactions24h + " recorded buys and sells against a 20-transaction minimum");
+    if (topCandidate.totalTransactions24h === null) failures.push("buy/sell transaction counts were not available");
+    else if (topCandidate.totalTransactions24h < MIN_TRANSACTIONS_24H) failures.push(topCandidate.totalTransactions24h + " recorded buys and sells against a 20-transaction minimum");
     const movement = topCandidate.priceChange24hPct === null
       ? "The price move was not reported."
       : "Its reported price change was " + signedPercent(topCandidate.priceChange24hPct) + ".";
