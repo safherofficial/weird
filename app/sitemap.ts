@@ -34,7 +34,7 @@ const publicRoutes = [
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const onchainIndex = await getOnchainReportIndex();
+  const onchainIndex = await getOnchainReportIndex(false);
   const onchainIssueRoutes = (onchainIndex?.reports ?? []).map((report) => "/daily-office/onchain/" + report.issueDate);
   const routes = [
     ...publicRoutes,

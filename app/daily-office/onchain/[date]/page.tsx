@@ -12,7 +12,16 @@ type OnchainIssuePageProps = {
 
 export async function generateMetadata({ params }: OnchainIssuePageProps): Promise<Metadata> {
   const { date } = await params;
-  const report = await getOnchainReport(date);
+  let report = null;
+  try {
+    report = await getOnchainReport(date);
+  } catch {
+    return {
+      title: "Onchain report temporarily unavailable | THE DYOR DEPARTMENT",
+      description: "The public report source could not be verified.",
+      robots: { index: false, follow: true },
+    };
+  }
   if (!report) {
     return {
       title: "Onchain report not found | THE DYOR DEPARTMENT",
@@ -37,8 +46,14 @@ export async function generateMetadata({ params }: OnchainIssuePageProps): Promi
 
 export default async function OnchainIssuePage({ params }: OnchainIssuePageProps) {
   const { date } = await params;
-  const report = await getOnchainReport(date);
-  if (!report) notFound();
+  let report = null;
+  let reportUnavailable = false;
+  try {
+    report = await getOnchainReport(date);
+  } catch {
+    reportUnavailable = true;
+  }
+  if (!report && !reportUnavailable) notFound();
 
   return (
     <main className="audit-page onchain-intelligence-page" id="main-content">
@@ -53,7 +68,16 @@ export default async function OnchainIssuePage({ params }: OnchainIssuePageProps
           <Link href="/daily-office/onchain/archive">← ALL DAILY FILES</Link>
           <span>ISSUE / {date} / SOLANA DEX ACTIVITY</span>
         </div>
-        <OnchainReportView report={report} />
+        {report ? (
+          <OnchainReportView report={report} />
+        ) : (
+          <section className="onchain-waiting onchain-waiting--error" role="status">
+            <span>FILE STATUS / SOURCE COULD NOT BE VERIFIED</span>
+            <h2>THE REPORT<br /><span>IS TEMPORARILY UNAVAILABLE.</span></h2>
+            <p>The requested report could not be retrieved from the public repository. This is not a market finding and no replacement report has been fabricated.</p>
+            <Link className="button button--primary" href="/daily-office/onchain/archive">RETURN TO THE DAILY ARCHIVE ↗</Link>
+          </section>
+        )}
       </div>
       <DepartmentFooter message={["THIS FILE IS BASED ON A RECORDED PUBLIC-DATA SNAPSHOT.", "NO WALLET OWNERSHIP OR INTENT HAS BEEN INFERRED."]} />
     </main>

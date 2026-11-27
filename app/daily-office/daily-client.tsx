@@ -191,6 +191,18 @@ export default function DailyOfficeClient({
         <span>UTC ISSUE / {dispatch.issueDate}</span>
       </div>
 
+      <nav className="daily-office-toc" aria-label="Navigate this briefing">
+        <span className="daily-office-toc__label">FILE MAP / JUMP TO</span>
+        <a href="#daily-office-index">CONVICTION INDEX <span aria-hidden="true">↘</span></a>
+        {dispatch.sections.map((section, index) => (
+          <a href={`#daily-office-section-${index + 1}`} key={section.label}>
+            {String(index + 1).padStart(2, "0")} / {section.label} <span aria-hidden="true">↘</span>
+          </a>
+        ))}
+        <a href="#daily-office-quote">QUOTE <span aria-hidden="true">↘</span></a>
+        <a href="#daily-office-method">METHOD <span aria-hidden="true">↘</span></a>
+      </nav>
+
       <div className="daily-office-headline">
         <p className="eyebrow">THE TRENCHES DESK / DAILY CT BRIEFING</p>
         <HeadlineTag>{dispatch.headline}</HeadlineTag>
@@ -202,7 +214,7 @@ export default function DailyOfficeClient({
         <p>{dispatch.bulletin}</p>
       </div>
 
-      <section className="daily-office-index" aria-labelledby="daily-office-index-title">
+      <section id="daily-office-index" className="daily-office-index" aria-labelledby="daily-office-index-title">
         <div className="daily-office-index__header">
           <div>
             <span>FICTIONAL SYNTHETIC READING / NOT A RISK MODEL</span>
@@ -237,9 +249,9 @@ export default function DailyOfficeClient({
         <p className="daily-office-index__note">{dispatch.convictionIndex.note}</p>
       </section>
 
-      <div className="daily-office-sections">
+      <div id="daily-office-sections" className="daily-office-sections">
         {dispatch.sections.map((section, index) => (
-          <article className="daily-office-section" key={section.label}>
+          <article id={`daily-office-section-${index + 1}`} className="daily-office-section" key={section.label}>
             <div className="daily-office-section__top">
               <span>{section.label}</span>
               <small>{String(index + 1).padStart(2, "0")} / {String(dispatch.sections.length).padStart(2, "0")}</small>
@@ -251,7 +263,7 @@ export default function DailyOfficeClient({
         ))}
       </div>
 
-      <blockquote className="daily-office-quote">
+      <blockquote id="daily-office-quote" className="daily-office-quote">
         <span>QUOTE OF THE DAY / UNATTRIBUTED</span>
         <p>“{dispatch.quote}”</p>
       </blockquote>
@@ -279,7 +291,7 @@ export default function DailyOfficeClient({
 
       {notice && <p className="audit-notice" role="status">{notice}</p>}
 
-      <div className="daily-office-method">
+      <div id="daily-office-method" className="daily-office-method">
         <span>EDITORIAL METHOD / DAILY REGENERATION</span>
         <p>{dispatch.methodology}</p>
       </div>

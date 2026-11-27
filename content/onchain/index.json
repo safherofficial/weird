@@ -5,9 +5,9 @@
     {
       "issueDate": "2026-11-27",
       "path": "content/onchain/2026-11-27.json",
-      "title": "$HOLD: THE LIQUIDITY HAS ENTERED WITNESS PROTECTION",
-      "standfirst": "HOLD brought $804,418 in reported 24-hour pair volume to a pool showing $5,698 in displayed liquidity. The quoted price move was -71.78%. The Department has opened a case file, not a fan club.",
-      "classification": "OBSERVED SOLANA DEX ACTIVITY / DEPARTMENT COMMENTARY",
+      "title": "$HOLD: -71.78% IN 24H. VOLUME FILED A STATEMENT; LIQUIDITY DECLINED TO COMMENT.",
+      "standfirst": "HOLD ($HOLD) led the eligible discovery sample by reported 24-hour pair volume: $804,418 against $5,698 in displayed liquidity, with a quoted price move of -71.78%. The Department filed the figures correctly. The market appears to have misplaced the memo.",
+      "classification": "OBSERVED DEX DRAWDOWN / DEPARTMENT COMMENTARY",
       "featuredSymbol": "HOLD",
       "featuredTokenAddress": "BuNeErf9FjL6dgzE74S21Qm9EeBaYMJXSW4A8ihxpump",
       "pairUrl": "https://dexscreener.com/solana/hmuaeubteldjzmchup4zzwoz9dexlirhffgaqced9udr",

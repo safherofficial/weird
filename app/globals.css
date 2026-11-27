@@ -15951,7 +15951,7 @@ main.audit-page.governance-page {
 .onchain-desk-teaser__body > p:not(.eyebrow) {
   max-width: 780px;
   color: #a5ad9e;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
 }
 
@@ -16111,7 +16111,7 @@ main.audit-page.governance-page {
   max-width: 800px;
   margin: 0;
   color: #a4ad9d;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.75;
 }
 
@@ -16221,8 +16221,10 @@ main.audit-page.governance-page {
 
 .onchain-report__body {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 26px;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 900px;
+  margin-inline: auto;
+  gap: 0;
 }
 
 .onchain-report__section {
@@ -16231,15 +16233,17 @@ main.audit-page.governance-page {
 }
 
 .onchain-report__section h3 {
-  margin: 0 0 11px;
+  margin: 0 0 12px;
   color: var(--green);
+  font-size: 9px;
+  line-height: 1.55;
 }
 
 .onchain-report__section p {
-  margin: 0 0 10px;
-  color: #aeb6a8;
-  font-size: 12px;
-  line-height: 1.8;
+  margin: 0 0 12px;
+  color: #b6bfb0;
+  font-size: 14px;
+  line-height: 1.85;
 }
 
 .onchain-report__section p:last-child {
@@ -16289,8 +16293,8 @@ main.audit-page.governance-page {
 }
 
 .onchain-observation > span {
-  color: #8e9b80;
-  font-size: 7px;
+  color: #9eaa90;
+  font-size: 8px;
 }
 
 .onchain-observation > strong {
@@ -16314,7 +16318,7 @@ main.audit-page.governance-page {
   justify-content: space-between;
   gap: 7px;
   color: #839079;
-  font: 7px var(--mono);
+  font: 9px/1.5 var(--mono);
 }
 
 .onchain-observation > div b {
@@ -16324,7 +16328,7 @@ main.audit-page.governance-page {
 
 .onchain-observation > em {
   color: var(--green);
-  font-size: 7px;
+  font-size: 8px;
   font-style: normal;
 }
 
@@ -16343,9 +16347,9 @@ main.audit-page.governance-page {
 
 .onchain-report__footer p {
   margin: 8px 0 0;
-  color: #899584;
-  font-size: 10px;
-  line-height: 1.7;
+  color: #a3ad9a;
+  font-size: 11px;
+  line-height: 1.75;
 }
 
 .onchain-report__footer a {
@@ -16370,9 +16374,9 @@ main.audit-page.governance-page {
   gap: 8px;
   margin: 0;
   padding: 0 38px 16px;
-  color: #969f8d;
-  font-size: 10px;
-  line-height: 1.65;
+  color: #a3ad9a;
+  font-size: 11px;
+  line-height: 1.7;
 }
 
 .onchain-report__actions {
@@ -16485,8 +16489,8 @@ main.audit-page.governance-page {
 .onchain-archive-entry__main > p {
   max-width: 780px;
   margin: 0;
-  color: #99a392;
-  font-size: 11px;
+  color: #a9b39f;
+  font-size: 12px;
   line-height: 1.65;
 }
 
@@ -16633,4 +16637,255 @@ main.audit-page.governance-page {
   .onchain-observation {
     transition: none;
   }
+}
+
+
+/* U90 — Daily Office reading flow, responsive hierarchy and accessible file navigation. */
+.daily-office-shell {
+  grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
+  column-gap: clamp(28px, 4vw, 52px);
+  row-gap: 36px;
+}
+
+.daily-office-panel {
+  grid-column: 1 / -1;
+}
+
+.daily-office-intro__notice span {
+  font-size: 8px;
+}
+
+.daily-office-intro__notice strong {
+  font-size: 12px;
+}
+
+.daily-office-intro__notice small {
+  font-size: 8px;
+}
+
+.daily-office-panel__header {
+  font-size: 8px;
+}
+
+.daily-office-headline > p:last-child {
+  color: #929b8c;
+  font: 9px/1.65 var(--mono);
+  letter-spacing: .035em;
+}
+
+.daily-office-bulletin > div {
+  font-size: 8px;
+}
+
+.daily-office-section__top {
+  font-size: 8px;
+}
+
+.daily-office-section h3 {
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.daily-office-section p {
+  color: #a6b09f;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.daily-office-section__stamp {
+  font-size: 7px;
+  line-height: 1.55;
+}
+
+.daily-office-quote span {
+  font-size: 8px;
+}
+
+.daily-office-quote p {
+  font-size: 17px;
+}
+
+.daily-office-disposition span {
+  font-size: 7px;
+}
+
+.daily-office-disposition strong {
+  font-size: 9px;
+}
+
+.daily-office-actions .button {
+  font-size: 9px;
+}
+
+.daily-office-method span {
+  font-size: 8px;
+}
+
+.daily-office-method p {
+  color: #a0aa97;
+  font: 9px/1.75 var(--mono);
+}
+
+.daily-office-footer {
+  font-size: 8px;
+}
+
+.daily-office-index__header > div:first-child > span,
+.daily-office-index__header p {
+  font-size: 8px;
+}
+
+.daily-office-index__reading-label {
+  font-size: 8px;
+}
+
+.daily-office-index__reading-label strong {
+  font-size: 8px;
+  white-space: normal;
+  text-align: right;
+}
+
+.daily-office-index__note {
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.daily-office-toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin: 14px 0 2px;
+  padding: 11px 0 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.daily-office-toc__label {
+  flex: 0 0 100%;
+  color: var(--department-accent);
+  font: 8px/1.5 var(--mono);
+  letter-spacing: .09em;
+}
+
+.daily-office-toc a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  min-height: 32px;
+  max-width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .018);
+  color: #b8c2b0;
+  font: 8px/1.4 var(--mono);
+  letter-spacing: .025em;
+  text-decoration: none;
+  transition: border-color .18s ease, background .18s ease, color .18s ease;
+}
+
+.daily-office-toc a span {
+  flex: 0 0 auto;
+  color: var(--department-accent);
+}
+
+.daily-office-toc a:hover {
+  border-color: var(--department-accent-line);
+  background: rgba(230, 189, 112, .06);
+  color: #f0f0e9;
+}
+
+.daily-office-toc a:focus-visible {
+  outline: 2px solid var(--department-accent);
+  outline-offset: 3px;
+}
+
+.daily-office-index,
+.daily-office-section,
+.daily-office-quote,
+.daily-office-method {
+  scroll-margin-top: 26px;
+}
+
+.daily-office-quick-links {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 8px;
+}
+
+.daily-office-quick-links .button {
+  min-height: 44px;
+  padding-inline: 14px;
+  font-size: 9px;
+}
+
+@media (max-width: 800px) {
+  .daily-office-shell {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: 28px;
+  }
+
+  .daily-office-panel,
+  .daily-office-quick-links {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .daily-office-shell {
+    row-gap: 23px;
+  }
+
+  .daily-office-toc {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .daily-office-toc__label {
+    grid-column: 1 / -1;
+    padding-bottom: 2px;
+  }
+
+  .daily-office-toc a {
+    min-width: 0;
+    min-height: 36px;
+    font-size: 7px;
+    overflow-wrap: anywhere;
+  }
+
+  .daily-office-section p {
+    font-size: 12px;
+  }
+
+  .daily-office-quote p {
+    font-size: 15px;
+  }
+
+  .daily-office-quick-links {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .daily-office-quick-links .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .daily-office-toc a {
+    transition: none;
+  }
+}
+
+
+/* U91 — Stop the sticky Daily Office intro from overlapping full-width content while scrolling. */
+.daily-office-page .daily-office-intro {
+  position: static;
+  top: auto;
 }

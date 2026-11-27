@@ -13,7 +13,13 @@ export const metadata: Metadata = {
 };
 
 export default async function OnchainArchivePage() {
-  const index = await getOnchainReportIndex();
+  let index = null;
+  let archiveUnavailable = false;
+  try {
+    index = await getOnchainReportIndex();
+  } catch {
+    archiveUnavailable = true;
+  }
   const reports = index?.reports ?? [];
 
   return (
@@ -41,7 +47,14 @@ export default async function OnchainArchivePage() {
           </div>
         </header>
 
-        {reports.length > 0 ? (
+        {archiveUnavailable ? (
+          <section className="onchain-waiting onchain-waiting--error" role="status">
+            <span>ARCHIVE STATUS / PUBLIC SOURCE UNAVAILABLE</span>
+            <h2>THE REGISTER<br /><span>COULD NOT BE VERIFIED.</span></h2>
+            <p>The public repository could not be reached or its index could not be validated. The Department will not describe an unavailable archive as an empty one.</p>
+            <Link className="button button--primary" href="/daily-office/onchain">RETURN TO ONCHAIN INTELLIGENCE ↗</Link>
+          </section>
+        ) : reports.length > 0 ? (
           <section className="onchain-archive-list" aria-label="Daily onchain reports">
             {reports.map((report, index) => (
               <article className="onchain-archive-entry" key={report.issueDate}>

@@ -1,5 +1,7 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rename, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { randomUUID } from "node:crypto";
+import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
 const CONTENT_DIR = join(ROOT, "content", "onchain");
@@ -22,15 +24,15 @@ function localIssueDate(date = new Date()) {
   return values.year + "-" + values.month + "-" + values.day;
 }
 
-function numberOrZero(value) {
-  const number = typeof value === "string" ? Number(value) : Number(value);
-  return Number.isFinite(number) ? number : 0;
-}
-
-function nullableNumber(value) {
+export function nullableNumber(value) {
   if (value === null || value === undefined || value === "") return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function nullableNonNegative(value) {
+  const number = nullableNumber(value);
+  return number === null || number < 0 ? null : number;
 }
 
 function rounded(value, digits = 2) {
@@ -62,18 +64,7 @@ async function fetchJson(url) {
   return response.json();
 }
 
-async function readIndex() {
-  try {
-    const parsed = JSON.parse(await readFile(INDEX_PATH, "utf8"));
-    if (!parsed || !Array.isArray(parsed.reports)) throw new Error("Invalid on-chain index format.");
-    return parsed;
-  } catch (error) {
-    if (error && error.code === "ENOENT") return { schemaVersion: 1, reports: [] };
-    throw error;
-  }
-}
-
-function profileMapFromFeeds(profileFeed, takeoverFeed) {
+export function profileMapFromFeeds(profileFeed, takeoverFeed) {
   const profiles = new Map();
   const addProfiles = (items, discoveryType) => {
     for (const item of items) {
@@ -97,7 +88,30 @@ function profileMapFromFeeds(profileFeed, takeoverFeed) {
   return profiles;
 }
 
-function makePairRows(pairs, profiles, now) {
+export function selectProfileAddresses(profiles, limit = 30) {
+  const groups = [
+    [],
+    [],
+  ];
+
+  for (const profile of profiles.values()) {
+    if (!profile || typeof profile.tokenAddress !== "string") continue;
+    if (profile.discoveryType === "COMMUNITY TAKEOVER") groups[1].push(profile.tokenAddress);
+    else groups[0].push(profile.tokenAddress);
+  }
+
+  const maximum = Number.isInteger(limit) && limit > 0 ? limit : 0;
+  const selected = [];
+  let groupIndex = 0;
+  while (selected.length < maximum && (groups[0].length > 0 || groups[1].length > 0)) {
+    if (groups[groupIndex].length === 0) groupIndex = 1 - groupIndex;
+    selected.push(groups[groupIndex].shift());
+    groupIndex = 1 - groupIndex;
+  }
+  return selected;
+}
+
+export function makePairRows(pairs, profiles, now) {
   const bestByToken = new Map();
 
   for (const pair of pairs) {
@@ -105,19 +119,23 @@ function makePairRows(pairs, profiles, now) {
     const profile = profiles.get(String(pair.baseToken.address).toLowerCase());
     if (!profile) continue;
 
-    const liquidityUsd = numberOrZero(pair.liquidity && pair.liquidity.usd);
-    const volume24hUsd = numberOrZero(pair.volume && pair.volume.h24);
-    const buys24h = numberOrZero(pair.txns && pair.txns.h24 && pair.txns.h24.buys);
-    const sells24h = numberOrZero(pair.txns && pair.txns.h24 && pair.txns.h24.sells);
-    const totalTransactions24h = buys24h + sells24h;
+    const liquidityUsd = nullableNonNegative(pair.liquidity && pair.liquidity.usd);
+    const volume24hUsd = nullableNonNegative(pair.volume && pair.volume.h24);
+    const buys24h = nullableNonNegative(pair.txns && pair.txns.h24 && pair.txns.h24.buys);
+    const sells24h = nullableNonNegative(pair.txns && pair.txns.h24 && pair.txns.h24.sells);
+    const totalTransactions24h = buys24h !== null && sells24h !== null
+      ? buys24h + sells24h
+      : null;
     const pairCreatedAt = nullableNumber(pair.pairCreatedAt);
-    const ageHours = pairCreatedAt
+    const ageHours = pairCreatedAt !== null
       ? Math.max(0, (now.getTime() - pairCreatedAt) / 3600000)
       : null;
-    const buySharePct = totalTransactions24h > 0
+    const buySharePct = totalTransactions24h !== null && totalTransactions24h > 0
       ? rounded((buys24h / totalTransactions24h) * 100, 1)
       : null;
-    const volumeLiquidityRatio = liquidityUsd > 0 ? rounded(volume24hUsd / liquidityUsd, 2) : null;
+    const volumeLiquidityRatio = liquidityUsd !== null && liquidityUsd > 0 && volume24hUsd !== null
+      ? rounded(volume24hUsd / liquidityUsd, 2)
+      : null;
 
     const row = {
       name: pair.baseToken.name || "Unknown token",
@@ -141,131 +159,304 @@ function makePairRows(pairs, profiles, now) {
       totalTransactions24h,
       buySharePct,
       volumeLiquidityRatio,
-      pairCreatedAt: pairCreatedAt ? new Date(pairCreatedAt).toISOString() : null,
+      pairCreatedAt: pairCreatedAt !== null ? new Date(pairCreatedAt).toISOString() : null,
       ageHours: ageHours === null ? null : rounded(ageHours, 1),
     };
 
     const key = row.address.toLowerCase();
     const existing = bestByToken.get(key);
-    if (!existing || row.liquidityUsd > existing.liquidityUsd ||
-      (row.liquidityUsd === existing.liquidityUsd && row.volume24hUsd > existing.volume24hUsd)) {
+    if (!existing ||
+      (row.liquidityUsd !== null && (existing.liquidityUsd === null || row.liquidityUsd > existing.liquidityUsd)) ||
+      (row.liquidityUsd === existing.liquidityUsd &&
+        row.volume24hUsd !== null &&
+        (existing.volume24hUsd === null || row.volume24hUsd > existing.volume24hUsd))) {
       bestByToken.set(key, row);
     }
   }
 
-  return Array.from(bestByToken.values())
-    .sort((a, b) => b.volume24hUsd - a.volume24hUsd);
+  return Array.from(bestByToken.values()).sort((a, b) => {
+    if (a.volume24hUsd === null) return b.volume24hUsd === null ? 0 : 1;
+    if (b.volume24hUsd === null) return -1;
+    return b.volume24hUsd - a.volume24hUsd;
+  });
 }
 
-function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided) {
-  const sourceSummary = "DEX Screener public API; Solana token profiles, community-takeover notices and pair snapshots. The Department supplies the attitude, not the numbers.";
+export function isQualifyingCandidate(candidate) {
+  return candidate.liquidityUsd !== null &&
+    candidate.volume24hUsd !== null &&
+    candidate.totalTransactions24h !== null &&
+    candidate.liquidityUsd >= MIN_LIQUIDITY_USD &&
+    candidate.volume24hUsd >= MIN_VOLUME_24H_USD &&
+    candidate.totalTransactions24h >= MIN_TRANSACTIONS_24H;
+}
+
+export function getEditorialPriorityScore(candidate) {
+  let score = 0;
+  const change24h = candidate.priceChange24hPct;
+  const change1h = candidate.priceChange1hPct;
+
+  if (change24h !== null) {
+    if (change24h <= -50) score += 50;
+    else if (change24h <= -20) score += 30;
+    else if (change24h <= -10) score += 15;
+    else if (change24h >= 50) score += 45;
+    else if (change24h >= 20) score += 28;
+  }
+
+  if (change1h !== null) {
+    if (change1h <= -10) score += 15;
+    else if (change1h <= -5) score += 8;
+    else if (change1h >= 10) score += 15;
+    else if (change1h >= 5) score += 8;
+  }
+
+  if (candidate.volumeLiquidityRatio !== null) {
+    if (candidate.volumeLiquidityRatio >= 50) score += 30;
+    else if (candidate.volumeLiquidityRatio >= 10) score += 15;
+  }
+
+  if (change24h !== null && change24h <= -10 &&
+      candidate.buys24h !== null && candidate.sells24h !== null &&
+      candidate.buys24h > candidate.sells24h) {
+    score += 8;
+  }
+  if (change24h !== null && change24h >= 10 &&
+      candidate.buys24h !== null && candidate.sells24h !== null &&
+      candidate.sells24h > candidate.buys24h) {
+    score += 8;
+  }
+
+  if (change24h !== null && Math.abs(change24h) >= 20 &&
+      candidate.liquidityUsd !== null && candidate.liquidityUsd <= 10000) {
+    score += 8;
+  }
+  if (change24h !== null && Math.abs(change24h) >= 20 &&
+      candidate.ageHours !== null && candidate.ageHours < 24) {
+    score += 4;
+  }
+
+  return score;
+}
+
+export function selectFeaturedCandidate(candidates) {
+  return [...candidates].sort((a, b) =>
+    getEditorialPriorityScore(b) - getEditorialPriorityScore(a) ||
+    (b.volume24hUsd ?? -1) - (a.volume24hUsd ?? -1)
+  )[0] || null;
+}
+
+export function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided) {
+  const sourceSummary = "DEX Screener public API; latest Solana token-profile and community-takeover feeds, plus returned pair snapshots. The Department supplies the attitude, not the numbers.";
   if (selected) {
     const priceChange = selected.priceChange24hPct;
+    const hourlyChange = selected.priceChange1hPct;
     const severeDrop = priceChange !== null && priceChange <= -50;
     const notableDrop = priceChange !== null && priceChange <= -20;
     const sharpRise = priceChange !== null && priceChange >= 50;
-    const highTurnover = selected.volumeLiquidityRatio !== null && selected.volumeLiquidityRatio >= 50;
+    const strongRise = priceChange !== null && priceChange >= 20;
+    const extremeTurnover = selected.volumeLiquidityRatio !== null && selected.volumeLiquidityRatio >= 50;
+    const highTurnover = selected.volumeLiquidityRatio !== null && selected.volumeLiquidityRatio >= 10;
+    const buys = selected.buys24h;
+    const sells = selected.sells24h;
+    const totalTransactions = selected.totalTransactions24h;
     const buyShare = selected.buySharePct;
-    const hasTransactionCounts = selected.totalTransactions24h > 0;
+    const hasTransactionCounts = totalTransactions !== null;
+    const poolIsYoung = selected.ageHours !== null && selected.ageHours < 24;
+    const issueClock = issuedAt.slice(11, 16) + " UTC";
 
-    const title = severeDrop && highTurnover
-      ? "$" + selected.symbol + ": THE LIQUIDITY HAS ENTERED WITNESS PROTECTION"
-      : severeDrop
-        ? "$" + selected.symbol + ": THIS IS NOT WHAT THEY MEANT BY HOLD"
-        : sharpRise && selected.liquidityUsd < 10000
-          ? "$" + selected.symbol + ": THE GREEN CANDLE HAS SMALL PRINT"
-          : highTurnover
-            ? "$" + selected.symbol + ": VOLUME IS DOING LAPS AROUND THE POOL"
-            : "$" + selected.symbol + ": THE DEPARTMENT HAS QUESTIONS";
+    let title;
+    if (severeDrop && extremeTurnover) {
+      title = "$" + selected.symbol + ": " + signedPercent(priceChange) + " IN 24H. VOLUME FILED A STATEMENT; LIQUIDITY DECLINED TO COMMENT.";
+    } else if (severeDrop) {
+      title = "$" + selected.symbol + ": " + signedPercent(priceChange) + " IN 24H. THE EXCUSE DEPARTMENT IS AT CAPACITY.";
+    } else if (notableDrop) {
+      title = "$" + selected.symbol + ": " + signedPercent(priceChange) + ". THE WORD 'CORRECTION' HAS REQUESTED LEGAL COUNSEL.";
+    } else if (sharpRise && selected.liquidityUsd < 10000) {
+      title = "$" + selected.symbol + ": " + signedPercent(priceChange) + ". THE CANDLE HAS A BIGGER PUBLICIST THAN THE POOL.";
+    } else if (sharpRise) {
+      title = "$" + selected.symbol + ": " + signedPercent(priceChange) + ". PLEASE KEEP THE VICTORY LAP INSIDE THE DATA.";
+    } else if (highTurnover) {
+      title = "$" + selected.symbol + ": THE VOLUME IS WORKING OVERTIME. THE LIQUIDITY HAS QUESTIONS.";
+    } else {
+      title = "$" + selected.symbol + ": THE MARKET HAS SUBMITTED ANOTHER UNSOLICITED PERFORMANCE REVIEW.";
+    }
 
     const priceDescription = priceChange === null
-      ? "The API did not report a 24-hour price change."
-      : "The reported 24-hour price move was " + signedPercent(priceChange) + ".";
-    const priceComment = severeDrop
-      ? "A " + signedPercent(priceChange) + " day is not a little wobble. The phrase 'healthy correction' has been asked to leave the building until it can produce documentation."
-      : notableDrop
-        ? "The quote is down " + signedPercent(priceChange) + ". Anyone calling that 'just shaking out weak hands' is welcome to submit the claim in triplicate."
-        : sharpRise
-          ? "The quote is up " + signedPercent(priceChange) + ". Enjoy the green candle, but do not promote it to head of risk management."
-          : priceChange !== null && priceChange > 0
-            ? "The quote is green by " + signedPercent(priceChange) + ". A positive print is a data point, not a character reference."
-            : priceChange !== null
-              ? "The quote is slightly red at " + signedPercent(priceChange) + ". The Department declines to call this a trend from one snapshot."
-              : "No 24-hour price change was supplied, so the Department will not invent a chart narrative.";
+      ? "DEX Screener did not report a 24-hour price change for this pair."
+      : "The reported 24-hour price change was " + signedPercent(priceChange) + ".";
+    let priceComment;
+    if (severeDrop) {
+      priceComment = "That is a severe drawdown, not a decorative red candle. The usual vocabulary of 'healthy reset', 'final shakeout' and 'perfect entry' has been asked to provide evidence before returning to the group chat.";
+    } else if (notableDrop) {
+      priceComment = "The decline is large enough that calling it a tiny wobble would require a very flexible dictionary. The Department recommends keeping the adjectives proportional to the percentage.";
+    } else if (sharpRise) {
+      priceComment = "A move this large makes for an excellent screenshot and a terrible substitute for risk analysis. The Department congratulates the candle on its publicity tour and declines to appoint it head of research.";
+    } else if (strongRise) {
+      priceComment = "The pair is up over the reported window. A green number is welcome, but it is not proof of durable demand, market depth or a future that owes anyone a sequel.";
+    } else if (priceChange !== null && priceChange > 0) {
+      priceComment = "The quote is green, but a modest positive print is still one observation rather than a character reference for the project.";
+    } else if (priceChange !== null) {
+      priceComment = "The quote is red. The Department will resist promoting one snapshot into a grand theory of market structure.";
+    } else {
+      priceComment = "With no reported price change, there is no chart story to invent. The Department has been denied its favourite prop.";
+    }
 
-    const ratioSummary = selected.volumeLiquidityRatio === null
-      ? "A volume-to-liquidity ratio cannot be calculated from this snapshot because usable displayed liquidity was not reported."
-      : "Trailing 24-hour volume was " + selected.volumeLiquidityRatio.toFixed(2) +
-        " times displayed pool liquidity. That measures turnover against a liquidity snapshot; it is not net inflow, cash reserves or the amount waiting politely to buy your bag.";
-    const turnoverComment = highTurnover
-      ? "The volume number is doing laps around the liquidity number. That can describe a very active pair, but it does not mean the pool contains that much money or can absorb an exit of the same size. The Department would like these two nouns kept in separate departments."
-      : "Volume tells us how much trading activity was recorded; displayed liquidity is a snapshot of the pool. Neither number, by itself, tells us how much a particular holder could sell without affecting price.";
+    let hourlyComment;
+    if (hourlyChange === null) {
+      hourlyComment = "No one-hour price change was supplied, so the shorter-term direction is not assessed.";
+    } else if (hourlyChange <= -5) {
+      hourlyComment = "The one-hour reading was also negative at " + signedPercent(hourlyChange) + ", so the snapshot still showed downside pressure in the shorter window. It does not identify what caused the move.";
+    } else if (hourlyChange >= 5 && severeDrop) {
+      hourlyComment = "The one-hour reading was positive at " + signedPercent(hourlyChange) + ". That is a bounce inside a much larger reported 24-hour decline, not enough evidence to announce a recovery. The Department asks the confetti cannon to remain unplugged.";
+    } else if (hourlyChange >= 5) {
+      hourlyComment = "The one-hour reading was positive at " + signedPercent(hourlyChange) + ". Useful context, not a licence to extrapolate the last hour into the next one.";
+    } else if (hourlyChange < 0) {
+      hourlyComment = "The latest one-hour field was " + signedPercent(hourlyChange) + ": slightly weaker in the shorter window, without proving that the move will continue.";
+    } else {
+      hourlyComment = "The one-hour field was " + signedPercent(hourlyChange) + ", close enough to flat that the Department will not manufacture momentum from it.";
+    }
 
     const tradeSummary = hasTransactionCounts
-      ? "The pair recorded " + selected.buys24h.toLocaleString("en-US") + " buys and " +
-        selected.sells24h.toLocaleString("en-US") + " sells: " +
-        selected.totalTransactions24h.toLocaleString("en-US") + " recorded transactions in total."
+      ? "The pair recorded " + buys.toLocaleString("en-US") + " buys and " + sells.toLocaleString("en-US") +
+        " sells, for " + totalTransactions.toLocaleString("en-US") + " transactions in the reported 24-hour field."
       : "The API did not supply a usable 24-hour buy/sell transaction count.";
     const buyShareSummary = buyShare === null
-      ? "No buy-share percentage can be calculated from the supplied transaction counts."
+      ? "A buy-share percentage cannot be calculated from the returned counts."
       : buyShare.toFixed(1) + "% of recorded transactions were buys and " +
-        (100 - buyShare).toFixed(1) + "% were sells. These are transaction counts, not unique people, wallet counts or trade-size-weighted flows.";
-    const flowComment = buyShare === null
-      ? "The Department cannot infer who was in control of the flow from missing counts."
-      : buyShare >= 60
-        ? "Buy transactions outnumbered sells by a wide margin. That still does not reveal trade sizes, unique traders or whether the buyers are now enjoying the view from underwater."
-        : buyShare > 50 && priceChange !== null && priceChange <= -20
-          ? "There were more buy transactions than sells, but the quote still fell hard. The Department's 99% Research Confidence Division has drafted an all-caps bullish thread; Compliance is waiting for trade sizes."
-          : buyShare > 50
-            ? "There were slightly more buy transactions than sells. Yet transaction count does not measure conviction, capital or trade size. The buy button is not a personality test."
-          : buyShare <= 40
-            ? "Sell transactions outnumbered buys. That is a count of executions, not proof that every seller escaped or every buyer is doomed."
-            : "The transaction count was relatively balanced. A balanced queue is not the same thing as a healthy market; the chart and liquidity still deserve their own questions.";
+        (100 - buyShare).toFixed(1) + "% were sells. These are event counts, not unique people, wallet counts or trade-size-weighted flows.";
+    let flowComment;
+    if (!hasTransactionCounts) {
+      flowComment = "With no usable counts, the Department cannot describe the transaction mix.";
+    } else if (totalTransactions === 0) {
+      flowComment = "The provider reported zero buys and zero sells in the 24-hour fields. That is an absence of recorded transactions in this snapshot, not evidence that the token or its wider market had no activity elsewhere.";
+    } else if (buys > sells && priceChange !== null && priceChange <= -10) {
+      flowComment = "This is the detail the group chat will try to turn into a paradox: buy transactions outnumbered sells, yet the quoted price fell hard. It is not actually a contradiction. Counts do not measure trade size or sequence; fewer, larger sells can outweigh a greater number of smaller buys. The data does not tell us whether that is what happened here. The 99% Research Confidence Division has nevertheless drafted a bullish thread and is being held outside Compliance.";
+    } else if (sells > buys && priceChange !== null && priceChange >= 10) {
+      flowComment = "Sell transactions outnumbered buys while the quoted price rose. Again, counts do not measure trade size or sequence. The market has refused to fit inside a one-line explanation, which is inconsiderate of our editorial schedule.";
+    } else if (buyShare !== null && buyShare >= 60) {
+      flowComment = "Buy transactions clearly outnumbered sells. That does not establish accumulation, unique buyers, positive net capital or a price floor. A count is not conviction, however confidently someone types 'bid'.";
+    } else if (buyShare !== null && buyShare <= 40) {
+      flowComment = "Sell transactions clearly outnumbered buys. That is a count of executions, not proof that every seller escaped or that every buyer is doomed. The chart still refuses to provide wallet-level context.";
+    } else {
+      flowComment = "The transaction split was relatively balanced. Balanced counts do not mean balanced trade sizes, healthy liquidity or a market that has suddenly discovered emotional maturity.";
+    }
+
+    const ratioSummary = selected.volumeLiquidityRatio === null
+      ? selected.volume24hUsd === null
+        ? "A volume-to-liquidity ratio cannot be calculated because the reported 24-hour volume was unavailable."
+        : "A volume-to-liquidity ratio cannot be calculated because displayed pool liquidity was zero or unavailable."
+      : "Reported trailing 24-hour volume was " + selected.volumeLiquidityRatio.toFixed(2) +
+        " times the displayed liquidity snapshot. This is a turnover-to-pool comparison, not net inflow, cash reserves or the amount that could be sold at the quoted price.";
+    let liquidityComment;
+    if (extremeTurnover) {
+      liquidityComment = "A " + selected.volumeLiquidityRatio.toFixed(2) +
+        "× ratio means the recorded trading volume was enormous relative to the liquidity figure visible at collection time. It may reflect repeated turnover through the same pool; it does not mean that the pool held " +
+        money(selected.volume24hUsd) + " or could absorb an exit of that size. Volume is activity. Liquidity is the pool snapshot. They are not interchangeable, however much the timeline would like them to be.";
+    } else if (highTurnover) {
+      liquidityComment = "Turnover was high relative to displayed pool liquidity. That deserves attention, but it still cannot be translated directly into available exit depth or the amount any particular holder could realise.";
+    } else {
+      liquidityComment = "Volume and displayed liquidity answer different questions. The former records trading activity over a window; the latter is a snapshot of the pool. Neither, by itself, tells a holder what an exit would cost.";
+    }
+
+    const valuationNotes = [];
+    if (selected.marketCapUsd !== null) valuationNotes.push("market cap " + money(selected.marketCapUsd));
+    if (selected.fdvUsd !== null) valuationNotes.push("FDV " + money(selected.fdvUsd));
+    const valuationSummary = valuationNotes.length
+      ? "The provider also reported " + valuationNotes.join(" and ") +
+        ". Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value."
+      : "Market-cap and FDV fields were not available in this snapshot, so the Department will not invent a valuation narrative.";
 
     const ageSummary = selected.ageHours === null
-      ? "The API did not provide a pool creation timestamp."
-      : "The pool was approximately " + selected.ageHours + " hours old at collection time.";
-    const discoverySummary = selected.discoveryType === "COMMUNITY TAKEOVER"
-      ? "The discovery feed labels this profile COMMUNITY TAKEOVER. That is a provider-supplied discovery label, not independently verified proof of who controls the project or its keys. The Department has not been given the ceremonial handover paperwork."
-      : "The discovery feed labels this a NEW DEX PROFILE. That tells us how it entered this feed, not whether the project is new, safe, original or destined for anything.";
+      ? "The provider did not supply a pair-creation timestamp."
+      : "The pair was approximately " + selected.ageHours.toFixed(1) + " hours old when collected.";
+    const ageCaveat = poolIsYoung
+      ? "Because the pool was younger than 24 hours, its reported 24-hour activity and price-change fields cannot represent a full 24 hours of that pair's history. The label is a rolling window, not a time machine."
+      : "The pool had more than 24 hours of recorded age, but this is still one snapshot rather than a complete trading history.";
 
-    const standfirst = selected.name + " brought " + money(selected.volume24hUsd) +
-      " in reported 24-hour pair volume to a pool showing " + money(selected.liquidityUsd) +
-      " in liquidity. The quoted price move was " + signedPercent(priceChange) +
-      ". The Department has opened a case file, not a fan club.";
+    const discoverySummary = selected.discoveryType === "COMMUNITY TAKEOVER"
+      ? "The discovery feed labels this profile COMMUNITY TAKEOVER. That is a provider-supplied discovery category, not independent verification of who controls the project, its keys or its treasury. The ceremonial handover paperwork remains missing."
+      : "The discovery feed labels this profile NEW DEX PROFILE. That describes how it entered this feed; it does not prove the project itself is new, safe, original or destined for anything.";
+
+    const sideNotes = candidates
+      .filter((candidate) => candidate.address.toLowerCase() !== selected.address.toLowerCase())
+      .slice(0, 2)
+      .map((candidate) => {
+        const change = candidate.priceChange24hPct === null
+          ? "price move not reported"
+          : "reported price move " + signedPercent(candidate.priceChange24hPct);
+        const liquidity = candidate.liquidityUsd === null
+          ? "liquidity unavailable in this snapshot"
+          : candidate.liquidityUsd === 0
+            ? "$0 displayed liquidity in this snapshot"
+            : money(candidate.liquidityUsd) + " displayed liquidity";
+        const ageNote = candidate.ageHours !== null && candidate.ageHours < 24
+          ? "; pair age " + candidate.ageHours.toFixed(1) + "h, so the 24h field does not contain a full day of pair history"
+          : "";
+        return candidate.name + " ($" + candidate.symbol + ") recorded " + money(candidate.volume24hUsd) +
+          " in reported volume, " + liquidity + " and " + change + ageNote + ".";
+      });
+    const sampleContext = sideNotes.length
+      ? "The neighbouring rows in the same limited feed are worth a look too: " + sideNotes.join(" ")
+      : "There were no additional usable pair snapshots to place beside the featured row.";
+
+    const standfirst = selected.name + " ($" + selected.symbol + ") led the eligible discovery sample by reported 24-hour pair volume: " +
+      money(selected.volume24hUsd) + " against " + money(selected.liquidityUsd) + " in displayed liquidity, with a quoted price move of " +
+      signedPercent(priceChange) + ". The Department filed the figures correctly. The market appears to have misplaced the memo.";
 
     const sections = [
       {
-        heading: "THE NUMBERS ARE IN. CT IS STILL OUTSIDE.",
+        heading: "THE INCIDENT REPORT: THE CANDLE HAS REQUESTED COUNSEL.",
         paragraphs: [
-          "At " + issuedAt + " UTC, the selected " + selected.dexId + " pair showed " +
-            money(selected.liquidityUsd) + " in displayed liquidity and " +
-            money(selected.volume24hUsd) + " in trailing 24-hour volume. The quoted token price was " +
+          "At " + issueClock + ", the selected " + selected.dexId + " pair showed " +
+            money(selected.liquidityUsd) + " in displayed pool liquidity and " +
+            money(selected.volume24hUsd) + " in reported trailing 24-hour volume. The quoted token price was " +
             (selected.priceUsd === null ? "not reported" : "$" + selected.priceUsd.toPrecision(6)) +
-            ". These are provider snapshots. We accept the figures; the victory laps can wait.",
-          ageSummary + " " + discoverySummary,
+            ". These are DEX Screener snapshots, not a reconstruction of every trade. We have the receipts; the market has declined to provide a statement.",
+          "This pair was not selected simply because it dumped. It ranked first under the Department's editorial-priority rules among " +
+            counts.freshQualifyingCandidates + " fresh candidates that met the publication thresholds. The ranking weighs the size of the 24-hour move, one-hour momentum, turnover relative to displayed liquidity and transaction-count divergences from price direction; reported 24-hour volume breaks ties. " +
+            ageSummary + " " + ageCaveat + " " + discoverySummary,
         ],
       },
       {
-        heading: "BUYERS, SELLERS & THE GROUP CHAT LAWYER.",
+        heading: "PRICE ACTION: THE EXCUSE DEPARTMENT IS OPEN.",
+        paragraphs: [
+          priceDescription + " " + priceComment,
+          hourlyComment + " The snapshot does not reveal the catalyst, the identity of any seller or whether the move was caused by one large trade, many smaller trades or something else. Anyone offering a confident causal thread from these fields alone is freelancing.",
+        ],
+      },
+      {
+        heading: "THE BUY TAPE: COUNTS ARE NOT CONVICTION.",
         paragraphs: [
           tradeSummary + " " + buyShareSummary,
-          priceDescription + " " + priceComment + " " + flowComment,
+          flowComment,
         ],
       },
       {
-        heading: "THE DEPARTMENT'S UNOFFICIAL VERDICT.",
+        heading: "VOLUME IS NOT AN EXIT PLAN.",
         paragraphs: [
-          ratioSummary,
-          turnoverComment,
-          "This is one selected pair from a limited discovery sample, not a ranking of Solana, a token safety inspection or proof of organic demand. The Department has a clipboard, not a crystal ball.",
+          ratioSummary + " " + liquidityComment,
+          valuationSummary + " The pool's displayed liquidity is not a promise that a holder can sell at the quoted price, and the market-cap field is not an ATM. The Department would like these nouns kept in separate departments.",
         ],
       },
       {
-        heading: "WHAT THE DATA DOES NOT KNOW (A LOT).",
+        heading: "THE REST OF THE ROOM IS ALSO ON THE RECORD.",
         paragraphs: [
-          "These pair statistics do not identify unique traders, beneficial owners, wallet clusters, deployer intent, coordinated activity or who is posting rocket emojis. Buy/sell counts are not a count of distinct wallets.",
-          "Liquidity, volume and price can change immediately after collection. This report is an evidence-led roast of an observed market snapshot, not a safety audit or trading recommendation. DYOR means checking the receipts, not outsourcing your decisions to a headline.",
+          sampleContext,
+          "This is context from the same limited discovery sample, not a ranking of Solana or a claim that these pairs represent the wider market. The shortlist is a feed sample, not a census of the trenches.",
+        ],
+      },
+      {
+        heading: "THE OFFICIAL STATEMENT: WE FILED THE DATA. THE MARKET FILED A COMPLAINT.",
+        paragraphs: [
+          "The Department can report what the provider returned: price change, pool liquidity, turnover, transaction counts, pair age and the feed's discovery label. It cannot honestly turn those fields into a story about a whale, insiders, a rug pull, coordinated selling, wallet concentration or anyone's intentions.",
+          "So yes, another day in which the chart has made the Department look ridiculous by association. The reported drawdown helped make this pair editorially relevant under the published scoring rules; it is not proof of wrongdoing, wallet behaviour or a future move. We did not predict the direction or certify the project's quality. We recorded the result and left the excuses to the professionals. DYOR means checking the receipts, especially when the receipt is ugly.",
+        ],
+      },
+      {
+        heading: "WHAT THE DATA STILL DOES NOT KNOW.",
+        paragraphs: [
+          "These pair statistics do not identify unique traders, beneficial owners, wallet clusters, deployer intent, coordinated activity, trade-size distribution or who is posting rocket emojis. Buy/sell counts are not a count of distinct wallets.",
+          "Liquidity, volume and price can change immediately after collection. This is an evidence-led roast of one observed market snapshot, not a safety audit, a complete market report or a trading recommendation.",
         ],
       },
     ];
@@ -277,7 +468,9 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
       timezone: "Europe/Rome",
       title,
       standfirst,
-      classification: "OBSERVED SOLANA DEX ACTIVITY / DEPARTMENT COMMENTARY",
+      classification: severeDrop
+        ? "OBSERVED DEX DRAWDOWN / DEPARTMENT COMMENTARY"
+        : "OBSERVED SOLANA DEX ACTIVITY / DEPARTMENT COMMENTARY",
       sourceSummary,
       counts,
       featuredToken: selected,
@@ -285,11 +478,11 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
       sections,
       methodology: [
         "Discovery sample: latest Solana token profiles and latest community-takeover notices supplied by DEX Screener.",
-        "Pair selection: highest displayed liquidity among returned pairs for each discovered token.",
+        "Pair selection: highest displayed-liquidity pair returned for each discovered token.",
         "Feature threshold: at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells.",
         "To vary the daily archive, a token featured during the previous seven issues is skipped when another qualifying candidate exists.",
-        "The featured item is selected by reported 24-hour pair volume among candidates that pass the threshold; it is not a quality or investment score.",
-        "Satirical commentary is selected from explicit metric conditions. It does not add wallet identities, motives, causes or other facts not present in the source snapshot.",
+        "Editorial priority awards 15/30/50 points for 24-hour drawdowns of at least 10%/20%/50%, or 28/45 points for gains of at least 20%/50%; one-hour moves of at least 5%/10% add 8/15 points, volume-to-liquidity ratios of at least 10×/50× add 15/30 points, and qualifying transaction/price divergences add 8 points. Low displayed liquidity and a pair younger than 24 hours can each add 8/4 context points when the 24-hour move is at least 20%. Reported 24-hour volume breaks ties. This is an editorial story-selection heuristic, not a quality or investment score.",
+        "Commentary interprets reported pair metrics only. It does not infer wallet identities, trade sizes, causes, motives, safety or future price direction.",
       ],
       sources: [
         { label: "Featured DEX pair", url: selected.pairUrl },
@@ -299,41 +492,66 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
   }
 
   const topCandidate = candidates[0] || null;
+  const qualifying = candidates.filter(isQualifyingCandidate);
+  const repeatedCandidate = qualifying[0] || null;
   const title = repeatAvoided
-    ? "THE SAME CANDIDATES AGAIN. THE DESK SAID NEXT."
-    : "THE MARKET HAS LEFT THE DEPARTMENT ON READ.";
-  const standfirst = "The Department checked the latest Solana discovery feeds and the returned DEX pairs. Nobody cleared every publication threshold today, so we filed the paperwork instead of inventing a breakout. Even our content calendar has standards.";
+    ? "THE SAME CANDIDATES AGAIN. THE DEPARTMENT REFUSES TO RECYCLE THE HEADLINE."
+    : "NO BREAKOUT CLEARED THE DESK. THE EXCUSES ARE READY.";
+  const standfirst = repeatAvoided
+    ? qualifying.length + " candidates cleared the publication rules, but every qualifying token appeared in the previous seven issues. The Department declined to recycle yesterday's guest as today's discovery. Consistency, apparently, is our problem."
+    : "The Department checked " + counts.pairsReturned + " returned DEX pair records from the latest Solana discovery feeds. Nobody cleared every publication threshold today. We will not promote a loud number into a good story just to keep the content calendar employed.";
+
+  let topCandidateParagraph;
+  if (!topCandidate) {
+    topCandidateParagraph = "No pair with a usable snapshot was returned. The Department cannot write an investigation around an empty chart, however persistent the editorial calendar may be.";
+  } else {
+    const failures = [];
+    if (topCandidate.liquidityUsd === null) failures.push("displayed liquidity was not available");
+    else if (topCandidate.liquidityUsd < MIN_LIQUIDITY_USD) failures.push("displayed liquidity of " + money(topCandidate.liquidityUsd) + " against a $5,000 minimum");
+    if (topCandidate.volume24hUsd === null) failures.push("reported 24-hour volume was not available");
+    else if (topCandidate.volume24hUsd < MIN_VOLUME_24H_USD) failures.push("reported 24-hour volume of " + money(topCandidate.volume24hUsd) + " against a $5,000 minimum");
+    if (topCandidate.totalTransactions24h === null) failures.push("buy/sell transaction counts were not available");
+    else if (topCandidate.totalTransactions24h < MIN_TRANSACTIONS_24H) failures.push(topCandidate.totalTransactions24h + " recorded buys and sells against a 20-transaction minimum");
+    const movement = topCandidate.priceChange24hPct === null
+      ? "The price move was not reported."
+      : "Its reported price change was " + signedPercent(topCandidate.priceChange24hPct) + ".";
+    topCandidateParagraph = "The highest-volume usable pair in the returned sample was " + topCandidate.name + " ($" +
+      topCandidate.symbol + "), with " + money(topCandidate.volume24hUsd) + " in reported volume and " +
+      money(topCandidate.liquidityUsd) + " in displayed liquidity. " + movement +
+      (failures.length ? " It missed the publication gate on " + failures.join("; ") + "." : " It did not become a fresh feature under the archive rules.") +
+      " A loud chart is not a reference letter.";
+  }
 
   const sections = [
     {
-      heading: "THE INTAKE WINDOW.",
+      heading: "THE INTAKE: WE CHECKED THE RECEIPTS.",
       paragraphs: [
-        "The feed supplied " + counts.solanaProfiles + " Solana token profiles, " +
+        "The discovery feeds returned " + counts.solanaProfiles + " Solana token profiles, " +
           counts.solanaTakeovers + " community-takeover notices and " + counts.pairsReturned +
-          " DEX pair records. " + counts.candidatePairs + " unique tokens had a usable pair snapshot. The inbox is busy; the shortlist is not automatically impressive.",
-        "To make the front page, a candidate needed at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells. " +
-          counts.qualifyingCandidates + " candidates passed those three gates before the recent-feature repeat filter.",
+          " DEX pair records. That produced " + counts.candidatePairs +
+          " unique token candidates with usable pair snapshots. Busy inbox; standards remain irritatingly intact.",
+        "A front-page candidate needed at least $5,000 in displayed liquidity, $5,000 in reported trailing 24-hour volume and 20 recorded buys plus sells. " +
+          counts.qualifyingCandidates + " candidates passed those three gates before the recent-feature filter.",
       ],
     },
     {
-      heading: "WHY NOBODY GOT A FRONT-PAGE PHOTO.",
+      heading: repeatAvoided ? "WHY THE DESK SAID 'NOT YOU AGAIN'." : "WHY NOBODY GOT A FRONT-PAGE PHOTO.",
       paragraphs: [
         repeatAvoided
-          ? "There were qualifying candidates, but every one had already appeared in the previous seven issues. The Department refuses to rebrand yesterday's guest as today's breaking discovery."
-          : "No candidate in this limited sample passed every threshold. That does not mean Solana was quiet; it means this particular intake did not produce a feature that met our minimum evidence rules. The market is not obliged to feed our editorial calendar.",
-        topCandidate
-          ? "The highest-volume observed pair in the sample was " + topCandidate.name + " ($" +
-            topCandidate.symbol + "), with " + money(topCandidate.liquidityUsd) +
-            " displayed liquidity and " + money(topCandidate.volume24hUsd) +
-            " trailing 24-hour volume. It did not clear every publication gate. A loud room is not automatically a good story."
-          : "No pair with a usable snapshot was returned. The Department will not interview an empty chart.",
+          ? "There were " + qualifying.length + " candidates that cleared the thresholds, but all had appeared in the previous seven issues. The archive rule exists to avoid publishing the same token as a fresh discovery every morning. This is editorial rotation, not a verdict on those projects."
+          : "No candidate in this limited sample passed every threshold. That does not mean Solana was quiet, dead or suddenly free of chart crimes. It means this intake did not produce a pair that met our minimum evidence rules. The market was under no contractual obligation to feed the content calendar.",
+        repeatAvoided && repeatedCandidate
+          ? "The leading recently featured candidate was " + repeatedCandidate.name + " ($" + repeatedCandidate.symbol +
+            "), with " + money(repeatedCandidate.volume24hUsd) + " reported volume and " +
+            money(repeatedCandidate.liquidityUsd) + " displayed liquidity. It qualified on the numbers but was not recycled into a new headline."
+          : topCandidateParagraph,
       ],
     },
     {
-      heading: "THE DEPARTMENT'S UNOFFICIAL VERDICT.",
+      heading: "THE DEPARTMENT'S OFFICIAL ALIBI.",
       paragraphs: [
-        "No forced pick, no manufactured alpha and no intern ordered to describe a missing signal as 'stealth accumulation'. The report will try again on the next scheduled issue.",
-        "The figures are limited to the returned discovery sample. No wallet ownership, holder concentration, token safety, deployer intent or investment quality was assessed.",
+        "We did the unglamorous work: fetched the public feeds, checked the returned pairs, applied the same thresholds and declined to invent a breakout. The market did not provide a publishable candidate. This failure to entertain is being escalated to the Committee for External Circumstances.",
+        "No qualifying feature is not proof that nothing happened across Solana. It is a precise statement about this limited discovery sample at this collection time. No wallet ownership, holder concentration, token safety, deployer intent or investment quality was assessed.",
       ],
     },
   ];
@@ -345,7 +563,9 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
     timezone: "Europe/Rome",
     title,
     standfirst,
-    classification: "NO QUALIFYING FEATURE IN THE DISCOVERY SAMPLE",
+    classification: repeatAvoided
+      ? "QUALIFYING CANDIDATES RECENTLY FEATURED / NO REPEAT"
+      : "NO QUALIFYING FEATURE IN THE DISCOVERY SAMPLE",
     sourceSummary,
     counts,
     featuredToken: null,
@@ -353,54 +573,237 @@ function buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoide
     sections,
     methodology: [
       "Discovery sample: latest Solana token profiles and latest community-takeover notices supplied by DEX Screener.",
-      "Pair selection: highest displayed liquidity among returned pairs for each discovered token.",
+      "Pair selection: highest displayed-liquidity pair returned for each discovered token.",
       "Feature threshold: at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells.",
-      "A missing feature is published as a quiet-day report; no market event is invented to fill the slot.",
-      "Satirical commentary is selected from the observed sample and does not add unsupported claims.",
+      "A candidate featured during the previous seven issues is skipped when another qualifying candidate exists; if all qualifying candidates are repeats, the report records that instead of recycling one.",
+      "A quiet-day report is limited to this discovery sample and collection time. It is not a claim that no trading activity occurred elsewhere on Solana.",
+      "Commentary does not invent market events or infer wallet ownership, motives, causes, token safety or investment quality.",
     ],
     sources: [{ label: "DEX Screener API documentation", url: DOCS_URL }],
   };
 }
 
-async function main() {
-  const date = localIssueDate();
-  await mkdir(CONTENT_DIR, { recursive: true });
-  const index = await readIndex();
-  const reportPath = join(CONTENT_DIR, date + ".json");
+function reportIndexEntry(report) {
+  const featured = report.featuredToken || null;
+  return {
+    issueDate: report.issueDate,
+    path: "content/onchain/" + report.issueDate + ".json",
+    title: report.title,
+    standfirst: report.standfirst,
+    classification: report.classification,
+    featuredSymbol: featured ? featured.symbol : null,
+    featuredTokenAddress: featured ? featured.address : null,
+    pairUrl: featured ? featured.pairUrl : null,
+    liquidityUsd: featured ? featured.liquidityUsd : null,
+    volume24hUsd: featured ? featured.volume24hUsd : null,
+    issuedAt: report.issuedAt,
+  };
+}
 
+function isValidIndexEntry(entry) {
+  return Boolean(
+    entry &&
+    typeof entry === "object" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(entry.issueDate) &&
+    typeof entry.title === "string" &&
+    typeof entry.standfirst === "string" &&
+    typeof entry.classification === "string" &&
+    typeof entry.issuedAt === "string" &&
+    (entry.featuredSymbol === null || typeof entry.featuredSymbol === "string") &&
+    (entry.featuredTokenAddress === null || typeof entry.featuredTokenAddress === "string") &&
+    (entry.pairUrl === null || typeof entry.pairUrl === "string") &&
+    (entry.liquidityUsd === null || Number.isFinite(entry.liquidityUsd)) &&
+    (entry.volume24hUsd === null || Number.isFinite(entry.volume24hUsd))
+  );
+}
+
+function isValidStoredReport(report, expectedDate) {
+  const countFields = [
+    "discoveryProfiles",
+    "solanaProfiles",
+    "solanaTakeovers",
+    "profilesChecked",
+    "pairsReturned",
+    "candidatePairs",
+    "qualifyingCandidates",
+    "freshQualifyingCandidates",
+  ];
+  const countsValid = Boolean(report && report.counts &&
+    countFields.every((field) => Number.isFinite(report.counts[field])));
+  const featuredValid = report && (
+    report.featuredToken === null ||
+    (typeof report.featuredToken === "object" &&
+      typeof report.featuredToken.address === "string" &&
+      typeof report.featuredToken.symbol === "string")
+  );
+  return Boolean(
+    report &&
+    report.schemaVersion === 1 &&
+    report.issueDate === expectedDate &&
+    /^\d{4}-\d{2}-\d{2}$/.test(report.issueDate) &&
+    typeof report.issuedAt === "string" &&
+    typeof report.title === "string" &&
+    typeof report.standfirst === "string" &&
+    countsValid &&
+    featuredValid &&
+    Array.isArray(report.sections) &&
+    report.sections.every((section) => section && typeof section.heading === "string" && Array.isArray(section.paragraphs)) &&
+    Array.isArray(report.methodology) &&
+    report.methodology.every((item) => typeof item === "string") &&
+    Array.isArray(report.sources) &&
+    report.sources.every((item) => item && typeof item.label === "string" && typeof item.url === "string")
+  );
+}
+
+async function writeFileAtomically(filePath, content) {
+  const temporaryPath = filePath + "." + randomUUID() + ".tmp";
   try {
-    await readFile(reportPath, "utf8");
-    console.log("An on-chain report already exists for " + date + "; nothing to do.");
-    return;
+    await writeFile(temporaryPath, content, { encoding: "utf8", flag: "wx" });
+    await rename(temporaryPath, filePath);
+  } catch (error) {
+    try {
+      await unlink(temporaryPath);
+    } catch {
+      // The temporary file may not have been created or may already have been renamed.
+    }
+    throw error;
+  }
+}
+
+async function readIndex(indexPath) {
+  try {
+    const parsed = JSON.parse(await readFile(indexPath, "utf8"));
+    if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.reports) ||
+        !parsed.reports.every(isValidIndexEntry)) {
+      return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
+    }
+    return { index: parsed, needsRebuild: false };
+  } catch (error) {
+    if (error && error.code === "ENOENT") {
+      return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
+    }
+    if (error instanceof SyntaxError) {
+      return { index: { schemaVersion: 1, reports: [] }, needsRebuild: true };
+    }
+    throw error;
+  }
+}
+
+async function rebuildIndexFromReports(contentDir, logger = console) {
+  const entries = [];
+  const files = await readdir(contentDir);
+  for (const fileName of files) {
+    if (!/^\d{4}-\d{2}-\d{2}\.json$/.test(fileName)) continue;
+    const date = fileName.slice(0, 10);
+    try {
+      const report = JSON.parse(await readFile(join(contentDir, fileName), "utf8"));
+      if (!isValidStoredReport(report, date)) {
+        logger.warn("Skipping invalid archived report while rebuilding index: " + fileName);
+        continue;
+      }
+      entries.push(reportIndexEntry(report));
+    } catch (error) {
+      logger.warn("Skipping unreadable archived report while rebuilding index: " + fileName, error);
+    }
+  }
+  return entries.sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+}
+
+async function reconcileIndex({ index, needsRebuild, report, contentDir, indexPath, now, logger }) {
+  const baseReports = needsRebuild
+    ? await rebuildIndexFromReports(contentDir, logger)
+    : index.reports;
+  const entry = reportIndexEntry(report);
+  const previous = baseReports.find((item) => item && item.issueDate === report.issueDate);
+  const entryChanged = JSON.stringify(previous) !== JSON.stringify(entry);
+  if (!needsRebuild && !entryChanged) {
+    return { ...index, reports: baseReports };
+  }
+
+  const reports = [entry, ...baseReports.filter((item) => item && item.issueDate !== report.issueDate)]
+    .sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+  const updatedIndex = {
+    schemaVersion: 1,
+    updatedAt: now.toISOString(),
+    reports,
+  };
+  await writeFileAtomically(indexPath, JSON.stringify(updatedIndex, null, 2) + "\n");
+  logger.log("Reconciled the daily Onchain archive index for " + report.issueDate + ".");
+  return updatedIndex;
+}
+
+export async function publishDailyReport({
+  now = new Date(),
+  contentDir = CONTENT_DIR,
+  fetchJsonImpl = fetchJson,
+  logger = console,
+} = {}) {
+  await mkdir(contentDir, { recursive: true });
+  const indexPath = join(contentDir, "index.json");
+  const date = localIssueDate(now);
+  const reportPath = join(contentDir, date + ".json");
+  const indexState = await readIndex(indexPath);
+  const index = indexState.needsRebuild
+    ? { schemaVersion: 1, reports: await rebuildIndexFromReports(contentDir, logger) }
+    : indexState.index;
+
+  let existingContent = null;
+  try {
+    existingContent = await readFile(reportPath, "utf8");
   } catch (error) {
     if (!error || error.code !== "ENOENT") throw error;
   }
 
+  if (existingContent !== null) {
+    let existingReport;
+    try {
+      existingReport = JSON.parse(existingContent);
+    } catch (error) {
+      throw new Error("An existing daily report is not valid JSON; refusing to overwrite it: " + reportPath, { cause: error });
+    }
+    if (!isValidStoredReport(existingReport, date)) {
+      throw new Error("An existing daily report failed schema validation; refusing to overwrite it: " + reportPath);
+    }
+    await reconcileIndex({
+      index,
+      needsRebuild: indexState.needsRebuild,
+      report: existingReport,
+      contentDir,
+      indexPath,
+      now,
+      logger,
+    });
+    logger.log("An on-chain report already exists for " + date + "; verified and reconciled the archive index.");
+    return { status: "existing", report: existingReport };
+  }
+
   const [profileFeed, takeoverFeed] = await Promise.all([
-    fetchJson(API + "/token-profiles/latest/v1"),
-    fetchJson(API + "/community-takeovers/latest/v1"),
+    fetchJsonImpl(API + "/token-profiles/latest/v1"),
+    fetchJsonImpl(API + "/community-takeovers/latest/v1"),
   ]);
   if (!Array.isArray(profileFeed) || !Array.isArray(takeoverFeed)) {
-    throw new Error("DEX Screener returned an unexpected discovery-feed format.");
+    throw new Error("DEX Screener returned an unexpected discovery-feed format; refusing to publish an incomplete report.");
+  }
+  if (profileFeed.length === 0 && takeoverFeed.length === 0) {
+    throw new Error("Both Solana discovery feeds returned zero records; refusing to interpret an empty feed as a quiet market day.");
   }
 
   const profiles = profileMapFromFeeds(profileFeed, takeoverFeed);
-  const addresses = Array.from(profiles.values()).slice(0, 30).map((profile) => profile.tokenAddress);
-  let pairPayload = [];
-  if (addresses.length > 0) {
-    pairPayload = await fetchJson(API + "/tokens/v1/solana/" + addresses.join(","));
+  const addresses = selectProfileAddresses(profiles, 30);
+  if (addresses.length === 0) {
+    throw new Error("No Solana token profiles were available in the discovery feeds; refusing to publish a quiet-day report.");
   }
+
+  const pairPayload = await fetchJsonImpl(API + "/tokens/v1/solana/" + addresses.join(","));
   const pairs = Array.isArray(pairPayload)
     ? pairPayload
-    : (pairPayload && Array.isArray(pairPayload.pairs) ? pairPayload.pairs : []);
-  const now = new Date();
-  const candidates = makePairRows(pairs, profiles, now);
-  const qualifying = candidates.filter((candidate) =>
-    candidate.liquidityUsd >= MIN_LIQUIDITY_USD &&
-    candidate.volume24hUsd >= MIN_VOLUME_24H_USD &&
-    candidate.totalTransactions24h >= MIN_TRANSACTIONS_24H
-  );
+    : (pairPayload && Array.isArray(pairPayload.pairs) ? pairPayload.pairs : null);
+  if (!pairs) {
+    throw new Error("DEX Screener returned an unexpected pair-snapshot format; refusing to publish an incomplete report.");
+  }
 
+  const candidates = makePairRows(pairs, profiles, now);
+  const qualifying = candidates.filter(isQualifyingCandidate);
   const recentCutoff = new Date(now.getTime() - RECENT_FEATURE_DAYS * 86400000);
   const recentlyFeatured = new Set(
     index.reports
@@ -408,7 +811,7 @@ async function main() {
       .map((entry) => String(entry.featuredTokenAddress).toLowerCase())
   );
   const freshQualifying = qualifying.filter((candidate) => !recentlyFeatured.has(candidate.address.toLowerCase()));
-  const selected = freshQualifying[0] || null;
+  const selected = selectFeaturedCandidate(freshQualifying);
   const repeatAvoided = qualifying.length > 0 && freshQualifying.length === 0;
   const issuedAt = now.toISOString();
   const counts = {
@@ -421,38 +824,32 @@ async function main() {
     qualifyingCandidates: qualifying.length,
     freshQualifyingCandidates: freshQualifying.length,
   };
-  const report = buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided);
-  await writeFile(reportPath, JSON.stringify(report, null, 2) + "\n", "utf8");
 
-  const entry = {
-    issueDate: date,
-    path: "content/onchain/" + date + ".json",
-    title: report.title,
-    standfirst: report.standfirst,
-    classification: report.classification,
-    featuredSymbol: selected ? selected.symbol : null,
-    featuredTokenAddress: selected ? selected.address : null,
-    pairUrl: selected ? selected.pairUrl : null,
-    liquidityUsd: selected ? selected.liquidityUsd : null,
-    volume24hUsd: selected ? selected.volume24hUsd : null,
-    issuedAt,
-  };
-  const reports = [entry, ...index.reports.filter((item) => item && item.issueDate !== date)]
-    .sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+  const report = buildArticle(date, issuedAt, counts, candidates, selected, repeatAvoided);
+  await writeFileAtomically(reportPath, JSON.stringify(report, null, 2) + "\n");
+
   const updatedIndex = {
     schemaVersion: 1,
     updatedAt: issuedAt,
-    reports,
+    reports: [reportIndexEntry(report), ...index.reports.filter((item) => item && item.issueDate !== date)]
+      .sort((a, b) => b.issueDate.localeCompare(a.issueDate)),
   };
-  await writeFile(INDEX_PATH, JSON.stringify(updatedIndex, null, 2) + "\n", "utf8");
+  await writeFileAtomically(indexPath, JSON.stringify(updatedIndex, null, 2) + "\n");
 
-  console.log("Published " + date + ": " + report.title);
-  console.log("Profiles: " + counts.solanaProfiles + " / pairs: " + counts.pairsReturned +
+  logger.log("Published " + date + ": " + report.title);
+  logger.log("Profiles: " + counts.solanaProfiles + " / pairs: " + counts.pairsReturned +
     " / qualifying candidates: " + counts.qualifyingCandidates);
-  if (selected) console.log("Featured pair: " + selected.name + " (" + selected.symbol + ") " + selected.pairUrl);
+  if (selected) logger.log("Featured pair: " + selected.name + " (" + selected.symbol + ") " + selected.pairUrl);
+  return { status: "published", report };
 }
 
-main().catch((error) => {
-  console.error("Daily on-chain publication failed:", error);
-  process.exitCode = 1;
-});
+async function main() {
+  await publishDailyReport();
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error("Daily on-chain publication failed:", error);
+    process.exitCode = 1;
+  });
+}

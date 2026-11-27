@@ -11,15 +11,15 @@ export type OnchainObservation = {
   discoveryType: OnchainDiscovery;
   claimDate: string | null;
   priceUsd: number | null;
-  liquidityUsd: number;
-  volume24hUsd: number;
+  liquidityUsd: number | null;
+  volume24hUsd: number | null;
   marketCapUsd: number | null;
   fdvUsd: number | null;
   priceChange1hPct: number | null;
   priceChange24hPct: number | null;
-  buys24h: number;
-  sells24h: number;
-  totalTransactions24h: number;
+  buys24h: number | null;
+  sells24h: number | null;
+  totalTransactions24h: number | null;
   buySharePct: number | null;
   volumeLiquidityRatio: number | null;
   pairCreatedAt: string | null;
@@ -77,31 +77,58 @@ export type OnchainReportIndex = {
   reports: OnchainReportIndexEntry[];
 };
 
-const RAW_BASE = "https://raw.githubusercontent.com/safherofficial/weird/main/content/onchain";
+const CONTENT_REF =
+  process.env.VERCEL_ENV === "preview" && process.env.VERCEL_GIT_COMMIT_REF
+    ? encodeURIComponent(process.env.VERCEL_GIT_COMMIT_REF)
+    : "main";
+const RAW_BASE = "https://raw.githubusercontent.com/safherofficial/weird/" + CONTENT_REF + "/content/onchain";
 
-async function fetchPublicJson<T>(url: string): Promise<T | null> {
-  try {
-    const response = await fetch(url, {
-      headers: { accept: "application/json" },
-      next: { revalidate: 300 },
-    });
-    if (!response.ok) return null;
-    return await response.json() as T;
-  } catch {
-    return null;
+export class OnchainDataUnavailableError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = "OnchainDataUnavailableError";
   }
 }
 
-export async function getOnchainReportIndex(): Promise<OnchainReportIndex | null> {
-  const index = await fetchPublicJson<OnchainReportIndex>(RAW_BASE + "/index.json");
-  if (!index || index.schemaVersion !== 1 || !Array.isArray(index.reports)) return null;
+async function fetchPublicJson<T>(url: string, fresh = false): Promise<T | null> {
+  let response: Response;
+  try {
+    const requestInit = (fresh
+      ? { headers: { accept: "application/json" }, cache: "no-store" }
+      : { headers: { accept: "application/json" }, next: { revalidate: 300 } }) as RequestInit;
+    response = await fetch(url, requestInit);
+  } catch (error) {
+    throw new OnchainDataUnavailableError("The public Onchain archive could not be reached.", { cause: error });
+  }
+
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new OnchainDataUnavailableError("The public Onchain archive returned HTTP " + response.status + ".");
+  }
+
+  try {
+    return await response.json() as T;
+  } catch (error) {
+    throw new OnchainDataUnavailableError("The public Onchain archive returned invalid JSON.", { cause: error });
+  }
+}
+
+export async function getOnchainReportIndex(fresh = true): Promise<OnchainReportIndex | null> {
+  const index = await fetchPublicJson<OnchainReportIndex>(RAW_BASE + "/index.json", fresh);
+  if (index === null) return null;
+  if (index.schemaVersion !== 1 || !Array.isArray(index.reports)) {
+    throw new OnchainDataUnavailableError("The public Onchain archive index failed schema validation.");
+  }
   return index;
 }
 
 export async function getOnchainReport(date: string): Promise<OnchainReport | null> {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
   const report = await fetchPublicJson<OnchainReport>(RAW_BASE + "/" + date + ".json");
-  if (!report || report.schemaVersion !== 1 || report.issueDate !== date || !Array.isArray(report.sections)) return null;
+  if (report === null) return null;
+  if (report.schemaVersion !== 1 || report.issueDate !== date || !Array.isArray(report.sections)) {
+    throw new OnchainDataUnavailableError("The requested Onchain report failed schema validation.");
+  }
   return report;
 }
 
