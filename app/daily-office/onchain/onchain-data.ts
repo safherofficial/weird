@@ -77,7 +77,11 @@ export type OnchainReportIndex = {
   reports: OnchainReportIndexEntry[];
 };
 
-const RAW_BASE = "https://raw.githubusercontent.com/safherofficial/weird/main/content/onchain";
+const CONTENT_REF =
+  process.env.VERCEL_ENV === "preview" && process.env.VERCEL_GIT_COMMIT_REF
+    ? encodeURIComponent(process.env.VERCEL_GIT_COMMIT_REF)
+    : "main";
+const RAW_BASE = "https://raw.githubusercontent.com/safherofficial/weird/" + CONTENT_REF + "/content/onchain";
 
 async function fetchPublicJson<T>(url: string, fresh = false): Promise<T | null> {
   try {
