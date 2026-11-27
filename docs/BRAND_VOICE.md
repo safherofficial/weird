@@ -34,6 +34,8 @@ The Department remains rooted in its Solana / Crypto Twitter editorial world; th
 ## Daily editorial system
 
 - **The Trenches Desk** is the current UTC-date-seeded fictional briefing. Its reports, signals, wallet theories and incident language are editorial constructions, not research into live markets or real accounts. The Snapshot Tribunal, Interchain Transfer Review and Quorum Tribunal are separate answer-derived fictional interviews; they do not verify programme rules, wallets, networks, transactions, DAOs, proposals, votes or execution.
+
+- **The Onchain Intelligence Desk** is the Department's sole public-data reporting exception. It publishes a dated Solana DEX snapshot using DEX Screener's public token-profile, community-takeover and pair endpoints. The report's observed prices, liquidity, volume, transaction counts and pair changes must remain faithful to the recorded snapshot; the Department's jokes and interpretations must be tied to those observations. State the collection time, discovery-sample scope, selection thresholds, source and limitations. A provider-supplied "community takeover" label is not independent verification of project control. A pair younger than 24 hours may not have a full 24 hours of history behind its rolling 24-hour fields. Pair metrics do not identify unique traders, beneficial owners, wallet clusters, transaction-size distribution, causes, motives, safety or future price direction.
 - **The Institutional Memory Ledger** presents fourteen consecutive fictional UTC dispatches from the same editorial system. It is a continuity device, not a record of actual events.
 - **The Department Case Atlas** indexes twenty-one fictional case threads across thirteen divisions: eighteen date-rotating Trenches Desk themes plus three static threads for airdrop eligibility, bridge delivery and cross-chain governance. Each thread links a curated Archive precedent and Museum relic, creating forty-two reference destinations. The date-seeded source chronology spans 240 UTC dates; selectable comparison windows range from 14 to 120 days. Recurrence counts, routing totals and gaps describe only this synthetic editorial history and must never be written as market or community statistics.
 - **The shared Department Case Thread** routes one generated fictional case through three offices using the current division and UTC date. Its handoffs and Archive / Museum references are narrative continuity, not evidence gathered from real projects, people or wallets.
@@ -41,6 +43,7 @@ The Department remains rooted in its Solana / Crypto Twitter editorial world; th
 ## What the Department is — and is not
 - It is a self-aware insider parody of degen behaviour, FOMO, overconfidence, cope and bagholding.
 - It is not a market terminal, token tracker, trading tool, alpha group, launchpad, wallet analyser or financial-advice product.
+- The Onchain Intelligence Desk is a limited, dated public-data report, not a market terminal, token tracker, wallet explorer, trading tool or source of investment recommendations.
 - It does not promise gains, identify real opportunities or give real trading signals.
 - All tokens, wallets, KOL accounts, incidents, scores and market scenarios used in generated satire must be fictional or clearly illustrative.
 - The joke is shared self-recognition. Never portray visitors as stupid, poor or inferior; the Department is in the screenshot too.
@@ -130,8 +133,8 @@ Reject generic filler such as "crypto is volatile" or "the market is unpredictab
 - Use CT slang in context; do not force it into every sentence.
 - Keep headings short, official and memorable.
 - Prefer graduation, migration, identical KOL calls and missing exit plans over broad statements about crypto.
-- No fake news framing. Use fictional case labels and explicit satirical notices wherever dashboards, dates, scores or incident reports appear.
-- No real market prices, live token data, wallet tracking or claims of on-chain research.
+- No fake news framing. Clearly label synthetic dashboards, fictional dates, scores and invented incidents. The Onchain Intelligence Desk is different: label its dated public-data snapshot, source, collection time, sample and limitations; keep its metrics factual and separate from the satire.
+- Do not invent market prices or token metrics, imply that fictional divisions have live feeds, track wallets or claim wallet-level on-chain research. Only the Onchain Intelligence Desk may report real public Solana DEX pair snapshots, and it must not turn pair-level observations into claims about identities, ownership, intent, causation, safety or future price direction.
 
 ## Brand guardrails
 
