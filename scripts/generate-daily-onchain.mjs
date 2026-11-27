@@ -458,7 +458,7 @@ export function buildArticle(date, issuedAt, counts, candidates, selected, repea
         "Pair selection: highest displayed-liquidity pair returned for each discovered token.",
         "Feature threshold: at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells.",
         "To vary the daily archive, a token featured during the previous seven issues is skipped when another qualifying candidate exists.",
-        "Editorial priority ranks fresh qualifying candidates by the severity of their 24-hour price move, one-hour momentum, volume-to-liquidity turnover and buy/sell-count divergence from price direction; reported 24-hour volume breaks ties. This is a story-selection rule, not a quality or investment score.",
+        "Editorial priority awards 15/30/50 points for 24-hour drawdowns of at least 10%/20%/50%, or 28/45 points for gains of at least 20%/50%; one-hour moves of at least 5%/10% add 8/15 points, volume-to-liquidity ratios of at least 10×/50× add 15/30 points, and qualifying transaction/price divergences add 8 points. Low displayed liquidity and a pair younger than 24 hours can each add 8/4 context points when the 24-hour move is at least 20%. Reported 24-hour volume breaks ties. This is an editorial story-selection heuristic, not a quality or investment score.",
         "Commentary interprets reported pair metrics only. It does not infer wallet identities, trade sizes, causes, motives, safety or future price direction.",
       ],
       sources: [
