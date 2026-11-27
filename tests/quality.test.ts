@@ -169,24 +169,25 @@ const engines: EngineSpec[] = [
   },
 ];
 
-test("questionnaires expose exactly four choices per question", () => {
+test("questionnaires expose four choices per question and simulator exposes its six decisions", () => {
   for (const engine of engines) {
     if (!engine.questions) continue;
     assert.equal(engine.questions.length, engine.questionCount, engine.name + " question count");
     engine.questions.forEach((question, index) => assert.equal(question.options.length, 4, engine.name + " question " + (index + 1)));
   }
-  assert.equal(simulatorActions.length, 4);
+  assert.equal(simulatorActions.length, 6);
+  assert.deepEqual(simulatorActions.map((action) => action.id), ["hold", "trim", "average", "telegram", "verify", "guard"]);
   assert.equal(marketEvents.length, SIMULATOR_ROUNDS);
   assert.deepEqual(marketEvents.map((event) => event.day), Array.from({ length: SIMULATOR_ROUNDS }, (_, i) => i + 1));
 });
 
 for (const engine of engines) {
   test(engine.name + ": input validation, share-code round trips and deterministic results", () => {
+    const choiceCount = engine.questions?.[0]?.options.length ?? simulatorActions.length;
     const vectors = [
-      Array(engine.questionCount).fill(0), Array(engine.questionCount).fill(1),
-      Array(engine.questionCount).fill(2), Array(engine.questionCount).fill(3),
-      Array.from({ length: engine.questionCount }, (_, i) => i % 4),
-      Array.from({ length: engine.questionCount }, (_, i) => 3 - (i % 4)),
+      ...Array.from({ length: choiceCount }, (_, choice) => Array(engine.questionCount).fill(choice)),
+      Array.from({ length: engine.questionCount }, (_, i) => i % choiceCount),
+      Array.from({ length: engine.questionCount }, (_, i) => choiceCount - 1 - (i % choiceCount)),
     ];
     for (const answers of vectors) {
       assert.equal(engine.isValid(answers), true);
@@ -200,14 +201,14 @@ for (const engine of engines) {
       engine.assertResult(first);
       const inputCopy = [...answers];
       const builtFromCopy = engine.build(inputCopy);
-      inputCopy[0] = (inputCopy[0] + 1) % 4;
+      inputCopy[0] = (inputCopy[0] + 1) % choiceCount;
       assert.deepEqual(builtFromCopy[engine.answerKey], answers, engine.name + " must copy submitted answers");
     }
 
     const invalidInputs: unknown[] = [
       null, undefined, 42, "0123", {}, [], Array(engine.questionCount - 1).fill(0),
       Array(engine.questionCount + 1).fill(0), Array(engine.questionCount).fill(-1),
-      Array(engine.questionCount).fill(4), Array(engine.questionCount).fill(1.5),
+      Array(engine.questionCount).fill(choiceCount), Array(engine.questionCount).fill(1.5),
       Array(engine.questionCount).fill(Number.NaN),
     ];
     for (const invalid of invalidInputs) assert.equal(engine.isValid(invalid), false);
@@ -870,9 +871,22 @@ test("simulator result distinguishes executed additions from unfunded attempts",
   assert.notEqual(result.profile.title, "THE POST-GRADUATION ACCUMULATOR");
 });
 
-test("simulator briefing uses the same ADD TO POSITION language as its action", () => {
+test("simulator decision cards render canonical action labels and descriptions", () => {
   const source = readFileSync("app/simulator/simulator-client.tsx", "utf8");
-  assert.ok(source.includes("trim 20%, add to your position or ask CT / Telegram."));
+  assert.ok(source.includes("{actions.map((action, index) =>"));
+  assert.ok(source.includes("<strong>{action.label}</strong>"));
+  assert.ok(source.includes("<small>{unavailable ? unavailableMessage : action.description}</small>"));
+  assert.deepEqual(
+    simulatorActions.map(({ id, label }) => ({ id, label })),
+    [
+      { id: "hold", label: "HOLD THE BAG" },
+      { id: "trim", label: "TRIM 20%" },
+      { id: "average", label: "ADD TO POSITION" },
+      { id: "telegram", label: "ASK CT / TELEGRAM" },
+      { id: "verify", label: "VERIFY THE RECEIPTS" },
+      { id: "guard", label: "SET A 20% DRAWDOWN GUARD" },
+    ],
+  );
   assert.doesNotMatch(source, /average down/i);
 });
 
