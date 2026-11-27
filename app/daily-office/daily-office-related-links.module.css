@@ -1,5 +1,7 @@
 .related {
-  margin: 22px 0 28px;
+  grid-column: 1 / -1;
+  min-width: 0;
+  margin: 0 0 28px;
   padding: 20px;
   border: 1px solid var(--line);
   background: linear-gradient(145deg, rgba(20, 26, 19, .96), rgba(11, 15, 11, .96));
@@ -73,7 +75,7 @@
 
 .card > span {
   color: #8c9a84;
-  font-size: 7px;
+  font-size: 8px;
   line-height: 1.5;
 }
 
@@ -100,7 +102,7 @@
   margin-top: auto;
   padding-top: 5px;
   color: var(--green);
-  font-size: 7px;
+  font-size: 8px;
   line-height: 1.5;
 }
 
@@ -140,7 +142,7 @@
 
 .route a > small {
   color: #87937f;
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .route a > strong {
@@ -151,14 +153,20 @@
 
 .route a > b {
   color: var(--green);
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .note {
   margin: 12px 0 0;
   color: #7e8a77;
-  font-size: 7px;
-  line-height: 1.6;
+  font-size: 8px;
+  line-height: 1.65;
+}
+
+.card:focus-visible,
+.route a:focus-visible {
+  outline: 2px solid var(--department-accent);
+  outline-offset: 3px;
 }
 
 @media (max-width: 1000px) {
@@ -186,5 +194,6 @@
 @media (prefers-reduced-motion: reduce) {
   .card {
     transition: none;
+    transform: none;
   }
 }
