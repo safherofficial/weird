@@ -23,9 +23,19 @@ export const metadata: Metadata = {
 };
 
 export default async function OnchainIntelligencePage() {
-  const index = await getOnchainReportIndex();
-  const latest = index?.reports[0] ?? null;
-  const report = latest ? await getOnchainReport(latest.issueDate) : null;
+  let index = null;
+  let latest = null;
+  let report = null;
+  let archiveUnavailable = false;
+
+  try {
+    index = await getOnchainReportIndex();
+    latest = index?.reports[0] ?? null;
+    report = latest ? await getOnchainReport(latest.issueDate) : null;
+    if (latest && !report) archiveUnavailable = true;
+  } catch {
+    archiveUnavailable = true;
+  }
 
   return (
     <main className="audit-page onchain-intelligence-page" id="main-content">
@@ -59,11 +69,18 @@ export default async function OnchainIntelligencePage() {
 
         {report ? (
           <OnchainReportView report={report} />
+        ) : archiveUnavailable ? (
+          <section className="onchain-waiting onchain-waiting--error" role="status">
+            <span>ARCHIVE STATUS / SOURCE COULD NOT BE VERIFIED</span>
+            <h2>THE FILE IS NOT<br /><span>AVAILABLE FOR REVIEW.</span></h2>
+            <p>The Department could not verify the public repository or retrieve the latest indexed report. This is a source-availability problem, not evidence of a quiet market day. No substitute story has been generated.</p>
+            <Link className="button button--primary" href="/daily-office/onchain/archive">CHECK THE ARCHIVE ↗</Link>
+          </section>
         ) : (
           <section className="onchain-waiting">
             <span>PUBLICATION STATUS / WAITING FOR FIRST VERIFIED SNAPSHOT</span>
             <h2>THE DESK IS OPEN.<br /><span>THE DATA COMES FIRST.</span></h2>
-            <p>The daily publisher has not filed an issue yet, or the public archive could not be reached. No report is fabricated as a placeholder. The automated collection is scheduled every morning at 09:17 Europe/Rome.</p>
+            <p>The daily publisher has not filed an issue yet. No report is fabricated as a placeholder. The automated collection is scheduled every morning at 09:17 Europe/Rome.</p>
             <Link className="button button--primary" href="/daily-office/onchain/archive">CHECK THE ARCHIVE ↗</Link>
           </section>
         )}
