@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "issueDate": "2026-11-28",
+  "issuedAt": "2026-11-28T16:54:36.077Z",
+  "timezone": "Europe/Rome",
+  "title": "$WINSTON: -92.32% IN 24H. THE EXCUSE DEPARTMENT IS AT CAPACITY.",
+  "standfirst": "Winstoncoin ($WINSTON) led the eligible discovery sample by reported 24-hour pair volume: $405,493 against $8,602 in displayed liquidity, with a quoted price move of -92.32%. The Department filed the figures correctly. The market appears to have misplaced the memo.",
+  "classification": "OBSERVED DEX DRAWDOWN / DEPARTMENT COMMENTARY",
+  "sourceSummary": "DEX Screener public API; latest Solana token-profile and community-takeover feeds, plus returned pair snapshots. The Department supplies the attitude, not the numbers.",
+  "counts": {
+    "discoveryProfiles": 30,
+    "solanaProfiles": 19,
+    "solanaTakeovers": 2,
+    "profilesChecked": 21,
+    "pairsReturned": 18,
+    "candidatePairs": 18,
+    "qualifyingCandidates": 6,
+    "freshQualifyingCandidates": 6
+  },
+  "featuredToken": {
+    "name": "Winstoncoin",
+    "symbol": "WINSTON",
+    "address": "7Y2CVbnqZRvR5RUvEJ9RQ73fZEfv7ybNcysytAepump",
+    "pairAddress": "ASo1PdFe7jQWLT2vDt4Ry1qwubiTduQHwrwTSD2vV2PS",
+    "dexId": "pumpswap",
+    "pairUrl": "https://dexscreener.com/solana/aso1pdfe7jqwlt2vdt4ry1qwubitduqhwrwtsd2vv2ps",
+    "profileUrl": "https://dexscreener.com/solana/7y2cvbnqzrvr5ruvej9rq73fzefv7ybncysytaepump",
+    "discoveryType": "COMMUNITY TAKEOVER",
+    "claimDate": "2026-11-28T14:39:57.316Z",
+    "priceUsd": 0.00001526,
+    "liquidityUsd": 8602.11,
+    "volume24hUsd": 405493.38,
+    "marketCapUsd": 15236,
+    "fdvUsd": 15236,
+    "priceChange1hPct": -6.32,
+    "priceChange24hPct": -92.32,
+    "buys24h": 6080,
+    "sells24h": 5001,
+    "totalTransactions24h": 11081,
+    "buySharePct": 54.9,
+    "volumeLiquidityRatio": 47.14,
+    "pairCreatedAt": "2026-11-27T13:14:56.000Z",
+    "ageHours": 27.7
+  },
+  "observations": [
+    {
+      "name": "MoonBoy",
+      "symbol": "MoonBoy",
+      "address": "GXjSWDoMQkDEbhon9ALxz8chUUsVKg3x8V3NajjDpump",
+      "pairAddress": "DkNJBoh2KngPNumX5BdEakmpX2fYPNu57xZFn6C2dRE1",
+      "dexId": "pumpswap",
+      "pairUrl": "https://dexscreener.com/solana/dknjboh2kngpnumx5bdeakmpx2fypnu57xzfn6c2dre1",
+      "profileUrl": "https://dexscreener.com/solana/gxjswdomqkdebhon9alxz8chuusvkg3x8v3najjdpump",
+      "discoveryType": "COMMUNITY TAKEOVER",
+      "claimDate": "2026-11-27T23:01:41.532Z",
+      "priceUsd": 0.001256,
+      "liquidityUsd": 113046.79,
+      "volume24hUsd": 5079103.78,
+      "marketCapUsd": 1254644,
+      "fdvUsd": 1254644,
+      "priceChange1hPct": 47.93,
+      "priceChange24hPct": 2721,
+      "buys24h": 51517,
+      "sells24h": 39525,
+      "totalTransactions24h": 91042,
+      "buySharePct": 56.6,
+      "volumeLiquidityRatio": 44.93,
+      "pairCreatedAt": "2026-11-27T20:39:24.000Z",
+      "ageHours": 20.3
+    },
+    {
+      "name": "Timmy",
+      "symbol": "TIMMY",
+      "address": "B6JwxRFd5Nomou9v2CELN3rjgwVxCzoAZbZqLHszpump",
+      "pairAddress": "BHPzXjba7Bu1sj26Syp11P9WAvLUv7XDhysXk864pXUB",
+      "dexId": "pumpswap",
+      "pairUrl": "https://dexscreener.com/solana/bhpzxjba7bu1sj26syp11p9wavluv7xdhysxk864pxub",
+      "profileUrl": "https://dexscreener.com/solana/b6jwxrfd5nomou9v2celn3rjgwvxczoazbzqlhszpump",
+      "discoveryType": "NEW DEX PROFILE",
+      "claimDate": null,
+      "priceUsd": 0.00009895,
+      "liquidityUsd": 22057.25,
+      "volume24hUsd": 526971.4,
+      "marketCapUsd": 98959,
+      "fdvUsd": 98959,
+      "priceChange1hPct": 25.84,
+      "priceChange24hPct": 234,
+      "buys24h": 9507,
+      "sells24h": 5521,
+      "totalTransactions24h": 15028,
+      "buySharePct": 63.3,
+      "volumeLiquidityRatio": 23.89,
+      "pairCreatedAt": "2026-11-28T15:36:26.000Z",
+      "ageHours": 1.3
+    },
+    {
+      "name": "Raydium Inu",
+      "symbol": "RI",
+      "address": "FvNopjpk7upJ4GghufMrJJ7W8aaH2tdoEozDZtUbiYKD",
+      "pairAddress": "7SvSTuRArvmE8jp9U3w5sqMPYxqz4c5xxqt9AkiGcXxV",
+      "dexId": "raydium",
+      "pairUrl": "https://dexscreener.com/solana/7svsturarvme8jp9u3w5sqmpyxqz4c5xxqt9akigcxxv",
+      "profileUrl": "https://dexscreener.com/solana/fvnopjpk7upj4gghufmrjj7w8aah2tdoeozdztubiykd",
+      "discoveryType": "NEW DEX PROFILE",
+      "claimDate": null,
+      "priceUsd": 0.00003046,
+      "liquidityUsd": 14597.07,
+      "volume24hUsd": 247909.43,
+      "marketCapUsd": 30468,
+      "fdvUsd": 30468,
+      "priceChange1hPct": 35.88,
+      "priceChange24hPct": 35.88,
+      "buys24h": 4906,
+      "sells24h": 3743,
+      "totalTransactions24h": 8649,
+      "buySharePct": 56.7,
+      "volumeLiquidityRatio": 16.98,
+      "pairCreatedAt": "2026-11-28T16:05:40.000Z",
+      "ageHours": 0.8
+    }
+  ],
+  "sections": [
+    {
+      "heading": "THE INCIDENT REPORT: THE CANDLE HAS REQUESTED COUNSEL.",
+      "paragraphs": [
+        "At 16:54 UTC, the selected pumpswap pair showed $8,602 in displayed pool liquidity and $405,493 in reported trailing 24-hour volume. The quoted token price was $0.0000152600. These are DEX Screener snapshots, not a reconstruction of every trade. We have the receipts; the market has declined to provide a statement.",
+        "This pair was not selected simply because it dumped. It ranked first under the Department's editorial-priority rules among 6 fresh candidates that met the publication thresholds. The ranking weighs the size of the 24-hour move, one-hour momentum, turnover relative to displayed liquidity and transaction-count divergences from price direction; reported 24-hour volume breaks ties. The pair was approximately 27.7 hours old when collected. The pool had more than 24 hours of recorded age, but this is still one snapshot rather than a complete trading history. The discovery feed labels this profile COMMUNITY TAKEOVER. That is a provider-supplied discovery category, not independent verification of who controls the project, its keys or its treasury. The ceremonial handover paperwork remains missing."
+      ]
+    },
+    {
+      "heading": "PRICE ACTION: THE EXCUSE DEPARTMENT IS OPEN.",
+      "paragraphs": [
+        "The reported 24-hour price change was -92.32%. That is a severe drawdown, not a decorative red candle. The usual vocabulary of 'healthy reset', 'final shakeout' and 'perfect entry' has been asked to provide evidence before returning to the group chat.",
+        "The one-hour reading was also negative at -6.32%, so the snapshot still showed downside pressure in the shorter window. It does not identify what caused the move. The snapshot does not reveal the catalyst, the identity of any seller or whether the move was caused by one large trade, many smaller trades or something else. Anyone offering a confident causal thread from these fields alone is freelancing."
+      ]
+    },
+    {
+      "heading": "THE BUY TAPE: COUNTS ARE NOT CONVICTION.",
+      "paragraphs": [
+        "The pair recorded 6,080 buys and 5,001 sells, for 11,081 transactions in the reported 24-hour field. 54.9% of recorded transactions were buys and 45.1% were sells. These are event counts, not unique people, wallet counts or trade-size-weighted flows.",
+        "This is the detail the group chat will try to turn into a paradox: buy transactions outnumbered sells, yet the quoted price fell hard. It is not actually a contradiction. Counts do not measure trade size or sequence; fewer, larger sells can outweigh a greater number of smaller buys. The data does not tell us whether that is what happened here. The 99% Research Confidence Division has nevertheless drafted a bullish thread and is being held outside Compliance."
+      ]
+    },
+    {
+      "heading": "VOLUME IS NOT AN EXIT PLAN.",
+      "paragraphs": [
+        "Reported trailing 24-hour volume was 47.14 times the displayed liquidity snapshot. This is a turnover-to-pool comparison, not net inflow, cash reserves or the amount that could be sold at the quoted price. Turnover was high relative to displayed pool liquidity. That deserves attention, but it still cannot be translated directly into available exit depth or the amount any particular holder could realise.",
+        "The provider also reported market cap $15,236 and FDV $15,236. Those are valuation fields, not cash sitting in the pool, a guaranteed sale price or proof that the market can redeem the implied value. The pool's displayed liquidity is not a promise that a holder can sell at the quoted price, and the market-cap field is not an ATM. The Department would like these nouns kept in separate departments."
+      ]
+    },
+    {
+      "heading": "THE REST OF THE ROOM IS ALSO ON THE RECORD.",
+      "paragraphs": [
+        "The neighbouring rows in the same limited feed are worth a look too: MoonBoy ($MoonBoy) recorded $5,079,104 in reported volume, $113,047 displayed liquidity and reported price move +2721.00%; pair age 20.3h, so the 24h field does not contain a full day of pair history. Timmy ($TIMMY) recorded $526,971 in reported volume, $22,057 displayed liquidity and reported price move +234.00%; pair age 1.3h, so the 24h field does not contain a full day of pair history.",
+        "This is context from the same limited discovery sample, not a ranking of Solana or a claim that these pairs represent the wider market. The shortlist is a feed sample, not a census of the trenches."
+      ]
+    },
+    {
+      "heading": "THE OFFICIAL STATEMENT: WE FILED THE DATA. THE MARKET FILED A COMPLAINT.",
+      "paragraphs": [
+        "The Department can report what the provider returned: price change, pool liquidity, turnover, transaction counts, pair age and the feed's discovery label. It cannot honestly turn those fields into a story about a whale, insiders, a rug pull, coordinated selling, wallet concentration or anyone's intentions.",
+        "So yes, another day in which the chart has made the Department look ridiculous by association. The reported drawdown helped make this pair editorially relevant under the published scoring rules; it is not proof of wrongdoing, wallet behaviour or a future move. We did not predict the direction or certify the project's quality. We recorded the result and left the excuses to the professionals. DYOR means checking the receipts, especially when the receipt is ugly."
+      ]
+    },
+    {
+      "heading": "WHAT THE DATA STILL DOES NOT KNOW.",
+      "paragraphs": [
+        "These pair statistics do not identify unique traders, beneficial owners, wallet clusters, deployer intent, coordinated activity, trade-size distribution or who is posting rocket emojis. Buy/sell counts are not a count of distinct wallets.",
+        "Liquidity, volume and price can change immediately after collection. This is an evidence-led roast of one observed market snapshot, not a safety audit, a complete market report or a trading recommendation."
+      ]
+    }
+  ],
+  "methodology": [
+    "Discovery sample: latest Solana token profiles and latest community-takeover notices supplied by DEX Screener.",
+    "Pair selection: highest displayed-liquidity pair returned for each discovered token.",
+    "Feature threshold: at least $5,000 displayed liquidity, $5,000 trailing 24-hour volume and 20 recorded buys plus sells.",
+    "To vary the daily archive, a token featured during the previous seven issues is skipped when another qualifying candidate exists.",
+    "Editorial priority awards 15/30/50 points for 24-hour drawdowns of at least 10%/20%/50%, or 28/45 points for gains of at least 20%/50%; one-hour moves of at least 5%/10% add 8/15 points, volume-to-liquidity ratios of at least 10×/50× add 15/30 points, and qualifying transaction/price divergences add 8 points. Low displayed liquidity and a pair younger than 24 hours can each add 8/4 context points when the 24-hour move is at least 20%. Reported 24-hour volume breaks ties. This is an editorial story-selection heuristic, not a quality or investment score.",
+    "Commentary interprets reported pair metrics only. It does not infer wallet identities, trade sizes, causes, motives, safety or future price direction."
+  ],
+  "sources": [
+    {
+      "label": "Featured DEX pair",
+      "url": "https://dexscreener.com/solana/aso1pdfe7jqwlt2vdt4ry1qwubitduqhwrwtsd2vv2ps"
+    },
+    {
+      "label": "DEX Screener API documentation",
+      "url": "https://docs.dexscreener.com/api/reference"
+    }
+  ]
+}

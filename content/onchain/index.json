@@ -1,7 +1,20 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-27T09:48:58.957Z",
+  "updatedAt": "2026-11-28T16:54:36.077Z",
   "reports": [
+    {
+      "issueDate": "2026-11-28",
+      "path": "content/onchain/2026-11-28.json",
+      "title": "$WINSTON: -92.32% IN 24H. THE EXCUSE DEPARTMENT IS AT CAPACITY.",
+      "standfirst": "Winstoncoin ($WINSTON) led the eligible discovery sample by reported 24-hour pair volume: $405,493 against $8,602 in displayed liquidity, with a quoted price move of -92.32%. The Department filed the figures correctly. The market appears to have misplaced the memo.",
+      "classification": "OBSERVED DEX DRAWDOWN / DEPARTMENT COMMENTARY",
+      "featuredSymbol": "WINSTON",
+      "featuredTokenAddress": "7Y2CVbnqZRvR5RUvEJ9RQ73fZEfv7ybNcysytAepump",
+      "pairUrl": "https://dexscreener.com/solana/aso1pdfe7jqwlt2vdt4ry1qwubitduqhwrwtsd2vv2ps",
+      "liquidityUsd": 8602.11,
+      "volume24hUsd": 405493.38,
+      "issuedAt": "2026-11-28T16:54:36.077Z"
+    },
     {
       "issueDate": "2026-11-27",
       "path": "content/onchain/2026-11-27.json",
